@@ -81,7 +81,12 @@ Item {
         onTriggered: pill.bootSettled = true
     }
 
-    readonly property bool expanded: surfaceOpen || held || hoverLatch
+    /**
+     * A tray context menu is a separate popup, so opening one takes the pointer
+     * off the pill. Keep the pill expanded while the tray reports a menu up.
+     */
+    readonly property bool trayHold: trayItem.menuHeld
+    readonly property bool expanded: surfaceOpen || held || hoverLatch || trayHold
 
     // No surface waits on an external auth dialog anymore (the updater that used
     // pkexec was retired), so the shell never needs to drop its modal grab.
@@ -742,6 +747,8 @@ Item {
 
     onHoveredChanged: {
         if (hovered) {
+            // Pointer is back from a tray menu popup: the hold has done its job.
+            trayItem.releaseMenu();
             if (bootSettled)
                 hoverLatch = true;
             graceTimer.stop();
@@ -1417,6 +1424,7 @@ Item {
                 }
 
                 Tray {
+                    id: trayItem
                     anchors.verticalCenter: parent.verticalCenter
                     s: pill.s
                     barWindow: pill.barWindow

@@ -164,13 +164,18 @@ Item {
                         readonly property real restHeight: 38 * s
                         readonly property real reservedH: Math.max(0, restHeight + topGap - 12 * (1 - Flags.appGap) * s)
                         readonly property real gameBarH: 34 * s
-                        readonly property bool monFullscreen: Fullscreen.outputHasFullscreen(modelData ? modelData.name : "")
 
+                        // Deliberately NOT tied to fullscreen state. This is a
+                        // transparent, input-less window, so keeping it mapped costs
+                        // next to nothing, and a constant exclusive zone means tiled
+                        // windows (Discord, browsers...) never get resized when a
+                        // game/video enters or leaves fullscreen. The pill (overlay
+                        // below) is what hides, exactly as before.
                         screen: modelData
-                        visible: !monFullscreen
+                        visible: true
                         color: "transparent"
                         exclusionMode: ExclusionMode.Normal
-                        exclusiveZone: monFullscreen ? 0 : (Flags.gameMode ? gameBarH : reservedH)
+                        exclusiveZone: Flags.gameMode ? gameBarH : reservedH
                         aboveWindows: true
                         anchors { top: true; left: true; right: true }
                         implicitHeight: Flags.gameMode ? gameBarH : reservedH
@@ -192,14 +197,17 @@ Item {
                         readonly property bool surfaceOpen: surface.length > 0
                         readonly property bool modal: pill.authPending ? false : (surfaceOpen || pill.held || pill.quickChoosing)
 
-                        readonly property bool monFullscreen: Fullscreen.outputHasFullscreen(modelData ? modelData.name : "")
+                        readonly property bool monFullscreen: Fullscreen.activeWindowIsFullscreen(modelData ? modelData.name : "")
                         readonly property bool summoned: modal || root.peekMon === modelData.name
                         readonly property bool pillHidden: monFullscreen && !summoned
 
-                        onMonFullscreenChanged: if (monFullscreen) {
-                            if (root.openMon === modelData.name) root.close();
-                            if (root.peekMon === modelData.name) root.peekMon = "";
-                            pill.pinned = false;
+                        onMonFullscreenChanged: {
+                            console.log("ricelin: output", modelData.name, "active fullscreen =", monFullscreen);
+                            if (monFullscreen) {
+                                if (root.openMon === modelData.name) root.close();
+                                if (root.peekMon === modelData.name) root.peekMon = "";
+                                pill.pinned = false;
+                            }
                         }
 
                         // pillHidden already fades the pill to opacity 0 and masks

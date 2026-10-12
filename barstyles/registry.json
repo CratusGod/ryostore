@@ -75,7 +75,7 @@
     {
       "id": "ricelin",
       "name": "Ricelin",
-      "version": "1.1.1",
+      "version": "1.2.0",
       "path": "barstyles/ricelin",
       "author": "feelyourwarmth",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/barstyles/ricelin",
@@ -94,7 +94,7 @@
       "preview": "assets/preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "53834e6b716f6569ccc82a752bcaa473ec34f515ef0760f52efd53e8c24edb3a",
+      "manifestSha256": "c5f8bed1fe6f4ca8dc5057d578df119f35122702f09c089f90e3d11887433064",
       "official": false,
       "lastUpdated": "2026-10-02"
     },
