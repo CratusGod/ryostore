@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "ricelin",
   "category": "barstyles",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "destination": "ryoku/barstyles/ricelin",
   "files": [
     {
@@ -193,16 +193,16 @@
       "source": "PROVENANCE.txt",
       "destination": "PROVENANCE.txt",
       "mode": "0644",
-      "size": 4057,
-      "sha256": "43c9befa721960059f8ab07262cee2a33f72ab2ba85cad64d4340eebae4e633b",
+      "size": 4913,
+      "sha256": "486e4bb08a40be8331cc10171a4e6abc6054dad609967244bcb04c218a7d15a9",
       "install": true
     },
     {
       "source": "Pill.qml",
       "destination": "Pill.qml",
       "mode": "0644",
-      "size": 89747,
-      "sha256": "c25ec937acb59b0ce70dcfc0361bd2275d19a6b5a8d4ea25127b7c46c8af1525",
+      "size": 90140,
+      "sha256": "211478914925ff2dfac704248e743f9f1ef330e04989c92f10e6e92e5d357ae6",
       "install": true
     },
     {
@@ -233,8 +233,8 @@
       "source": "Scene.qml",
       "destination": "Scene.qml",
       "mode": "0644",
-      "size": 20707,
-      "sha256": "d0e1d75b2436d61bc13bd2d8a94faba3213f3789e182fceebd9e1ac3cb8d30df",
+      "size": 21228,
+      "sha256": "7af2338f3ae9625633a08fb1851fcf0c5eb42c0b03b6e76ed2a3607e659ecb5f",
       "install": true
     },
     {
@@ -361,8 +361,8 @@
       "source": "Singletons/Fullscreen.qml",
       "destination": "Singletons/Fullscreen.qml",
       "mode": "0644",
-      "size": 341,
-      "sha256": "d37e979d38a84c56c1cedcfce6e5f088280bb01f6870d4d7d1f8a66ced634086",
+      "size": 2407,
+      "sha256": "69849f13da10c22a2faf3eb9aec82a6334aeeb19173a1118a1cf59c50c4a636e",
       "install": true
     },
     {
@@ -489,8 +489,8 @@
       "source": "Tray.qml",
       "destination": "Tray.qml",
       "mode": "0644",
-      "size": 3514,
-      "sha256": "ce153317e86e103cca971fb9d0ba4b1c54dce80bd3b81d8a6ff5ab72d8090cab",
+      "size": 9337,
+      "sha256": "e2fe9ee1ffeda6364d57e905fc32a3645eed4c18d2755c6cb61550d01cfe55b8",
       "install": true
     },
     {
