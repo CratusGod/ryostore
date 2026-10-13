@@ -1356,6 +1356,38 @@
       "lastUpdated": "2026-10-02"
     },
     {
+      "id": "gitlab-heatmap",
+      "name": "GitLab Heatmap",
+      "version": "0.1.0",
+      "path": "plugins/gitlab-heatmap",
+      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/gitlab-heatmap",
+      "author": "Lucy E. Arias <matcraft94@pm.me>",
+      "summary": "Your GitLab contribution calendar on the wallpaper, with quick styles, eight palettes, streaks and frosted glass.",
+      "description": "Your GitLab contribution calendar on the wallpaper, with quick styles, eight palettes, streaks and frosted glass.",
+      "tags": [
+        "gitlab",
+        "contributions",
+        "heatmap",
+        "calendar",
+        "desktop-widget"
+      ],
+      "accent": "#e24329",
+      "surface": "#101010",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "baa4dfddb88c940ee1bc115c9f1a3348be3c8ba585bc21d20c197df8741e9f85",
+      "official": false,
+      "tagline": "Your GitLab contribution calendar on the wallpaper, with quick styles, eight palettes, streaks and frosted glass.",
+      "icon": "calendar_month",
+      "hosts": [
+        "desktopWidget"
+      ],
+      "lastUpdated": "2026-10-13"
+    },
+    {
       "id": "kdeconnect-status",
       "name": "KDE Connect",
       "version": "0.1.0",

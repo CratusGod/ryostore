@@ -1,0 +1,413 @@
+{
+  "id": "gitlab-heatmap",
+  "name": "GitLab Heatmap",
+  "version": "0.1.0",
+  "author": "Lucy E. Arias <matcraft94@pm.me>",
+  "description": "Your GitLab contribution calendar on the wallpaper, with quick styles, eight palettes, streaks and frosted glass.",
+  "license": "MIT",
+  "official": false,
+  "tags": [
+    "gitlab",
+    "contributions",
+    "heatmap",
+    "calendar",
+    "desktop-widget"
+  ],
+  "hosts": [
+    "desktopWidget"
+  ],
+  "entryPoints": {
+    "main": "service/Main.qml",
+    "content": "content/Widget.qml"
+  },
+  "files": [
+    "bin/gl-contrib"
+  ],
+  "capabilities": {
+    "densities": [
+      "compact",
+      "full"
+    ],
+    "network": [
+      "gitlab.com"
+    ]
+  },
+  "defaults": {
+    "host": "desktopWidget",
+    "desktopWidget": {
+      "bg": "none",
+      "autoEnable": true
+    },
+    "icon": "calendar_month",
+    "label": "GitLab Heatmap"
+  },
+  "dependencies": {
+    "commands": [
+      "python3",
+      "ryoku-plugins-place"
+    ]
+  },
+  "metadata": {
+    "settings": [
+      {
+        "key": "username",
+        "type": "text",
+        "label": "GitLab username",
+        "group": "GitLab Heatmap",
+        "default": "",
+        "placeholder": "octocat"
+      },
+      {
+        "key": "language",
+        "type": "choice",
+        "label": "Language",
+        "group": "GitLab Heatmap",
+        "default": "auto",
+        "options": [
+          {
+            "value": "auto",
+            "label": "Auto"
+          },
+          {
+            "value": "es",
+            "label": "Español"
+          },
+          {
+            "value": "en",
+            "label": "English"
+          }
+        ]
+      },
+      {
+        "key": "months",
+        "type": "slider",
+        "label": "Months to show",
+        "group": "GitLab Heatmap",
+        "default": 12,
+        "min": 1,
+        "max": 12,
+        "step": 1
+      },
+      {
+        "key": "colorScale",
+        "type": "choice",
+        "label": "Color scale",
+        "group": "GitLab Heatmap",
+        "default": "github",
+        "options": [
+          {
+            "value": "github",
+            "label": "Quartiles"
+          },
+          {
+            "value": "relative",
+            "label": "Relative to your best"
+          }
+        ]
+      },
+      {
+        "key": "refreshMin",
+        "type": "slider",
+        "label": "Refresh every (min)",
+        "group": "GitLab Heatmap",
+        "default": 30,
+        "min": 10,
+        "max": 240,
+        "step": 10
+      },
+      {
+        "key": "clickOpens",
+        "type": "toggle",
+        "label": "Click opens your GitLab profile",
+        "group": "GitLab Heatmap",
+        "default": false
+      },
+      {
+        "key": "hoverStyle",
+        "type": "choice",
+        "label": "Info on hover",
+        "group": "GitLab Heatmap",
+        "default": "tooltip",
+        "options": [
+          {
+            "value": "bar",
+            "label": "In the bar"
+          },
+          {
+            "value": "tooltip",
+            "label": "Floating"
+          },
+          {
+            "value": "off",
+            "label": "Don't show"
+          }
+        ]
+      },
+      {
+        "key": "showTodayCount",
+        "type": "toggle",
+        "label": "Show today's contributions",
+        "group": "GitLab Heatmap",
+        "default": true
+      },
+      {
+        "key": "palette",
+        "type": "choice",
+        "label": "Colors",
+        "group": "GitLab Heatmap",
+        "default": "accent",
+        "options": [
+          {
+            "value": "accent",
+            "label": "Theme"
+          },
+          {
+            "value": "github",
+            "label": "Green"
+          },
+          {
+            "value": "blue",
+            "label": "Blue"
+          },
+          {
+            "value": "purple",
+            "label": "Purple"
+          },
+          {
+            "value": "pink",
+            "label": "Pink"
+          },
+          {
+            "value": "halloween",
+            "label": "Orange"
+          },
+          {
+            "value": "ice",
+            "label": "Ice"
+          },
+          {
+            "value": "mono",
+            "label": "Mono"
+          }
+        ]
+      },
+      {
+        "key": "cellShape",
+        "type": "choice",
+        "label": "Shape",
+        "group": "GitLab Heatmap",
+        "default": "rounded",
+        "options": [
+          {
+            "value": "rounded",
+            "label": "Rounded"
+          },
+          {
+            "value": "square",
+            "label": "Square"
+          },
+          {
+            "value": "circle",
+            "label": "Circle"
+          }
+        ]
+      },
+      {
+        "key": "showEmpty",
+        "type": "toggle",
+        "label": "Empty days",
+        "group": "GitLab Heatmap",
+        "default": true
+      },
+      {
+        "key": "highlightToday",
+        "type": "toggle",
+        "label": "Mark today",
+        "group": "GitLab Heatmap",
+        "default": true
+      },
+      {
+        "key": "cellSize",
+        "type": "slider",
+        "label": "Cell size",
+        "group": "GitLab Heatmap",
+        "default": 11,
+        "min": 6,
+        "max": 20,
+        "step": 1
+      },
+      {
+        "key": "cellGap",
+        "type": "slider",
+        "label": "Cell spacing",
+        "group": "GitLab Heatmap",
+        "default": 3,
+        "min": 0,
+        "max": 8,
+        "step": 1
+      },
+      {
+        "key": "monthGap",
+        "type": "slider",
+        "label": "Month spacing",
+        "group": "GitLab Heatmap",
+        "default": 0,
+        "min": 0,
+        "max": 24,
+        "step": 2
+      },
+      {
+        "key": "weekStart",
+        "type": "choice",
+        "label": "Week starts",
+        "group": "GitLab Heatmap",
+        "default": "sun",
+        "options": [
+          {
+            "value": "sun",
+            "label": "Sunday"
+          },
+          {
+            "value": "mon",
+            "label": "Monday"
+          }
+        ]
+      },
+      {
+        "key": "showMonths",
+        "type": "toggle",
+        "label": "Months",
+        "group": "GitLab Heatmap",
+        "default": true
+      },
+      {
+        "key": "monthFormat",
+        "type": "choice",
+        "label": "Month format",
+        "group": "GitLab Heatmap",
+        "default": "short",
+        "options": [
+          {
+            "value": "short",
+            "label": "jan"
+          },
+          {
+            "value": "cap",
+            "label": "Jan"
+          },
+          {
+            "value": "initial",
+            "label": "J"
+          },
+          {
+            "value": "number",
+            "label": "1"
+          }
+        ]
+      },
+      {
+        "key": "showWeekdays",
+        "type": "toggle",
+        "label": "Weekdays",
+        "group": "GitLab Heatmap",
+        "default": true
+      },
+      {
+        "key": "weekdayStyle",
+        "type": "choice",
+        "label": "Weekday style",
+        "group": "GitLab Heatmap",
+        "default": "alt",
+        "options": [
+          {
+            "value": "alt",
+            "label": "mon wed fri"
+          },
+          {
+            "value": "all",
+            "label": "All"
+          },
+          {
+            "value": "initial",
+            "label": "M T W"
+          }
+        ]
+      },
+      {
+        "key": "textScale",
+        "type": "slider",
+        "label": "Text size (%)",
+        "group": "GitLab Heatmap",
+        "default": 100,
+        "min": 70,
+        "max": 160,
+        "step": 10
+      },
+      {
+        "key": "showToolbar",
+        "type": "toggle",
+        "label": "Top bar",
+        "group": "GitLab Heatmap",
+        "default": true
+      },
+      {
+        "key": "showStats",
+        "type": "toggle",
+        "label": "Streaks and record",
+        "group": "GitLab Heatmap",
+        "default": true
+      },
+      {
+        "key": "showLegend",
+        "type": "toggle",
+        "label": "Legend",
+        "group": "GitLab Heatmap",
+        "default": true
+      },
+      {
+        "key": "showBorder",
+        "type": "toggle",
+        "label": "Card border",
+        "group": "GitLab Heatmap",
+        "default": true
+      },
+      {
+        "key": "bgStyle",
+        "type": "choice",
+        "label": "Background",
+        "group": "GitLab Heatmap",
+        "default": "glass",
+        "options": [
+          {
+            "value": "glass",
+            "label": "Glass (like the calendar)"
+          },
+          {
+            "value": "solid",
+            "label": "Solid"
+          }
+        ]
+      },
+      {
+        "key": "bgOpacity",
+        "type": "slider",
+        "label": "Background opacity",
+        "group": "GitLab Heatmap",
+        "default": 100,
+        "min": 0,
+        "max": 100,
+        "step": 10
+      },
+      {
+        "key": "cardRadius",
+        "type": "slider",
+        "label": "Card corners",
+        "group": "GitLab Heatmap",
+        "default": 14,
+        "min": 0,
+        "max": 24,
+        "step": 2
+      }
+    ]
+  }
+}
