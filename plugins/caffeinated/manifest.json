@@ -1,0 +1,90 @@
+{
+  "id": "caffeinated",
+  "name": "Caffeinated",
+  "version": "0.1.0",
+  "author": "Madhav Khosla <madhav.khoslaa@gmail.com>",
+  "description": "System-wide caffeine: one switch keeps the whole machine awake (no sleep, even with the lid closed), screen on and unlocked or locking as usual.",
+  "license": "MIT",
+  "official": true,
+  "hosts": [
+    "topbarGlyph"
+  ],
+  "entryPoints": {
+    "main": "service/Main.qml",
+    "content": "content/Widget.qml",
+    "panel": "content/Panel.qml"
+  },
+  "panel": {
+    "width": 260
+  },
+  "files": [
+    "bin/caffeinated",
+    "content/CoffeeCup.qml",
+    "assets/preview-widget.png"
+  ],
+  "capabilities": {
+    "densities": [
+      "glyph",
+      "compact"
+    ]
+  },
+  "defaults": {
+    "host": "topbarGlyph",
+    "label": "Caffeinated"
+  },
+  "dependencies": {
+    "commands": [
+      "systemd-inhibit",
+      "setsid",
+      "flock",
+      "loginctl",
+      "ryoku-shell"
+    ]
+  },
+  "metadata": {
+    "settings": [
+      {
+        "key": "mode",
+        "type": "choice",
+        "label": "While on",
+        "group": "Caffeinated",
+        "default": "awake",
+        "options": [
+          {
+            "value": "awake",
+            "label": "Stay on and unlocked"
+          },
+          {
+            "value": "lock",
+            "label": "Lock as usual, never sleep"
+          }
+        ]
+      },
+      {
+        "key": "lockOnEnable",
+        "type": "toggle",
+        "label": "Lock the screen when enabling (lock mode)",
+        "group": "Caffeinated",
+        "default": false
+      },
+      {
+        "key": "batteryFloor",
+        "type": "int",
+        "label": "Turn off on battery at or below % (0 = never)",
+        "group": "Caffeinated",
+        "default": 15,
+        "min": 0,
+        "max": 50
+      },
+      {
+        "key": "poll",
+        "type": "int",
+        "label": "Status poll (seconds)",
+        "group": "Caffeinated",
+        "default": 10,
+        "min": 2,
+        "max": 120
+      }
+    ]
+  }
+}

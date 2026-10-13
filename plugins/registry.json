@@ -1680,6 +1680,34 @@
       "accent": "#8f8378",
       "surface": "#101010",
       "manifest": "product-manifest.json"
+    },
+    {
+      "id": "caffeinated",
+      "name": "Caffeinated",
+      "version": "0.1.0",
+      "path": "plugins/caffeinated",
+      "author": "Madhav Khosla <madhav.khoslaa@gmail.com>",
+      "summary": "System-wide caffeine: one switch keeps the whole machine awake (no sleep, even with the lid closed), screen on and unlocked or locking as...",
+      "description": "System-wide caffeine: one switch keeps the whole machine awake (no sleep, even with the lid closed), screen on and unlocked or locking as usual.",
+      "tags": [
+        "bar-widget"
+      ],
+      "accent": "#8f8378",
+      "surface": "#101010",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png",
+        "assets/preview-panel.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "fdbe274a5a04d3415b75074c1d3c42003c79d2b8ad47dbac1db9bd21a95fdefe",
+      "official": false,
+      "tagline": "System-wide caffeine: one switch keeps the whole machine awake (no sleep, even with the lid closed), screen on and unlocked or locking as...",
+      "icon": "",
+      "hosts": [
+        "topbarGlyph"
+      ],
+      "lastUpdated": "2026-10-13"
     }
   ]
 }
