@@ -14,6 +14,10 @@ On a live QS Bar, at the right end:
 
 ![The panel open from the bar while on](assets/screenshot-bar-panel.png)
 
+Its settings, in QS Bar Settings:
+
+![Caffeinated's settings](assets/screenshot-settings.png)
+
 ## Modes
 
 | Mode | Idle dim / lock / screen-off | Idle suspend | Lid close |

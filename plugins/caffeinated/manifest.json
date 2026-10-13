@@ -23,7 +23,8 @@
     "assets/preview-widget.png",
     "assets/preview-panel.png",
     "assets/screenshot-bar.png",
-    "assets/screenshot-bar-panel.png"
+    "assets/screenshot-bar-panel.png",
+    "assets/screenshot-settings.png"
   ],
   "capabilities": {
     "densities": [
