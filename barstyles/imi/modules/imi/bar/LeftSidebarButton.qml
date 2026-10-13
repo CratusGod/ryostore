@@ -28,7 +28,7 @@ RippleButton {
     toggled: false
 
     onPressed: {
-        RyokuServices.ShellState.requestSurface("quick-settings", "", undefined);
+        RyokuServices.ShellState.requestSurface("sidebar-left", "", undefined);
     }
 
     Text {
