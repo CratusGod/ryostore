@@ -40,9 +40,9 @@
     {
       "source": "README.md",
       "destination": "README.md",
-      "sha256": "9dd181d14d504ae1df17b5711044c2d2bb8b69918be63f38e22207fe39b6da65",
+      "sha256": "4e91ceac5dd5a686c28e0f50649bfd2c4a96323a07aaa952b02524dd656c6938",
       "mode": "0644",
-      "size": 3137,
+      "size": 3305,
       "install": false
     },
     {
@@ -59,6 +59,22 @@
       "sha256": "a7ef0fe373f29f22dee945c3f036d1ca0a1c371df52b9659ff460e43e96e30cc",
       "mode": "0644",
       "size": 5443,
+      "install": false
+    },
+    {
+      "source": "assets/screenshot-bar-panel.png",
+      "destination": "assets/screenshot-bar-panel.png",
+      "sha256": "3e9c2c95ec4246c237dcbdbd6187fde9cab744e5aa6a3173b8182f0a73474e15",
+      "mode": "0644",
+      "size": 45547,
+      "install": false
+    },
+    {
+      "source": "assets/screenshot-bar.png",
+      "destination": "assets/screenshot-bar.png",
+      "sha256": "c2318d9a5bdd0f44b3103451c4bac90c06870a513af7c33ae5f2a3589ef7d9cc",
+      "mode": "0644",
+      "size": 9527,
       "install": false
     },
     {
@@ -96,9 +112,9 @@
     {
       "source": "manifest.json",
       "destination": "manifest.json",
-      "sha256": "0166b6a3c450360a1f068720be085ea9d03f878d5b44e2c7b5cb8aa727877d4c",
+      "sha256": "ac5ff0ca4442d1147a6af9083b3ae44698cec20e742243078094dfc19ad72276",
       "mode": "0644",
-      "size": 2082,
+      "size": 2154,
       "install": true
     },
     {

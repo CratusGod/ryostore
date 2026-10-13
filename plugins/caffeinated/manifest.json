@@ -21,7 +21,9 @@
     "bin/caffeinated",
     "content/CoffeeCup.qml",
     "assets/preview-widget.png",
-    "assets/preview-panel.png"
+    "assets/preview-panel.png",
+    "assets/screenshot-bar.png",
+    "assets/screenshot-bar-panel.png"
   ],
   "capabilities": {
     "densities": [

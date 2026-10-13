@@ -8,6 +8,12 @@ panel; everything else is set once under QS Bar Settings > Community.
 
 ![The panel: one switch, off and on](assets/preview-panel.png)
 
+On a live QS Bar, at the right end:
+
+![Caffeinated on the QS Bar](assets/screenshot-bar.png)
+
+![The panel open from the bar while on](assets/screenshot-bar-panel.png)
+
 ## Modes
 
 | Mode | Idle dim / lock / screen-off | Idle suspend | Lid close |

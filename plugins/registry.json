@@ -1700,11 +1700,13 @@
       "surface": "#101010",
       "preview": "assets/preview-widget.png",
       "screenshots": [
+        "assets/screenshot-bar-panel.png",
+        "assets/screenshot-bar.png",
         "assets/preview-widget.png",
         "assets/preview-panel.png"
       ],
       "manifest": "product-manifest.json",
-      "manifestSha256": "f0dc4dafaaca09e9a4abe5063414a613b48b6338017189bf1921c2965fd2b896",
+      "manifestSha256": "c057d6a519b6551346fd2b4fc6bd7f518b422dd612bddcf690f8e27b45a9f6a6",
       "official": false,
       "tagline": "One switch: the whole machine stays awake, even with the lid closed.",
       "icon": "coffee",
