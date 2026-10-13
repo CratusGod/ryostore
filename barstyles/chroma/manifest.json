@@ -73,8 +73,8 @@
       "source": "components/StatusCluster.qml",
       "destination": "components/StatusCluster.qml",
       "mode": "0644",
-      "size": 3294,
-      "sha256": "4b8187186035ec998b483911a448f7ffc00aab4d28c20d5fb5c5f75584c067ee",
+      "size": 3284,
+      "sha256": "2345f53555d3d962171d2d05b514a0d1e4bebb983fd46d6bb409f09ecbe9f3b6",
       "install": true
     },
     {

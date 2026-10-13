@@ -21,7 +21,7 @@
       "preview": "assets/preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "819fac41dc92d267260fd998bf8a95f1155ce1a1318440e890d4c5e59943e8fa"
+      "manifestSha256": "596c9f0cfa69648d217ce42ce755782b82c765aa95484ccc9998e8d4b1cfa6d7"
     },
     {
       "id": "obi",
@@ -67,7 +67,7 @@
       "preview": "assets/preview.png",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "6fb10dd4fb4a0c59b838bd9e6079eb6f2a468395b885bc4d9770121ff005e73c",
+      "manifestSha256": "21d00eb7a4daea314f3706413f014a2a717f9c6fa993f85c9333ae16499e9391",
       "lastUpdated": "2026-10-07",
       "official": false,
       "license": "GPL-3.0-only"
@@ -119,7 +119,7 @@
       "preview": "assets/preview.png",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "5f89f751af38057cd3e4f70e4245f659abb798092fffb7dbf1f3e3a5ee14380e",
+      "manifestSha256": "23b8623d03882c410ea004eb34c3e68eb1f3cd88e9e545d3bc4ff8d8c866bff1",
       "lastUpdated": "2026-10-02",
       "official": false,
       "license": "MIT"

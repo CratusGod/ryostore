@@ -1529,8 +1529,8 @@
       "source": "modules/imi/bar/LeftSidebarButton.qml",
       "destination": "modules/imi/bar/LeftSidebarButton.qml",
       "mode": "0644",
-      "size": 1543,
-      "sha256": "af8f249473595ca568c0e147f8e33252a3d43b26b79077bf1864ca694691c0c3",
+      "size": 1541,
+      "sha256": "d23702206fd9e442689574d60a7f7a0815ccdce37db3733c8372b75c5f0c4a11",
       "install": true
     },
     {
