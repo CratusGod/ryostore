@@ -1687,9 +1687,13 @@
       "version": "0.1.0",
       "path": "plugins/caffeinated",
       "author": "Madhav Khosla <madhav.khoslaa@gmail.com>",
-      "summary": "System-wide caffeine: one switch keeps the whole machine awake (no sleep, even with the lid closed), screen on and unlocked or locking as...",
+      "summary": "One switch: the whole machine stays awake, even with the lid closed.",
       "description": "System-wide caffeine: one switch keeps the whole machine awake (no sleep, even with the lid closed), screen on and unlocked or locking as usual.",
       "tags": [
+        "caffeine",
+        "power",
+        "idle",
+        "lid",
         "bar-widget"
       ],
       "accent": "#8f8378",
@@ -1700,14 +1704,15 @@
         "assets/preview-panel.png"
       ],
       "manifest": "product-manifest.json",
-      "manifestSha256": "fdbe274a5a04d3415b75074c1d3c42003c79d2b8ad47dbac1db9bd21a95fdefe",
+      "manifestSha256": "f0dc4dafaaca09e9a4abe5063414a613b48b6338017189bf1921c2965fd2b896",
       "official": false,
-      "tagline": "System-wide caffeine: one switch keeps the whole machine awake (no sleep, even with the lid closed), screen on and unlocked or locking as...",
-      "icon": "",
+      "tagline": "One switch: the whole machine stays awake, even with the lid closed.",
+      "icon": "coffee",
       "hosts": [
         "topbarGlyph"
       ],
-      "lastUpdated": "2026-10-13"
+      "lastUpdated": "2026-10-13",
+      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/caffeinated"
     }
   ]
 }

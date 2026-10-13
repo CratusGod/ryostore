@@ -4,7 +4,9 @@ Caffeine for the whole machine. A coffee cup on the QS Bar: plain when off,
 steaming when on. Click it, then **TURN ON** or **TURN OFF**. That is the whole
 panel; everything else is set once under QS Bar Settings > Community.
 
-![Caffeinated on the bar](assets/preview-widget.png)
+![Caffeinated on the bar: a plain cup when off, a steaming cup when on](assets/preview-widget.png)
+
+![The panel: one switch, off and on](assets/preview-panel.png)
 
 ## Modes
 
