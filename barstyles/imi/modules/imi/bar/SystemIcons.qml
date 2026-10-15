@@ -26,9 +26,6 @@ Item {
     readonly property color hoverDarkenColor: Qt.rgba(0, 0, 0, 0.18)
     readonly property int iconSize: 15
 
-    // Bluetooth status, read from Quickshell's adapter model (the shell exposes
-    // no BluetoothStatus singleton; the connectivity popout reads this same
-    // source, so the chip and the card agree).
     readonly property var btAdapter: Bluetooth.defaultAdapter
     readonly property bool btEnabled: !!(btAdapter && btAdapter.enabled)
     readonly property bool btConnected: {
@@ -46,9 +43,6 @@ Item {
         anchors.centerIn: parent
         spacing: 6
 
-        // ──────────────────────────────────────────────
-        // Pill 1: System Indicators (Audio, Connectivity, Notifications)
-        // ──────────────────────────────────────────────
         Rectangle {
             id: statusPill
             implicitWidth: flow.implicitWidth + 14
@@ -64,7 +58,6 @@ Item {
                 anchors.centerIn: parent
                 spacing: 4
 
-                // 1. Audio & Volume Chip
                 Rectangle {
                     id: audioCell
                     implicitWidth: audioRow.implicitWidth + 12
@@ -127,7 +120,6 @@ Item {
                     }
                 }
 
-                // 2. Connectivity Chip (Wi-Fi + Bluetooth)
                 Rectangle {
                     id: connCell
                     implicitWidth: connRow.implicitWidth + 12
@@ -173,7 +165,6 @@ Item {
                     }
                 }
 
-                // 3. Notifications Chip
                 Rectangle {
                     id: notifCell
                     implicitWidth: 22
@@ -213,9 +204,6 @@ Item {
             }
         }
 
-        // ──────────────────────────────────────────────
-        // Pill 2: Dedicated Stash Pill
-        // ──────────────────────────────────────────────
         Rectangle {
             id: stashPill
             implicitWidth: 28

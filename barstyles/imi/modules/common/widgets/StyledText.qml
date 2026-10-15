@@ -9,10 +9,6 @@ Text {
 
     renderType: Text.NativeRendering
     verticalAlignment: Text.AlignVCenter
-    // Plain text unless a site opts in: Text's inherited Text.AutoText renders
-    // "<img src=...>" as markup, and StyledText is how attacker-controlled
-    // plugin-manifest strings (name, description, option labels, ...) reach
-    // the screen. Rich text is the reviewed exception, never the default.
     textFormat: Text.PlainText
     property bool shouldUseNumberFont: /^\d+$/.test(root.text)
     property var defaultFont: shouldUseNumberFont ? Appearance.font.family.numbers : Appearance.font.family.main
@@ -63,7 +59,7 @@ Text {
                     easing.type: Easing.InSine
                 }
             }
-            PropertyAction {} // Tie the text update to this point (we don't want it to happen during the first slide+fade)
+            PropertyAction {}
             PropertyAction {
                 target: root
                 property: "x"

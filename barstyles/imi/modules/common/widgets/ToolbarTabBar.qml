@@ -55,7 +55,6 @@ Item {
         implicitWidth: contentItem.children[root.currentIndex]?.implicitWidth ?? 0
         implicitHeight: contentItem.children[root.currentIndex]?.implicitHeight ?? 0
         radius: height / 2
-        // Animation
         property Item targetItem: contentItem.children[root.currentIndex]
         AnimatedTabIndexPair {
             id: leftBound
@@ -87,14 +86,11 @@ Item {
         }
     }
 
-    // TabBar doesn't allow tabs to be of different sizes. That's what I thought...
-    // We use it only for the logic and draw stuff manually
     TabBar {
         id: tabBar
         z: -1
         background: null
         Repeater {
-            // This is to fool the TabBar that it has tabs so it does the indices properly
             model: root.tabButtonList.length
             delegate: TabButton {
                 background: null

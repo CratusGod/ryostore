@@ -20,7 +20,7 @@ ButtonMouseArea {
     }
 
     property bool vertical: Config.options.bar.vertical
-    property bool superPressAndHeld: false // Relevant modifications at bottom of file
+    property bool superPressAndHeld: false
 
     property real workspaceButtonWidth: Config.options.bar.cornerStyle === 3 ? 30 : 26
     property real activeWorkspaceMargin: Appearance.spacing.space25
@@ -44,7 +44,6 @@ ButtonMouseArea {
         animation: Appearance.animation.elementMoveSmall.numberAnimation.createObject(this)
     }
 
-    // Interactions
     acceptedButtons: Qt.LeftButton | Qt.RightButton
     hoverEnabled: true
     property int hoverIndex: {
@@ -70,7 +69,6 @@ ButtonMouseArea {
             WM.switchWorkspaceRelative("prev");
     }
 
-    // Indications
     Item {
         id: regularWorkspaces
         anchors.fill: parent
@@ -85,7 +83,6 @@ ButtonMouseArea {
             blurMax: 32
         }
 
-        /////////////////// Occupied indicators ///////////////////
         StyledRectangle {
             id: occupiedIndicatorsBg
             anchors.fill: parent
@@ -113,8 +110,6 @@ ButtonMouseArea {
                     implicitWidth: root.workspaceButtonWidth
                     implicitHeight: root.workspaceButtonWidth
 
-                    // The idea: over-stretch to occupied sides, animate this for a smooth transition.
-                    //           masking already prevents weird overlaps
                     Pill {
                         property real undirectionalWidth: root.workspaceButtonWidth * wsBg.currentOccupied
                         property real undirectionalLength: root.workspaceButtonWidth * (1 + 0.5 * wsBg.previousOccupied + 0.5 * wsBg.nextOccupied) * currentOccupied
@@ -150,7 +145,6 @@ ButtonMouseArea {
             maskSource: occupiedIndicators
         }
 
-        /////////////////// Active indicator ///////////////////
         TrailingIndicator {
             id: activeIndicator
             anchors.fill: parent
@@ -159,7 +153,6 @@ ButtonMouseArea {
             index: root.workspaceIndexInGroup
         }
 
-        /////////////////// Hover ///////////////////
         TrailingIndicator {
             id: interactionIndicator
             z: 3
@@ -171,16 +164,15 @@ ButtonMouseArea {
                 radius: root.activeWorkspaceSize / 2
                 hover: root.containsMouse
                 press: root.containsPress
-                drag: true // There are too many layers so we need to force this to be a lil more opaque
+                drag: true
                 contentColor: Appearance.colors.colPrimary
             }
         }
 
-        /////////////////// Numbers ///////////////////
         WorkspaceLayout {
             id: numbersGrid
             z: 4
-            layer.enabled: true // For the masking
+            layer.enabled: true
 
             Repeater {
                 model: wsModel.slotCount
@@ -201,7 +193,6 @@ ButtonMouseArea {
             maskSpreadAtMin: 1
         }
 
-        /////////////////// App icons ///////////////////
         WorkspaceLayout {
             id: appsGrid
             z: 6
@@ -223,8 +214,8 @@ ButtonMouseArea {
                             rightMargin: (parent.implicitWidth - root.workspaceButtonWidth) / 2 + cornerMargin
                         }
 
-                        animated: !wsApp.biggestWindow // Prevent the "image-missing" icon
-                        visible: false // Prevent dupe: the colorizer already copies the icon
+                        animated: !wsApp.biggestWindow
+                        visible: false
 
                         source: wsApp.mainAppIconSource
                         implicitSize: NumberUtils.roundToEven(root.workspaceIconSize)
@@ -244,7 +235,7 @@ ButtonMouseArea {
                         diameter: appIcon.implicitSize
                     }
 
-                    Loader { // Somehow putting this multieffect in a loader prevents it from not showing up
+                    Loader {
                         id: colorizer
                         anchors.fill: appIcon
                         sourceComponent: Colorizer {
@@ -283,13 +274,13 @@ ButtonMouseArea {
         scale: 0.8 + 0.2 * root.specialBlur
 
         opacity: root.specialBlur
-        Behavior on opacity {} // Don't animate, as specialBlur is already animated
+        Behavior on opacity {}
 
         sourceComponent: Pill {
             anchors.centerIn: parent
             property real undirectionalWidth: root.activeWorkspaceSize
             property real undirectionalLength: {
-                const base = root.workspaceButtonWidth * Math.min(1.35, wsModel.shownCount); // Who tf only configures only 2 workspaces shown anyway?
+                const base = root.workspaceButtonWidth * Math.min(1.35, wsModel.shownCount);
                 if (root.vertical)
                     return base;
                 return specialWsText.implicitWidth + undirectionalWidth;
@@ -313,7 +304,6 @@ ButtonMouseArea {
         }
     }
 
-    /////////////////// Super key press handling ///////////////////
     Timer {
         id: superPressAndHeldTimer
         interval: (Config?.options.bar.autoHide.showWhenPressingSuper.delay ?? 100)

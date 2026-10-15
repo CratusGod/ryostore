@@ -66,7 +66,6 @@ Item {
         }
     }
 
-    // Vertical
     Loader {
         id: resourceProgress
         active: root.vertical
@@ -75,7 +74,6 @@ Item {
         sourceComponent: Config.options.bar.resources.style === "filled" ? filledStyle : outlineStyle
     }
 
-    // Horizontal
     RowLayout {
         id: resourceRowLayout
         visible: !root.vertical

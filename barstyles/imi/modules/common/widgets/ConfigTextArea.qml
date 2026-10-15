@@ -4,8 +4,6 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
-// Set password: true to mask the input with the lockscreen's animated Material
-// shape characters instead of plain text, with an optional reveal toggle.
 RowLayout {
     id: root
 
@@ -30,11 +28,7 @@ RowLayout {
     property bool password: false
     property bool revealButton: password
     property bool revealed: false
-    // Keep the value on one line for inputs like URLs, where wrapping into a
-    // stack of lines reads as broken. Overflow is clipped by the field rather
-    // than wrapped.
     property bool singleLine: false
-    // Optional trailing confirm button
     property bool confirmButtonVisible: false
     property string confirmButtonIcon: "check"
     property color colConfirmBackground: Appearance.colors.colPrimaryContainer
@@ -108,10 +102,6 @@ RowLayout {
                 anchors.leftMargin: Appearance.spacing.space150
                 anchors.rightMargin: Appearance.spacing.space150
                 enabled: root.enabled
-                // TextArea has no echoMode (TextEdit-based, unlike TextField) - masking is
-                // done purely by making the glyphs transparent and drawing PasswordChars
-                // over them instead. NoWrap keeps a masked value on one line, matching
-                // PasswordChars' flat left-to-right character layout.
                 wrapMode: (root.password || root.singleLine) ? TextArea.NoWrap : TextArea.Wrap
                 verticalAlignment: TextEdit.AlignVCenter
                 selectByMouse: true
@@ -130,12 +120,6 @@ RowLayout {
                     variableAxes: Appearance.font.variableAxes.main
                 }
 
-                // The Basic style (pinned by `pragma Env QT_QUICK_CONTROLS_STYLE=Basic`)
-                // draws placeholderText through its own PlaceholderText child - a Text
-                // subclass left at the inherited Text.AutoText, unreachable
-                // declaratively from here. PluginOptions feeds optionData.placeholder
-                // straight from attacker-controlled manifests, so force the style's
-                // placeholder to plain text once it exists.
                 Component.onCompleted: {
                     for (const child of textArea.children) {
                         if (child instanceof Text)
@@ -143,9 +127,6 @@ RowLayout {
                     }
                 }
 
-                // A masked or single-line field is conceptually one line - swallow
-                // Enter/Return instead of letting TextArea insert a newline into
-                // the stored value.
                 Keys.onReturnPressed: (event) => {
                     if (root.password || root.singleLine) {
                         event.accepted = true;
@@ -161,8 +142,6 @@ RowLayout {
 
                 Loader {
                     active: root.password && !root.revealed
-                    // Keep the Flickable-based glyph overlay purely visual so clicks reach
-                    // the TextArea beneath it.
                     enabled: false
                     anchors.fill: parent
                     sourceComponent: PasswordChars {

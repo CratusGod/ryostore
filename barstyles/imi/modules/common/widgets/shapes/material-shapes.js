@@ -342,7 +342,6 @@ function oval() {
 
 function pill() {
     return customPolygon([
-        // new PointNRound(new Offset.Offset(0.609, 0.000), new CornerRounding.CornerRounding(1.000)),
         new PointNRound(new Offset.Offset(0.428, -0.001), new CornerRounding.CornerRounding(0.426)),
         new PointNRound(new Offset.Offset(0.961, 0.039), new CornerRounding.CornerRounding(0.426)),
         new PointNRound(new Offset.Offset(1.001, 0.428)),
@@ -507,7 +506,6 @@ function softBoom() {
         new PointNRound(new Offset.Offset(0.839, 0.437), new CornerRounding.CornerRounding(0.532)),
         new PointNRound(new Offset.Offset(0.949, 0.449), new CornerRounding.CornerRounding(0.439, 1.000)),
         new PointNRound(new Offset.Offset(0.998, 0.478), new CornerRounding.CornerRounding(0.174)),
-        // mirrored points
         new PointNRound(new Offset.Offset(0.998, 0.522), new CornerRounding.CornerRounding(0.174)),
         new PointNRound(new Offset.Offset(0.949, 0.551), new CornerRounding.CornerRounding(0.439, 1.000)),
         new PointNRound(new Offset.Offset(0.839, 0.563), new CornerRounding.CornerRounding(0.532)),
@@ -523,7 +521,6 @@ function flower() {
         new PointNRound(new Offset.Offset(0.370, 0.187)),
         new PointNRound(new Offset.Offset(0.416, 0.049), new CornerRounding.CornerRounding(0.381)),
         new PointNRound(new Offset.Offset(0.479, 0.001), new CornerRounding.CornerRounding(0.095)),
-        // mirrored points
         new PointNRound(new Offset.Offset(0.521, 0.001), new CornerRounding.CornerRounding(0.095)),
         new PointNRound(new Offset.Offset(0.584, 0.049), new CornerRounding.CornerRounding(0.381)),
         new PointNRound(new Offset.Offset(0.630, 0.187)),
@@ -536,7 +533,6 @@ function puffy() {
     const m = new Matrix.Matrix();
     m.scale(1, 0.742);
     const shape = customPolygon([
-        // mirrored points
         new PointNRound(new Offset.Offset(1.003, 0.563), new CornerRounding.CornerRounding(0.255)),
         new PointNRound(new Offset.Offset(0.940, 0.656), new CornerRounding.CornerRounding(0.126)),
         new PointNRound(new Offset.Offset(0.881, 0.654)),
@@ -548,7 +544,6 @@ function puffy() {
         new PointNRound(new Offset.Offset(0.670, 1.035), new CornerRounding.CornerRounding(0.426)),
         new PointNRound(new Offset.Offset(0.545, 1.040), new CornerRounding.CornerRounding(0.405)),
         new PointNRound(new Offset.Offset(0.500, 0.947)),
-        // original points
         new PointNRound(new Offset.Offset(0.500, 1-0.053)),
         new PointNRound(new Offset.Offset(1-0.545, 1+0.040), new CornerRounding.CornerRounding(0.405)),
         new PointNRound(new Offset.Offset(1-0.670, 1+0.035), new CornerRounding.CornerRounding(0.426)),
@@ -566,11 +561,9 @@ function puffy() {
 
 function puffyDiamond() {
     return customPolygon([
-        // original points
         new PointNRound(new Offset.Offset(0.870, 0.130), new CornerRounding.CornerRounding(0.146)),
         new PointNRound(new Offset.Offset(0.818, 0.357)),
         new PointNRound(new Offset.Offset(1.000, 0.332), new CornerRounding.CornerRounding(0.853)),
-        // mirrored points
         new PointNRound(new Offset.Offset(1.000, 1-0.332), new CornerRounding.CornerRounding(0.853)),
         new PointNRound(new Offset.Offset(0.818, 1-0.357)),
     ], 4)
@@ -601,7 +594,6 @@ function pixelCircle() {
 
 function pixelTriangle() {
     return customPolygon([
-        // mirrored points
         new PointNRound(new Offset.Offset(0.888, 1-0.439)),
         new PointNRound(new Offset.Offset(0.789, 1-0.439)),
         new PointNRound(new Offset.Offset(0.789, 1-0.344)),
@@ -614,7 +606,6 @@ function pixelTriangle() {
         new PointNRound(new Offset.Offset(0.287, 1-0.087)),
         new PointNRound(new Offset.Offset(0.287, 1-0.000)),
         new PointNRound(new Offset.Offset(0.113, 1-0.000)),
-        // original points
         new PointNRound(new Offset.Offset(0.110, 0.500)),
         new PointNRound(new Offset.Offset(0.113, 0.000)),
         new PointNRound(new Offset.Offset(0.287, 0.000)),
@@ -633,12 +624,10 @@ function pixelTriangle() {
 
 function bun() {
     return customPolygon([
-        // original points
         new PointNRound(new Offset.Offset(0.796, 0.500)),
         new PointNRound(new Offset.Offset(0.853, 0.518), cornerRound100),
         new PointNRound(new Offset.Offset(0.992, 0.631), cornerRound100),
         new PointNRound(new Offset.Offset(0.968, 1.000), cornerRound100), 
-        // mirrored points
         new PointNRound(new Offset.Offset(0.032, 1-0.000), cornerRound100),
         new PointNRound(new Offset.Offset(0.008, 1-0.369), cornerRound100),
         new PointNRound(new Offset.Offset(0.147, 1-0.482), cornerRound100),

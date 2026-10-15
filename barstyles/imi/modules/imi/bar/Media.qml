@@ -67,7 +67,6 @@ Item {
         anchors.centerIn: parent
         spacing: 8
 
-        // Rounded Album Art
         Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             width: 22
@@ -94,7 +93,6 @@ Item {
             }
         }
 
-        // Title · Artist (Single line, elided, dynamic font)
         StyledText {
             anchors.verticalCenter: parent.verticalCenter
             width: (RyokuServices.Media.line) ? Math.min(160, implicitWidth) : 0
@@ -105,7 +103,6 @@ Item {
             font.pixelSize: Appearance.font.pixelSize.small
         }
 
-        // Live Audio Visualizer Bars
         Pill.MusicBars {
             anchors.verticalCenter: parent.verticalCenter
             orient: "vertical"

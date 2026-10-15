@@ -5,9 +5,6 @@ import QtQuick
 import QtQuick.Controls
 import Qt5Compat.GraphicalEffects
 
-/**
- * A progress bar with both ends rounded and text acts as clipping like OneUI 7's battery indicator.
- */
 ProgressBar {
     id: root
     property bool vertical: false
@@ -92,7 +89,6 @@ ProgressBar {
             }
         }
         
-        // Tiny box
         Rectangle {
             id: batteryTip
             visible: root.showTip

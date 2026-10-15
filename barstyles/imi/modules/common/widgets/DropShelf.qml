@@ -31,8 +31,6 @@ Singleton {
         GlobalStates.dropShelfOpen = true
     }
 
-    // Open the (empty or not) shelf at a global layout coordinate, converted
-    // to the coordinates of the monitor containing the point.
     function openAtGlobal(globalX, globalY) {
         const mon = HyprlandData.monitors.find(m =>
             globalX >= m.x && globalX < m.x + m.width / (m.scale || 1) &&
@@ -43,13 +41,10 @@ Singleton {
         GlobalStates.dropShelfOpen = true
     }
 
-    // Summon the shelf under the cursor (global shortcut / shake gesture).
-    // An untouched summoned shelf auto-dismisses so accidental triggers cost nothing.
     function summonAtCursor() {
         cursorPosProc.running = true
     }
 
-    // Held true by the panel while the pointer or a drag is over the shelf.
     property bool autoDismissHeld: false
     readonly property int autoDismissSeconds: Config.options.dropShelf.autoDismissSeconds
     function armAutoDismiss() {

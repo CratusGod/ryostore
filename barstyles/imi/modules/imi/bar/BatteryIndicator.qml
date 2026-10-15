@@ -31,7 +31,6 @@ MouseArea {
             anchors.centerIn: parent
             width: batteryProgress.valueBarWidth
             height: batteryProgress.valueBarHeight
-            // Horizontal
             Loader {
                 id: rowLoader
                 active: !root.vertical
@@ -57,7 +56,6 @@ MouseArea {
                     }
                 }
             }
-            // Vertical
             Loader {
                 id: colLoader
                 active: root.vertical

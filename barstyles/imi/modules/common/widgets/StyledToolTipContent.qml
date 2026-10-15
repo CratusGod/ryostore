@@ -45,7 +45,7 @@ Item {
             anchors.centerIn: parent
             text: root.text
             font.pixelSize: Appearance?.font.pixelSize.smaller ?? 14
-            font.hintingPreference: Font.PreferNoHinting // Prevent shaky text
+            font.hintingPreference: Font.PreferNoHinting
             color: Appearance?.colors.colOnTooltip ?? "#FFFFFF"
             wrapMode: Text.Wrap
         }

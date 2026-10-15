@@ -13,7 +13,6 @@ Rectangle {
     property color colBg: Appearance.colors.colPrimaryContainer
     property color colShape: Appearance.colors.colOnPrimaryContainer
 
-    // Size, color
     property double implicitSize: 48
     implicitWidth: implicitSize
     implicitHeight: implicitSize
@@ -23,7 +22,6 @@ Rectangle {
     property double leapZoomSize: root.baseShapeSize * 1.2
     property double leapZoomProgress: 0
 
-    // Shape
     property list<var> shapes: [
         MaterialShape.Shape.SoftBurst,
         MaterialShape.Shape.Cookie9Sided,
@@ -40,8 +38,6 @@ Rectangle {
     rotation: pullRotation + continuousRotation + leapRotation
 
     RotationAnimation on continuousRotation {
-        // `loading` says the work is in flight; `visible` says anyone can see
-        // it. Only the conjunction is worth a repaint of the whole output.
         running: root.loading && root.visible
         duration: 12000
         easing.type: Easing.Linear

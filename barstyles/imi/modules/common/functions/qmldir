@@ -2,5 +2,7 @@ module qs.modules.common.functions
 singleton ColorUtils 1.0 ColorUtils.qml
 singleton DateUtils 1.0 DateUtils.qml
 singleton FileUtils 1.0 FileUtils.qml
+singleton Fuzzy 1.0 Fuzzy.qml
 singleton NumberUtils 1.0 NumberUtils.qml
+singleton NotificationUtils 1.0 NotificationUtils.qml
 singleton StringUtils 1.0 StringUtils.qml

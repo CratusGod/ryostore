@@ -8,7 +8,7 @@ Item {
     property real btnSize: 40
     property real btnSpacing: Appearance.spacing.space25
     property bool isMaterial: Config.options.bar.cornerStyle === 3
-    property string style: Config.options.bar.divider.style // "rect" - "dot" - "space"
+    property string style: Config.options.bar.divider.style
     property int dividerSpacing: Config.options.bar.divider.spacing
 
     width:  vertical ? btnSize : (root.style === "space" ? root.dividerSpacing : (1 + btnSpacing * 3))

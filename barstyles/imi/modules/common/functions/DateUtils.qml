@@ -5,10 +5,9 @@ Singleton {
     id: root
 
     function getFirstDayOfWeek(date, firstDay = 1) {
-        const d = new Date(date); // Copy
-        const day = d.getDay();   // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+        const d = new Date(date);
+        const day = d.getDay();
 
-        // Calculate difference to firstDay
         const diff = (day - firstDay + 7) % 7;
         d.setDate(d.getDate() - diff);
         return d;

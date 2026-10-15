@@ -3,7 +3,6 @@ import QtQuick
 Rectangle {
     id: root
 
-    // https://m3.material.io/foundations/interaction/states/state-layers
     enum State {
         Hover, Focus, Press, Drag
     }

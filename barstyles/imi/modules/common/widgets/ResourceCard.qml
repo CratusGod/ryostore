@@ -41,7 +41,7 @@ Rectangle {
                 text: root.iconText
                 iconSize: Appearance.font.pixelSize.huge
                 implicitSize: 28
-                color: "transparent" // I know that you are going to give me color one day =P
+                color: "transparent"
                 colSymbol: root.usageColor(root.value)
                 Layout.alignment: Qt.AlignVCenter
             }

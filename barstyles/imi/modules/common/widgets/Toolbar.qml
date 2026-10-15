@@ -3,10 +3,6 @@ import QtQuick.Layouts
 import ".."
 import "."
 
-/**
- * Material 3 expressive style toolbar.
- * https://m3.material.io/components/toolbars
- */
 Item {
     id: root
 

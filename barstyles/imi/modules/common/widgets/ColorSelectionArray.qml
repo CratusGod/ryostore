@@ -73,12 +73,6 @@ RowLayout {
                     }
                 }
 
-                // The empty string is a real value for callers that treat "no
-                // role picked" as "decide the colour yourself" - it needs a
-                // slot in the row, or the only way back to automatic is a
-                // separate switch sitting beside the swatches saying the same
-                // thing twice. It is not in the default `options`, so rows
-                // that have no automatic mode never grow one.
                 readonly property bool isAutomatic: slot.modelData === ""
 
                 Rectangle {

@@ -120,10 +120,10 @@ MouseArea {
         sourceComponent: Item {
             Desaturate {
                 id: desaturatedIcon
-                visible: false // There's already color overlay
+                visible: false
                 anchors.fill: parent
                 source: trayIcon
-                desaturation: 0.8 // 1.0 means fully grayscale
+                desaturation: 0.8
             }
             ColorOverlay {
                 anchors.fill: desaturatedIcon

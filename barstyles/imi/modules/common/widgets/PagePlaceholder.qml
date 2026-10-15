@@ -14,11 +14,6 @@ Item {
     property alias shape: shapeWidget.shape
     property alias descriptionHorizontalAlignment: widgetDescriptionText.horizontalAlignment
 
-    // Drop the shape rather than let it draw outside the page when the page is
-    // too short to hold the whole column - placeholderFit.js has the reasoning
-    // for why the shape is what gives way. Off by default: a page with room to
-    // spare wants it, since an empty state is mostly that shape. Only a page
-    // squeezed by a sibling of fixed height needs this.
     property bool dropIconWhenCramped: false
     readonly property var textHeights: {
         const heights = [];
@@ -48,10 +43,6 @@ Item {
         id: column
         anchors.centerIn: parent
         spacing: Appearance.spacing.space100
-        // Only while measuring. A description wraps to this column's width, so
-        // leaving that width to the children would let dropping the shape
-        // narrow the column, reflow the description, change the height being
-        // measured, and feed straight back into the decision that dropped it.
         width: root.dropIconWhenCramped ? root.width : column.implicitWidth
 
         MaterialShapeWrappedMaterialSymbol {

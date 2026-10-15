@@ -3,9 +3,6 @@ import QtQuick.Layouts
 import ".."
 import "."
 
-/**
- * Material 3 FAB.
- */
 RippleButton {
     id: root
     property string iconText: "add"

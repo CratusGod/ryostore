@@ -4,7 +4,7 @@ import "../../../services"
 import "../../common"
 import "../../common/widgets"
 import "../../common/functions"
-import "../../common/plugins"
+import "../../common/plugins/designsystem/services"
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
@@ -40,12 +40,6 @@ Scope {
     readonly property bool cornerStyleReducesGap: Config.options.bar.cornerStyle === 1 || Config.options.bar.cornerStyle === 2
     readonly property real barThickness: barVertical ? Appearance.sizes.verticalBarWidth : Appearance.sizes.barHeight
 
-    // The cava process used to live here, gated on an expression naming every
-    // surface that might want bands - this popup, the right sidebar, a bar
-    // layout entry, a desktop plugin - which is how a widget written against
-    // CavaService could increment a reference count nothing consulted. The
-    // process is CavaService's now and each of those surfaces holds its own
-    // claim; this one is the media popup's.
     CavaRef {
         active: GlobalStates.mediaControlsOpen
     }
@@ -111,9 +105,6 @@ Scope {
                 }
             }
 
-            // Auto-hide integration (issue #30): while the box is open the bar
-            // stays shown (see Bar.qml mustShow). When the pointer leaves the box
-            // and the bar auto-hides, close the box so the bar can hide too.
             property bool mouseInPopup: mediaControlsHoverHandler.hovered
             HoverHandler {
                 id: mediaControlsHoverHandler
@@ -136,7 +127,7 @@ Scope {
             ColumnLayout {
                 id: playerColumnLayout
                 anchors.fill: parent
-                spacing: -Appearance.sizes.elevationMargin // Shadow overlap okay
+                spacing: -Appearance.sizes.elevationMargin
 
                 Repeater {
                     model: ScriptModel {
@@ -154,7 +145,6 @@ Scope {
                 }
 
                 Item {
-                    // No player placeholder
                     Layout.alignment: {
                         if (panelWindow.anchors.left)
                             return Qt.AlignLeft;

@@ -1,7 +1,5 @@
 .pragma library
 
-// Curated list of major world cities for approximate weather-location marker placement.
-// Not exhaustive, not geocoding-grade precise -- close enough for pin placement on a dot map.
 var cityCoords = {
     "abu dhabi": { lat: 24.5, lon: 54.4 },
     "abuja": { lat: 9.1, lon: 7.5 },

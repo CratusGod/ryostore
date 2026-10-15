@@ -1,8 +1,6 @@
 import ".."
 import QtQuick
 
-// Small "i" affordance that explains the setting it sits next to. Hidden until
-// given text, so a config row can declare it unconditionally.
 MaterialSymbol {
     id: root
 

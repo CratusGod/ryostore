@@ -2,9 +2,6 @@ import ".."
 import QtQuick
 import QtQuick.Controls
 
-/**
- * Does not include visual layout, but includes the easily neglected colors.
- */
 TextInput {
     color: Appearance.colors.colOnLayer1
     renderType: Text.NativeRendering

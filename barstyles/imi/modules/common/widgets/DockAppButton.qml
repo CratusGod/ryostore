@@ -13,8 +13,6 @@ DockButton {
     id: root
     property var appToplevel
     property var appListRoot
-    // Shared DockContextMenu instance (provided by the dock window); falls back
-    // to plain pin-toggling on right click when absent.
     property var contextMenu: null
     property int lastFocused: -1
     property real iconSize: 33
@@ -27,8 +25,6 @@ DockButton {
     enabled: !isSeparator
     hoverEnabled: true
 
-    // A separator is a hairline ACROSS the strip, so which axis it collapses
-    // on is the dock's business, not the button's.
     implicitWidth: root.dockVertical
         ? root.span + leftInset + rightInset
         : (root.isSeparator ? 1 : root.span)
@@ -43,10 +39,6 @@ DockButton {
 
     Loader {
         active: isSeparator
-        // dockVisualBackground and dockRow resolve by DYNAMIC SCOPE through the
-        // dock's own tree - renaming or reparenting either yields undefined and
-        // NaN geometry rather than an error. Read AGENT.md's note on the CPU
-        // spin that follows before restructuring anything above this.
         readonly property var separatorMargins: DockGeometry.axisMargins(
             root.dockEdge,
             dockVisualBackground.margin + dockRow.padding + Appearance.rounding.normal,
@@ -147,7 +139,7 @@ DockButton {
                     sourceComponent: Item {
                         Desaturate {
                             id: desaturatedIcon
-                            visible: false // There's already color overlay
+                            visible: false
                             anchors.fill: parent
                             source: iconImageLoader
                             desaturation: 0.8
@@ -162,21 +154,8 @@ DockButton {
 
                 Flow {
                     spacing: Appearance.spacing.space50
-                    // The running dots sit between the icon and the screen
-                    // edge, so they swap sides with the dock: below the icon
-                    // at the bottom edge, above it at the top, and BESIDE it
-                    // at either side edge - where a row under the icon points
-                    // into its neighbour rather than out of the dock.
                     readonly property string dotSide: DockGeometry.outwardSide(root.dockEdge)
                     flow: root.dockVertical ? Flow.TopToBottom : Flow.LeftToRight
-                    // Hung off the icon by an OFFSET rather than by an anchor
-                    // on the outward side. The anchor version moved between
-                    // sides when the dock turned, and for that turn the new
-                    // side and the centre anchor it replaces share one axis -
-                    // which Qt answers by writing the item's own width from
-                    // the two anchors instead of by ignoring one of them. See
-                    // Dock.qml's own strip, where the same pair left a 5120px
-                    // wide item inside a 75px surface.
                     readonly property real dotPushX:
                         (iconImageLoader.width + width) / 2 + Appearance.spacing.space25
                     readonly property real dotPushY:
@@ -190,9 +169,6 @@ DockButton {
                         model: Math.min(appToplevel.toplevels.length, 3)
                         delegate: Rectangle {
                             required property int index
-                            // The pill runs ALONG the strip and stays thin
-                            // across it, so it reads as an underline at every
-                            // edge. Circles when there are too many to count.
                             readonly property real pillLength: (appToplevel.toplevels.length <= 3)
                                 ? root.countDotWidth : root.countDotHeight
                             radius: Appearance.rounding.full

@@ -27,7 +27,6 @@ TabBar {
             bottomLeftRadius: 0
             bottomRightRadius: 0
             color: Appearance.colors.colPrimary
-            // Animation
             property real baseWidth: root.width / root.count
             AnimatedTabIndexPair {
                 id: idxPair
@@ -38,7 +37,7 @@ TabBar {
             width: ((Math.max(idxPair.idx1, idxPair.idx2) + 1) * baseWidth - root.indicatorPadding) - x
         }
 
-        Rectangle { // Tabbar bottom border
+        Rectangle {
             id: tabBarBottomBorder
             z: 9998
             anchors.bottom: parent.bottom

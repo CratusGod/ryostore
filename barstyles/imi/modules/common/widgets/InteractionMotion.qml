@@ -1,28 +1,6 @@
 import ".."
 import QtQuick
 
-/**
- * Drives one control through the shared interaction states.
- *
- * A control hands it `hovered`, `down` and `controlEnabled`, and reads back
- * `scale`, `radiusScale` and `dimOpacity` - all three already animated on
- * whichever transition the model chose. Nothing here decides timing; the
- * vocabulary lives in `Appearance.interaction`.
- *
- * Two things this arrangement buys, both easy to lose:
- *
- * - Interruptibility. The targets are written through Behaviors, so a press
- *   landing halfway through the hover-in RETARGETS from where the value
- *   actually is. A SequentialAnimation fired on a signal would restart from
- *   its own idea of the start value and visibly jump.
- * - The right transition. Each animation's duration and curve are set BEFORE
- *   the target is written, in the same handler, so the Behavior carries the
- *   change with the tier belonging to THAT change - not the previous one,
- *   which is what a plain binding on duration would hand it.
- *
- * A QtObject rather than an Item on purpose: `Item.state` is taken, and a
- * driver that owns a rect would tempt callers into parenting things to it.
- */
 QtObject {
     id: root
 
@@ -35,12 +13,8 @@ QtObject {
     })
     property string previousState: root.interactionState
 
-    // What the control applies. Multipliers, so a control's own geometry
-    // stays its own business.
     property real scale: 1
     property real radiusScale: 1
-    // The lift and the settle as plain 0..1, for feedback that is not a
-    // multiple of anything - a tint wash, a stroke weight, a glyph's alpha.
     property real hoverProgress: 0
     property real pressProgress: 0
     property real dimOpacity: 1

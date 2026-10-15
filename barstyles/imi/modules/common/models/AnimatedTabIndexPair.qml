@@ -1,7 +1,5 @@
 import QtQuick
 
-// idx1 is the "leading" indicator position, idx2 is the "following" one
-// The former animates faster than the latter, see the NumberAnimations below
 QtObject {
     id: root
     required property int index

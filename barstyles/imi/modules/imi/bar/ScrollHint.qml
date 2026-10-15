@@ -2,7 +2,7 @@ import "../../common"
 import "../../common/widgets"
 import QtQuick
 
-Revealer { // Scroll hint
+Revealer {
     id: root
     property string icon
     property string side: "left"

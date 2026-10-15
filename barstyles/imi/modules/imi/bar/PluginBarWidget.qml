@@ -2,10 +2,6 @@ import QtQuick
 import "../../common"
 import "../../common/plugins"
 
-// Package bar entry points need a single sizing owner. Routing them through
-// PluginNode added a second Loader whose width was simultaneously derived from
-// and assigned by the bar layout. Some QML package roots respond to that cycle
-// with perpetual relayout, causing both a zero-width widget and runaway memory.
 Item {
     id: root
 

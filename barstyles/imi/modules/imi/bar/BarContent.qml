@@ -25,22 +25,12 @@ Item {
 
     readonly property bool trayHasItems: SystemTray.items.values.length > 0
 
-    // The painted body shapes, exposed so the hosting window can scope its
-    // compositor blur region to them (see WindowBlurRegion in Bar.qml). The
-    // "painted" flags mirror each shape's own color/visible condition: a blur
-    // region is a plain rect, so covering an unpainted (transparent) shape
-    // would frost the bare wallpaper behind it.
     readonly property Item backgroundItem: barBackground
     readonly property bool backgroundPainted: !centerOnly && Config.options.bar.showBackground
         && Config.options.bar.cornerStyle !== 2 && !root.isMaterial
     readonly property Item centerPillItem: centerPill
     readonly property bool centerPillPainted: centerPill.visible
 
-    // M3 paints no full-width strip - it draws three rounded wrappers instead,
-    // and those are the only painted shapes on the bar. They were never handed
-    // to the blur region, so an M3 bar declared an empty region and the
-    // compositor frosted nothing at all, pills included. Exposed here so the
-    // region can cover exactly them and leave the gaps between them clear.
     readonly property Item leftMaterialPillItem: leftMaterialPill
     readonly property Item centerMaterialPillItem: centerMaterialPill
     readonly property Item rightMaterialPillItem: rightMaterialPill
@@ -61,16 +51,10 @@ Item {
     readonly property var effectiveMiddleLayout: filterLayout(Config.options.bar.layouts.middleLayout)
     readonly property var effectiveRightLayout:  filterLayout(Config.options.bar.layouts.rightLayout)
 
-    // Edit Mode's per-entry read of the same rule filterLayout applies - THE
-    // same rule by construction, not a copy: the reorder maps its visible
-    // indices back to stored ones with these answers, and a predicate that
-    // drifted from the filter would shift a drag by one hidden entry.
     function widgetVisible(name) {
         return root.filterLayout([name]).length > 0;
     }
 
-    // The drawn slot items per bucket, for the edit controller: whichever
-    // style is on screen owns the geometry, so the pick follows isMaterial.
     function editSlotItems(bucket) {
         const repeaters = root.isMaterial
             ? { left: leftMaterialRepeater, middle: centerMaterialRepeater, right: rightMaterialRepeater }
@@ -118,14 +102,12 @@ Item {
     property real useShortenedForm: (Appearance.sizes.barHellaShortenScreenWidthThreshold >= screen?.width) ? 2 : (Appearance.sizes.barShortenScreenWidthThreshold >= screen?.width) ? 1 : 0
 
 
-    // Optional soft drop shadow under the bar background (Config.options.bar.shadow).
-    // Only rendered when the background itself is painted (mirrors barBackground's color condition).
     Loader {
         active: Config.options.bar.shadow && !centerOnly && Config.options.bar.showBackground
             && Config.options.bar.cornerStyle !== 2 && !root.isMaterial
         anchors.fill: barBackground
         sourceComponent: StyledRectangularShadow {
-            anchors.fill: undefined // The loader's anchors act on this, and this should not have any anchor
+            anchors.fill: undefined
             target: barBackground
         }
     }
@@ -140,17 +122,15 @@ Item {
         border.color: Appearance.colors.colLayer0Border
     }
 
-    // center-only
     readonly property bool centerOnly: !root.isMaterial
         && root.effectiveLeftLayout.length === 0
         && root.effectiveRightLayout.length === 0
 
-    // Shadow for the center-only pill (same option, mirrors centerPill's visible condition)
     Loader {
         active: Config.options.bar.shadow && centerPill.visible
         anchors.fill: centerPill
         sourceComponent: StyledRectangularShadow {
-            anchors.fill: undefined // The loader's anchors act on this, and this should not have any anchor
+            anchors.fill: undefined
             target: centerPill
         }
     }
@@ -177,7 +157,6 @@ Item {
         anchors.fill: barBackground
         anchors.margins: root.barPadding
 
-        // Left
         Item {
             id: leftSection
             anchors.left: parent.left
@@ -195,7 +174,6 @@ Item {
                 width: Math.max(parent.width, minRun)
             }
 
-            // Material pill wrapper
             Rectangle {
                 id: leftMaterialPill
                 visible: root.isMaterial
@@ -244,7 +222,6 @@ Item {
                 }
             }
 
-            // Non-material layout
             RowLayout {
                 id: leftRow
                 visible: !root.isMaterial
@@ -296,7 +273,6 @@ Item {
             }
         }
 
-        // Center
         Item {
             id: absoluteCenter
             anchors.centerIn: parent
@@ -312,7 +288,6 @@ Item {
                 width: Math.max(parent.width, minRun)
             }
 
-            // Material pill wrapper
             Rectangle {
                 id: centerMaterialPill
                 visible: root.isMaterial
@@ -361,7 +336,6 @@ Item {
                 }
             }
 
-            // Non-material layout
             RowLayout {
                 id: middleRow
                 visible: !root.isMaterial
@@ -412,7 +386,6 @@ Item {
             }
         }
 
-        // Right
         Item {
             id: rightSection
             anchors.right: parent.right
@@ -430,7 +403,6 @@ Item {
                 width: Math.max(parent.width, minRun)
             }
 
-            // Material pill wrapper
             Rectangle {
                 id: rightMaterialPill
                 visible: root.isMaterial
@@ -479,7 +451,6 @@ Item {
                 }
             }
 
-            // Non-material layout
             RowLayout {
                 id: rightRow
                 visible: !root.isMaterial
@@ -531,9 +502,6 @@ Item {
         }
     }
 
-    // Edit Mode's reorder coordinator: the indicator, the ghost and every
-    // layout commit. One shared component, so the vertical bar runs the same
-    // logic off the same file rather than a copy that can drift.
     BarEditController {
         id: barEditController
         anchors.fill: parent
@@ -546,9 +514,6 @@ Item {
         rightZone: rightBoundary
     }
 
-    // Where each widget was drawn, so the slot that replaces it after a reflow
-    // has a First to invert from. Declared as a child of this root because
-    // that is the frame every position is measured in - see BarFlipRegistry.
     BarFlipRegistry {
         id: barFlipRegistry
     }
