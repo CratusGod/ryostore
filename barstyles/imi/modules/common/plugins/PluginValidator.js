@@ -52,9 +52,6 @@ function validateManifest(manifest) {
         return { valid: false, error: "Manifest must have at least one entry point (e.g. desktopWidget, barWidget)" };
     }
 
-    // Host desktop-widget defaults. Each one only seeds the initial value of
-    // the matching PluginState option, so a non-boolean would slip through as
-    // a truthy default nobody can account for later - reject it here instead.
     if (manifest.desktopWidget) {
         const desktopFlags = ["blur", "locked", "clickThrough", "keepTranslucent",
             "followParallax"];
@@ -66,8 +63,6 @@ function validateManifest(manifest) {
         }
     }
 
-    // Optional component-grid span: `"grid": { "cols": int>=1, "rows": int>=1 }`.
-    // cols/rows default to 1 when omitted; both must be integers in 1..12.
     if (manifest.grid !== undefined) {
         if (!manifest.grid || typeof manifest.grid !== "object" || Array.isArray(manifest.grid)) {
             return { valid: false, error: "Manifest 'grid' must be an object with integer 'cols'/'rows'" };
@@ -94,11 +89,6 @@ function validateManifest(manifest) {
             if (optionKeys.has(option.key)) {
                 return { valid: false, error: "Duplicate plugin option key '" + option.key + "'" };
             }
-            // A manifest's options and the host's own per-plugin state share one
-            // PluginState namespace, so a manifest could otherwise declare a
-            // control that writes over host state - `__gridSize`, the span the
-            // user resized the widget to, is the first of those. The prefix is
-            // the host's; nothing under it may come from a manifest.
             if (option.key.startsWith("__")) {
                 return { valid: false, error: "Plugin option key '" + option.key + "' is reserved: '__' is the host's prefix" };
             }

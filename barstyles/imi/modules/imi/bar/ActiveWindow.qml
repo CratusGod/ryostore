@@ -44,7 +44,6 @@ Item {
     implicitWidth:  vertical ? Appearance.sizes.verticalBarWidth : Math.min(colLayout.implicitWidth + 6, 280)
     implicitHeight: vertical ? iconItem.implicitHeight : Appearance.sizes.barHeight
 
-    // Vertical
     Item {
         id: iconItem
         visible: root.vertical
@@ -60,7 +59,6 @@ Item {
         }
     }
 
-    // Horizontal
     ColumnLayout {
         id: colLayout
         visible: !root.vertical

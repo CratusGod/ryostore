@@ -15,7 +15,7 @@ PopupWindow {
     property real popupBackgroundMargin: 0
 
     signal menuClosed
-    signal menuOpened(qsWindow: var) // Correct type is QsWindow, but QML does not like that
+    signal menuOpened(qsWindow: var)
 
     color: "transparent"
     property real padding: Appearance.sizes.elevationMargin

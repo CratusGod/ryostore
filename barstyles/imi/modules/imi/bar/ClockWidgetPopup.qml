@@ -6,16 +6,11 @@ import QtQuick
 StyledPopup {
     id: root
     property var today: new Date()
-    // The calendar fills its surface edge to edge, so it needs more breathing
-    // room than the default popup inset gives.
     contentPadding: Appearance.spacing.space200
     readonly property var pendingTodos: Todo.list.filter(todo => !todo.done)
 
     Item {
         implicitWidth: 340
-        // Derived from the last row rather than a fixed total, so a font scale
-        // or translation change cannot clip the footer. Every child anchors
-        // downwards from the top, so nothing here feeds back into this height.
         implicitHeight: pendingLabel.y + pendingLabel.height
 
         StyledText {

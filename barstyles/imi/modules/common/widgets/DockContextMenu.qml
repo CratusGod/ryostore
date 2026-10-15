@@ -8,15 +8,6 @@ import "."
 import "../functions"
 import "../../imi/dock/dock_geometry.js" as DockGeometry
 
-/**
- * Right-click context menu for dock app icons (ported from upstream
- * end-4/dots-hyprland PR #3045, adapted to this shell's conventions).
- *
- * Offers desktop-entry actions, "Open new instance", "Move to workspace",
- * pin/unpin and close-window(s). One instance is shared by the whole dock
- * (pinned and running apps); callers hand it the clicked button and the
- * TaskbarApps entry via open().
- */
 Item {
     id: root
 
@@ -25,9 +16,6 @@ Item {
     readonly property bool dockVertical: DockGeometry.isVertical(root.dockEdge)
 
     property var appToplevel: null
-    // Authoritative app id for pin/launch actions. For pinned apps this is the
-    // exact string stored in Config.options.dock.pinnedApps (TaskbarApps entry
-    // ids are lowercased, so the entry's own id can't be used to unpin).
     property string menuAppId: ""
     property Item targetButton: null
     property alias isOpen: menuLoader.active
@@ -38,8 +26,6 @@ Item {
     readonly property bool menuAppPinned: (Config.options?.dock.pinnedApps ?? [])
         .some(id => id.toLowerCase() === root.menuAppId.toLowerCase())
 
-    // Same workspace-group math as the overview: show the current group's
-    // workspaces rather than a hardcoded 1-10.
     readonly property int workspacesShown: Math.min(
         (Config.options?.overview.rows ?? 2) * (Config.options?.overview.columns ?? 5), 10)
     readonly property int workspaceGroup: Math.floor(
@@ -70,9 +56,6 @@ Item {
             id: contextPopup
             visible: true
 
-            // Away from the edge the dock is on: a menu that opens upward
-            // from a top dock is drawn off the screen, and one that opens
-            // upward from a side dock runs off the top of a tall strip.
             readonly property string openSide: DockGeometry.popupGravity(root.dockEdge)
             readonly property int openFlag: contextPopup.openSide === "top" ? Edges.Top
                 : contextPopup.openSide === "bottom" ? Edges.Bottom
@@ -81,8 +64,6 @@ Item {
                 item: root.targetButton
                 gravity: contextPopup.openFlag
                 edges: contextPopup.openFlag
-                // Slide along the screen edge the menu is running out of, not
-                // along the one it opened away from.
                 adjustment: root.dockVertical ? PopupAdjustment.SlideY : PopupAdjustment.SlideX
             }
 
@@ -104,12 +85,6 @@ Item {
                 id: menuBackground
                 property real contentPadding: Appearance.spacing.space50
 
-                // The surface is the card plus an elevation margin on every
-                // side, so centring IS the old "hug the side facing the dock
-                // and push off it by the elevation margin" - it lands on the
-                // same pixel at all four edges, and it does so without an
-                // anchor that has to move to another side when the dock turns
-                // (see Dock.qml's strip for what that costs).
                 anchors.centerIn: parent
                 color: Appearance.m3colors.m3surfaceContainer
                 radius: Appearance.rounding.normal
@@ -124,7 +99,6 @@ Item {
                     }
                     spacing: 0
 
-                    // Desktop entry actions (e.g. "New Window", "New Incognito Window")
                     Repeater {
                         model: root.hasDesktopActions ? root.desktopEntry.actions : []
                         delegate: ContextMenuItem {
@@ -165,7 +139,6 @@ Item {
                         Layout.fillWidth: true
                     }
 
-                    // Move all of the app's windows to a workspace
                     Loader {
                         active: root.hasWindows
                         visible: active

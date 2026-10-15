@@ -7,8 +7,6 @@ ColumnLayout {
     id: root
     property string title: ""
     property string tooltip: ""
-    // Named contentData rather than data: aliasing 'data' shadows Item's own
-    // member, which Qt warns about on every instantiation.
     default property alias contentData: sectionContent.data
 
     Layout.fillWidth: true

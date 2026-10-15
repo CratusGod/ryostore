@@ -21,9 +21,6 @@ Item {
 
     readonly property string dockEdge: DockGeometry.normalizedEdge(
         Config.options?.dock.edge ?? "bottom")
-    // The reorder is one axis and one comparison, chosen here. It used to be
-    // x throughout - a column of slots that lays out perfectly while every
-    // drag compares the one coordinate that never changes.
     readonly property bool vertical: DockGeometry.isVertical(root.dockEdge)
 
     property real btnSize: 46
@@ -35,7 +32,6 @@ Item {
     property real windowControlsHeight: 30
     property Item lastHoveredButton: null
     property bool buttonHovered: false
-    // Shared DockContextMenu instance (provided by the dock window)
     property var contextMenu: null
     property bool requestDockShow: previewPopup.show
     signal orderChanged(var newOrder)
@@ -49,36 +45,23 @@ Item {
         }
     }
 
-    // How far the slots reach along the strip; across it the widget takes
-    // whatever the dock's thickness leaves.
     readonly property real slotRun: _workOrder.length * btnSize
         + Math.max(0, _workOrder.length - 1) * btnSpacing
     implicitWidth:  root.vertical ? (parent?.width ?? btnSize) : slotRun
     implicitHeight: root.vertical ? slotRun : (parent?.height ?? btnSize)
 
-    // Where the preview popup centres itself on the hovered button: along the
-    // strip, so it is an x at a horizontal edge and a y at a vertical one.
     function popupCenterForButton(button) {
         if (!button || !root.QsWindow) return 0
         const centre = root.QsWindow.mapFromItem(button, button.width / 2, button.height / 2)
         return root.vertical ? centre.y : centre.x
     }
 
-    // A move, not an exchange: an icon carried past three others has to leave
-    // those three in their own order one slot behind it, which is what the
-    // gesture looks like. Exchanging sent whichever icon happened to be at the
-    // drop slot back to where the dragged one started, several places away
-    // from anything the pointer touched.
     function moveSlot(fromPos, toPos) {
         root._workOrder = LayoutOps.move(root._workOrder, fromPos, toPos)
     }
 
     function commitOrder() {
         const newOrder = _workOrder.slice()
-        // A reorder drop is a committed mutation (spec §7.3). The push is
-        // gated on the mode inside editUndoPush, so the dock's everyday
-        // reorder records nothing; a drop that changed no order pushes
-        // nothing either, since commitOrder runs for every drag end.
         const before = EditMode.listCopy(Config.options.dock.pinnedApps)
         let changed = before.length !== newOrder.length
         for (let i = 0; !changed && i < newOrder.length; i++)
@@ -110,8 +93,6 @@ Item {
                 appId: slotItem.appId
             }
 
-            // Slot i sits i steps along the strip; the other axis is the
-            // dock's whole thickness.
             readonly property real slotOffset: index * (root.btnSize + root.btnSpacing)
             width:  root.vertical ? root.implicitWidth : root.btnSize
             height: root.vertical ? root.btnSize : root.implicitHeight
@@ -137,13 +118,6 @@ Item {
                 z: 1000
                 width:  root.btnSize
                 height: root.btnSize
-                // Both coordinates are explicit rather than one anchored: an
-                // anchor on the axis the ghost is NOT travelling along would
-                // silently overwrite whichever of x and y the other branch
-                // wrote, and which one that is changes with the edge.
-                //
-                // The ghost follows the pointer along the strip only, so a
-                // sideways wobble does not drag the icon out of the dock.
                 readonly property point localPointer: dragHandler.active
                     ? slotItem.mapFromItem(null,
                         dragHandler.centroid.scenePosition.x,
@@ -277,22 +251,8 @@ Item {
 
                         Flow {
                             spacing: Appearance.spacing.space50
-                            // The running dots sit between the icon and the
-                            // screen edge, so they swap sides with the dock -
-                            // and stack beside the icon at a side edge, where
-                            // a row under it points into the next icon.
-                            //
-                            // These are the PINNED apps' dots. DockAppButton
-                            // carries a second copy for the running unpinned
-                            // ones, and a dock of pinned icons shows nothing of
-                            // a change made only there.
                             readonly property string dotSide: DockGeometry.outwardSide(root.dockEdge)
                             flow: root.vertical ? Flow.TopToBottom : Flow.LeftToRight
-                            // The icon is centred in this slot, so hanging the
-                            // dots off it is a push from the same centre - and
-                            // an offset, unlike an anchor, cannot land on an
-                            // axis that already holds one when the dock turns.
-                            // See DockAppButton, which carries the other copy.
                             readonly property real dotPushX:
                                 (appIcon.width + width) / 2 + Appearance.spacing.space25
                             readonly property real dotPushY:
@@ -330,16 +290,6 @@ Item {
                 }
             }
 
-            // Edit Mode: the pinned icon goes inert and grows its remove
-            // badge (spec §4.2 - the dock's own drag already reorders, so the
-            // mode adds presence editing, not a second gesture). An input
-            // EATER over the button rather than `enabled`: `enabled: false`
-            // on a MouseArea disables that area and nothing under it
-            // (AGENT.md), and the disabled route would also dim the icon
-            // through the button's own disabled state. The slot's DragHandler
-            // sits on the slot itself and steals past the drag threshold, so
-            // the reorder keeps working over the eater exactly as it works
-            // over the button.
             Loader {
                 anchors.fill: parent
                 z: 500
@@ -357,16 +307,8 @@ Item {
                         objectName: "dockEditRemove"
                         anchors.top: parent.top
                         anchors.right: parent.right
-                        // Presence on the dock is the pinned list; the removal
-                        // is the same store commitOrder writes, through the
-                        // shared arithmetic.
                         onClicked: {
-                            // The slot index counts _workOrder, which only
-                            // matches pinnedApps outside a drag - a second
-                            // pointer (touch) could otherwise remove by a
-                            // mid-drag index into the wrong list.
                             if (!GlobalStates.editMode || root._dragging) return;
-                            // A remove is a committed mutation (spec §7.3).
                             const beforePins = EditMode.listCopy(Config.options.dock.pinnedApps);
                             GlobalStates.editUndoPush(() => {
                                 Config.options.dock.pinnedApps = beforePins;
@@ -395,19 +337,11 @@ Item {
                     root.commitOrder()
                 }
 
-                // Everything below compares ONE coordinate: the one the slots
-                // are laid out along. Comparing x in a column is not a subtly
-                // wrong reorder, it is an inert one - every centre has the
-                // same x, so the nearest slot is always whichever the loop
-                // reached first and nothing ever moves.
                 readonly property string axis: root.vertical ? "y" : "x"
                 function alongAxis(point) {
                     return point[axis]
                 }
 
-                // The dragged slot is a hole rather than a candidate: it is
-                // still laid out at the position it is being carried away
-                // from, so it would be its own nearest neighbour.
                 function slotCentres(skipIndex) {
                     const centres = []
                     for (let i = 0; i < slotRepeater.count; i++) {
@@ -430,9 +364,6 @@ Item {
                         centres, dragHandler.centroid.scenePosition, axis)
                     if (nearestIdx === -1 || nearestIdx === currentVisualIdx) return
 
-                    // Nearest is not enough on its own: the pointer has to have
-                    // reached the slot it is nearest to, or the strip reorders
-                    // itself while the gesture is still between two icons.
                     const nc = alongAxis(centres[nearestIdx])
                     const crossed = (nearestIdx > currentVisualIdx)
                         ? (dragPos >= nc)
@@ -453,10 +384,6 @@ Item {
 
         property bool shouldShow: (popupMouseArea.containsMouse || root.buttonHovered)
                                   && !root._dragging
-                                  // An inert dock does not answer hover with a
-                                  // window-preview card over the icons being
-                                  // arranged - same reasoning as StyledPopup's
-                                  // claim gate on the bar.
                                   && !GlobalStates.editMode
                                   && !(root.contextMenu?.isOpen ?? false)
                                   && appTopLevel
@@ -464,8 +391,6 @@ Item {
                                   && appTopLevel.toplevels.length > 0
 
         property bool show: false
-        // The hovered button's centre ALONG the strip - an x at a horizontal
-        // edge, a y at a vertical one.
         property real cachedCenter: 0
 
         Connections {
@@ -493,11 +418,6 @@ Item {
             }
         }
 
-        // The corner of the dock's own surface the popup hangs off, and the
-        // way it grows from there - both inward, or it opens into the screen
-        // edge and the compositor clips it. Named sides come from the one
-        // derivation; only the mapping onto Quickshell's flags is local,
-        // because a .pragma library has no QML enums in scope.
         readonly property var anchorSides: DockGeometry.popupAnchorSides(root.dockEdge)
         function edgeFlags(names) {
             let flags = 0
@@ -511,13 +431,6 @@ Item {
 
         anchor {
             window: root.QsWindow.window
-            // The edges below are edges OF THIS RECT, and without it the rect
-            // is the window's origin - a point - so all four "edges" are the
-            // same place and only a corner that happens to be (0, 0) lands
-            // right. A bottom dock anchors top-left and a right dock
-            // left-top, so those two were correct by accident; a left dock
-            // wants (width, 0) and a top dock (0, height), and both opened
-            // ON TOP of the dock instead of beside it.
             rect: Qt.rect(0, 0,
                 root.QsWindow.window?.width ?? 0,
                 root.QsWindow.window?.height ?? 0)
@@ -528,8 +441,6 @@ Item {
 
         visible: popupBackground.opacity > 0
         color: "transparent"
-        // The popup spans the dock's own long axis so the card can be placed
-        // anywhere along it, and is content-sized across.
         implicitWidth: root.vertical
             ? popupMouseArea.implicitWidth + Appearance.sizes.elevationMargin * 2
             : (root.QsWindow.window?.width ?? 1)
@@ -541,23 +452,12 @@ Item {
 
         MouseArea {
             id: popupMouseArea
-            // Pinned to the popup's own inward side, which is the side facing
-            // the dock.
             readonly property string dockSide: DockGeometry.outwardSide(root.dockEdge)
             implicitWidth:  popupBackground.implicitWidth + Appearance.sizes.elevationMargin * 2
             implicitHeight: root.maxWindowPreviewHeight
                             + root.windowControlsHeight
                             + Appearance.sizes.elevationMargin * 2
             hoverEnabled: true
-            // Hugs the side of the surface facing the dock, and centres on the
-            // hovered button along the strip. Both coordinates are written
-            // out, because the side an anchor lands on moves with the edge and
-            // an anchor WRITES the coordinate it pins - so after a turn from a
-            // side edge to a horizontal one, `x` stayed latched at what
-            // anchors.left had written and this binding never ran again. The
-            // card sat at the start of the strip rather than under the pointer
-            // - measured at x = 0 with cachedCenter reading 2413. Same fault
-            // as Dock.qml's own strip, one surface up.
             readonly property real acrossX: dockSide === "right" ? parent.width - width : 0
             readonly property real acrossY: dockSide === "bottom" ? parent.height - height : 0
             x: root.vertical ? acrossX : previewPopup.cachedCenter - width / 2
@@ -583,12 +483,6 @@ Item {
                 clip: true
                 color: Appearance.m3colors.m3surfaceContainer
                 radius: Appearance.rounding.normal
-                // Pushed off the side facing the dock by the elevation margin,
-                // so the shadow has somewhere to fall - said as a push from
-                // the centre rather than as an anchor on that side, for the
-                // reason the running dots above carry: the side an anchor
-                // lands on moves when the dock turns, and it moves onto the
-                // axis the centre anchor was holding.
                 readonly property real cardPushX:
                     (parent.width - width) / 2 - Appearance.sizes.elevationMargin
                 readonly property real cardPushY:
@@ -632,12 +526,6 @@ Item {
                                 ButtonGroup {
                                     contentWidth: parent.width - anchors.margins * 2
 
-                                    // A marquee, not an ellipsis: this popup
-                                    // exists to tell several windows of the
-                                    // SAME application apart, and the title is
-                                    // the only thing that differs between
-                                    // them. Five browser windows elided at
-                                    // this width are five identical rows.
                                     MarqueeText {
                                         Layout.margins: Appearance.spacing.space100
                                         Layout.fillWidth: true

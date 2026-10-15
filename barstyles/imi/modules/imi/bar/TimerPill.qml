@@ -5,10 +5,6 @@ import "../../../services"
 import "../../common"
 import "../../common/widgets"
 
-// Dynamic-island-style bar pill mirroring the sidebar pomodoro/stopwatch.
-// Only visible while a timer is running; clicking opens the right sidebar
-// (where the full pomodoro/stopwatch controls live). Pomodoro takes priority
-// when both run.
 MouseArea {
     id: root
 
@@ -18,9 +14,6 @@ MouseArea {
     readonly property bool stopwatch: TimerService.stopwatchRunning && !pomodoro
     readonly property bool shown: pomodoro || stopwatch
 
-    // Vivid accent fill with its matching on-color. Use the BASE primary/secondary
-    // pair (not the *container* variants) - the base pair is M3's high-contrast
-    // pairing, whereas generated container/on-container pairs can be low-contrast.
     readonly property color pillColor: pomodoro
         ? (TimerService.pomodoroBreak ? Appearance.colors.colSecondary : Appearance.colors.colPrimary)
         : Appearance.colors.colPrimary
@@ -34,8 +27,6 @@ MouseArea {
         ? root.formatSeconds(TimerService.pomodoroSecondsLeft)
         : root.formatSeconds(Math.floor(TimerService.stopwatchTime) / 100)
 
-    // Stay visible while collapsing so the pill can fade/scale out instead of
-    // vanishing; the width still animates for a smooth bar reflow.
     visible: implicitWidth > 0
     enabled: shown
     hoverEnabled: true
@@ -58,14 +49,10 @@ MouseArea {
     Rectangle {
         id: pill
         anchors.centerIn: parent
-        // The badge belongs to the group pill's footprint, not the bar's, and
-        // those two only share a centre while the group pill's insets match.
-        // Shift onto the group pill's centre along the bar's thickness.
         anchors.verticalCenterOffset: root.vertical ? 0 : Appearance.sizes.barStandalonePillOffset
         anchors.horizontalCenterOffset: root.vertical ? Appearance.sizes.barStandalonePillOffset : 0
         radius: Appearance.rounding.full
         color: root.pillColor
-        // Fade + scale with the show/hide so it eases in and out.
         opacity: root.shown ? (root.containsMouse ? 0.88 : 1) : 0
         scale: root.shown ? 1 : 0.7
         transformOrigin: Item.Center
@@ -76,7 +63,6 @@ MouseArea {
             animation: Appearance.animation.elementMoveFast.numberAnimation.createObject(this)
         }
         implicitWidth: pillRow.implicitWidth + Appearance.spacing.space150 * 2
-        // A badge inside the group pill, not a group pill of its own.
         implicitHeight: root.vertical
             ? pillColumn.implicitHeight + Appearance.spacing.space50 * 2
             : Appearance.sizes.barStandalonePillHeight
@@ -121,9 +107,6 @@ MouseArea {
     }
 
     StyledToolTip {
-        // MouseArea exposes containsMouse, not `hovered`, so gate explicitly -
-        // otherwise StyledToolTip's parent.hovered===undefined check leaves it
-        // permanently visible.
         extraVisibleCondition: root.shown && root.containsMouse
         text: root.pomodoro
             ? (TimerService.pomodoroBreak ? Translation.tr("Pomodoro — break") : Translation.tr("Pomodoro — focus"))

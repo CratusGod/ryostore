@@ -182,5 +182,30 @@ Item {
                 }
             }
         }
+
+        Loader {
+            active: Config.options.bar.utilButtons.showSettingsButton
+            visible: active
+            sourceComponent: isMaterial ? settingsM3 : legacySettings
+        }
+        Component {
+            id: settingsM3
+            UtilButton {
+                iconText: "settings"
+                onClicked: GlobalStates.settingsOpen = !GlobalStates.settingsOpen
+            }
+        }
+        Component {
+            id: legacySettings
+            CircleUtilButton {
+                onClicked: GlobalStates.settingsOpen = !GlobalStates.settingsOpen
+                MaterialSymbol {
+                    horizontalAlignment: Qt.AlignHCenter
+                    fill: 0; text: "settings"
+                    iconSize: Appearance.font.pixelSize.large
+                    color: Appearance.colors.colOnLayer2
+                }
+            }
+        }
     }
 }

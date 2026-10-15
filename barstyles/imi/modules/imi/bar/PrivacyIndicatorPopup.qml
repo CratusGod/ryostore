@@ -4,46 +4,19 @@ import "../../common"
 import "../../common/widgets"
 import "../../../services"
 
-/**
- * The privacy indicator's card, at two depths of the SAME tree.
- *
- * Hovering reads: which devices are in use, by which apps. Clicking the pill
- * pins the card and the controls arrive in it - mute, stop, revoke - so the
- * summary is never a thing to dismiss before the controls appear, and the
- * controls are never one stray pointer-move away from vanishing mid-click.
- *
- * ONE tree, not two. Every section, header, icon and label is declared once and
- * stays put across the depth change; the only things that appear are the
- * buttons and the permission list, and they arrive by growing out of zero width
- * rather than by being swapped in. The first version declared each section
- * twice and toggled `visible` between the copies, which destroyed and rebuilt
- * the shared parts mid-transition: the header and the icons blinked out for a
- * few frames while the buttons popped in at full size. A morph cannot happen
- * between two trees - only within one.
- */
 StyledPopup {
     id: root
     contentPadding: Appearance.spacing.space150
 
     readonly property bool expanded: root.pinnedOpen
 
-    // The card this content sits on animates its own width and height, and
-    // centres the content while it does. So the content's size must travel on
-    // exactly the card's tier: slower and it is cropped by a card that has
-    // already grown, faster and it overflows a card still catching up - which
-    // is what clipped the header off the top mid-transition. Same duration,
-    // same curve, no drift.
     readonly property int revealDuration: Appearance.animation.elementMove.duration
     readonly property list<real> revealCurve: Appearance.animationCurves.expressiveDefaultSpatial
     readonly property int fadeDuration: Appearance.animation.elementMoveFast.duration
     readonly property list<real> fadeCurve: Appearance.animationCurves.expressiveEffects
 
-    // The indent that lines a row's text up under its section header's label.
     readonly property real rowIndent: Appearance.font.pixelSize.large + Appearance.spacing.space50
 
-    // A control that grows in from nothing along the row. Width carries the
-    // layout (so the label beside it slides rather than jumps), opacity and
-    // scale carry the arrival.
     component ActionSlot: Item {
         id: slot
         property bool on: false
@@ -84,9 +57,6 @@ StyledPopup {
         }
     }
 
-    // A block that opens downward rather than appearing: its height is what
-    // travels, and its contents ride along at full strength - a fade would make
-    // the text arrive separately from the row it belongs to.
     component Reveal: Item {
         id: reveal
         property bool shown: false
@@ -123,13 +93,11 @@ StyledPopup {
         }
     }
 
-    // One app holding one device. The name is declared once and never moves;
-    // the buttons grow in beside it when the card is pinned.
     component AppRow: RowLayout {
         id: appRow
         required property string name
-        property var stream: null      // a mic stream, when there is one to act on
-        property string note: ""       // what to say when nothing can act
+        property var stream: null
+        property string note: ""
         Layout.fillWidth: true
         Layout.leftMargin: root.rowIndent
         spacing: Appearance.spacing.space50
@@ -139,7 +107,6 @@ StyledPopup {
             text: appRow.name
             wrapMode: Text.Wrap
             color: Appearance.colors.colOnSurfaceVariant
-            // A muted app is still listed, just quieter than one that is not.
             opacity: appRow.stream?.muted ? 0.55 : 0.75
             font.pixelSize: Appearance.font.pixelSize.smaller
             Behavior on opacity {
@@ -179,7 +146,6 @@ StyledPopup {
         }
 
         ActionSlot {
-            // Only where Settings allows taking a stream the app never offered.
             on: root.expanded && appRow.stream !== null && CaptureControl.allowForceStop
             ActionButton {
                 symbol: "block"
@@ -189,9 +155,6 @@ StyledPopup {
         }
     }
 
-    // A device that is in use, its apps, and what can be done about them.
-    // `streams` wins over `entries` where it exists, because a mute has to
-    // address the exact stream and two apps can share a name.
     component DeviceSection: ColumnLayout {
         id: section
         required property string icon
@@ -222,7 +185,6 @@ StyledPopup {
             model: section.streams.length > 0 ? section.streams : section.entries
             delegate: AppRow {
                 required property var modelData
-                // Streams arrive as objects, plain listings as strings.
                 name: (modelData && modelData.name !== undefined) ? modelData.name : String(modelData)
                 stream: (modelData && modelData.name !== undefined) ? modelData : null
                 note: section.rowNote
@@ -235,11 +197,6 @@ StyledPopup {
         implicitWidth: root.expanded ? 340 : 260
         implicitHeight: column.implicitHeight
 
-        // The card follows this size instead of easing toward it (see
-        // StyledPopup.contentDrivesSize), so this Behavior is the ONE animation
-        // in the transition: every element that exists at both depths stays on
-        // screen and travels, and nothing is clipped, because the card is
-        // exactly as big as its content on every frame.
         Behavior on implicitWidth {
             NumberAnimation {
                 duration: root.revealDuration
@@ -264,8 +221,6 @@ StyledPopup {
                     color: Appearance.colors.colError
                 }
                 StyledText {
-                    // Fades rather than disappearing: it is the one label whose
-                    // job ends when the card is pinned.
                     visible: opacity > 0.01
                     opacity: root.expanded ? 0 : 0.5
                     text: Translation.tr("Click for controls")
@@ -298,10 +253,6 @@ StyledPopup {
                 entries: MediaCapture.cameraApps.length > 0
                     ? MediaCapture.cameraApps
                     : [Translation.tr("In use")]
-                // A camera holder is a process with /dev/video open, not a
-                // stream that can be handed back: the only lever is killing the
-                // app, which this panel does not do. Said, rather than left as
-                // a silence that would read as an assurance.
                 rowNote: Translation.tr("no stream control")
             }
 
@@ -313,7 +264,6 @@ StyledPopup {
                 rowNote: Translation.tr("stop it from that app")
             }
 
-            // The shell's own captures, which it CAN act on.
             ColumnLayout {
                 visible: ScreenRecord.recording || ScreenRecord.replaying
                 Layout.fillWidth: true
@@ -369,8 +319,6 @@ StyledPopup {
                         }
                     }
                     ActionSlot {
-                        // The replay buffer's whole point: keep what just
-                        // happened. Saving does not disarm it.
                         on: root.expanded && ScreenRecord.replaying
                         ActionButton {
                             symbol: "save"
@@ -454,10 +402,6 @@ StyledPopup {
                     }
 
                     StyledText {
-                        // Honest about its own reach: only portal-mediated apps
-                        // have anything to revoke, so an empty list is the
-                        // normal state on a system without sandboxed apps - not
-                        // a failure, and not a claim that nothing is recording.
                         visible: CaptureControl.permissions.every(p => p.apps.length === 0)
                         Layout.fillWidth: true
                         Layout.leftMargin: root.rowIndent
@@ -472,12 +416,8 @@ StyledPopup {
         }
     }
 
-    // Read the store when the controls are actually opened, not on every hover.
     onExpandedChanged: {
         if (root.expanded) CaptureControl.refreshPermissions();
-        // Hand the card over to the content for the length of the change, and
-        // take it back afterwards so entering and leaving the card still
-        // animate the way every other bar popup does.
         root.contentDrivesSize = true;
         depthSettle.restart();
     }

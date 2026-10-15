@@ -9,7 +9,7 @@ Item {
     property bool colorize: false
     property color color
     property string source: ""
-    property string iconFolder: Qt.resolvedUrl(Quickshell.shellPath("assets/icons"))  // The folder to check first
+    property string iconFolder: Qt.resolvedUrl("../../../assets/icons")
     width: 30
     height: 30
     
@@ -17,8 +17,6 @@ Item {
         id: iconImage
         anchors.fill: parent
         source: {
-            // Without this the empty source resolves to the icon folder itself,
-            // and IconImage logs a failed open for the directory.
             if (!root.source) return "";
             if (iconFolder) return iconFolder + "/" + root.source;
             return root.source

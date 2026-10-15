@@ -4,10 +4,6 @@ import "../../../services"
 import "../../common"
 import "../../common/widgets"
 
-// Hyprland submap pill. Only visible while a keybind submap (e.g. resize) is
-// active; hidden once keybinds return to the global map. Follows the
-// TimerPill/PrivacyIndicator appear/disappear motion: fade + scale on the
-// pill, animated width for a smooth bar reflow.
 Item {
     id: root
 
@@ -15,8 +11,6 @@ Item {
 
     readonly property bool shown: Boolean(HyprlandSubmap.active)
 
-    // Retain the last non-empty submap name so the label doesn't blank out
-    // while the pill is still fading/collapsing after the submap resets.
     readonly property string submapName: HyprlandSubmap.submapName ?? ""
     property string displayName: ""
     onSubmapNameChanged: {
@@ -24,15 +18,9 @@ Item {
             root.displayName = root.submapName;
     }
 
-    // Vivid accent fill with its matching on-color. Use the BASE tertiary pair
-    // (not the *container* variants) - the base pair is M3's high-contrast
-    // pairing - and a distinct hue from the timer (primary) and privacy
-    // (error) pills.
     readonly property color pillColor: Appearance.colors.colTertiary
     readonly property color onColor: Appearance.colors.colOnTertiary
 
-    // Stay visible while collapsing so the pill can fade/scale out instead of
-    // vanishing; the width still animates for a smooth bar reflow.
     visible: implicitWidth > 0
     implicitWidth: shown ? (vertical ? Appearance.sizes.verticalBarWidth : pill.implicitWidth) : 0
     implicitHeight: vertical ? pill.implicitHeight : Appearance.sizes.barHeight
@@ -43,14 +31,10 @@ Item {
     Rectangle {
         id: pill
         anchors.centerIn: parent
-        // The badge belongs to the group pill's footprint, not the bar's, and
-        // those two only share a centre while the group pill's insets match.
-        // Shift onto the group pill's centre along the bar's thickness.
         anchors.verticalCenterOffset: root.vertical ? 0 : Appearance.sizes.barStandalonePillOffset
         anchors.horizontalCenterOffset: root.vertical ? Appearance.sizes.barStandalonePillOffset : 0
         radius: Appearance.rounding.full
         color: root.pillColor
-        // Fade + scale with the show/hide so it eases in and out.
         opacity: root.shown ? 1 : 0
         scale: root.shown ? 1 : 0.7
         transformOrigin: Item.Center
@@ -63,7 +47,6 @@ Item {
         implicitWidth: root.vertical
             ? verticalIcon.implicitWidth + Appearance.spacing.space50 * 2
             : pillRow.implicitWidth + Appearance.spacing.space150 * 2
-        // A badge inside the group pill, not a group pill of its own.
         implicitHeight: root.vertical
             ? verticalIcon.implicitHeight + Appearance.spacing.space50 * 2
             : Appearance.sizes.barStandalonePillHeight
@@ -86,8 +69,6 @@ Item {
             }
         }
 
-        // The vertical bar is too narrow for the submap name; show the icon
-        // only there (matches PrivacyIndicator's icon-only vertical form).
         MaterialSymbol {
             id: verticalIcon
             visible: root.vertical

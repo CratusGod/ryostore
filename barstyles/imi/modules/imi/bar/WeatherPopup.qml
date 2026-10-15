@@ -19,9 +19,6 @@ StyledPopup {
         Layout.rightMargin: -Appearance.spacing.space100
 
         Rectangle {
-            // Named so WeatherPopupHeroRuntimeTest.qml can ask whether this is
-            // still the section the card unrolls from, rather than asking
-            // whether the first child is the first child.
             objectName: "weatherHero"
             Layout.fillWidth: true
             Layout.preferredHeight: 125
@@ -80,9 +77,6 @@ StyledPopup {
                     anchors.top: parent.top
                     anchors.topMargin: -Appearance.spacing.space50
                     shape: MaterialShape.Shape.Sunny
-                    // Provider-aware: OpenWeatherMap's condition ids are not the
-                    // WWO codes getWeatherIcon() is keyed on, so this drew a
-                    // clear sky through every storm for anyone on that provider.
                     text: Icons.getProviderWeatherIcon(Weather.provider, Weather.data.wCode, Icons.isNight()) ?? "cloud"
                     iconSize: 40
                     implicitSize: 64
@@ -133,11 +127,6 @@ StyledPopup {
         }
 
 
-        // Deliberately not the first child: BarPopupOverlay unrolls the card
-        // from the height of the content's first DRAWN section, so a row that
-        // comes and goes would keep changing what the popup opens at - and a
-        // 99px strip is not the section this card should be legible at on
-        // frame one. The hero stays first, at 141 of the card's 431.
         WeatherHourlyChart {
             charted: root.popupVisible
             Layout.leftMargin: Appearance.spacing.space25

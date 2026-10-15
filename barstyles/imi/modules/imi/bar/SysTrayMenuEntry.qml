@@ -45,7 +45,7 @@ RippleButton {
         menuEntry.triggered();
         root.dismiss(); 
     }
-    altAction: (event) => { // Not hog right-click
+    altAction: (event) => {
         event.accepted = false;
     }
 
@@ -61,7 +61,6 @@ RippleButton {
         spacing: Appearance.spacing.space100
         visible: !root.menuEntry.isSeparator
 
-        // Interaction: checkbox or radio button
         Item {
             visible: root.hasSpecialInteraction || root.forceSpecialInteractionColumn
             implicitWidth: 20
@@ -89,7 +88,6 @@ RippleButton {
             }
         }
 
-        // Button icon
         Item {
             visible: root.hasIcon || root.forceIconColumn
             implicitWidth: 20

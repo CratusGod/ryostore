@@ -29,7 +29,7 @@ TabButton {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
         onPressed: (event) => {
-            root.click() // Because the MouseArea already consumed the event
+            root.click()
             const {x,y} = event
             const stateY = buttonBackground.y;
             rippleAnim.x = x;

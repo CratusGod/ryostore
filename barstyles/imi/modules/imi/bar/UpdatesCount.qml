@@ -92,10 +92,6 @@ MouseArea {
             text: "progress_activity"
             iconSize: Appearance.font.pixelSize.normal
             color: root.isMaterial ? Appearance.colors.colPrimary : Appearance.colors.colOnLayer1
-            // Effective visibility, not `true`: a running infinite animation
-            // dirties the scene every frame, the shell commits, and the
-            // compositor repaints the whole output - including while this
-            // spinner's own Loader is inactive or the bar's surface is down.
             RotationAnimation on rotation {
                 from: 0; to: 360
                 duration: 1000
@@ -116,7 +112,6 @@ MouseArea {
         RowLayout {
             spacing: Appearance.spacing.space50
 
-            // Default
             MaterialSymbol {
                 visible: !root.isMaterial
                 Layout.alignment: Qt.AlignVCenter
@@ -127,7 +122,6 @@ MouseArea {
                     : Appearance.colors.colOnLayer1
             }
 
-            // Material
             Rectangle {
                 visible: root.isMaterial
                 width: 24

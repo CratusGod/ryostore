@@ -1,0 +1,42 @@
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import ".."
+import "."
+
+ColumnLayout {
+    id: root
+    readonly property bool settingsNavigationSection: true
+    property var shape: MaterialShape.Shape.Clover4Leaf
+    property string title
+    property string icon: ""
+    property var bgColor: Appearance.colors.colSecondaryContainer
+    default property alias contentData: sectionContent.data
+
+    property real appear: 1
+    opacity: appear
+
+    Layout.fillWidth: true
+    spacing: Appearance.spacing.space100
+
+    RowLayout {
+        spacing: Appearance.spacing.space100
+        MaterialShapeWrappedMaterialSymbol {
+            text: root.icon
+            iconSize: Appearance.font.pixelSize.large + 1
+            wrappedShape: root.shape
+            color: bgColor
+        }
+        StyledText {
+            text: root.title
+            font.pixelSize: Appearance.font.pixelSize.larger
+            font.weight: Font.Medium
+            color: Appearance.colors.colOnSecondaryContainer
+        }
+    }
+    ColumnLayout {
+        id: sectionContent
+        Layout.fillWidth: true
+        spacing: Appearance.spacing.space50
+    }
+}

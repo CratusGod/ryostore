@@ -3,10 +3,6 @@ import "."
 import QtQuick
 import QtQuick.Layouts
 
-/**
- * A container that supports GroupButton children for bounciness.
- * See https://m3.material.io/components/button-groups/overview
- */
 Rectangle {
     id: root
     default property alias data: rowLayout.data

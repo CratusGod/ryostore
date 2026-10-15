@@ -4,6 +4,9 @@ singleton AppUsage 1.0 AppUsage.qml
 singleton Audio 1.0 Audio.qml
 singleton Battery 1.0 Battery.qml
 singleton BluetoothStatus 1.0 BluetoothStatus.qml
+singleton Booru 1.0 Booru.qml
+BooruResponseData 1.0 BooruResponseData.qml
+singleton Brightness 1.0 Brightness.qml
 singleton CaptureControl 1.0 CaptureControl.qml
 singleton Cliphist 1.0 Cliphist.qml
 singleton DateTime 1.0 DateTime.qml
@@ -17,6 +20,7 @@ singleton HyprlandSubmap 1.0 HyprlandSubmap.qml
 singleton IconThemes 1.0 IconThemes.qml
 singleton Idle 1.0 Idle.qml
 singleton KeyMonitor 1.0 KeyMonitor.qml
+singleton LatexRenderer 1.0 LatexRenderer.qml
 singleton LyricsService 1.0 LyricsService.qml
 singleton MediaCapture 1.0 MediaCapture.qml
 singleton MprisController 1.0 MprisController.qml
@@ -24,6 +28,13 @@ singleton Network 1.0 Network.qml
 singleton Notes 1.0 Notes.qml
 singleton Notifications 1.0 Notifications.qml
 singleton OpenRgb 1.0 OpenRgb.qml
+singleton PhoneCamera 1.0 PhoneCamera.qml
+singleton PhoneConnect 1.0 PhoneConnect.qml
+singleton PhoneContacts 1.0 PhoneContacts.qml
+singleton PhoneDeps 1.0 PhoneDeps.qml
+singleton PhoneMic 1.0 PhoneMic.qml
+singleton PhoneNotifications 1.0 PhoneNotifications.qml
+singleton PhoneScrcpy 1.0 PhoneScrcpy.qml
 singleton PolkitService 1.0 PolkitService.qml
 singleton Presets 1.0 Presets.qml
 singleton Privacy 1.0 Privacy.qml
@@ -38,5 +49,6 @@ singleton Todo 1.0 Todo.qml
 singleton Translation 1.0 Translation.qml
 singleton TrayService 1.0 TrayService.qml
 singleton Updates 1.0 Updates.qml
-singleton WM 1.0 WM.qml
+singleton UserAvatar 1.0 UserAvatar.qml
 singleton Weather 1.0 Weather.qml
+singleton WM 1.0 WM.qml

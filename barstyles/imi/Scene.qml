@@ -15,6 +15,26 @@ Scope {
 
     property var modelData: null
 
+    readonly property var uniqueScreens: {
+        const seen = {};
+        const out = [];
+        for (const s of Quickshell.screens) {
+            if (!s || seen[s.name])
+                continue;
+            seen[s.name] = true;
+            out.push(s);
+        }
+        return out;
+    }
+
+    readonly property bool isPrimary: root.uniqueScreens.length > 0 && !!root.modelData
+        && root.uniqueScreens[0].name === root.modelData.name
+
+    Loader {
+        active: root.isPrimary
+        source: "modules/imi/shell/ImiShell.qml"
+    }
+
     PanelWindow {
         id: win
         screen: root.modelData
@@ -110,7 +130,6 @@ Scope {
         }
     }
 
-    // Edit mode buttons (separate window below the bar)
     PanelWindow {
         id: editButtons
         screen: root.modelData
@@ -183,7 +202,6 @@ Scope {
         }
     }
 
-    // Widget picker popup (below the edit buttons)
     PanelWindow {
         id: widgetPicker
         screen: root.modelData
@@ -202,7 +220,6 @@ Scope {
         implicitWidth: 260
         implicitHeight: pickerColumn.height + 24
 
-        // Center horizontally
         WlrLayershell.margins.left: (root.modelData ? root.modelData.width / 2 - 130 : 400)
         WlrLayershell.margins.top: 90
 
@@ -362,7 +379,6 @@ Scope {
         modelData: root.modelData
     }
 
-    // Click outside bar to dismiss edit mode
     PanelWindow {
         id: editDismiss
         screen: root.modelData

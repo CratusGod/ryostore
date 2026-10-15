@@ -1,9 +1,6 @@
 import ".."
 import QtQuick
 
-/**
- * Recreation of GTK revealer. Expects one single child.
- */
 Item {
     id: root
     property bool reveal

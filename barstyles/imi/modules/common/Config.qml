@@ -5,10 +5,6 @@ import Quickshell
 import Quickshell.Io
 import "."
 import "functions"
-// A `.pragma library` module of pure functions that happens to live beside its
-// other consumer, not the MprisController service - there is no cycle to have,
-// and the normalization below must apply the same rule the selection code
-// does, or the two disagree about what the setting means.
 import "../../services/MprisSelection.js" as MprisSelection
 
 Singleton {
@@ -16,28 +12,11 @@ Singleton {
     property string filePath: Directories.shellConfigPath
     property alias options: configOptionsJsonAdapter
     property bool ready: false
-    property int readWriteDelay: 50 // milliseconds
+    property int readWriteDelay: 50
 
-    // Forwarded to FileView.blockWrites, which means "block the calling thread
-    // until the write completes" - NOT "do not write". The whole block* family
-    // names a threading mode, not a permission. Setting this to stop the shell
-    // touching config.json looks right, passes review, and writes the file
-    // anyway; to actually not write, gate the call sites (see the write timer
-    // and onLoadFailed below, which is how configDirTimedOut does it).
-    // killDialog.qml is the only user and wants exactly the documented
-    // behaviour - see the comment there.
     property bool blockWrites: false
 
-    // Built-in desktop widgets became bundled plugins. Existing installs carry
-    // their state in `background.widgets.<key>.enable`, while ported widgets
-    // read `plugins.enabled`, which defaults to []. Translate once, then never
-    // again.
-    //
-    // The old keys are deliberately left on disk: the JsonAdapter does not
-    // expose keys it has no property for, so they are inert, and leaving them
-    // means a user who downgrades still has their settings.
     readonly property var desktopWidgetPluginIds: ({
-            // Ported to new bundled plugins of their own.
             "clock": "clock",
             "calendar": "calendar",
             "worldClock": "world-clock",
@@ -45,30 +24,12 @@ Singleton {
             "images": "image-converter",
             "visualizer": "visualizer",
             "customImage": "custom-image",
-            // Deduplicated: an equivalent plugin already ships, so the
-            // built-in is deleted rather than ported and its state maps onto
-            // that plugin's existing id. Getting one of these wrong silently
-            // drops the widget for anyone who had it on, because the marker
-            // records the migration as done either way.
             "resources": "nandoroid_system_monitor",
             "media": "nandoroid_media",
             "weather": "nandoroid_weather",
             "notes": "notes"
         })
 
-    // Wallpaper parallax was config-only for the whole life of this shell: the
-    // knobs were carried over from dots-hyprland but the code that read them
-    // went with the ii->pC theme swap, so nothing has consumed them since.
-    // Whatever an existing config.json holds for them is therefore a leftover,
-    // not a preference - it was never possible to see what it did. Reviving the
-    // feature against those values ships it switched off for everyone who has
-    // ever written a config, which is everyone.
-    //
-    // So the stored block is cleared exactly once, letting the QML defaults
-    // apply, and the marker keeps a later deliberate "off" from being undone.
-    // Only the switches are reset: workspaceZoom and widgetsFactor are numbers
-    // a user could plausibly have tuned, and neither of them can turn the
-    // effect off on its own.
     function migrateDeadParallaxSwitches() {
         if (root.options.background.parallax.migratedFromDeadCode)
             return;
@@ -79,25 +40,6 @@ Singleton {
         root.setNestedValue("background.parallax.migratedFromDeadCode", true);
     }
 
-    // splitButtons shipped as false, so every existing config has a stored
-    // false that would beat the new default and leave chords drawn as one wide
-    // keycap. Nobody chose that value - there is no setting for it in the UI,
-    // so the only way to have set it deliberately is by hand, and this runs
-    // once either way.
-    // bar.media.preferredPlayer was free text matched as a substring of a
-    // player's identity; it is now the stable half of an MPRIS bus name, which
-    // is what the settings picker writes. Converting the stored value keeps the
-    // config and the picker talking about the same thing.
-    //
-    // Unconditional and unmarked, for the same reason the other unmarked
-    // migrations here are: a marker records that the pass ran, not that it saw
-    // the user's config, and the two come apart exactly when the config
-    // directory migration declines and the installer default loads first.
-    // There is nothing to protect with one either way - normalization is
-    // idempotent, so a value the picker wrote is already its own normal form
-    // and running this every load cannot change it. A value it cannot parse
-    // into an id still resolves through MprisSelection.matchesPreference's
-    // legacy substring branch, so nothing is lost by converting it either.
     function migratePreferredPlayerToBusId() {
         const stored = root.options.bar.media.preferredPlayer;
         const normalized = MprisSelection.normalizePreferredPlayer(stored);
@@ -128,23 +70,6 @@ Singleton {
         root.setNestedValue("plugins.migratedDesktopWidgets", true);
     }
 
-    // `desktopWidgetPluginIds` above carries exactly one bit per widget:
-    // `enable`. Everything else a built-in kept under `background.widgets.<key>`
-    // is dropped, which is right for the deduplicated widgets (the surviving
-    // plugin is a different program with its own defaults and its own store)
-    // and cheap for the ports whose remaining state was one size mode.
-    //
-    // The clock is the exception, on both counts that matter. It is the only
-    // built-in that was on by default, and its four styles look nothing like
-    // each other - so an upgrade that keeps `enable` and drops `style` silently
-    // repaints every existing desktop, and the user's clock "changes into
-    // something else" with no setting they can point at. Its settings therefore
-    // migrate too, as a legacy nested path -> flat plugin option key map
-    // (plugin options are one flat namespace per plugin:
-    // PluginState.option(id, key, default)).
-    //
-    // Host-owned keys are deliberately absent: `enable` is the line above,
-    // `x`/`y`/`placementStrategy` belong to PluginState's per-monitor layout.
     readonly property var desktopClockOptionKeys: ({
             "showOnlyWhenLocked": "showOnlyWhenLocked",
             "style": "style",
@@ -177,44 +102,10 @@ Singleton {
             "quote.followClock": "quoteFollowClock"
         })
 
-    // Plugin options live in plugin-state.json, which is PluginState's file,
-    // not Config's - and Config cannot import the plugins module, because that
-    // module imports Config back. So this half of the migration only *computes*
-    // the batch; PluginState drains `pendingPluginOptions` once both files are
-    // loaded and sets the marker only after the values are actually in. A
-    // launch that dies in between therefore migrates again next time rather
-    // than recording a migration that never happened.
-    //
-    // The marker is its own key rather than reusing `migratedDesktopWidgets`:
-    // installs that already ran the enable-only migration would otherwise be
-    // permanently excluded from the settings half.
     property var pendingPluginOptions: ({})
 
-    // The clock's position moves too, for the same reason its style does. Every
-    // other port let the first enable land on the host's generic x/y 100,
-    // because those widgets were off by default - being asked to place a widget
-    // you just switched on is not a regression. The clock is on already and has
-    // been sitting where the user put it, possibly for as long as the install
-    // has existed, so the same reset would silently *move* something rather
-    // than place something new.
-    //
-    // The legacy position is one pair for the whole desktop while PluginState
-    // keeps one per monitor, so the drain seeds every monitor with it.
     property var pendingPluginPositions: ({})
 
-    // The world clock is the second widget whose data has to travel, and the
-    // last `background.widgets.*` key anything wrote at runtime: its four
-    // timezones. Every other port's data was either a size mode (regenerated
-    // from a default nobody notices) or a dedup onto a plugin with its own
-    // store, but a picked timezone is typed-in state - drop it and the card
-    // silently goes back to Sydney/Tokyo/London/New York.
-    //
-    // Its marker is separate from `migratedDesktopWidgetOptions` for the same
-    // reason that one is separate from `migratedDesktopWidgets`: every install
-    // that has launched this branch once already has the clock marker set, and
-    // reusing it would exclude all of them from this half. Both markers ride
-    // the same pending batch, so each half only contributes what its own marker
-    // still says is outstanding.
     function migrateDesktopWidgetOptionsToPlugins() {
         const options = {};
         const positions = {};
@@ -247,10 +138,6 @@ Singleton {
         if (!root.options.plugins.migratedWorldClockTimezones) {
             const legacy = root.options.background.widgets.worldClock?.timezones;
             if (legacy && legacy.length > 0) {
-                // `list<string>` is not a JS array, and PluginState hands the
-                // value straight to JSON.stringify - copy it out element by
-                // element, or the file gets an object with numeric keys that
-                // `Array.isArray` then rejects on the way back in.
                 const zones = [];
                 for (let i = 0; i < legacy.length; i++)
                     zones.push(legacy[i]);
@@ -262,38 +149,14 @@ Singleton {
         root.pendingPluginOptions = options;
     }
 
-    // Settings arriving from end-4/dots-hyprland or pctrade/end4-pC. The full
-    // old-key -> new-key table, including every key that was *removed* rather
-    // than renamed and why, is docs/UPSTREAM_MIGRATION.md - keep the two in
-    // step, a migration nobody can audit is worse than none.
-    //
-    // This takes the raw parsed config rather than `root.options`, because the
-    // keys it has to read are exactly the ones `root.options` cannot see: a
-    // JsonAdapter does not expose a key it has no property for. `bar.shadow`
-    // reading `undefined` is precisely the silent loss being fixed here, so
-    // reading the file's own text is the only way to see what the user had.
-    //
-    // Pure on purpose: it computes the writes and makes none, so the mapping
-    // can be tested against fabricated upstream configs (tst_upstream_migration)
-    // instead of against this file's source text.
     function planUpstreamKeyMigration(legacy) {
         const plan = {};
         if (!legacy || typeof legacy !== "object")
             return plan;
 
-        // A value, not a key, so the adapter carries it across intact and then
-        // nothing matches it. "ii" is aliased at read time in shell.qml; the
-        // waffle family was never ported, so a config naming it activates no
-        // panel loader at all and the desktop comes up empty with no error.
-        // Anything else is someone's own value and not ours to overwrite.
         if (legacy.panelFamily === "ii" || legacy.panelFamily === "waffle")
             plan["panelFamily"] = "imi";
 
-        // bar.floatStyleShadow -> bar.shadow. Upstream drew the shadow only
-        // under the Float corner style; ours draws it under every style that
-        // paints a background. The flag defaults to true up there, so copying
-        // it straight across would switch on a shadow that most arriving users
-        // have never seen. Migrate what was on screen, not what was on disk.
         const legacyBar = legacy.bar;
         if (legacyBar && typeof legacyBar.floatStyleShadow === "boolean")
             plan["bar.shadow"] = legacyBar.floatStyleShadow && legacyBar.cornerStyle === 1;
@@ -301,11 +164,6 @@ Singleton {
         return plan;
     }
 
-    // Compute, then write, then mark - the ordering `migrateDesktopWidgetOptionsToPlugins`
-    // already argues for. A config we could not even parse is left unmarked so
-    // the next launch tries again, rather than recording a migration that never
-    // happened; a config we did inspect is marked even when it needed nothing,
-    // so the parse does not repeat forever.
     function migrateUpstreamKeys(rawConfigText) {
         if (root.options.migratedUpstreamSchema)
             return;
@@ -326,7 +184,6 @@ Singleton {
         let obj = root.options;
         let parents = [obj];
 
-        // Traverse and collect parent objects
         for (let i = 0; i < keys.length - 1; ++i) {
             if (!obj[keys[i]] || typeof obj[keys[i]] !== "object") {
                 obj[keys[i]] = {};
@@ -335,7 +192,6 @@ Singleton {
             parents.push(obj);
         }
 
-        // Convert value to correct type using JSON.parse when safe
         let convertedValue = value;
         if (typeof value === "string") {
             let trimmed = value.trim();
@@ -351,25 +207,9 @@ Singleton {
         obj[keys[keys.length - 1]] = convertedValue;
     }
 
-    // The config directory migration has to have finished before this file is
-    // read or written - see Directories.configDirReady. An unset path is a
-    // real "no file" state in Quickshell: it emits neither `loaded` nor
-    // `loadFailed`, and `writeAdapter()` on it writes nothing, so gating the
-    // path holds the whole adapter off the disk rather than merely delaying a
-    // read.
-    //
-    // Latched, and it also means "never write this session": the only way it
-    // gets set is the watchdog giving up on a migration that is still running,
-    // and a write into a half-migrated directory is the thing the gate exists
-    // to prevent. `FileView.blockWrites` is not this - it makes writes
-    // synchronous, it does not suppress them.
     property bool configDirTimedOut: false
     readonly property bool configDirReady: Directories.configDirReady || root.configDirTimedOut
 
-    // A gate that can hang is a shell that never loads its settings: every
-    // settings page Loader is gated on `ready`. Come up anyway, but read-only.
-    // Nothing is guessed at and nothing on disk is touched; the user is told,
-    // and the next launch retries the migration from an unchanged directory.
     Timer {
         id: configDirWatchdog
         interval: 10000
@@ -407,11 +247,6 @@ Singleton {
         onFileChanged: fileReloadTimer.restart()
         onAdapterUpdated: fileWriteTimer.restart()
         onLoaded: {
-            // Before `ready`, and before every other migration: the rest read
-            // `root.options`, while this one works off the raw file text
-            // because the keys it converts are exactly the ones the adapter
-            // dropped. It can also rewrite panelFamily, which decides which
-            // panel family loads at all.
             root.migrateUpstreamKeys(text());
             root.ready = true;
             root.migratePreferredPlayerToBusId();
@@ -422,23 +257,12 @@ Singleton {
         }
         onLoadFailed: error => {
             if (error == FileViewError.FileNotFound) {
-                // Creating the file here is exactly the write that used to
-                // kill the directory migration, so a timed-out gate must not
-                // do it - the migration is still running and may be about to
-                // put the user's own config at this path.
                 if (!root.configDirTimedOut)
                     writeAdapter();
                 else
                     root.ready = true;
                 return;
             }
-            // Any other read failure - bad permissions, an unreadable mount,
-            // a device error - must not leave `ready` false forever. Every
-            // settings page Loader is gated on it, so a config file that
-            // exists but cannot be read blanks the entire settings content
-            // pane while the navigation rail still renders, which reads as
-            // "the app is broken" rather than "your config is unreadable".
-            // Fall back to the built-in defaults instead.
             root.ready = true;
         }
 
@@ -447,55 +271,34 @@ Singleton {
 
             property string panelFamily: "imi"
 
-            // Set once a config written against the upstream schema
-            // (end-4/dots-hyprland, pctrade/end4-pC) has been converted. It is
-            // the only usable "this file has not been converted yet" signal:
-            // the installer's has_legacy_config() tests for the old *directory*,
-            // which is already gone for anyone whose directory migration ran
-            // before this existed - exactly the users who still need this.
             property bool migratedUpstreamSchema: false
 
             property JsonObject plugins: JsonObject {
                 property list<string> enabled: []
-                // Gates the in-shell plugin store UI (Browse plugins button,
-                // update badges). Off until the public registry goes live;
-                // config-file-only, no settings toggle on purpose.
                 property bool storeEnabled: false
                 property real blurOpacity: 0.1
-                // How desktop widgets frost their background over the wallpaper:
-                //   "tint" - a translucent palette-tinted panel (cheap, no blur)
-                //   "blur" - a true in-shell blur of the wallpaper region behind
-                //            the widget (samples the live Wallpaper Engine surface
-                //            or the static image)
                 property string frostMode: "blur"
-                // Set once the built-in desktop widgets have been
-                // translated into `enabled`. Without it the migration
-                // re-adds a widget on every launch and the user can never
-                // turn one off.
                 property bool migratedDesktopWidgets: false
-                // Set once the clock's own settings have been translated into
-                // plugin options. Separate from the marker above on purpose:
-                // the enable-only migration shipped first, so installs that
-                // already ran it would otherwise never get their clock style,
-                // fonts or quote carried across. PluginState sets this, and
-                // only after the values have actually reached its file.
                 property bool migratedDesktopWidgetOptions: false
-                // Set once the world clock's timezone list has been translated
-                // into a plugin option. Its own key for the same reason again:
-                // every install that has launched this branch once already has
-                // the marker above set, and those are exactly the installs whose
-                // timezones still need carrying across.
                 property bool migratedWorldClockTimezones: false
             }
 
             property JsonObject policies: JsonObject {
-                property int ai: 1 // 0: No | 1: Yes | 2: Local
-                property int weeb: 1 // 0: No | 1: Open | 2: Closet
+                property int ai: 1
+                property int weeb: 1
             }
 
             property JsonObject ai: JsonObject {
                 property string systemPrompt: "## Style\n- Use casual tone, don't be formal!\n- Always be brief and to the point, unless asked otherwise\n- Don't repeat the user's question\n- Be approachable: Avoid using overly complicated, domain-specific terms and provide analogies when asked to explain a concept\n\n## Context (ignore when irrelevant)\n- You are a helpful and inspiring sidebar assistant on a {DISTRO} Linux system\n- Desktop environment: {DE}\n- Current date & time: {DATETIME}\n- Focused app: {WINDOWCLASS}\n\n## Presentation\n- Use Markdown features in your response: \n  - **Bold** text to **highlight keywords** in your response\n  - **Split long information into small sections** with h2 headers and a relevant emoji at the start of it (for example `## 🐧 Linux`). Bullet points are preferred over long paragraphs, unless you're offering writing support or instructed otherwise by the user.\n- Asked to compare different options? You should firstly use a table to compare the main aspects, then elaborate or include relevant comments from online forums *after* the table. Make sure to provide a final recommendation for the user's use case!\n- Use LaTeX formatting for mathematical and scientific notations whenever appropriate. Enclose all LaTeX '$$' delimiters. NEVER generate LaTeX code in a latex block unless the user explicitly asks for it. DO NOT use LaTeX for regular documents (resumes, letters, essays, CVs, etc.).\n\nThanks!\n"
-                property string tool: "functions" // search, functions, or none
+                property string tool: "functions"
+                property string persona: ""
+                property list<var> personas: []
+                property JsonObject documents: JsonObject {
+                    property list<string> folders: []
+                    property string embedder: "lexical"
+                    property int topK: 6
+                    property bool alwaysAttach: false
+                }
                 property list<var> customProviders: [
                     {
                         "enabled": false,
@@ -505,12 +308,12 @@ Singleton {
                 ]
                 property list<var> extraModels: [
                     {
-                        "api_format": "openai", // Most of the time you want "openai". Use "gemini" for Google's models
+                        "api_format": "openai",
                         "description": "This is a custom model. Edit the config to add more! | Anyway, this is DeepSeek R1 Distill LLaMA 70B",
                         "endpoint": "https://openrouter.ai/api/v1/chat/completions",
-                        "homepage": "https://openrouter.ai/deepseek/deepseek-r1-distill-llama-70b:free", // Not mandatory
-                        "icon": "spark-symbolic", // Not mandatory
-                        "key_get_link": "https://openrouter.ai/settings/keys", // Not mandatory
+                        "homepage": "https://openrouter.ai/deepseek/deepseek-r1-distill-llama-70b:free",
+                        "icon": "spark-symbolic",
+                        "key_get_link": "https://openrouter.ai/settings/keys",
                         "key_id": "openrouter",
                         "model": "deepseek/deepseek-r1-distill-llama-70b:free",
                         "name": "Custom: DS R1 Dstl. LLaMA 70B",
@@ -520,16 +323,13 @@ Singleton {
             }
 
             property JsonObject appearance: JsonObject {
-                // "" = follow the system icon theme; otherwise the directory
-                // name of an installed icon theme (see IconThemes.qml).
                 property string iconTheme: ""
                 property bool extraBackgroundTint: true
-                property int fakeScreenRounding: 2 // 0: None | 1: Always | 2: When not fullscreen
-                // Automatic dark/light switching. "off" = manual only.
+                property int fakeScreenRounding: 2
                 property JsonObject autoTheme: JsonObject {
-                    property string mode: "off" // off | sunset | fixed
-                    property string lightTime: "07:00" // HH:MM (fixed mode)
-                    property string darkTime: "19:00" // HH:MM (fixed mode)
+                    property string mode: "off"
+                    property string lightTime: "07:00"
+                    property string darkTime: "19:00"
                 }
                 property JsonObject fonts: JsonObject {
                     property string main: "Google Sans Flex"
@@ -540,11 +340,6 @@ Singleton {
                     property string reading: "Readex Pro"
                     property string expressive: "Space Grotesk"
                 }
-                // How fast the shell moves. `multiplier` is a speed preference
-                // and is clamped to motion_policy.js's sanctioned range;
-                // `reduceMotion` is an accessibility state and is deliberately
-                // a separate key, because a floor a slider can land on is a
-                // floor a user can leave by accident.
                 property JsonObject motion: JsonObject {
                     property real multiplier: 1.0
                     property bool reduceMotion: false
@@ -574,40 +369,20 @@ Singleton {
                         property bool forceDarkMode: false
                     }
                 }
-                // Sync RGB peripherals to the generated accent color via the
-                // OpenRGB CLI (see services/OpenRgb.qml). Off by default:
-                // not everyone has RGB devices or openrgb installed.
                 property JsonObject openrgb: JsonObject {
                     property bool enable: false
-                    // Device names (as printed by `openrgb --list-devices`)
-                    // to leave out of the color sync.
                     property list<string> excludedDevices: []
-                    // "accent" follows the Material You accent (default);
-                    // "monitor" samples the focused monitor's dominant color
-                    // (ambient bias lighting, needs grim).
                     property string colorSource: "accent"
-                    // With "monitor": only sample while a fullscreen client is
-                    // on the focused monitor, falling back to the accent
-                    // otherwise. false samples continuously.
                     property bool monitorFullscreenOnly: true
-                    property int monitorPollInterval: 200 // ms between samples
-                    // Minimum summed per-channel difference (0-765) before a
-                    // sampled color is written; below it the sample is dropped.
+                    property int monitorPollInterval: 200
                     property int monitorColorDelta: 12
-                    // Blend each sample halfway toward the previous applied
-                    // color instead of snapping on hard scene cuts.
                     property bool monitorSmooth: true
-                    // Device types (as printed by `openrgb --list-devices`)
-                    // the ambient loop never writes to. GPU RGB rides the
-                    // graphics card's i2c bus - streaming to it mid-game
-                    // stalls rendering. The accent sync still covers these.
                     property list<string> monitorExcludedTypes: ["GPU"]
                 }
                 property JsonObject palette: JsonObject {
-                    property string type: "auto" // Allowed: auto, scheme-content, scheme-expressive, scheme-fidelity, scheme-fruit-salad, scheme-monochrome, scheme-neutral, scheme-rainbow, scheme-tonal-spot
+                    property string type: "auto"
                     property string accentColor: ""
                 }
-                // Shared defaults for Material 3 Expressive plugin widgets.
                 property JsonObject clockFonts: JsonObject {
                     property string desktopTimeFont: "Google Sans Flex"
                     property string lockscreenTimeFont: "Google Sans Flex"
@@ -641,9 +416,7 @@ Singleton {
             }
 
             property JsonObject audio: JsonObject {
-                // Values in %
                 property JsonObject protection: JsonObject {
-                    // Prevent sudden bangs
                     property bool enable: false
                     property real maxAllowedIncrease: 10
                     property real maxAllowed: 99
@@ -672,9 +445,6 @@ Singleton {
                     property real activeOpacity: 1.0
                     property real inactiveOpacity: 0.9
                     property JsonObject blur: JsonObject {
-                        // Defaults mirror the effective decoration:blur values this
-                        // setup already runs, so exposing them in settings cannot
-                        // change how the compositor looks on first open.
                         property bool enabled: true
                         property int size: 1
                         property int passes: 3
@@ -698,10 +468,6 @@ Singleton {
                     }
                 }
                 property JsonObject cursor: JsonObject {
-                    // Defaults mirror the values execs.lua used to hardcode
-                    // (hyprctl setcursor Bibata-Modern-Classic 24) and the
-                    // compositor's own cursor defaults, so exposing them in
-                    // settings cannot change how the pointer looks on first open.
                     property string theme: "Bibata-Modern-Classic"
                     property int size: 24
                     property real zoomFactor: 1.0
@@ -715,7 +481,7 @@ Singleton {
                 }
                 property JsonObject input: JsonObject {
                     property string kbLayout: "us"
-                    property string kbOptions: ""   // xkb layout-switch shortcut, e.g. grp:alt_shift_toggle / grp:win_space_toggle
+                    property string kbOptions: ""
                     property bool numlock: true
                     property int repeatDelay: 250
                     property int repeatRate: 35
@@ -736,25 +502,15 @@ Singleton {
                 property string manageUser: "kcmshell6 kcm_users"
                 property string networkEthernet: "kcmshell6 kcm_networkmanagement"
                 property string taskManager: "plasma-systemmonitor --page-name Processes"
-                property string terminal: "kitty -1" // This is only for shell actions
+                property string terminal: "kitty -1"
                 property string update: "kitty -1 --hold=yes fish -i -c 'pkexec pacman -Syu'"
                 property string volumeMixer: `~/.config/hypr/hyprland/scripts/launch_first_available.sh "pavucontrol-qt" "pavucontrol"`
             }
 
             property JsonObject cheatsheet: JsonObject {
-                // Use a nerdfont to see the icons
-                // 0: 󰖳  | 1: 󰌽 | 2: 󰘳 | 3:  | 4: 󰨡
-                // 5:  | 6:  | 7: 󰣇 | 8:  | 9:
-                // 10:  | 11:  | 12:  | 13:  | 14: 󱄛
                 property string superKey: ""
                 property bool useMacSymbol: false
-                // One keycap per key. Off, a chord is drawn as a single wide
-                // keycap reading "SUPER SHIFT ALT R", which looks like one key
-                // with a long name rather than four keys held together.
                 property bool splitButtons: true
-                // Whether the stored config has been moved off the old default.
-                // Without this the change above is invisible to anyone who has
-                // ever run the shell, because a stored value beats a QML one.
                 property bool migratedSplitButtons: false
                 property bool useMouseSymbol: false
                 property bool useFnSymbol: false
@@ -766,10 +522,6 @@ Singleton {
 
             property JsonObject background: JsonObject {
                 property string lockWall: ""
-                // Wallpaper Engine project path for the lock wallpaper. When set,
-                // the lock wallpaper is that live WE project (takes precedence over
-                // the static lockWall image); the WE surface switches to it on lock
-                // and back to the desktop project on unlock.
                 property string lockWallEngine: ""
                 property bool widgetsLocked: false
                 property bool showGrid: true
@@ -778,20 +530,20 @@ Singleton {
                     property JsonObject clock: JsonObject {
                         property bool enable: true
                         property bool showOnlyWhenLocked: false
-                        property string placementStrategy: "leastBusy" // "free", "leastBusy", "mostBusy"
+                        property string placementStrategy: "leastBusy"
                         property real x: 100
                         property real y: 100
-                        property string style: "cookie"        // Options: "cookie", "digital"
+                        property string style: "cookie"
                         property string color: ""
-                        property string styleLocked: "cookie"  // Options: "cookie", "digital"
+                        property string styleLocked: "cookie"
                         property JsonObject cookie: JsonObject {
                             property bool aiStyling: false
                             property int sides: 14
-                            property string dialNumberStyle: "full"   // Options: "dots" , "numbers", "full" , "none"
-                            property string hourHandStyle: "fill"     // Options: "classic", "fill", "hollow", "hide"
-                            property string minuteHandStyle: "medium" // Options "classic", "thin", "medium", "bold", "hide"
-                            property string secondHandStyle: "dot"    // Options: "dot", "line", "classic", "hide"
-                            property string dateStyle: "bubble"       // Options: "border", "rect", "bubble" , "hide"
+                            property string dialNumberStyle: "full"
+                            property string hourHandStyle: "fill"
+                            property string minuteHandStyle: "medium"
+                            property string secondHandStyle: "dot"
+                            property string dateStyle: "bubble"
                             property bool timeIndicators: true
                             property bool hourMarks: false
                             property bool dateInClock: true
@@ -822,7 +574,7 @@ Singleton {
                     }
                     property JsonObject weather: JsonObject {
                         property bool enable: false
-                        property string placementStrategy: "free" // "free", "leastBusy", "mostBusy"
+                        property string placementStrategy: "free"
                         property real x: 400
                         property real y: 100
                         property string sizeMode: "1x3"
@@ -830,7 +582,7 @@ Singleton {
 
                     property JsonObject calendar: JsonObject {
                         property bool enable: false
-                        property string placementStrategy: "free" // "free", "leastBusy", "mostBusy"
+                        property string placementStrategy: "free"
                         property real x: 400
                         property real y: 100
                         property string sizeMode: "2x2"
@@ -896,7 +648,7 @@ Singleton {
                         property bool showLyrics: false
                         property bool showTitles: true
                         property string backgroundShape: "Cookie4Sided"
-                        property string placementStrategy: "free" // "free", "leastBusy", "mostBusy"
+                        property string placementStrategy: "free"
                         property real x: 800
                         property real y: 500
                     }
@@ -915,31 +667,14 @@ Singleton {
                 property JsonObject parallax: JsonObject {
                     property bool enable: true
                     property bool vertical: false
-                    property bool autoVertical: true // Pan vertically on a portrait wallpaper
+                    property bool autoVertical: true
                     property bool enableWorkspace: true
-                    // How much larger than the screen the wallpaper is drawn.
-                    // This IS the effect's headroom: at 1.0 there is no overflow
-                    // to pan across and every other knob here does nothing, which
-                    // is why the revived default overscans. It also costs - the
-                    // Wallpaper Engine surface renders at this size - so it is
-                    // deliberately modest.
                     property real workspaceZoom: 1.1
                     property bool enableSidebar: true
                     property bool enableWidgets: true
                     property real widgetsFactor: 1.2
-                    // Set once by migrateDeadParallaxSwitches; see there.
                     property bool migratedFromDeadCode: false
                 }
-                // iOS-style depth: the wallpaper's subject drawn back over the
-                // desktop widgets, so the clock sits behind the person in the
-                // photo. Off by default and deliberately so - a feature that
-                // puts pixels over the clock ships off, and the per-wallpaper
-                // mask the user accepts is what turns it on for that wallpaper.
-                //
-                // There is no per-wallpaper key here: masks and their opt-out
-                // markers are files beside each other in the cache, keyed by
-                // the wallpaper's path/mtime/size, so they invalidate together
-                // and none of it can go stale inside a saved preset.
                 property JsonObject clockDepth: JsonObject {
                     property bool enable: false
                 }
@@ -950,27 +685,18 @@ Singleton {
                     property bool enable: false
                     property int hoverRegionWidth: 2
                     property bool pushWindows: false
-                    // Keep the bar shown while a bar popup (media box, tray
-                    // overflow) is open, and dismiss that popup when the pointer
-                    // leaves it, so the bar can then hide. Prevents popups being
-                    // orphaned above a hidden bar. See issues #30, #31.
                     property bool dismissPopups: true
                     property JsonObject showWhenPressingSuper: JsonObject {
                         property bool enable: true
                         property int delay: 140
                     }
                 }
-                property bool bottom: false // Instead of top
-                property int cornerStyle: 3 // 0: Hug | 1: Float | 2: Plain rectangle | 3: M3
-                property bool shadow: false // Soft drop shadow under the bar background
+                property bool bottom: false
+                property int cornerStyle: 3
+                property bool shadow: false
                 property string borderless: "pills"
-                property string topLeftIcon: "spark" // Options: "distro" or any icon name in ~/.config/quickshell/imi/assets/icons
+                property string topLeftIcon: "spark"
                 property bool showBackground: true
-                // Opacity of the bar's background chrome (bar/pill fills, hug
-                // corners), 0-1. 1 = fully opaque (unchanged). Multiplies the
-                // global appearance.transparency alpha rather than replacing it,
-                // so the two compose. Below the compositor's per-namespace
-                // ignore_alpha blur threshold it reads as plain transparency.
                 property real backgroundOpacity: 1.0
                 property bool verbose: true
                 property bool vertical: false
@@ -992,17 +718,17 @@ Singleton {
                     property int vramWarningThreshold: 95
                 }
                 property JsonObject divider: JsonObject {
-                    property string style: "rect" // rect - dot - space
+                    property string style: "rect"
                     property int spacing: 20
                 }
 
                 property JsonObject layouts: JsonObject {
                     property list<string> leftLayout: ["leftSidebarButton", "activeWindow"]
                     property list<string> middleLayout: ["visualizer", "media", "resources", "workspaces", "utilButtons", "clockWidget", "weatherBar", "visualizer"]
-                    property list<string> rightLayout: ["submapIndicator", "sysTray", "hyprlandXkbIndicator", "systemIcons"]
+                    property list<string> rightLayout: ["submapIndicator", "sysTray", "hyprlandXkbIndicator", "rightSidebarButton", "systemIcons"]
                 }
                 
-                property list<string> screenList: [] // List of names, like "eDP-1", find out with 'hyprctl monitors' command
+                property list<string> screenList: []
                 property JsonObject utilButtons: JsonObject {
                     property bool showScreenSnip: true
                     property bool showColorPicker: false
@@ -1012,6 +738,7 @@ Singleton {
                     property bool showDarkModeToggle: true
                     property bool showPerformanceProfileToggle: false
                     property bool showScreenRecord: false       
+                    property bool showSettingsButton: true
                     property bool isRecording: false
                 }
 
@@ -1019,37 +746,29 @@ Singleton {
                     property bool monochromeIcons: true
                     property int shown: 10
                     property bool showAppIcons: true
-                    property bool showAllMonitors: true // false = only show workspaces on the current monitor
-                    property string indicatorStyle: "dot" // "dot" or "icon"
+                    property bool showAllMonitors: true
+                    property string indicatorStyle: "dot"
                     property bool alwaysShowNumbers: false
-                    property int showNumberDelay: 300 // milliseconds
-                    property list<string> numberMap: ["1", "2"] // Characters to show instead of numbers on workspace indicator
+                    property int showNumberDelay: 300
+                    property list<string> numberMap: ["1", "2"]
                     property bool useNerdFont: false
                 }
                 property JsonObject weather: JsonObject {
                     property bool enable: false
-                    property bool enableGPS: true // gps based location
-                    property string city: "" // When 'enableGPS' is false
-                    property bool useUSCS: false // Instead of metric (SI) units
-                    property int fetchInterval: 10 // minutes
-                    property string provider: "owm" // "owm" (OpenWeatherMap) | "wttr" (wttr.in, keyless)
-                    property string apiKey: "" // empty = use the built-in OpenWeatherMap key
+                    property bool enableGPS: true
+                    property string city: ""
+                    property bool useUSCS: false
+                    property int fetchInterval: 10
+                    property string provider: "owm"
+                    property string apiKey: ""
                 }
                 property JsonObject privacyIndicator: JsonObject {
                     property bool enable: true
-                    property int pollInterval: 2000 // ms
+                    property int pollInterval: 2000
                     property bool showMic: true
                     property bool showCamera: true
                     property bool showScreencast: true
-                    // The ambient RGB sampler (OpenRGB monitor sync) grabs a
-                    // frame every poll tick, which would blink the screencast
-                    // dot once a second. While it runs, only casts that hold
-                    // their state longer than a capture pulse are shown.
                     property bool ignoreAmbientCapture: true
-                    // Off by default: destroying an app's capture node takes a
-                    // stream the app never offered to give up, and an app that
-                    // does not expect that can misbehave or crash. Muting, and
-                    // stopping the shell's own recording, need no such licence.
                     property bool allowForceStop: false
                 }
                 property JsonObject indicators: JsonObject {
@@ -1079,11 +798,11 @@ Singleton {
 
             property JsonObject calendar: JsonObject {
                 property string locale: "en-GB"
-                property int firstDayOfWeek: 1 // 1 = Monday .. 7 = Sunday
+                property int firstDayOfWeek: 1
                 property JsonObject ics: JsonObject {
-                    property list<string> files: [] // local .ics paths
-                    property list<string> urls: []  // remote ICS URLs
-                    property int refreshInterval: 30 // minutes
+                    property list<string> files: []
+                    property list<string> urls: []
+                    property int refreshInterval: 30
                 }
             }
 
@@ -1093,7 +812,6 @@ Singleton {
             }
 
             property JsonObject crosshair: JsonObject {
-                // Valorant crosshair format. Use https://www.vcrdb.net/builder
                 property string code: "0;P;d;1;0l;10;0o;2;1b;0"
             }
 
@@ -1105,50 +823,41 @@ Singleton {
                 property bool showMedia: true
                 property bool monochromeIcons: true
                 property real height: 60
-                // Which screen edge the dock lives on. A string rather than
-                // the bar's `bottom` + `vertical` pair: presets are never
-                // rewritten, so a new key needs no migration where renaming
-                // an existing one would lose every stored value.
-                //
-                // `height` and `hoverRegionHeight` keep their names at every
-                // edge - they are the dock's THICKNESS, and renaming them
-                // would mean migrating the presets this key was designed to
-                // avoid touching.
                 property string edge: "bottom"
                 property real hoverRegionHeight: 2
                 property bool pinnedOnStartup: false
-                property bool hoverToReveal: true // When false, only reveals on empty workspace
-                property list<string> pinnedApps: [ // IDs of pinned entries
+                property bool hoverToReveal: true
+                property list<string> pinnedApps: [
                     "org.kde.dolphin", "kitty",]
                 property list<string> ignoredAppRegexes: []
             }
 
             property JsonObject dropShelf: JsonObject {
-                property bool dragToBarReveal: true // Dragging files over the bar pops the shelf out
-                property bool shakeToSummon: false // Shake the cursor while dragging (BTN_LEFT-gated) to summon
-                property real shakeSensitivity: 1.0 // Higher = easier to trigger
-                property int autoDismissSeconds: 5 // Close an untouched summoned shelf (0 = never)
-                property bool blurBackground: true // Translucent tint; the compositor blurs behind it
+                property bool dragToBarReveal: true
+                property bool shakeToSummon: false
+                property real shakeSensitivity: 1.0
+                property int autoDismissSeconds: 5
+                property bool blurBackground: true
                 property real backgroundOpacity: 0.5
             }
 
             property JsonObject interactions: JsonObject {
                 property JsonObject scrolling: JsonObject {
-                    property bool fasterTouchpadScroll: false // Enable faster scrolling with touchpad
-                    property int mouseScrollDeltaThreshold: 120 // delta >= this then it gets detected as mouse scroll rather than touchpad
+                    property bool fasterTouchpadScroll: false
+                    property int mouseScrollDeltaThreshold: 120
                     property int mouseScrollFactor: 120
                     property int touchpadScrollFactor: 450
                 }
-                property JsonObject deadPixelWorkaround: JsonObject { // Hyprland leaves out 1 pixel on the right for interactions
+                property JsonObject deadPixelWorkaround: JsonObject {
                     property bool enable: false
                 }
             }
 
             property JsonObject language: JsonObject {
-                property string ui: "auto" // UI language. "auto" for system locale, or specific language code like "zh_CN", "en_US"
+                property string ui: "auto"
                 property JsonObject translator: JsonObject {
-                    property string engine: "auto" // Run `trans -list-engines` for available engines. auto should use google
-                    property string targetLanguage: "auto" // Run `trans -list-all` for available languages
+                    property string engine: "auto"
+                    property string targetLanguage: "auto"
                     property string sourceLanguage: "auto"
                 }
             }
@@ -1160,15 +869,15 @@ Singleton {
             property JsonObject light: JsonObject {
                 property JsonObject night: JsonObject {
                     property bool automatic: true
-                    property string from: "19:00" // Format: "HH:mm", 24-hour time
-                    property string to: "06:30"   // Format: "HH:mm", 24-hour time
+                    property string from: "19:00"
+                    property string to: "06:30"
                     property int colorTemperature: 5000
                 }
                 property JsonObject antiFlashbang: JsonObject {
                     property bool enable: false
                 }
                 property JsonObject clight: JsonObject {
-                    property bool enable: true // feature-detected; does nothing when the daemon is absent
+                    property bool enable: true
                 }
             }
 
@@ -1191,15 +900,6 @@ Singleton {
                     property bool requirePasswordToPower: false
                 }
                 property bool materialShapeChars: true
-                // The lock islands' item order (spec §14, answered "reorder"):
-                // declared lists, never a dynamic map - a JsonAdapter cannot
-                // hold one. The defaults are the hand-placed order the surface
-                // has always drawn, so a config that never stored these keys
-                // renders exactly what it rendered before they existed - which
-                // is also why no migration is needed: a missing key takes the
-                // QML default. The same lists are spelled in lock_islands.js
-                // (the resolver cannot read this file); the two are pinned
-                // equal by tests/test_lock_islands_contract.py.
                 property JsonObject islands: JsonObject {
                     property list<string> main: ["fingerprint", "password", "confirm"]
                     property list<string> left: ["username", "media", "keyboardLayout", "fcitx"]
@@ -1208,7 +908,6 @@ Singleton {
             }
 
             property JsonObject media: JsonObject {
-                // Attempt to remove dupes (the aggregator playerctl one and browsers' native ones when there's plasma browser integration)
                 property bool filterDuplicatePlayers: true
             }
 
@@ -1216,47 +915,82 @@ Singleton {
                 property string userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
                 property JsonObject vpn: JsonObject {
                     property bool enable: true
-                    property int pollInterval: 5000 // ms
+                    property int pollInterval: 5000
                 }
                 property JsonObject tailscale: JsonObject {
                     property bool enable: true
-                    property int pollInterval: 5000 // ms
+                    property int pollInterval: 5000
                 }
                 property JsonObject phoneConnect: JsonObject {
                     property bool enable: true
-                    // Battery/reachability drift slowly, and each sweep is a
-                    // chain of busctl processes - poll gentler than the others.
-                    property int pollInterval: 10000 // ms
+                    property int pollInterval: 10000
                 }
             }
 
-            // Keep-awake. autoOnExternalMonitor (ported from end-4/dots-hyprland
-            // PR #2109) holds the idle inhibitor while an external monitor is
-            // connected; it ORs with the manual "Keep system awake" toggle
-            // (services/Idle.qml).
+            property JsonObject phone: JsonObject {
+                property bool showPeripheralCards: true
+                property JsonObject contacts: JsonObject {
+                    property bool enabled: true
+                    property list<string> favoriteIds: []
+                    property string sortBy: "first"
+                    property bool hideUnnamed: true
+                }
+                property JsonObject scrcpy: JsonObject {
+                    property bool stayAwake: false
+                    property bool turnScreenOff: false
+                    property bool noPowerOn: false
+                    property bool noAudio: false
+                    property bool showTouches: false
+                    property bool fullscreen: false
+                    property bool alwaysOnTop: false
+                    property int maxFps: 0
+                    property string bitRate: "8M"
+                    property int maxSize: 0
+                    property int videoBuffer: 0
+                    property bool useWireless: false
+                    property bool autoWirelessIp: true
+                    property string wirelessIp: ""
+                    property string wirelessPort: "5555"
+                    property JsonObject appMode: JsonObject {
+                        property bool enabled: true
+                        property bool flexDisplay: true
+                        property int displayWidth: 1280
+                        property int displayHeight: 960
+                        property int density: 160
+                        property bool keepActive: true
+                        property bool systemDecorations: true
+                        property list<string> favoritePackages: []
+                    }
+                }
+                property JsonObject webcam: JsonObject {
+                    property string cameraFacing: "front"
+                    property string resolution: "1280x720"
+                    property bool mirrorHorizontally: false
+                    property int rotateDegrees: 0
+                    property string connection: "wifi"
+                    property string wifiIp: ""
+                    property int port: 4747
+                }
+                property JsonObject microphone: JsonObject {
+                    property string connection: "wifi"
+                    property string wifiIp: ""
+                    property int port: 4748
+                    property int micGain: 100
+                    property bool setAsDefault: false
+                }
+            }
+
             property JsonObject idleInhibitor: JsonObject {
                 property bool autoOnExternalMonitor: false
             }
 
-            // OLED screensaver. The idle trigger lives in hypridle.conf (keep its
-            // listener timeout in sync); show() no-ops unless enable is true.
             property JsonObject screensaver: JsonObject {
                 property bool enable: false
-                property string mode: "black" // "black" | "clock"
-                property int timeout: 240 // seconds (mirror in hypridle.conf; must be < lock timeout)
+                property string mode: "black"
+                property int timeout: 240
             }
 
             property JsonObject notes: JsonObject {
-                // Set once services/Notes.qml has folded the old desktop-notes
-                // store (Directories.desktopNotesPath, the array the deleted
-                // built-in notes widget wrote) into the live note array.
-                //
-                // That file is deliberately left on disk, so without a marker
-                // every launch would re-import it and any note the user deleted
-                // would come back. The plaintext-scratchpad half of the
-                // migration needs no marker: it is driven by the shape of the
-                // live store, which stops being plaintext the moment it is
-                // converted.
                 property bool importedLegacyStore: false
             }
 
@@ -1267,17 +1001,12 @@ Singleton {
 
             property JsonObject osd: JsonObject {
                 property int timeout: 1000
-                property bool lockKeys: true // Caps/Num Lock OSD (polls hyprctl; disable to stop polling)
+                property bool lockKeys: true
             }
 
             property JsonObject osk: JsonObject {
                 property string layout: "qwerty_full"
                 property bool pinnedOnStartup: false
-                // Light a key on the on-screen keyboard while the physical one
-                // holds it. Reading /dev/input is what makes that possible, so
-                // the switch is here to be turned OFF - the reader itself runs
-                // only while the OSK is open and reports keycodes rather than
-                // characters (services/KeyMonitor.qml).
                 property bool showPhysicalKeys: true
             }
 
@@ -1294,7 +1023,7 @@ Singleton {
             property JsonObject overview: JsonObject {
                 property bool enable: true
                 property string style: "default"
-                property real scale: 0.18 // Relative to screen size
+                property real scale: 0.18
                 property real rows: 2
                 property real columns: 5
                 property bool orderRightLeft: false
@@ -1312,7 +1041,6 @@ Singleton {
                     property real contentRegionOpacity: 0.8
                     property int selectionPadding: 5
                 }
-                // The loupe shown at the cursor while a region is framed.
                 property JsonObject magnifier: JsonObject {
                     property bool enable: true
                     property real zoom: 6
@@ -1337,7 +1065,7 @@ Singleton {
             property JsonObject tray: JsonObject {
                 property bool monochromeIcons: true
                 property bool showItemId: false
-                property bool invertPinnedItems: true // Makes the below a whitelist for the tray and blacklist for the pinned area
+                property bool invertPinnedItems: true
                 property list<var> pinnedItems: [ "Fcitx" ]
                 property bool filterPassive: true
             }
@@ -1348,10 +1076,10 @@ Singleton {
             }
 
             property JsonObject search: JsonObject {
-                property int nonAppResultDelay: 30 // This prevents lagging when typing
+                property int nonAppResultDelay: 30
                 property string engineBaseUrl: "https://www.google.com/search?q="
                 property list<string> excludedSites: ["quora.com", "facebook.com"]
-                property bool sloppy: false // Uses levenshtein distance based scoring instead of fuzzy sort. Very weird.
+                property bool sloppy: false
                 property JsonObject prefix: JsonObject {
                     property bool showDefaultActionsWithoutPrefix: true
                     property string action: "/"
@@ -1363,14 +1091,14 @@ Singleton {
                     property string math: "="
                     property string shellCommand: "$"
                     property string webSearch: "?"
-                    property string file: "~" // File/folder search
-                    property string prism: "%" // Prism Launcher modpacks; inert without Prism installed
+                    property string file: "~"
+                    property string prism: "%"
                 }
                 property JsonObject fileSearch: JsonObject {
                     property bool enable: true
-                    property string root: "" // empty = $HOME
+                    property string root: ""
                     property int maxResults: 20
-                    property int delay: 150 // ms debounce
+                    property int delay: 150
                 }
                 property JsonObject imageSearch: JsonObject {
                     property string imageSearchEngineBaseUrl: "https://lens.google.com/uploadbyurl?url="
@@ -1384,16 +1112,20 @@ Singleton {
                 property string bannerImage: ""
                 property bool keepRightSidebarLoaded: true
                 property JsonObject translator: JsonObject {
-                    property bool enable: false
-                    property int delay: 300 // Delay before sending request. Reduces (potential) rate limits and lag.
+                    property bool enable: true
+                    property int delay: 300
                 }
                 property JsonObject media: JsonObject {
                     property bool enable: true
                     property bool artColors: false
                 }
+                property JsonObject phone: JsonObject {
+                    property bool enable: true
+                }
                 
                 property JsonObject ai: JsonObject {
                     property bool textFadeIn: false
+                    property string greeting: ""
                 }
                 property JsonObject booru: JsonObject {
                     property bool allowNsfw: false
@@ -1416,8 +1148,9 @@ Singleton {
                 }
 
                 property JsonObject quickToggles: JsonObject {
-                    property string style: "android" // Options: classic, android
+                    property string style: "android"
                     property JsonObject android: JsonObject {
+                        property list<var> pages: []
                         property int columns: 5
                         property list<var> toggles: [
                             { "size": 2, "type": "network" },
@@ -1444,42 +1177,33 @@ Singleton {
             }
 
             property JsonObject screenRecord: JsonObject {
-                property string savePath: Directories.videos ? Directories.videos.replace("file://","") : "" // strip "file://"
+                property string savePath: Directories.videos ? Directories.videos.replace("file://","") : ""
                 property int fps: 60
-                property string quality: "very_high" // medium | high | very_high | ultra
-                property string codec: "auto" // auto | h264 | hevc | av1
-                property string audioCodec: "opus" // opus | aac | flac
-                property bool recordAudio: true // desktop audio on recordings/replays
-                property bool recordMic: false // merge the mic into the audio track
+                property string quality: "very_high"
+                property string codec: "auto"
+                property string audioCodec: "opus"
+                property bool recordAudio: true
+                property bool recordMic: false
                 property bool showCursor: true
-                property string framerateMode: "vfr" // cfr | vfr | content
-                // Recordings made on an HDR display are stored as real HDR10
-                // (the _hdr codec variants; see scripts/videos/record.sh). That
-                // is correct in HDR-aware players and washed out everywhere
-                // else - VLC's defaults, Discord embeds, browsers, editors,
-                // none of which tonemap. This switch trades the HDR away after
-                // the fact: when a save lands, the file is tonemapped to bt709
-                // SDR in the background and replaced. Default off - "preserve
-                // HDR" was the explicit choice when HDR recording was added.
+                property string framerateMode: "vfr"
                 property bool tonemapSdr: false
                 property JsonObject replay: JsonObject {
-                    property bool enable: false // instant-replay ring buffer daemon
-                    property int duration: 120 // seconds kept in the buffer
-                    property string savePath: "" // "" = screenRecord.savePath
-                    property string monitor: "" // "" = whole screen
-                    property string storage: "ram" // ram | disk
-                    property bool restartOnSave: false // clear the buffer after each save
+                    property bool enable: false
+                    property int duration: 120
+                    property string savePath: ""
+                    property string monitor: ""
+                    property string storage: "ram"
+                    property bool restartOnSave: false
                 }
             }
 
             property JsonObject screenSnip: JsonObject {
-                property string savePath: "" // only copy to clipboard when empty
+                property string savePath: ""
             }
 
             property JsonObject screenshotResult: JsonObject {
                 property bool enable: true
                 property int timeoutMs: 6000
-                // Annotation tool override; [] = auto-detect (swappy, then satty).
                 property list<string> editorCommand: []
             }
 
@@ -1490,7 +1214,6 @@ Singleton {
             }
 
             property JsonObject time: JsonObject {
-                // https://doc.qt.io/qt-6/qtime.html#toString
                 property string format: "hh:mm"
                 property string shortDateFormat: "dd/MM"
                 property string dateWithYearFormat: "dd/MM/yyyy"
@@ -1506,16 +1229,16 @@ Singleton {
 
             property JsonObject updates: JsonObject {
                 property bool enableCheck: true
-                property int checkInterval: 120 // minutes
-                property int adviseUpdateThreshold: 75 // packages
-                property int stronglyAdviseUpdateThreshold: 200 // packages
+                property int checkInterval: 120
+                property int adviseUpdateThreshold: 75
+                property int stronglyAdviseUpdateThreshold: 200
             }
             
             property JsonObject wallpaperSelector: JsonObject {
                 property bool useSystemFileDialog: false
                 property bool showBlurBackground: false
                 property bool showHomePath: true
-                property string userPath: "" // This can be set to any path and it will show up as a quick access in the wallpaper selector"
+                property string userPath: ""
                 property string liveWallpapersPath: ""
                 property bool showSearchbar: true
                 property int columns: 4
@@ -1526,32 +1249,7 @@ Singleton {
                     property string activeProject: ""
                     property string activePath: ""
                     property string activePreview: ""
-                    // Wallpaper type of the active project (scene/video/web). "web"
-                    // is unsupported by the embedded renderer (needs CEF), so the
-                    // background falls back to the static wallpaper for it.
                     property string activeType: ""
-                    // `activeStill` deliberately does NOT live here, and must not
-                    // be added back. There IS a full-resolution still - the
-                    // background grabs one off the live Wallpaper Engine surface
-                    // and caches it at
-                    // ~/.cache/quickshell/wallpaperengine-stills/<activeProject>.png
-                    // (see Background.captureGreeterStill) - but its path is
-                    // derived from `activeProject` by whoever needs it, not stored.
-                    //
-                    // Storing it is #103: the field had no writer once the
-                    // renderer moved in-process, so it froze at whatever project
-                    // was active that day, and the SDDM greeter served that
-                    // wallpaper for months. #117 answered that by giving it a
-                    // writer, which fixes the instance and keeps the mechanism -
-                    // a stored path is a second source of truth for something
-                    // `activeProject` already states, and the two can disagree.
-                    //
-                    // Re-declaring it is not harmless even with a writer. Presets
-                    // are separate files the JsonAdapter never rewrites, so the
-                    // stale values #103 documented are still in every saved preset
-                    // (Saber, Study and Sunken_Temple all name the wrong project).
-                    // While nothing declares the property they are unreachable;
-                    // declaring it re-arms them on the next preset apply.
                     property int fps: 30
                     property string scaling: "fill"
                     property bool silent: true
@@ -1559,12 +1257,12 @@ Singleton {
             }
 
             property JsonObject windows: JsonObject {
-                property bool showTitlebar: true // Client-side decoration for shell apps
+                property bool showTitlebar: true
                 property bool centerTitle: true
             }
 
             property JsonObject hacks: JsonObject {
-                property int arbitraryRaceConditionDelay: 20 // milliseconds
+                property int arbitraryRaceConditionDelay: 20
             }
 
             property JsonObject workSafety: JsonObject {

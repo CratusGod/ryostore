@@ -69,10 +69,6 @@ Item {
         id: coverArtDownloader
         property string targetFile: root.artUrl
         property string artFilePath: root.artFilePath
-        // Pass path/URL as positional args ($1/$2), never interpolated into the
-        // script body: artUrl comes from MPRIS metadata (any session-bus peer,
-        // incl. a browser tab's Media Session artwork), so splicing it into the
-        // shell string was a command-injection hole.
         command: ["bash", "-c", '[ -f "$1" ] || curl -4 -sSL "$2" -o "$1"', "bash", artFilePath, targetFile]
         onExited: (exitCode, exitStatus) => {
             root.downloaded = true

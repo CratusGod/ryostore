@@ -32,9 +32,8 @@ class RoundedPolygon {
         const width = bounds[2] - bounds[0]
         const height = bounds[3] - bounds[1]
         const side = Math.max(width, height)
-        // Center the shape if bounds are not a square
-        const offsetX = (side - width) / 2 - bounds[0] /* left */
-        const offsetY = (side - height) / 2 - bounds[1] /* top */
+        const offsetX = (side - width) / 2 - bounds[0]
+        const offsetY = (side - height) / 2 - bounds[1]
         return this.transformed((x, y) => {
             return new Point.Point((x + offsetX) / side, (y + offsetY) / side)
         })
@@ -80,9 +79,6 @@ class RoundedPolygon {
     buildCubicList() {
         const result = []
 
-        // The first/last mechanism here ensures that the final anchor point in the shape
-        // exactly matches the first anchor point. There can be rendering artifacts introduced
-        // by those points being slightly off, even by much less than a pixel
         let firstCubic = null
         let lastCubic = null
         let firstFeatureSplitStart = null
@@ -95,8 +91,6 @@ class RoundedPolygon {
             firstFeatureSplitEnd = [end, this.features[0].cubics[2]]
         }
 
-        // iterating one past the features list size allows us to insert the initial split
-        // cubic if it exists
         for (let i = 0; i <= this.features.length; i++) {
             let featureCubics
             if (i == 0 && firstFeatureSplitEnd != null) {
@@ -112,7 +106,6 @@ class RoundedPolygon {
             }
 
             for (let j = 0; j < featureCubics.length; j++) {
-                // Skip zero-length curves; they add nothing and can trigger rendering artifacts
                 const cubic = featureCubics[j]
                 if (!cubic.zeroLength()) {
                     if (lastCubic != null)
@@ -122,11 +115,7 @@ class RoundedPolygon {
                         firstCubic = cubic
                 } else {
                     if (lastCubic != null) {
-                        // Dropping several zero-ish length curves in a row can lead to
-                        // enough discontinuity to throw an exception later, even though the
-                        // distances are quite small. Account for that by making the last
-                        // cubic use the latest anchor point, always.
-                        lastCubic = new Cubic.Cubic([...lastCubic.points]) // Make a copy before mutating
+                        lastCubic = new Cubic.Cubic([...lastCubic.points])
                         lastCubic.points[6] = cubic.anchor1X
                         lastCubic.points[7] = cubic.anchor1Y
                     }
@@ -147,7 +136,6 @@ class RoundedPolygon {
                 ])
             )
         } else {
-            // Empty / 0-sized polygon.
             result.push(new Cubic.Cubic([this.centerX, this.centerY, this.centerX, this.centerY, this.centerX, this.centerY, this.centerX, this.centerY]))
         }
 
@@ -198,11 +186,6 @@ class RoundedPolygon {
             )
         }
 
-        // For each side, check if we have enough space to do the cuts needed, and if not split
-        // the available space, first for round cuts, then for smoothing if there is space left.
-        // Each element in this list is a pair, that represent how much we can do of the cut for
-        // the given side (side i goes from corner i to corner i+1), the elements of the pair are:
-        // first is how much we can use of expectedRoundCut, second how much of expectedCut
         const cutAdjusts = Array.from({ length: n }).map((_, ix) => {
             const expectedRoundCut = roundedCorners[ix].expectedRoundCut + roundedCorners[(ix + 1) % n].expectedRoundCut
             const expectedCut = roundedCorners[ix].expectedCut + roundedCorners[(ix + 1) % n].expectedCut
@@ -212,24 +195,16 @@ class RoundedPolygon {
             const nextVtxY = vertices[((ix + 1) % n) * 2 + 1]
             const sideSize = Utils.distance(vtxX - nextVtxX, vtxY - nextVtxY)
 
-            // Check expectedRoundCut first, and ensure we fulfill rounding needs first for
-            // both corners before using space for smoothing
             if (expectedRoundCut > sideSize) {
-                // Not enough room for fully rounding, see how much we can actually do.
                 return { a: sideSize / expectedRoundCut, b: 0 }
             } else if (expectedCut > sideSize) {
-                // We can do full rounding, but not full smoothing.
                 return { a: 1, b: (sideSize - expectedRoundCut) / (expectedCut - expectedRoundCut) }
             } else {
-                // There is enough room for rounding & smoothing.
                 return { a: 1, b: 1 }
             }
         })
 
-        // Create and store list of beziers for each [potentially] rounded corner
         for (let i = 0; i < n; i++) {
-            // allowedCuts[0] is for the side from the previous corner to this one,
-            // allowedCuts[1] is for the side from this corner to the next one.
             const allowedCuts = []
             for(const delta of [0, 1]) {
                 const { a: roundCutRatio, b: cutRatio } = cutAdjusts[(i + n - 1 + delta) % n]
@@ -245,8 +220,6 @@ class RoundedPolygon {
 
         const tempFeatures = []
         for (let i = 0; i < n; i++) {
-            // Note that these indices are for pairs of values (points), they need to be
-            // doubled to access the xy values in the vertices float array
             const prevVtxIndex = (i + n - 1) % n
             const nextVtxIndex = (i + 1) % n
             const currVertex = new Point.Point(vertices[i * 2], vertices[i * 2 + 1])
@@ -294,9 +267,7 @@ class RoundedPolygon {
     }
 
     static circle(numVertices = 8, radius = 1, centerX = 0, centerY = 0) {
-        // Half of the angle between two adjacent vertices on the polygon
         const theta = Math.PI / numVertices
-        // Radius of the underlying RoundedPolygon object given the desired radius of the circle
         const polygonRadius = radius / Math.cos(theta)
         return RoundedPolygon.fromNumVertices(
             numVertices,
@@ -318,8 +289,6 @@ class RoundedPolygon {
 
     static star(numVerticesPerRadius, radius = 1, innerRadius = .5, rounding = CornerRounding.Unrounded, innerRounding = null, perVertexRounding = null, centerX = 0, centerY = 0) {
         let pvRounding = perVertexRounding
-        // If no per-vertex rounding supplied and caller asked for inner rounding,
-        // create per-vertex rounding list based on supplied outer/inner rounding parameters
         if (pvRounding == null && innerRounding != null) {
             pvRounding = Array.from({ length: numVerticesPerRadius * 2 }).flatMap(() => [rounding, innerRounding])
         }

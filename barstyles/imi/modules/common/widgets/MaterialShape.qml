@@ -1,4 +1,5 @@
 import "."
+import "shapes"
 import "shapes/material-shapes.js" as MaterialShapes
 
 ShapeCanvas {

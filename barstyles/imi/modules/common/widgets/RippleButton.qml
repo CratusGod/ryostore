@@ -5,36 +5,34 @@ import Qt5Compat.GraphicalEffects
 import QtQuick
 import QtQuick.Controls
 
-/**
- * A button with ripple effect similar to in Material Design.
- */
 Button {
     id: root
     property bool toggled
     property string buttonText
     property bool pointingHandCursor: true
     property real buttonRadius: Appearance?.rounding?.small ?? 4
-    // The pressed radius is the shared model's tightening, unless a caller
-    // names its own - a header button that squares off while open still wins.
     property real buttonRadiusPressed: buttonRadius * (Appearance?.interaction?.pressRadiusScale ?? 1)
-    // ...and it ARRIVES there: the model's press progress is animated, so a
-    // press no longer snaps the corners in one frame.
     property real buttonEffectiveRadius: root.buttonRadius
         + (root.buttonRadiusPressed - root.buttonRadius) * interactionMotion.pressProgress
-    // Per-corner overrides, defaulting to the uniform radius. A button used as
-    // the header of an expanding surface needs square bottom corners while
-    // open so its hover and ripple blend into the content below instead of
-    // leaving rounded notches.
     property real cornerTopLeft: root.buttonEffectiveRadius
     property real cornerTopRight: root.buttonEffectiveRadius
     property real cornerBottomLeft: root.buttonEffectiveRadius
     property real cornerBottomRight: root.buttonEffectiveRadius
     property int rippleDuration: 1200
     property bool rippleEnabled: true
-    property var downAction // When left clicking (down)
-    property var releaseAction // When left clicking (release)
-    property var altAction // When right clicking
-    property var middleClickAction // When middle clicking
+    property bool passive: false
+    containmentMask: root.passive ? nothing : null
+    Item {
+        id: nothing
+        parent: root
+        width: 0
+        height: 0
+        visible: false
+    }
+    property var downAction
+    property var releaseAction
+    property var altAction
+    property var middleClickAction
     property bool border: false
     property real borderWidth: Appearance.borderWidth.standard
     property color colBorder: Appearance?.colors.colOutlineVariant ?? "#79747E"
@@ -46,13 +44,6 @@ Button {
     property color colRipple: Appearance?.colors.colLayer1Active ?? "#D6CEE2"
     property color colRippleToggled: Appearance?.colors.colPrimaryActive ?? "#D6CEE2"
 
-    // Reveal factor for staggered entrances (see ExpandablePanel). Animating
-    // this instead of `opacity` directly keeps the disabled-state binding
-    // below alive - an imperative write to `opacity` destroys it, and every
-    // disabled button then renders as if it were enabled.
-    // The shared interaction states: hover lifts, press settles, disabled is
-    // opacity only. The button keeps owning its colours and its ripple - this
-    // drives the motion, and only the motion.
     property bool interactionMotionEnabled: true
     property InteractionMotion interactionMotion: InteractionMotion {
         hovered: root.hovered && root.interactionMotionEnabled
@@ -62,12 +53,7 @@ Button {
 
     property real appear: 1
     opacity: root.interactionMotion.dimOpacity * root.appear
-    // Staggered entrances read as motion, not just a fade: the button rises
-    // into place as it appears. A Translate leaves `y` alone, which a layout
-    // owns, so this is safe inside a Row/Flow/Layout.
     property real appearRise: 6
-    // Two transforms, not one: the rise belongs to the entrance and the scale
-    // to the interaction, and a control can be doing both at once.
     transform: [
         Translate { y: (1 - root.appear) * root.appearRise },
         Scale {
@@ -97,34 +83,23 @@ Button {
         rippleAnim.restart();
     }
 
+    function fadeRipple() {
+        if (!root.rippleEnabled)
+            return;
+        rippleFadeAnim.restart();
+    }
+
     component RippleAnim: NumberAnimation {
         duration: rippleDuration
         easing.type: Appearance?.animation.elementMoveEnter.type
         easing.bezierCurve: Appearance?.animationCurves.standardDecel
     }
 
-    // The pointer shape, stated as a handler rather than left to the MouseArea.
-    //
-    // A handler attaches to the item it is declared in - handlers are not
-    // Items, so a Control's contentData rules never touch them - which makes
-    // this the one way to say "this whole button is clickable" that cannot be
-    // narrowed by a subclass replacing the contentItem.
     HoverHandler {
         cursorShape: root.pointingHandCursor ? Qt.PointingHandCursor : Qt.ArrowCursor
     }
 
     MouseArea {
-        // Parented to the button ITSELF, not left to default parenting.
-        //
-        // This is declared in the body of a Control, so Qt treats it as
-        // contentData and parents it into `contentItem`. With the default
-        // contentItem - a StyledText the Control sizes to its padded rect -
-        // that is almost the whole button and nobody noticed. Replace the
-        // contentItem with something that sizes itself, and the area collapses
-        // onto it: `IconToolbarButton` centres a 22px glyph, so every toolbar
-        // button in the shell was hoverable and clickable on the icon alone
-        // and dead across the rest of its 40px target. The pointer never
-        // changed, which is how it was found.
         parent: root
         anchors.fill: root
         cursorShape: root.pointingHandCursor ? Qt.PointingHandCursor : Qt.ArrowCursor
@@ -148,7 +123,7 @@ Button {
             root.down = false
             if (event.button != Qt.LeftButton) return;
             if (root.releaseAction) root.releaseAction();
-            root.click() // Because the MouseArea already consumed the event
+            root.click()
             if (!root.rippleEnabled) return;
             rippleFadeAnim.restart();
         }

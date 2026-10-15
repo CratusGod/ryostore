@@ -2,49 +2,29 @@ import ".."
 import QtQuick
 import QtQuick.Layouts
 
-/**
- * A list of rows drawn as one grouped surface: each row gets its own tinted
- * plate, the outer corners are rounded and the inner ones are not.
- *
- * ---- a row that comes and goes declares `rowVisible`, never `visible` -------
- *
- * The plates are built by a `Repeater` over the declared items and each one
- * sizes itself from its item's `implicitHeight`. That arithmetic never asked
- * whether the item was drawn, so a row hidden with `visible: false` kept its
- * plate: a row-height band of `bgcolor` with nothing in it. Two call sites had
- * it - the desktop menu's Edit layout row, which disappears while Edit Mode is
- * on, and Settings > Services > Weather's API-key field, which is OWM-only.
- *
- * The fix cannot be for the plate to mirror its item's `visible`, and that is
- * worth stating because it is the obvious shape. `Item.visible` reads back
- * EFFECTIVE visibility - the item's own flag AND its parents' - and the item is
- * a descendant of the plate, so a plate that hid itself from it would hide the
- * item too, and the item would then report false for ever. Probed with `qml6`
- * against a control row: the item toggled true/false/true while the mirrored
- * one read `false` on every one of the four samples after the first hide.
- *
- * So the declaration is a property of its own. A row that never disappears
- * declares nothing and reads `undefined`, which takes the `?? true` and costs
- * one property lookup.
- */
 Item {
     id: root
     default property list<Item> items
+    property var model: null
+    property Component rowDelegate: null
+    readonly property bool modelDriven: root.rowDelegate !== null
     property real bigRadius: Appearance.rounding.normal
     property real smallRadius: Appearance.rounding.unsharpenmore
     property bool cohesive: false
     property color bgcolor: Appearance.colors.colLayer1
     property real itemVerticalPadding: Appearance.spacing.space300
+    readonly property real selfSurfacedInset: Appearance.spacing.space75
     Layout.fillWidth: true
     implicitHeight: col.implicitHeight
 
-    // Which rows are drawn, in declaration order. A binding rather than a
-    // function so that a row flipping its own `rowVisible` re-rounds the group:
-    // the outer corners belong to the first and last row ON SCREEN, and reading
-    // `isFirst` off the declared index leaves a hidden row holding the group's
-    // rounding while the row above it is drawn square.
     readonly property var drawnIndices: {
         const drawn = [];
+        if (root.modelDriven) {
+            const count = root.model?.length ?? 0;
+            for (let i = 0; i < count; i++)
+                drawn.push(i);
+            return drawn;
+        }
         for (let i = 0; i < root.items.length; i++) {
             const item = root.items[i];
             if (item && (item.rowVisible ?? true))
@@ -59,25 +39,77 @@ Item {
         spacing: root.cohesive ? 0 : Appearance.spacing.space25
 
         Repeater {
-            model: root.items.length
+            model: root.modelDriven ? root.model : root.items.length
             delegate: Rectangle {
+                id: plate
                 required property int index
+                required property var modelData
                 readonly property bool isFirst: index === root.drawnIndices[0]
                 readonly property bool isLast: index === root.drawnIndices[root.drawnIndices.length - 1]
-                // A `ColumnLayout` leaves an invisible child out of the layout
-                // entirely, so this is what takes the plate's height AND the
-                // spacing beside it out of the group rather than collapsing one
-                // and leaving the other.
                 visible: root.drawnIndices.indexOf(index) !== -1
                 Layout.fillWidth: true
-                implicitHeight: (root.items[index]?.implicitHeight ?? 0) + root.itemVerticalPadding
-                color: root.bgcolor
+                implicitHeight: (root.modelDriven
+                    ? (rowLoader.item?.implicitHeight ?? 0)
+                    : (root.items[index]?.implicitHeight ?? 0))
+                    + (ownsItsSurface ? root.selfSurfacedInset * 2 : root.itemVerticalPadding)
+                readonly property bool ownsItsSurface: rowLoader.item?.cornerTopLeft !== undefined
+                color: "transparent"
+
+                readonly property var rowControl: {
+                    const item = root.modelDriven ? rowLoader.item : root.items[index];
+                    return item && item.interactionMotion !== undefined && item.startRipple !== undefined
+                        && !plate.ownsItsSurface ? item : null;
+                }
+                onRowControlChanged: {
+                    if (!plate.rowControl) return;
+                    plate.rowControl.rippleEnabled = false;
+                    plate.rowControl.interactionMotionEnabled = false;
+                }
+                transform: Scale {
+                    origin.x: plate.width / 2
+                    origin.y: plate.height / 2
+                    xScale: surface.interactionMotion.scale
+                    yScale: surface.interactionMotion.scale
+                }
+                RippleButton {
+                    id: surface
+                    anchors.fill: parent
+                    z: -1
+                    transform: []
+                    colBackground: plate.ownsItsSurface ? "transparent" : root.bgcolor
+                    colBackgroundHover: plate.ownsItsSurface ? "transparent" : root.bgcolor
+                    cornerTopLeft: plate.topLeftRadius
+                    cornerTopRight: plate.topRightRadius
+                    cornerBottomLeft: plate.bottomLeftRadius
+                    cornerBottomRight: plate.bottomRightRadius
+                    rippleEnabled: plate.rowControl !== null
+                    interactionMotionEnabled: plate.rowControl !== null
+                    interactionMotion.hovered: surface.interactionMotionEnabled
+                        && (surface.hovered || (plate.rowControl?.hovered ?? false))
+                    interactionMotion.down: surface.interactionMotionEnabled
+                        && (surface.down || (plate.rowControl?.down ?? false))
+                    onClicked: plate.rowControl?.clicked()
+                    Connections {
+                        target: plate.rowControl
+                        function onDownChanged() {
+                            if (plate.rowControl.down) {
+                                const at = surface.mapFromItem(plate.rowControl,
+                                    plate.rowControl.pressPoint.x, plate.rowControl.pressPoint.y);
+                                surface.startRipple(at.x, at.y);
+                            } else {
+                                surface.fadeRipple();
+                            }
+                        }
+                    }
+                }
                 topLeftRadius:     isFirst ? root.bigRadius : (root.cohesive ? 0 : root.smallRadius)
                 topRightRadius:    isFirst ? root.bigRadius : (root.cohesive ? 0 : root.smallRadius)
                 bottomLeftRadius:  isLast  ? root.bigRadius : (root.cohesive ? 0 : root.smallRadius)
                 bottomRightRadius: isLast  ? root.bigRadius : (root.cohesive ? 0 : root.smallRadius)
 
                 Component.onCompleted: {
+                    if (root.modelDriven)
+                        return;
                     const child = root.items[index]
                     if (child) {
                         child.parent = contentArea
@@ -87,8 +119,46 @@ Item {
 
                 ColumnLayout {
                     id: contentArea
-                    anchors { fill: parent; margins: Appearance.spacing.space100 }
+                    anchors { fill: parent; margins: ownsItsSurface ? root.selfSurfacedInset : Appearance.spacing.space100 }
                     spacing: 0
+
+                    Loader {
+                        id: rowLoader
+                        active: root.modelDriven
+                        Layout.fillWidth: true
+                        sourceComponent: root.rowDelegate
+                    }
+                }
+
+                Binding {
+                    target: rowLoader.item
+                    property: "modelData"
+                    value: plate.modelData
+                    when: rowLoader.item !== null
+                }
+                Binding {
+                    target: rowLoader.item
+                    property: "cornerTopLeft"
+                    value: plate.topLeftRadius
+                    when: rowLoader.item?.cornerTopLeft !== undefined
+                }
+                Binding {
+                    target: rowLoader.item
+                    property: "cornerTopRight"
+                    value: plate.topRightRadius
+                    when: rowLoader.item?.cornerTopRight !== undefined
+                }
+                Binding {
+                    target: rowLoader.item
+                    property: "cornerBottomLeft"
+                    value: plate.bottomLeftRadius
+                    when: rowLoader.item?.cornerBottomLeft !== undefined
+                }
+                Binding {
+                    target: rowLoader.item
+                    property: "cornerBottomRight"
+                    value: plate.bottomRightRadius
+                    when: rowLoader.item?.cornerBottomRight !== undefined
                 }
             }
         }

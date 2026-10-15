@@ -49,10 +49,6 @@ ContentSubsection {
                             id: dragHandler
                             target: null
 
-                            // The dragged chip's own slot is a hole rather than
-                            // a candidate: it is still laid out where it
-                            // started, so it would be its own nearest for most
-                            // of the gesture.
                             function slotCentres() {
                                 const centres = []
                                 for (let i = 0; i < itemRepeater.count; i++) {

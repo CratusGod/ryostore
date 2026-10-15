@@ -49,12 +49,12 @@ StyledFlickable {
         anchors {
             left: parent.left
             verticalCenter: parent.verticalCenter
-            leftMargin: Appearance.spacing.space50 - 5 // -5 to account for spacing being simulated by char item width
+            leftMargin: Appearance.spacing.space50 - 5
         }
         spacing: 0
 
         Repeater {
-            model: ScriptModel { // TODO: use proper custom object model to insert new char at the correct pos
+            model: ScriptModel {
                 values: Array(root.length)
             }
 
@@ -80,7 +80,6 @@ StyledFlickable {
                         MaterialShape.Shape.Pentagon,
                     ]
                     shape: charShapes[charItem.index % charShapes.length]
-                    // Animate on appearance
                     color: charItem.selected ? root.selectedTextColor : root.color
                     implicitSize: 0
                     opacity: 0
