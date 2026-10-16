@@ -46,8 +46,11 @@
     "docs/character-design.md",
     "docs/claude-integration.md",
     "docs/demo.gif",
+    "docs/enable-widget.png",
+    "docs/enable.md",
     "docs/first-run.md",
     "docs/first-run.png",
+    "docs/seasonal-outfit.png",
     "docs/seasons.gif",
     "docs/seasons.md"
   ],
@@ -110,7 +113,7 @@
         "type": "choice",
         "label": "Seasonal outfit",
         "group": "Companion",
-        "default": "off",
+        "default": "auto",
         "options": [
           {
             "value": "off",

@@ -49,7 +49,7 @@ Item {
         repeat: true
         onTriggered: svc.today = new Date()
     }
-    readonly property string season: _str("season", "off")
+    readonly property string season: _str("season", "auto")
     onSeasonChanged: today = new Date()
     readonly property string hemisphere: season === "auto-south" ? "south" : "north"
     function autoSeason(d) {

@@ -30,8 +30,8 @@ four small bash scripts. No resident app, no compiled code, no account of its ow
 - **Sets itself up.** First time here? It checks for Claude Code, points you to the
   install guide, and signs you in without leaving the widget. See [First run](#first-run).
 - **Dresses for the season.** Christmas, Halloween, summer, spring and autumn outfits,
-  each with its own falling or flying details. Off by default; *Auto* follows the
-  calendar.
+  each with its own falling or flying details. *Auto* (the default) follows the
+  calendar and stays plain outside the seasons.
 
 ## Requirements
 
@@ -51,8 +51,10 @@ From this repository, anytime:
 ryoku plugin add https://github.com/AdriLabTech/claude-companion --yes
 ```
 
-Then enable it and drag it where you want it. The host remembers the position per
-monitor (Ctrl + wheel or the corner handle resizes it). Remove it with
+Then turn it on under **Ryoku Settings > Desktop > Widgets > Plugins** and drag it where you
+want it; [docs/enable.md](docs/enable.md) walks through it with screenshots, including how to
+choose the seasonal outfit. The host remembers the position per monitor (Ctrl + wheel or the
+corner handle resizes it). Remove it with
 `ryoku plugin remove claude-companion`.
 
 ## First run
@@ -128,7 +130,7 @@ setting, read at start and after each setup check.
 - `bin/gen-sprites.py`: draws every sheet and the generated `SpriteDefs.qml` /
   `SeasonDefs.qml` (needs python-pillow; not run by the plugin).
 
-Docs: [first run](docs/first-run.md) · [seasons](docs/seasons.md) ·
+Docs: [turn it on](docs/enable.md) · [first run](docs/first-run.md) · [seasons](docs/seasons.md) ·
 [Claude integration](docs/claude-integration.md) · [character design](docs/character-design.md).
 
 ## Settings
@@ -143,7 +145,7 @@ kept out of the menu so it stays short.
 | Pixel size of the companion | 3 | scale of the spark (1-8) |
 | Fall asleep after idle | 120 s | when it starts sleeping |
 | Reduced motion | off | static poses, no particles |
-| Seasonal outfit | off | off, auto (northern or southern hemisphere), or one season |
+| Seasonal outfit | auto | off, auto (northern or southern hemisphere), or one season |
 | Claude Code activity | follow | *Off* disables the session watcher (chat only) |
 | Chat working folder | *(empty)* | empty = a private state folder with no project files; set a folder to let Claude work on a project |
 | Chat permissions | ask | `default` (tools needing approval are denied), `plan`, or `acceptEdits` |

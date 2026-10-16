@@ -40,9 +40,9 @@
     {
       "source": "README.md",
       "destination": "README.md",
-      "sha256": "12b8ef179b3685e9c4f153e3b8b1f4ea63c064f6942198fee60c1cea2b8ce4c2",
+      "sha256": "38b78c6a954ee8144961192f489b49d449fc938943ad6b26a32e54d453bc7d31",
       "mode": "0644",
-      "size": 11465,
+      "size": 11701,
       "install": false
     },
     {
@@ -214,6 +214,22 @@
       "install": true
     },
     {
+      "source": "docs/enable-widget.png",
+      "destination": "docs/enable-widget.png",
+      "sha256": "32fa3b2a34a95f3c6990b7460629aab6e2d8929c1e0da333194e68b81bd9493d",
+      "mode": "0644",
+      "size": 88917,
+      "install": true
+    },
+    {
+      "source": "docs/enable.md",
+      "destination": "docs/enable.md",
+      "sha256": "dc5d32a9d4d833587dfe09f7a0754044e620a83a4b625ddf48d3f26ba29d42d4",
+      "mode": "0644",
+      "size": 2046,
+      "install": false
+    },
+    {
       "source": "docs/first-run.md",
       "destination": "docs/first-run.md",
       "sha256": "773b4335d470c60826e85467a85dd1160d6e4d10295118c9b48151cdb453a56b",
@@ -227,6 +243,14 @@
       "sha256": "3090dc7633a0013afae5ebd613f2b9cfdf9c504fc9a369f189bacf20b3f1d5ee",
       "mode": "0644",
       "size": 53942,
+      "install": true
+    },
+    {
+      "source": "docs/seasonal-outfit.png",
+      "destination": "docs/seasonal-outfit.png",
+      "sha256": "9fe78dc886b6143192c6129f6133bd109795a713690bf730caa7191c4dd49c3b",
+      "mode": "0644",
+      "size": 323326,
       "install": true
     },
     {
@@ -248,17 +272,17 @@
     {
       "source": "manifest.json",
       "destination": "manifest.json",
-      "sha256": "5ed725a30375090be90be70ec66f6397db66331f883ea924525eee133ed6df87",
+      "sha256": "8b2baa52678f6cd8cf84a2a8da99d3c53b8c3e91e2e5f41c7a5d729d7fa80283",
       "mode": "0644",
-      "size": 5036,
+      "size": 5121,
       "install": true
     },
     {
       "source": "service/Main.qml",
       "destination": "service/Main.qml",
-      "sha256": "f163e4c9e0fa2b8ec6c9a36f984ff73063914dfcce53f5f5104759df357d4e7c",
+      "sha256": "9268f55d269a57563d52a460b940e9a38aa7f6f5f91582b88d211155f6c621a3",
       "mode": "0644",
-      "size": 19523,
+      "size": 19524,
       "install": true
     }
   ]
