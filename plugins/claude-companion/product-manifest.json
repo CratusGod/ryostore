@@ -1,0 +1,265 @@
+{
+  "schema": 1,
+  "id": "claude-companion",
+  "category": "plugins",
+  "version": "0.1.0",
+  "destination": "ryoku/plugins/claude-companion",
+  "files": [
+    {
+      "source": ".gitignore",
+      "destination": ".gitignore",
+      "sha256": "6b9f20b26bcd5a7db7411faba95d63155e7a096902e18b9de8e4d9876ddba6ee",
+      "mode": "0644",
+      "size": 41,
+      "install": true
+    },
+    {
+      "source": "AGENTS.md",
+      "destination": "AGENTS.md",
+      "sha256": "16678bc9400aa9ec886893cbbd918b6a60935d4d4fa3d7461d4ef14b440d51c0",
+      "mode": "0644",
+      "size": 3965,
+      "install": true
+    },
+    {
+      "source": "CLAUDE.md",
+      "destination": "CLAUDE.md",
+      "sha256": "09ffb8ebdb8adf50bf4bde26dfe2109b4af3a4a8cc3f30cc536be42bb912c033",
+      "mode": "0644",
+      "size": 152,
+      "install": true
+    },
+    {
+      "source": "LICENSE",
+      "destination": "LICENSE",
+      "sha256": "8cebf55f9d7ffe7e4405b373c4337678029f884ff68f3f978163dbd288caa922",
+      "mode": "0644",
+      "size": 1068,
+      "install": false
+    },
+    {
+      "source": "README.md",
+      "destination": "README.md",
+      "sha256": "12b8ef179b3685e9c4f153e3b8b1f4ea63c064f6942198fee60c1cea2b8ce4c2",
+      "mode": "0644",
+      "size": 11465,
+      "install": false
+    },
+    {
+      "source": "assets/particles.png",
+      "destination": "assets/particles.png",
+      "sha256": "cc0899627aa36e4f4967ab4d38adb4d40e2089bda75192f6fe2e319f9546ce1c",
+      "mode": "0644",
+      "size": 385,
+      "install": true
+    },
+    {
+      "source": "assets/preview-widget.png",
+      "destination": "assets/preview-widget.png",
+      "sha256": "0cf4cd971092ff5f6c0f0bd760af44ab29d452bcc2a8e099fbd1067ae21ce67b",
+      "mode": "0644",
+      "size": 20664,
+      "install": false
+    },
+    {
+      "source": "assets/season-autumn.png",
+      "destination": "assets/season-autumn.png",
+      "sha256": "8c1301d96016d124530a61f9f7ba3908b347cfe22f4580488e73db653afdc924",
+      "mode": "0644",
+      "size": 15845,
+      "install": true
+    },
+    {
+      "source": "assets/season-christmas.png",
+      "destination": "assets/season-christmas.png",
+      "sha256": "8cbbcfaf5c245c7e222c080753aac2961ccbdff0368d532cc651e9583e1dd867",
+      "mode": "0644",
+      "size": 16040,
+      "install": true
+    },
+    {
+      "source": "assets/season-halloween.png",
+      "destination": "assets/season-halloween.png",
+      "sha256": "e018fc30f45a58d609fd389cf6979473e6f68740b968f8ec36186a44991e1a3d",
+      "mode": "0644",
+      "size": 15567,
+      "install": true
+    },
+    {
+      "source": "assets/season-spring.png",
+      "destination": "assets/season-spring.png",
+      "sha256": "841cdb3475c7318eaf1c504c0987eb27d54e5a32dcc87f59899ffb2d8f4cc502",
+      "mode": "0644",
+      "size": 18038,
+      "install": true
+    },
+    {
+      "source": "assets/season-summer.png",
+      "destination": "assets/season-summer.png",
+      "sha256": "21f59144f012c3f574c212dedeb4e823da3476adefc13e9742d506e9d57299f6",
+      "mode": "0644",
+      "size": 14598,
+      "install": true
+    },
+    {
+      "source": "assets/sprites.png",
+      "destination": "assets/sprites.png",
+      "sha256": "1f5127fe62018c1c1e19a7503ef9a7aaf3157e5ee57509c34fc04044e5cf4395",
+      "mode": "0644",
+      "size": 14611,
+      "install": true
+    },
+    {
+      "source": "bin/companion-chat",
+      "destination": "bin/companion-chat",
+      "sha256": "1b0273ea92109a9128c87a7c7710d5462213a63f78935db88938bab41f1f159b",
+      "mode": "0755",
+      "size": 4892,
+      "install": true
+    },
+    {
+      "source": "bin/companion-check",
+      "destination": "bin/companion-check",
+      "sha256": "3f0b782f97723f64fe7e3d627064c24a32c56f221d9e1ea01a9d136e61394655",
+      "mode": "0755",
+      "size": 1827,
+      "install": true
+    },
+    {
+      "source": "bin/companion-login",
+      "destination": "bin/companion-login",
+      "sha256": "7518781e97c9adc73906226e2a95aa0b968146197f7b06802f12b0b8694db3c6",
+      "mode": "0755",
+      "size": 2817,
+      "install": true
+    },
+    {
+      "source": "bin/companion-watch",
+      "destination": "bin/companion-watch",
+      "sha256": "66e221e732b9a37cd039f6d399123a568c825b891b92362140f8258a0640e175",
+      "mode": "0755",
+      "size": 5207,
+      "install": true
+    },
+    {
+      "source": "bin/gen-sprites.py",
+      "destination": "bin/gen-sprites.py",
+      "sha256": "1a0c629581ab53a997f4b4bdb45a559ed787226067153f63d833e2593206a7bb",
+      "mode": "0755",
+      "size": 27704,
+      "install": true
+    },
+    {
+      "source": "content/PixelSprite.qml",
+      "destination": "content/PixelSprite.qml",
+      "sha256": "0a2acd00690fb6ec72080114e3c41fbdb13d44240593cb23e898c4b6db3e5492",
+      "mode": "0644",
+      "size": 2487,
+      "install": true
+    },
+    {
+      "source": "content/SeasonDefs.qml",
+      "destination": "content/SeasonDefs.qml",
+      "sha256": "2d95a65952ede9ac0824729c1a2816c83ddc4370d9a8ef91a888bb81630df158",
+      "mode": "0644",
+      "size": 2324,
+      "install": true
+    },
+    {
+      "source": "content/SeasonFx.qml",
+      "destination": "content/SeasonFx.qml",
+      "sha256": "5489e37617a32c6fd02c16772467e827340c19465e3215c5d926ea19757538b6",
+      "mode": "0644",
+      "size": 6311,
+      "install": true
+    },
+    {
+      "source": "content/SpriteDefs.qml",
+      "destination": "content/SpriteDefs.qml",
+      "sha256": "55ddecaaa3575938e7e721b4aa36f66ad9e5af7e50c5d301c3644e06b677cd6a",
+      "mode": "0644",
+      "size": 1333,
+      "install": true
+    },
+    {
+      "source": "content/Widget.qml",
+      "destination": "content/Widget.qml",
+      "sha256": "ef89bfc6cefc7f27a8d7bd0c655bf400cd132db4963dee9b43120267808d0d51",
+      "mode": "0644",
+      "size": 21433,
+      "install": true
+    },
+    {
+      "source": "docs/character-design.md",
+      "destination": "docs/character-design.md",
+      "sha256": "97a5ad503645a8271796e3d606ed6a816bfc4ff4849504eeb11f3f3712b70033",
+      "mode": "0644",
+      "size": 1637,
+      "install": false
+    },
+    {
+      "source": "docs/claude-integration.md",
+      "destination": "docs/claude-integration.md",
+      "sha256": "47725aed8e8dd889091f214e3be7d9f3bcc4477d18a9d2ea4617337df5f00628",
+      "mode": "0644",
+      "size": 4514,
+      "install": false
+    },
+    {
+      "source": "docs/demo.gif",
+      "destination": "docs/demo.gif",
+      "sha256": "cd4eadafb5b37427c61a4457c3e7b0ad1fdcf788e509ef346b00c5717083b266",
+      "mode": "0644",
+      "size": 53677,
+      "install": true
+    },
+    {
+      "source": "docs/first-run.md",
+      "destination": "docs/first-run.md",
+      "sha256": "773b4335d470c60826e85467a85dd1160d6e4d10295118c9b48151cdb453a56b",
+      "mode": "0644",
+      "size": 4081,
+      "install": false
+    },
+    {
+      "source": "docs/first-run.png",
+      "destination": "docs/first-run.png",
+      "sha256": "3090dc7633a0013afae5ebd613f2b9cfdf9c504fc9a369f189bacf20b3f1d5ee",
+      "mode": "0644",
+      "size": 53942,
+      "install": true
+    },
+    {
+      "source": "docs/seasons.gif",
+      "destination": "docs/seasons.gif",
+      "sha256": "a8f9465726f08380e26a1f145b345a329e736b12cd3a37f7943094c66fefe24b",
+      "mode": "0644",
+      "size": 181973,
+      "install": true
+    },
+    {
+      "source": "docs/seasons.md",
+      "destination": "docs/seasons.md",
+      "sha256": "7d913e0b15fb39ecf72f80c992bdcf43afc92cc8b825ebd62b0802095879857f",
+      "mode": "0644",
+      "size": 1766,
+      "install": false
+    },
+    {
+      "source": "manifest.json",
+      "destination": "manifest.json",
+      "sha256": "5ed725a30375090be90be70ec66f6397db66331f883ea924525eee133ed6df87",
+      "mode": "0644",
+      "size": 5036,
+      "install": true
+    },
+    {
+      "source": "service/Main.qml",
+      "destination": "service/Main.qml",
+      "sha256": "f163e4c9e0fa2b8ec6c9a36f984ff73063914dfcce53f5f5104759df357d4e7c",
+      "mode": "0644",
+      "size": 19523,
+      "install": true
+    }
+  ]
+}

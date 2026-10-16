@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# Readiness probe for Claude Companion. Prints ONE JSON line, never account data:
+#
+#   {"cli":true,"version":"2.1.301","jq":true,"inotify":true,
+#    "loggedIn":true,"method":"claude.ai","reducedMotion":false}
+#
+# It answers four questions for the widget's first-run flow: is the `claude`
+# CLI installed, are the two helper tools present, is there a signed-in account,
+# and does the desktop ask for reduced motion. The account email and
+# organisation that `claude auth status` also prints are deliberately dropped.
+set -u
+
+# Quickshell often starts without the user's shell PATH; the native installer
+# puts `claude` in ~/.local/bin.
+export PATH="$HOME/.local/bin:$HOME/.claude/local:/usr/local/bin:$PATH"
+
+has() { command -v "$1" >/dev/null 2>&1; }
+clean() { tr -cd 'A-Za-z0-9._ -' | cut -c1-40; }
+
+cli=false
+version=""
+logged=false
+method=""
+if has claude; then
+    cli=true
+    version=$(timeout 10 claude --version </dev/null 2>/dev/null | head -n1 | awk '{print $1}' | clean)
+    status=$(timeout 20 claude auth status --json </dev/null 2>/dev/null || true)
+    if has jq; then
+        [ "$(printf '%s' "$status" | jq -r '.loggedIn == true' 2>/dev/null)" = true ] && logged=true
+        method=$(printf '%s' "$status" | jq -r '.authMethod // ""' 2>/dev/null | clean)
+    elif printf '%s' "$status" | grep -Eq '"loggedIn"[[:space:]]*:[[:space:]]*true'; then
+        logged=true
+    fi
+fi
+
+jq_ok=false;  has jq && jq_ok=true
+ino_ok=false; has inotifywait && ino_ok=true
+
+reduced=false
+if has gsettings && [ "$(gsettings get org.gnome.desktop.interface enable-animations 2>/dev/null)" = false ]; then
+    reduced=true
+fi
+
+printf '{"cli":%s,"version":"%s","jq":%s,"inotify":%s,"loggedIn":%s,"method":"%s","reducedMotion":%s}\n' \
+    "$cli" "$version" "$jq_ok" "$ino_ok" "$logged" "$method" "$reduced"

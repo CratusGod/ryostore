@@ -1,0 +1,214 @@
+{
+  "id": "claude-companion",
+  "name": "Claude Companion",
+  "version": "0.1.0",
+  "author": "AdriLabTech <labs.lownoise@gmail.com>",
+  "description": "A pixel-art spark that sits on your desktop, mirrors what Claude Code is doing, and opens a small chat when clicked. Guides first-time users through installing and signing in.",
+  "license": "MIT",
+  "official": false,
+  "tags": [
+    "claude",
+    "ai",
+    "desktop-widget",
+    "companion"
+  ],
+  "hosts": [
+    "desktopWidget"
+  ],
+  "entryPoints": {
+    "main": "service/Main.qml",
+    "content": "content/Widget.qml"
+  },
+  "commands": [
+    "bin/companion-check",
+    "bin/companion-login",
+    "bin/companion-chat",
+    "bin/companion-watch"
+  ],
+  "files": [
+    "assets/particles.png",
+    "assets/preview-widget.png",
+    "assets/season-autumn.png",
+    "assets/season-christmas.png",
+    "assets/season-halloween.png",
+    "assets/season-spring.png",
+    "assets/season-summer.png",
+    "assets/sprites.png",
+    "bin/companion-chat",
+    "bin/companion-check",
+    "bin/companion-login",
+    "bin/companion-watch",
+    "bin/gen-sprites.py",
+    "content/PixelSprite.qml",
+    "content/SeasonDefs.qml",
+    "content/SeasonFx.qml",
+    "content/SpriteDefs.qml",
+    "docs/character-design.md",
+    "docs/claude-integration.md",
+    "docs/demo.gif",
+    "docs/first-run.md",
+    "docs/first-run.png",
+    "docs/seasons.gif",
+    "docs/seasons.md"
+  ],
+  "capabilities": {
+    "densities": [
+      "compact"
+    ],
+    "network": [
+      "api.anthropic.com",
+      "claude.ai",
+      "claude.com",
+      "platform.claude.com",
+      "code.claude.com"
+    ]
+  },
+  "defaults": {
+    "host": "desktopWidget",
+    "desktopWidget": {
+      "bg": "none"
+    },
+    "icon": "smart_toy",
+    "label": "Claude Companion"
+  },
+  "dependencies": {
+    "commands": [
+      "claude",
+      "inotifywait",
+      "jq"
+    ]
+  },
+  "metadata": {
+    "settings": [
+      {
+        "key": "pixelScale",
+        "type": "int",
+        "label": "Pixel size of the companion",
+        "group": "Companion",
+        "default": 3,
+        "min": 1,
+        "max": 8
+      },
+      {
+        "key": "sleepAfter",
+        "type": "int",
+        "label": "Fall asleep after idle (seconds)",
+        "group": "Companion",
+        "default": 120,
+        "min": 5,
+        "max": 3600
+      },
+      {
+        "key": "reducedMotion",
+        "type": "toggle",
+        "label": "Reduced motion (static poses, no particles)",
+        "group": "Companion",
+        "default": false
+      },
+      {
+        "key": "season",
+        "type": "choice",
+        "label": "Seasonal outfit",
+        "group": "Companion",
+        "default": "off",
+        "options": [
+          {
+            "value": "off",
+            "label": "Off (plain)"
+          },
+          {
+            "value": "auto",
+            "label": "Auto (northern hemisphere)"
+          },
+          {
+            "value": "auto-south",
+            "label": "Auto (southern hemisphere)"
+          },
+          {
+            "value": "christmas",
+            "label": "Christmas"
+          },
+          {
+            "value": "halloween",
+            "label": "Halloween"
+          },
+          {
+            "value": "summer",
+            "label": "Summer"
+          },
+          {
+            "value": "spring",
+            "label": "Spring"
+          },
+          {
+            "value": "autumn",
+            "label": "Autumn"
+          }
+        ]
+      },
+      {
+        "key": "bridge",
+        "type": "choice",
+        "label": "Claude Code activity",
+        "group": "Claude",
+        "default": "auto",
+        "options": [
+          {
+            "value": "auto",
+            "label": "Follow running sessions"
+          },
+          {
+            "value": "off",
+            "label": "Off (chat only)"
+          }
+        ]
+      },
+      {
+        "key": "chatCwd",
+        "type": "text",
+        "label": "Chat working folder",
+        "group": "Claude",
+        "default": "",
+        "placeholder": "blank = plugin state folder (no project files)"
+      },
+      {
+        "key": "permissionMode",
+        "type": "choice",
+        "label": "Chat permissions",
+        "group": "Claude",
+        "default": "default",
+        "options": [
+          {
+            "value": "default",
+            "label": "Ask (tools needing approval are denied)"
+          },
+          {
+            "value": "plan",
+            "label": "Plan only"
+          },
+          {
+            "value": "acceptEdits",
+            "label": "Auto-accept file edits"
+          }
+        ]
+      },
+      {
+        "key": "loginMethod",
+        "type": "choice",
+        "label": "Sign-in account type",
+        "group": "Claude",
+        "default": "claudeai",
+        "options": [
+          {
+            "value": "claudeai",
+            "label": "Claude account (Pro, Max, Team, Enterprise)"
+          },
+          {
+            "value": "console",
+            "label": "Anthropic Console (API billing)"
+          }
+        ]
+      }
+    ]
+  }
+}

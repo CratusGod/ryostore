@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+# Chat bridge for Claude Companion: runs one turn of the user's own `claude` CLI
+# (print mode, stream-json) and re-emits a few small JSON lines.
+#
+#   companion-chat send  <stateDir|""> <cwd|""> <permissionMode> <message>   ("" = XDG state dir)
+#   companion-chat reset <stateDir>
+#
+# Output, one JSON object per line:
+#   {"k":"session","id":"..."}          conversation id (kept in <stateDir>/chat-session)
+#   {"k":"text","t":"..."}              streamed assistant text
+#   {"k":"tool","name":"Bash","detail":"ls -la"}   a tool the model started
+#   {"k":"result","ok":true,"text":"..."}           end of turn
+#   {"k":"auth"}                        the CLI is not (or no longer) signed in
+#   {"k":"error","msg":"..."}
+#
+# Authentication is whatever `claude` already uses; no credentials are read or
+# stored here. The message is passed as an argv element, never through a shell.
+set -u
+export PATH="$HOME/.local/bin:$HOME/.claude/local:/usr/local/bin:$PATH"
+
+mode="${1:-}"
+state="${2:-}"
+# the desktop host may not hand plugins a state dir, so fall back to the XDG one
+case "$state" in "" | undefined | null) state="${XDG_STATE_HOME:-$HOME/.local/state}/ryoku/plugins/claude-companion" ;; esac
+mkdir -p "$state" 2>/dev/null || { echo '{"k":"error","msg":"cannot create state dir"}'; exit 2; }
+sfile="$state/chat-session"
+
+if [ "$mode" = reset ]; then
+    rm -f "$sfile"
+    exit 0
+fi
+[ "$mode" = send ] || { echo '{"k":"error","msg":"usage: send|reset"}'; exit 2; }
+
+cwd="${3:-}"
+perm="${4:-default}"
+msg="${5:-}"
+[ -n "$msg" ] || { echo '{"k":"error","msg":"empty message"}'; exit 2; }
+command -v claude >/dev/null 2>&1 || { echo '{"k":"error","msg":"claude CLI not found in PATH"}'; exit 127; }
+command -v jq >/dev/null 2>&1 || { echo '{"k":"error","msg":"jq not found in PATH"}'; exit 127; }
+
+[ -n "$cwd" ] && [ -d "$cwd" ] || cwd="$state"
+case "$perm" in default | acceptEdits | plan) ;; *) perm=default ;; esac
+
+args=(-p --output-format stream-json --verbose --include-partial-messages --permission-mode "$perm")
+sid=$(cat "$sfile" 2>/dev/null || true)
+case "$sid" in
+    *[!0-9a-f-]* | "") ;;
+    *) [ "${#sid}" -eq 36 ] && args+=(--resume "$sid") ;;
+esac
+
+cd "$cwd" || exit 1
+errf=$(mktemp "${TMPDIR:-/tmp}/companion-chat.XXXXXX")
+rcf=$(mktemp "${TMPDIR:-/tmp}/companion-chat.XXXXXX")
+authf="$errf.auth"
+trap 'rm -f "$errf" "$rcf" "$authf"' EXIT
+
+# The turn runs as its own job (process group) so that "stop" in the widget,
+# which sends SIGTERM to this script, also stops `claude` instead of leaving a
+# model call running in the background.
+pgid=""
+trap '[ -n "$pgid" ] && kill -TERM -- "-$pgid" 2>/dev/null; rm -f "$errf" "$rcf" "$authf"; exit 143' TERM HUP INT
+set -m
+{
+    # stdin from /dev/null: otherwise the CLI waits ~3 s for piped input every turn
+    claude "${args[@]}" -- "$msg" </dev/null 2>"$errf"
+    echo $? >"$rcf"
+} | jq -c --unbuffered '
+    def short: tostring | .[0:90];
+    def isauth: test("Not logged in|Please run /login|authentication_failed|Invalid API key|OAuth token has expired"; "i");
+    if .type == "system" and .subtype == "init" then {k: "session", id: .session_id}
+    elif .type == "stream_event" and .event.type == "content_block_delta" and .event.delta.type == "text_delta"
+        then {k: "text", t: .event.delta.text}
+    elif .type == "assistant" and .error == "authentication_failed" then {k: "auth"}
+    elif .type == "assistant" then
+        ([.message.content[]? | select(.type == "tool_use")
+          | {k: "tool", name: .name,
+             detail: ((.input.command // .input.file_path // .input.pattern // .input.url // .input.description // "") | short)}][]?)
+    elif .type == "result" and ((.is_error // false) and ((.result // "") | isauth)) then {k: "auth"}
+    elif .type == "result" then {k: "result", ok: ((.is_error // false) | not), text: (.result // "")}
+    else empty end' | while IFS= read -r line; do
+    case "$line" in
+        '{"k":"session"'*) printf '%s' "$line" | jq -r .id >"$sfile" ;;
+        '{"k":"auth"}') [ -e "$authf" ] && continue; : >"$authf" ;;
+    esac
+    printf '%s\n' "$line"
+done &
+pgid=$(jobs -p | head -n1)
+# if this script is SIGKILLed (shell reload) nothing can trap it: a sleeper that
+# only watches our PID stops the turn instead of leaving a model call running
+self=$$
+( while kill -0 "$self" 2>/dev/null; do sleep 2; done; kill -TERM -- "-$pgid" 2>/dev/null ) >/dev/null 2>&1 &
+wd=$!
+wait %1
+kill "$wd" 2>/dev/null
+trap 'rm -f "$errf" "$rcf" "$authf"' EXIT
+rc=$(cat "$rcf" 2>/dev/null)
+rc=${rc:-1}
+# a sign-in problem was already reported as {"k":"auth"}; no second error on top
+if [ "$rc" -ne 0 ] && [ ! -e "$authf" ]; then
+    # a resume that no longer exists must not wedge every later turn
+    grep -q "No conversation found" "$errf" 2>/dev/null && rm -f "$sfile"
+    jq -cn --arg m "Claude Code exited with code $rc" '{k: "error", msg: $m}'
+    exit "$rc"
+fi

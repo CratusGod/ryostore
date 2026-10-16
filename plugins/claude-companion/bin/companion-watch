@@ -1,0 +1,125 @@
+#!/usr/bin/env bash
+# Event-driven Claude Code activity feed for the Claude Companion desktop widget.
+#
+# Prints one JSON line whenever the observable state changes (never on a timer):
+#   {"state":"idle|thinking|working|waiting","tool":"","waitingFor":"",
+#    "sessions":N,"error":false}
+#
+# Sources (read-only, nothing is written):
+#   ~/.claude/sessions/<pid>.json   per-process record Claude Code keeps while a
+#                                   session lives; carries `status` and
+#                                   `waitingFor`. Stale files (dead pid) are ignored.
+#   ~/.claude/projects/*/<id>.jsonl the session transcript; its last entry tells
+#                                   "model is writing" from "a tool is running".
+# Both are observed behaviour of Claude Code, not a documented API; see
+# docs/claude-integration.md. Honours CLAUDE_CONFIG_DIR.
+set -u
+
+root="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
+sessions="$root/sessions"
+projects="$root/projects"
+
+for c in inotifywait jq; do
+    command -v "$c" >/dev/null 2>&1 || { printf '{"state":"idle","error":false,"fatal":"%s missing"}\n' "$c"; exit 3; }
+done
+
+# First run: Claude Code creates these folders the first time it is used. Until
+# then there is nothing to watch, so report "idle, 0 sessions" and wait for them
+# (a cheap 5 s check, only in this state) instead of failing.
+parent=$PPID
+if [ ! -d "$sessions" ] || [ ! -d "$projects" ]; then
+    printf '{"state":"idle","tool":"","waitingFor":"","sessions":0,"error":false}\n'
+    until [ -d "$sessions" ] && [ -d "$projects" ]; do
+        kill -0 "$parent" 2>/dev/null || exit 0
+        sleep 5
+    done
+fi
+
+# transcript tail -> "tool:<name>" | "text" | "error"
+last_activity() {
+    local f="$1"
+    [ -r "$f" ] || { echo text; return; }
+    tail -n 12 "$f" 2>/dev/null | jq -rs '
+        [ .[] | select((.type == "assistant" or .type == "user") and (.isMeta | not)) ] | last // {} |
+        if .isApiErrorMessage == true then "error"
+        elif .type == "assistant" then
+            ([ .message.content[]? | select(.type == "tool_use") | .name ] | last) as $t
+            | if $t then "tool:" + $t else "text" end
+        else "text" end' 2>/dev/null || echo text
+}
+
+snapshot() {
+    local n=0 best=idle tool="" waitingFor="" err=false rank=0
+    local f pid line status wf sid cwd r act enc tr
+    for f in "$sessions"/*.json; do
+        [ -e "$f" ] || continue
+        line=$(jq -r '[(.pid|tostring), .status // "idle", .waitingFor // "", .sessionId // "", .cwd // ""] | join("\u001f")' "$f" 2>/dev/null) || continue
+        IFS=$'\x1f' read -r pid status wf sid cwd <<<"$line"
+        [ -n "$pid" ] && [ -d "/proc/$pid" ] || continue
+        n=$((n + 1))
+        case "$status" in
+            busy | running | working) r=2 ;;
+            waiting | blocked | needs_input) r=3 ;;
+            *) r=1 ;;
+        esac
+        [ -n "$wf" ] && r=3
+        [ "$r" -gt "$rank" ] || continue
+        rank=$r
+        if [ "$r" -eq 3 ]; then
+            best=waiting; waitingFor="$wf"; tool=""
+        elif [ "$r" -eq 2 ]; then
+            enc="${cwd//[^A-Za-z0-9]/-}"
+            tr="$projects/$enc/$sid.jsonl"
+            act=$(last_activity "$tr")
+            case "$act" in
+                tool:*) best=working; tool="${act#tool:}" ;;
+                error) best=thinking; err=true ;;
+                *) best=thinking; tool="" ;;
+            esac
+        fi
+    done
+    # a finished turn that ended in an API error is reported once as idle+error
+    if [ "$best" = idle ] && [ "$n" -gt 0 ]; then
+        for f in "$sessions"/*.json; do
+            [ -e "$f" ] || continue
+            line=$(jq -r '[(.pid|tostring), .sessionId // "", .cwd // ""] | join("\u001f")' "$f" 2>/dev/null) || continue
+            IFS=$'\x1f' read -r pid sid cwd <<<"$line"
+            [ -d "/proc/$pid" ] || continue
+            enc="${cwd//[^A-Za-z0-9]/-}"
+            [ "$(last_activity "$projects/$enc/$sid.jsonl")" = error ] && err=true
+        done
+    fi
+    jq -cn --arg s "$best" --arg t "$tool" --arg w "$waitingFor" --argjson n "$n" --argjson e "$err" \
+        '{state:$s, tool:$t, waitingFor:$w, sessions:$n, error:$e}'
+}
+
+last=""
+emit() {
+    local cur
+    cur=$(snapshot)
+    if [ "$cur" != "$last" ]; then
+        last="$cur"
+        printf '%s\n' "$cur"
+    fi
+}
+
+emit
+
+# Block on filesystem events; coalesce bursts (a busy turn appends constantly).
+# inotifywait runs as a coprocess so this shell stays in `read` and its trap runs
+# at once. Quickshell can still SIGKILL this script on a shell reload, and
+# inotifywait ignores SIGPIPE, so a small watchdog (it only sleeps) kills the
+# stranded inotifywait within ~10 s once this script or its parent is gone.
+self=$$
+coproc INO { exec inotifywait -m -r -q -e modify,close_write,moved_to,create,delete --format x "$sessions" "$projects"; }
+ino=$INO_PID
+trap 'trap - TERM HUP INT EXIT; kill "$ino" 2>/dev/null; exit 0' TERM HUP INT EXIT
+(
+    while kill -0 "$self" 2>/dev/null && kill -0 "$parent" 2>/dev/null; do sleep 10; done
+    kill "$ino" 2>/dev/null
+) >/dev/null 2>&1 &
+while read -r -u "${INO[0]}" _; do
+    n=0
+    while [ "$n" -lt 5 ] && read -t 0.2 -r -u "${INO[0]}" _; do n=$((n + 1)); done   # drain, capped at ~1 s
+    emit
+done
