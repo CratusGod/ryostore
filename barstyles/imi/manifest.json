@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "imi",
   "category": "barstyles",
-  "version": "1.1.1",
+  "version": "1.1.0",
   "destination": "ryoku/barstyles/imi",
   "files": [
     {

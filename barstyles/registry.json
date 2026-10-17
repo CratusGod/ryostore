@@ -49,7 +49,7 @@
     {
       "id": "imi",
       "name": "Imi",
-      "version": "1.1.1",
+      "version": "1.1.0",
       "path": "barstyles/imi",
       "author": "dodo986",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/barstyles/imi",
@@ -68,8 +68,8 @@
       "preview": "assets/preview.png",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "bc8420d0a2a69bb4d33ebfdef71e266f229ec9ce585e7b31d003f221b5889991",
-      "lastUpdated": "2026-10-17",
+      "manifestSha256": "55bc215d38d6b2eb7dc02a3430ec749c0d025af743adecc3ed8909dc6fc288d9",
+      "lastUpdated": "2026-10-07",
       "official": false,
       "license": "GPL-3.0-only"
     },
