@@ -1,0 +1,137 @@
+{
+  "schema": 1,
+  "id": "caffeinated",
+  "category": "plugins",
+  "version": "0.1.0",
+  "destination": "ryoku/plugins/caffeinated",
+  "files": [
+    {
+      "source": ".gitignore",
+      "destination": ".gitignore",
+      "sha256": "379dfa9273952c08fa44042de676ed4addc26a7c4d4c90235d6ff2c73dffb810",
+      "mode": "0644",
+      "size": 22,
+      "install": true
+    },
+    {
+      "source": "AGENTS.md",
+      "destination": "AGENTS.md",
+      "sha256": "d50e349119f682d953075bae7e25879521165f9280df5c24106ceaff30b9e43c",
+      "mode": "0644",
+      "size": 3960,
+      "install": true
+    },
+    {
+      "source": "CLAUDE.md",
+      "destination": "CLAUDE.md",
+      "sha256": "09ffb8ebdb8adf50bf4bde26dfe2109b4af3a4a8cc3f30cc536be42bb912c033",
+      "mode": "0644",
+      "size": 152,
+      "install": true
+    },
+    {
+      "source": "LICENSE",
+      "destination": "LICENSE",
+      "sha256": "0d6c7a8c225bb1695e88a59f07dcbadbf8a0ea4088752ac718290f3628d1cf05",
+      "mode": "0644",
+      "size": 1070,
+      "install": false
+    },
+    {
+      "source": "README.md",
+      "destination": "README.md",
+      "sha256": "9eeae0f0a3a10a2b33988615ef4187f8baaf1444edee1abc9d7de62c8756a40c",
+      "mode": "0644",
+      "size": 3532,
+      "install": false
+    },
+    {
+      "source": "assets/preview-panel.png",
+      "destination": "assets/preview-panel.png",
+      "sha256": "ba136bb92406f20d240f34a918518720e296293347c282a466de0f56ab6a634a",
+      "mode": "0644",
+      "size": 18891,
+      "install": false
+    },
+    {
+      "source": "assets/preview-widget.png",
+      "destination": "assets/preview-widget.png",
+      "sha256": "a7ef0fe373f29f22dee945c3f036d1ca0a1c371df52b9659ff460e43e96e30cc",
+      "mode": "0644",
+      "size": 5443,
+      "install": false
+    },
+    {
+      "source": "assets/screenshot-bar-panel.png",
+      "destination": "assets/screenshot-bar-panel.png",
+      "sha256": "3e9c2c95ec4246c237dcbdbd6187fde9cab744e5aa6a3173b8182f0a73474e15",
+      "mode": "0644",
+      "size": 45547,
+      "install": false
+    },
+    {
+      "source": "assets/screenshot-bar.png",
+      "destination": "assets/screenshot-bar.png",
+      "sha256": "c2318d9a5bdd0f44b3103451c4bac90c06870a513af7c33ae5f2a3589ef7d9cc",
+      "mode": "0644",
+      "size": 9527,
+      "install": false
+    },
+    {
+      "source": "assets/screenshot-settings.png",
+      "destination": "assets/screenshot-settings.png",
+      "sha256": "bff0b6d27e78f7b55e4729c2f7aac4787acd4fe507dd856e9adc7aba90f513f1",
+      "mode": "0644",
+      "size": 38440,
+      "install": false
+    },
+    {
+      "source": "bin/caffeinated",
+      "destination": "bin/caffeinated",
+      "sha256": "9e5c28d39c8656ecd1389e03f1eea819a2322de66b5e1b7e0e93c487e88ec431",
+      "mode": "0755",
+      "size": 10154,
+      "install": true
+    },
+    {
+      "source": "content/CoffeeCup.qml",
+      "destination": "content/CoffeeCup.qml",
+      "sha256": "87c7789db71ad5f76b444caac29df5ebc4eea238de31f1048e9bbc4f649d3f54",
+      "mode": "0644",
+      "size": 2888,
+      "install": true
+    },
+    {
+      "source": "content/Panel.qml",
+      "destination": "content/Panel.qml",
+      "sha256": "48a1ac7afb189d207c6fc97c66dbae371acddca19dbeb49b95361065dc631362",
+      "mode": "0644",
+      "size": 3456,
+      "install": true
+    },
+    {
+      "source": "content/Widget.qml",
+      "destination": "content/Widget.qml",
+      "sha256": "f449108e38c4d09e0fe34529705f1f535ffd0a820ba1d04c3afadb6bb0595e36",
+      "mode": "0644",
+      "size": 1068,
+      "install": true
+    },
+    {
+      "source": "manifest.json",
+      "destination": "manifest.json",
+      "sha256": "25617b6d1f245ac0280dbbecb75b0b269ca32c13f5c465e642d4dd6292dd78c4",
+      "mode": "0644",
+      "size": 2371,
+      "install": true
+    },
+    {
+      "source": "service/Main.qml",
+      "destination": "service/Main.qml",
+      "sha256": "21b86e9e9007b01e4bad200118023df682253c6a3abcc1a584e3613c8aaef542",
+      "mode": "0644",
+      "size": 4360,
+      "install": true
+    }
+  ]
+}

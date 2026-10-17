@@ -1,0 +1,266 @@
+#!/usr/bin/env bash
+# caffeinated: keep the machine running.
+#
+# Holds a strong logind block inhibitor while on. logind rejects a plain
+# Suspend while a strong block is held (only SD_LOGIND_SKIP_INHIBITORS plus the
+# admin-only *-ignore-inhibit polkit action bypasses it), so idle suspend and
+# the Ryoku lid-close suspend both stay off; the lock they run first still runs.
+#
+#   caffeinated on <stateDir> <mode> <batteryFloor>
+#       mode "lock":  block sleep + lid-switch; idle dim/lock/screen-off run.
+#       mode "awake": also block idle, so the screen stays on and unlocked.
+#       batteryFloor: release on battery at or below this percent (0 = never).
+#   caffeinated off <stateDir>
+#   caffeinated status <stateDir> [epochMs]
+#       one JSON line; epochMs re-stamps the attach mark (the shell's poll)
+#   caffeinated attach|detach <stateDir> <epochMs>  shell liveness marks
+#   caffeinated lock                                lock the session now
+#   caffeinated hold <stateDir> …                   internal: the inhibitor body
+#
+# The inhibitor is `setsid systemd-inhibit … caffeinated hold`, so it outlives a
+# shell reload. The holder releases itself when the battery reaches the floor,
+# the login session ends, the shell stays detached for DETACH_GRACE seconds, or
+# its installed helper disappears. A live shell re-stamps attach on every status
+# poll, so a stray instance's detach never outlives it.
+set -u
+
+SELF=$(readlink -f "${BASH_SOURCE[0]}")
+WHO=Caffeinated
+DETACH_GRACE=${CAFFEINATED_DETACH_GRACE:-120}
+TICK=${CAFFEINATED_TICK:-15}
+
+die() { echo "$*" >&2; exit 1; }
+
+ensure_state() {
+    local state=$1
+    mkdir -p -- "$state" || die "cannot create $state"
+    [[ -d $state && ! -L $state ]] || die "state path is not a directory: $state"
+    chmod 700 -- "$state" || die "cannot protect $state"
+}
+
+atomic_write() {
+    local path=$1 value=$2 tmp="$path.tmp.$BASHPID"
+    if ! (umask 077; printf '%s' "$value" >"$tmp"); then
+        rm -f -- "$tmp"
+        return 1
+    fi
+    mv -f -- "$tmp" "$path"
+}
+
+# The pid of our live inhibitor, verified against /proc so a stale pid file or a
+# reused pid never reads as on.
+inhibit_pid() {
+    local state=$1 pid cmd
+    [[ -r $state/inhibit.pid ]] || return 1
+    pid=$(cat "$state/inhibit.pid" 2>/dev/null)
+    [[ $pid =~ ^[0-9]+$ ]] || return 1
+    [[ $(cat "/proc/$pid/comm" 2>/dev/null) == systemd-inhibit ]] || return 1
+    cmd=$(tr '\0' ' ' <"/proc/$pid/cmdline" 2>/dev/null)
+    [[ $cmd == *"--who=$WHO "* && $cmd == *" hold $state "* ]] || return 1
+    printf '%s' "$pid"
+}
+
+# Kill the holder's whole session (systemd-inhibit, the hold loop, its sleep).
+stop_pid() {
+    local pid=$1
+    [[ -d /proc/$pid ]] || return 0
+    kill -TERM -- "-$pid" 2>/dev/null || kill -TERM "$pid" 2>/dev/null || return 1
+    for _ in {1..30}; do
+        [[ -d /proc/$pid ]] || return 0
+        sleep 0.1
+    done
+    kill -KILL -- "-$pid" 2>/dev/null || kill -KILL "$pid" 2>/dev/null || return 1
+    for _ in {1..10}; do
+        [[ -d /proc/$pid ]] || return 0
+        sleep 0.1
+    done
+    return 1
+}
+
+# Print "<percent> <on_ac>" for the lowest discharging battery; nothing on a
+# machine without one.
+battery() {
+    local p ac=0 min=""
+    for p in /sys/class/power_supply/*; do
+        case $(cat "$p/type" 2>/dev/null) in
+        Mains | USB) [[ $(cat "$p/online" 2>/dev/null) == 1 ]] && ac=1 ;;
+        esac
+    done
+    for p in /sys/class/power_supply/*; do
+        [[ $(cat "$p/type" 2>/dev/null) == Battery ]] || continue
+        [[ $(cat "$p/scope" 2>/dev/null) == Device ]] && continue
+        local cap
+        cap=$(cat "$p/capacity" 2>/dev/null) || continue
+        [[ $cap =~ ^[0-9]+$ ]] || continue
+        [[ $(cat "$p/status" 2>/dev/null) == Charging ]] && ac=1
+        [[ -z $min || $cap -lt $min ]] && min=$cap
+    done
+    [[ -n $min ]] && printf '%s %s' "$min" "$ac"
+}
+
+session_alive() {
+    local sid=$1 st
+    [[ -n $sid ]] || return 1
+    st=$(loginctl show-session "$sid" -p State --value 2>/dev/null) || return 1
+    [[ $st == active || $st == online ]]
+}
+
+read_num() { local v; v=$(cat "$1" 2>/dev/null); [[ $v =~ ^[0-9]+$ ]] && printf '%s' "$v" || printf 0; }
+
+json_str() {
+    local s=${1//\\/\\\\}
+    s=${s//\"/\\\"}
+    printf '"%s"' "$s"
+}
+
+# Start a holder for <mode>; prints its pid. systemd-inhibit exits non-zero at
+# once if logind refuses the lock, which this reports.
+start_holder() {
+    local state=$1 mode=$2 floor=$3 sid=$4 what pid message
+    local err="$state/inhibit.err.$BASHPID"
+    what="sleep:handle-lid-switch"
+    [[ $mode == awake ]] && what="idle:sleep:handle-lid-switch"
+    rm -f -- "$err"
+    # A background job in a non-interactive shell is not a group leader, so
+    # setsid execs in place and $! is systemd-inhibit itself.
+    setsid systemd-inhibit --who="$WHO" --why="Keeping the machine running" \
+        --what="$what" --mode=block \
+        "$SELF" hold "$state" "$floor" "$sid" </dev/null >/dev/null 2>"$err" {lk}>&- &
+    pid=$!
+    disown "$pid" 2>/dev/null
+    # The holder must not keep our flock fd ({lk}>&- above), or every later
+    # action would wait on it. Confirm logind actually holds the lock.
+    for _ in {1..30}; do
+        [[ -d /proc/$pid ]] || break
+        if systemd-inhibit --list --no-legend 2>/dev/null | awk -v p="$pid" '$4 == p { f = 1 } END { exit !f }'; then
+            rm -f -- "$err"
+            printf '%s' "$pid"
+            return 0
+        fi
+        sleep 0.1
+    done
+    stop_pid "$pid" || true
+    message=$(head -c 300 "$err" 2>/dev/null)
+    rm -f -- "$err"
+    die "logind refused the inhibitor: $message"
+}
+
+cmd=${1:-status}
+case $cmd in
+on)
+    state=${2:?stateDir}
+    mode=${3:-lock}
+    floor=${4:-0}
+    sid=${XDG_SESSION_ID:-}
+    [[ $mode == lock || $mode == awake ]] || die "unknown mode: $mode"
+    [[ $floor =~ ^[0-9]+$ ]] || floor=0
+    [[ -n $sid ]] || die "cannot hold an inhibitor outside a login session"
+    session_alive "$sid" || die "login session $sid is not alive"
+    if (( floor > 0 )) && b=$(battery) && [[ -n $b && ${b#* } != 1 ]] && (( ${b% *} <= floor )); then
+        die "battery is at ${b% *}%, at or below the ${floor}% floor; plug in or lower the floor"
+    fi
+    ensure_state "$state"
+    exec {lk}>"$state/lock"
+    flock -w 10 "$lk" || die "another caffeinated action is running"
+    rm -f -- "$state/reason"
+    # An explicit enable comes from a live shell: clear any stale detach mark.
+    atomic_write "$state/attach" "$(date +%s%3N)" || die "cannot record shell attachment"
+
+    old=$(inhibit_pid "$state") || old=""
+    oldmode=$(cat "$state/mode" 2>/dev/null)
+    oldfloor=$(cat "$state/floor" 2>/dev/null)
+    if [[ -z $old || $oldmode != "$mode" || $oldfloor != "$floor" ]]; then
+        # Take the replacement lock before dropping the old one. Publish it only
+        # after the old process is gone, so a failed handoff never loses track of
+        # a live inhibitor.
+        new=$(start_holder "$state" "$mode" "$floor" "$sid") || exit 1
+        if [[ -n $old ]] && ! stop_pid "$old"; then
+            stop_pid "$new" || true
+            die "the previous inhibitor did not exit"
+        fi
+        if ! atomic_write "$state/mode" "$mode" ||
+           ! atomic_write "$state/floor" "$floor" ||
+           ! atomic_write "$state/inhibit.pid" "$new"; then
+            stop_pid "$new" || true
+            die "cannot publish inhibitor state"
+        fi
+    fi
+    ;;
+off)
+    state=${2:?stateDir}
+    ensure_state "$state"
+    exec {lk}>"$state/lock"
+    flock -w 10 "$lk" || die "another caffeinated action is running"
+    if pid=$(inhibit_pid "$state"); then
+        stop_pid "$pid" || die "the inhibitor did not exit"
+    fi
+    inhibit_pid "$state" >/dev/null && die "the inhibitor did not exit"
+    rm -f -- "$state/inhibit.pid" "$state/mode" "$state/floor" "$state/reason"
+    ;;
+status)
+    state=${2:?stateDir}
+    ts=${3:-}
+    if [[ $ts =~ ^[0-9]+$ && -d $state ]] && (( ts >= $(read_num "$state/attach") )); then
+        atomic_write "$state/attach" "$ts" || die "cannot record shell attachment"
+    fi
+    on=false mode="" reason="" bat=null ac=true
+    if inhibit_pid "$state" >/dev/null; then
+        on=true
+        mode=$(cat "$state/mode" 2>/dev/null)
+    else
+        reason=$(cat "$state/reason" 2>/dev/null)
+    fi
+    if b=$(battery) && [[ -n $b ]]; then
+        bat=${b% *}
+        [[ ${b#* } == 1 ]] || ac=false
+    fi
+    printf '{"on":%s,"mode":%s,"reason":%s,"battery":%s,"ac":%s}\n' \
+        "$on" "$(json_str "$mode")" "$(json_str "$reason")" "$bat" "$ac"
+    ;;
+attach | detach)
+    state=${2:?stateDir}
+    ts=${3:-0}
+    [[ $ts =~ ^[0-9]+$ ]] || ts=0
+    ensure_state "$state"
+    # Stamps come from the shell's clock at the event, not from when this ran,
+    # so a reload's detach and attach compare correctly even if they race.
+    if (( ts >= $(read_num "$state/$cmd") )); then
+        atomic_write "$state/$cmd" "$ts" || die "cannot record shell $cmd"
+    fi
+    ;;
+hold)
+    state=${2:?stateDir}
+    floor=${3:-0}
+    sid=${4:-}
+    gone=0 dead=0
+    trap 'exit 0' TERM INT HUP
+    release() {
+        atomic_write "$state/reason" "$1" || true
+        exit 0
+    }
+    while :; do
+        if (( floor > 0 )) && b=$(battery) && [[ -n $b ]]; then
+            if [[ ${b#* } != 1 ]] && (( ${b% *} <= floor )); then
+                release "Turned off: battery at ${b% *}%"
+            fi
+        fi
+        # Three misses in a row, so one slow loginctl call does not drop it.
+        if session_alive "$sid"; then dead=0; else (( ++dead >= 3 )) && release "Turned off: the login session ended"; fi
+        det=$(read_num "$state/detach")
+        att=$(read_num "$state/attach")
+        if (( det > att )) && (( $(date +%s) - det / 1000 >= DETACH_GRACE )); then
+            release "Turned off: the plugin was unloaded"
+        fi
+        # Two misses in a row, so an in-place upgrade does not trip it.
+        if [[ -x $SELF ]]; then gone=0; else (( ++gone >= 2 )) && release "Turned off: the plugin was removed"; fi
+        sleep "$TICK" &
+        wait $!
+    done
+    ;;
+lock)
+    exec ryoku-shell lock
+    ;;
+*)
+    die "usage: caffeinated on|off|status|attach|detach|lock …"
+    ;;
+esac
