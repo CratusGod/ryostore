@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# Sign-in helper for Claude Companion: runs the official `claude auth login`
+# and turns its terminal output into a few JSON lines for the widget.
+#
+#   companion-login <claudeai|console>
+#
+#   {"k":"url","url":"https://..."}   the link to open if the browser did not
+#   {"k":"fail","msg":"..."}          the CLI reported a failed sign-in
+#   {"k":"done"}                      the CLI exited (the widget re-checks status)
+#
+# stdin stays connected to the widget: the CLI asks to "paste code" when the
+# browser shows a code instead of finishing on its own, and the widget forwards
+# what the user types. No credential is read, stored or printed here; the
+# tokens are written by `claude` itself into its own config directory.
+set -u
+export PATH="$HOME/.local/bin:$HOME/.claude/local:/usr/local/bin:$PATH"
+
+command -v claude >/dev/null 2>&1 || { echo '{"k":"fail","msg":"claude CLI not found in PATH"}'; echo '{"k":"done"}'; exit 127; }
+case "${1:-claudeai}" in console) flag=--console ;; *) flag=--claudeai ;; esac
+
+# The CLI runs as a coprocess so the script knows its PID: cancelling the widget
+# panel (SIGTERM) or losing the widget (stdin closes) must also stop `claude`,
+# or an orphan keeps waiting for the OAuth callback.
+coproc CLI { exec claude auth login "$flag" 2>&1; }
+cli=$CLI_PID
+exec 3<&"${CLI[0]}" 4>&"${CLI[1]}" 5<&0   # fd 5: our own stdin (background jobs get /dev/null)
+
+# widget stdin -> CLI stdin (the pasted code); EOF means the widget is gone
+( cat <&5 >&4; kill "$cli" 2>/dev/null ) &
+fwd=$!
+
+filter() {
+    local sent_url=0 line url msg
+    # strip OSC-8 hyperlinks and colour codes, then look at each line as it arrives
+    sed -u -E 's/\x1b\]8;;[^\x07\x1b]*(\x07|\x1b\\)//g; s/\x1b\[[0-9;?]*[A-Za-z]//g' <&3 |
+        while IFS= read -r line || [ -n "$line" ]; do
+            if [ "$sent_url" = 0 ]; then
+                url=$(printf '%s' "$line" | grep -Eo 'https?:[/][/][^[:space:]]+' | head -n1)
+                if [ -n "$url" ]; then
+                    jq -cn --arg u "$url" '{k: "url", url: $u}'
+                    sent_url=1
+                fi
+            fi
+            case "$line" in
+                *[Ll]ogin\ failed* | *[Ff]ailed\ to* | *[Ii]nvalid*)
+                    # fixed text: never echo CLI output (it could repeat the pasted code)
+                    echo '{"k":"fail","msg":"Sign-in failed or the code was not accepted. Try again."}' ;;
+            esac
+        done
+}
+filter &
+flt=$!
+
+trap 'kill "$cli" "$fwd" "$flt" 2>/dev/null; echo "{\"k\":\"done\"}"; exit 0' TERM HUP INT
+wait "$cli" 2>/dev/null                       # the CLI is what matters, not the pipe's EOF
+( sleep 1; kill "$flt" 2>/dev/null ) >/dev/null 2>&1 &   # a stray child holding the pipe must not hang us
+wait "$flt" 2>/dev/null
+kill "$fwd" 2>/dev/null
+echo '{"k":"done"}'

@@ -1680,6 +1680,34 @@
       "accent": "#8f8378",
       "surface": "#101010",
       "manifest": "product-manifest.json"
+    },
+    {
+      "id": "claude-companion",
+      "name": "Claude Companion",
+      "version": "0.1.0",
+      "path": "plugins/claude-companion",
+      "author": "AdriLabTech <labs.lownoise@gmail.com>",
+      "upstream": "https://github.com/AdriLabTech/claude-companion",
+      "summary": "A pixel-art spark on your desktop that mirrors what Claude Code is doing, opens a mini chat, guides first-time sign-in and wears seasonal outfits.",
+      "description": "A pixel-art spark that sits on your desktop, mirrors what Claude Code is doing, and opens a small chat when clicked. Guides first-time users through installing and signing in, and dresses for Christmas, Halloween, summer, spring and autumn.",
+      "tags": [
+        "desktop-widget"
+      ],
+      "accent": "#d97757",
+      "surface": "#101010",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "e0bf8760b866a8f92f56c554910dff30a1f13e03873f4eb73636240dbb8708b4",
+      "official": false,
+      "tagline": "A pixel-art spark that mirrors what Claude Code is doing and opens a mini chat.",
+      "icon": "smart_toy",
+      "hosts": [
+        "desktopWidget"
+      ],
+      "lastUpdated": "2026-10-16"
     }
   ]
 }
