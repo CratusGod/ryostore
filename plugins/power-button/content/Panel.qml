@@ -14,11 +14,16 @@ Item {
     property real s: 1
     property real widthBudget: 300
     property bool active: false
+    property string pendingAction: ""
 
     readonly property var service: pluginApi ? pluginApi.mainInstance : null
     readonly property real w: widthBudget > 0 ? widthBudget : 300
 
     implicitWidth: root.w
+    onActiveChanged: if (!active) {
+        root.pendingAction = "";
+        confirmationTimeout.stop();
+    }
     implicitHeight: col.implicitHeight
 
     I18n {
@@ -28,6 +33,13 @@ Item {
     function run(action) {
         if (!root.service)
             return;
+        if (action !== "lock" && root.pendingAction !== action) {
+            root.pendingAction = action;
+            confirmationTimeout.restart();
+            return;
+        }
+        root.pendingAction = "";
+        confirmationTimeout.stop();
         if (action === "powerOff")
             root.service.powerOff();
         else if (action === "reboot")
@@ -38,6 +50,12 @@ Item {
             root.service.lock();
         if (root.pluginApi)
             root.pluginApi.closePanel();
+    }
+
+    Timer {
+        id: confirmationTimeout
+        interval: 4000
+        onTriggered: root.pendingAction = ""
     }
 
     // Full-width action row: GlyphIcon + label (native session glyphs).
@@ -125,14 +143,14 @@ Item {
             spacing: 6 * root.s
 
             ActionRow {
-                label: i18n.tr("Shut Down")
+                label: i18n.tr(root.pendingAction === "powerOff" ? "Confirm shut down" : "Shut Down")
                 icon: "shutdown"
                 danger: true
                 onTapped: root.run("powerOff")
             }
 
             ActionRow {
-                label: i18n.tr("Restart")
+                label: i18n.tr(root.pendingAction === "reboot" ? "Confirm restart" : "Restart")
                 icon: "reboot"
                 onTapped: root.run("reboot")
             }
@@ -140,7 +158,7 @@ Item {
             ActionRow {
                 visible: root.service ? root.service.canHibernate : false
                 // GlyphKit has no "hibernate"; "suspend" is the sleep/moon mark.
-                label: i18n.tr("Hibernate")
+                label: i18n.tr(root.pendingAction === "hibernate" ? "Confirm hibernate" : "Hibernate")
                 icon: "suspend"
                 onTapped: root.run("hibernate")
             }

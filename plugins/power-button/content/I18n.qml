@@ -23,6 +23,9 @@ QtObject {
             "Shut Down": "Desligar",
             "Restart": "Reiniciar",
             "Hibernate": "Hibernar",
+            "Confirm shut down": "Confirmar desligar",
+            "Confirm restart": "Confirmar reinício",
+            "Confirm hibernate": "Confirmar hibernação",
             "Lock screen": "Bloquear o ecrã"
         },
         "pt_BR": {
@@ -30,6 +33,9 @@ QtObject {
             "Shut Down": "Desligar",
             "Restart": "Reiniciar",
             "Hibernate": "Hibernar",
+            "Confirm shut down": "Confirmar desligamento",
+            "Confirm restart": "Confirmar reinício",
+            "Confirm hibernate": "Confirmar hibernação",
             "Lock screen": "Bloquear a tela"
         }
     })

@@ -9,11 +9,12 @@ Session menu on the QS Bar: shut down, reboot, hibernate, or lock the screen.
 - **Widget** — a power glyph on the QS Bar. A click only opens the session panel;
   the glyph never runs an action by itself.
 - **Panel** — Shut Down, Restart, Lock screen, and Hibernate when login1 reports
-  that the machine can hibernate. Labels follow the system locale (English
-  source strings; Portuguese in `content/I18n.qml`). Escape or click outside
-  dismisses via the host `PluginPanel`.
-- **Service** — probes login1 when it loads and, on an explicit panel row tap,
-  runs one of the declared commands below before the panel closes.
+  that the machine can hibernate. Power actions require a second tap within four
+  seconds; Lock screen runs on the first tap. Labels follow the system locale
+  (English source strings; Portuguese in `content/I18n.qml`). Escape or click
+  outside dismisses via the host `PluginPanel`.
+- **Service** — probes login1 when it loads and runs the declared command after
+  the panel confirms the selection.
 
 No mutation ever happens on a bar-mark click.
 
@@ -53,10 +54,10 @@ Every external command, and exactly when:
 | Command | When |
 | --- | --- |
 | `busctl --system call org.freedesktop.login1 /org/freedesktop/login1 org.freedesktop.login1.Manager CanHibernate` | Once when the service loads; Hibernate stays hidden unless the reply is `yes`. |
-| `ryoku-host power poweroff` | Shut Down row tap |
-| `ryoku-host power reboot` | Restart row tap |
-| `ryoku-shell lock` | Lock screen row tap, or immediately before hibernating |
-| `ryoku-host power hibernate` | 900 ms after locking from a Hibernate row tap |
+| `ryoku-host power poweroff` | Second Shut Down tap within four seconds |
+| `ryoku-host power reboot` | Second Restart tap within four seconds |
+| `ryoku-shell lock` | Lock screen tap, or immediately before hibernating |
+| `ryoku-host power hibernate` | 900 ms after locking from a confirmed Hibernate selection |
 
 ## What it never does
 

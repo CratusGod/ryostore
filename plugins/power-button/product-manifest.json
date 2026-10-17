@@ -40,9 +40,9 @@
     {
       "source": "README.md",
       "destination": "README.md",
-      "sha256": "3134b01481213e1fbeecf4b2f509cb031bcab6f2a65b77840c5ee041bd6b8bf6",
+      "sha256": "a2202e020dbfb041824ba4746d13fc12e85062abc053407927a6b8ac4fdcc4ac",
       "mode": "0644",
-      "size": 3634,
+      "size": 3751,
       "install": false
     },
     {
@@ -56,17 +56,17 @@
     {
       "source": "content/I18n.qml",
       "destination": "content/I18n.qml",
-      "sha256": "44f9942a4a808c359abcf7c6c2f94c5ef88a9beab7016bc72fe572455fac7ef0",
+      "sha256": "9f39510ea9bf6381f030218e03c3991b2f1033d81fd0d7191674a2e120a42530",
       "mode": "0644",
-      "size": 1384,
+      "size": 1724,
       "install": true
     },
     {
       "source": "content/Panel.qml",
       "destination": "content/Panel.qml",
-      "sha256": "23ab2bd7ccc1d4f577ff33cf7b32aa4437f044cc50d94c19a847e36a189999c0",
+      "sha256": "fe76184b1403f6af3edd3d1dff4d1f79e8754862bf029ce66591b5d3d4e2b1aa",
       "mode": "0644",
-      "size": 4555,
+      "size": 5243,
       "install": true
     },
     {

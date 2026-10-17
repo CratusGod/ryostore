@@ -1673,7 +1673,7 @@
         "assets/preview-widget.png"
       ],
       "manifest": "product-manifest.json",
-      "manifestSha256": "43c38424f192e18c1467983fd6debeafe6d222e6683c0797f7c504fcd4d80068",
+      "manifestSha256": "124c6d33e2f1b8f8eb362b6b87409e6896c86c424f54a104c6b2cf8c6a82778d",
       "official": false,
       "tagline": "Session menu on the QS Bar: shut down, reboot, hibernate, or lock through Ryoku's session commands.",
       "icon": "power_settings_new",
