@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "id": "gitlab-heatmap",
+  "category": "plugins",
+  "version": "0.1.0",
+  "destination": "ryoku/plugins/gitlab-heatmap",
+  "files": [
+    {
+      "source": "LICENSE",
+      "destination": "LICENSE",
+      "sha256": "2915246de5af02cbdf2eecd701734a3c0f9a4fbfe44eb3a467c299d7a474cdc5",
+      "mode": "0644",
+      "size": 1140,
+      "install": false
+    },
+    {
+      "source": "README.md",
+      "destination": "README.md",
+      "sha256": "13e2fd9ce3c6e392e5a32b9866bae62ab1cd30a1f162c26b328280eb7d06e58e",
+      "mode": "0644",
+      "size": 5271,
+      "install": false
+    },
+    {
+      "source": "assets/preview-widget.png",
+      "destination": "assets/preview-widget.png",
+      "sha256": "01d62bc16712126ddc2e4d7824b146d0a5881a1ff4a744b10e10fef88ae79b90",
+      "mode": "0644",
+      "size": 118136,
+      "install": false
+    },
+    {
+      "source": "bin/gl-contrib",
+      "destination": "bin/gl-contrib",
+      "sha256": "450872d733f2f08981d4c9ce6fd28d647df50617fcb824b164a5dbe9733f759d",
+      "mode": "0755",
+      "size": 4107,
+      "install": true
+    },
+    {
+      "source": "content/Widget.qml",
+      "destination": "content/Widget.qml",
+      "sha256": "f561b415537fc717d0fa807c58be88af7e005b94c9d48d35f26a9b4fd2845b20",
+      "mode": "0644",
+      "size": 58204,
+      "install": true
+    },
+    {
+      "source": "manifest.json",
+      "destination": "manifest.json",
+      "sha256": "e199dde735082a0caec8d95323ad1259327344309219efb37dd43ee73da59ed9",
+      "mode": "0644",
+      "size": 8942,
+      "install": true
+    },
+    {
+      "source": "service/Main.qml",
+      "destination": "service/Main.qml",
+      "sha256": "0fd42ffa19801e420e93647d87325b332e2904c8fd1571488d36d05e1a984852",
+      "mode": "0644",
+      "size": 4248,
+      "install": true
+    }
+  ]
+}
