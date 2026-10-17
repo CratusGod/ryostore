@@ -42,7 +42,7 @@ Rectangle {
             label: root.notificationCount > 0 ? String(root.notificationCount) : ""
             active: root.notificationCount > 0
             accentIndex: 0
-            onClicked: ShellState.requestSurfaceActive("sidebar-left#notices", undefined)
+            onClicked: ShellState.requestSurfaceActive("sidebar-left", undefined)
         }
 
         C.UtilityButton {
