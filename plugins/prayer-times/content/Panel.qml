@@ -23,7 +23,6 @@ Item {
     readonly property bool stale: service ? service.stale === true : false
     readonly property string error: service ? String(service.error) : ""
 
-
     implicitWidth: widthBudget
     implicitHeight: col.implicitHeight + 24 * s
 
