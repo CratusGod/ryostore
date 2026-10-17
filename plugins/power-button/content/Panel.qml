@@ -138,6 +138,7 @@ Item {
             }
 
             ActionRow {
+                visible: root.service ? root.service.canHibernate : false
                 // GlyphKit has no "hibernate"; "suspend" is the sleep/moon mark.
                 label: i18n.tr("Hibernate")
                 icon: "suspend"

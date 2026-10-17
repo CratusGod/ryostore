@@ -3,7 +3,7 @@
   "name": "Session",
   "version": "0.2.2",
   "author": "Felix <eu@leandrofelix.dev.br>",
-  "description": "Session menu on the QS Bar: shut down, reboot, hibernate, or lock via ryoku-shell.",
+  "description": "Session menu on the QS Bar: shut down, reboot, hibernate, or lock through Ryoku's session commands.",
   "license": "MIT",
   "official": false,
   "tags": [
@@ -39,7 +39,8 @@
   },
   "dependencies": {
     "commands": [
-      "systemctl",
+      "busctl",
+      "ryoku-host",
       "ryoku-shell"
     ]
   },

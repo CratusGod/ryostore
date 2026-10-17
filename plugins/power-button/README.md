@@ -8,11 +8,12 @@ Session menu on the QS Bar: shut down, reboot, hibernate, or lock the screen.
 
 - **Widget** — a power glyph on the QS Bar. A click only opens the session panel;
   the glyph never runs an action by itself.
-- **Panel** — Shut Down, Restart, Hibernate, Lock screen. Labels follow the
-  system locale (English source strings; Portuguese in `content/I18n.qml`).
-  Escape or click outside dismisses via the host `PluginPanel`.
-- **Service** — on an explicit panel row tap, runs one of the declared commands
-  below, then closes the panel.
+- **Panel** — Shut Down, Restart, Lock screen, and Hibernate when login1 reports
+  that the machine can hibernate. Labels follow the system locale (English
+  source strings; Portuguese in `content/I18n.qml`). Escape or click outside
+  dismisses via the host `PluginPanel`.
+- **Service** — probes login1 when it loads and, on an explicit panel row tap,
+  runs one of the declared commands below before the panel closes.
 
 No mutation ever happens on a bar-mark click.
 
@@ -32,7 +33,7 @@ under **QS Bar Settings → Community**.
 
 The shell owns the bar host and the panel card. This plugin ships:
 
-- `service/Main.qml` — headless session actions (`systemctl` / `ryoku-shell`).
+- `service/Main.qml` — headless session actions and the login1 hibernate probe.
 - `content/Widget.qml` — the bar glyph (`density: glyph`); click calls
   `pluginApi.togglePanel()`.
 - `content/Panel.qml` — the session list (`density: full`); rows call the
@@ -47,14 +48,15 @@ None. `metadata.settings` is empty.
 
 ## What it runs
 
-Every external command, and exactly when (only after a panel row tap):
+Every external command, and exactly when:
 
 | Command | When |
 | --- | --- |
-| `systemctl poweroff` | Shut Down |
-| `systemctl reboot` | Restart |
-| `systemctl hibernate` | Hibernate |
-| `ryoku-shell lock` | Lock screen (same path as Super+L / native quick settings) |
+| `busctl --system call org.freedesktop.login1 /org/freedesktop/login1 org.freedesktop.login1.Manager CanHibernate` | Once when the service loads; Hibernate stays hidden unless the reply is `yes`. |
+| `ryoku-host power poweroff` | Shut Down row tap |
+| `ryoku-host power reboot` | Restart row tap |
+| `ryoku-shell lock` | Lock screen row tap, or immediately before hibernating |
+| `ryoku-host power hibernate` | 900 ms after locking from a Hibernate row tap |
 
 ## What it never does
 
@@ -66,7 +68,8 @@ Every external command, and exactly when (only after a panel row tap):
 ## Requirements
 
 - A running Ryoku shell with `Ryoku.PluginKit`.
-- `systemctl` and `ryoku-shell` on `PATH` (declared in `dependencies.commands`).
+- `busctl`, `ryoku-host`, and `ryoku-shell` on `PATH` (declared in
+  `dependencies.commands`).
 
 ## Source
 

@@ -40,9 +40,9 @@
     {
       "source": "README.md",
       "destination": "README.md",
-      "sha256": "44c96615c4e8f6a98a51108d049c6b0e0165d932056ec733d288819594cc2701",
+      "sha256": "3134b01481213e1fbeecf4b2f509cb031bcab6f2a65b77840c5ee041bd6b8bf6",
       "mode": "0644",
-      "size": 3289,
+      "size": 3634,
       "install": false
     },
     {
@@ -64,9 +64,9 @@
     {
       "source": "content/Panel.qml",
       "destination": "content/Panel.qml",
-      "sha256": "8fb79dd618ca787eed13cd69e1aa3b490e138e013a6198ed61fd74cf4a5139f1",
+      "sha256": "23ab2bd7ccc1d4f577ff33cf7b32aa4437f044cc50d94c19a847e36a189999c0",
       "mode": "0644",
-      "size": 4481,
+      "size": 4555,
       "install": true
     },
     {
@@ -80,17 +80,17 @@
     {
       "source": "manifest.json",
       "destination": "manifest.json",
-      "sha256": "4a8162e52d522f00dabf5ee48e97d97420e474d950f97e9b2842d65714cbdc25",
+      "sha256": "49216aaa386cd928007bb4075ed95077e1eaf7d337999e5a312c9d667871252c",
       "mode": "0644",
-      "size": 904,
+      "size": 938,
       "install": true
     },
     {
       "source": "service/Main.qml",
       "destination": "service/Main.qml",
-      "sha256": "743bb125c13a59d1a1f4ee62a1dc3f40bf1c1bf9991f8d1de9caded0b69729bb",
+      "sha256": "a4dd16ce0f8ebc7b6c5fcaefd36287ecca08ee44f25cb5bce5a4ef9ffb55f7df",
       "mode": "0644",
-      "size": 626,
+      "size": 1714,
       "install": true
     }
   ]
