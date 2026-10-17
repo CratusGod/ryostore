@@ -1700,7 +1700,7 @@
         "assets/preview-widget.png"
       ],
       "manifest": "product-manifest.json",
-      "manifestSha256": "a0c7f2659fcf7647a8ad19adaa048e0ad2a25ce4d4d444db0463abb5ab18e869",
+      "manifestSha256": "e0bf8760b866a8f92f56c554910dff30a1f13e03873f4eb73636240dbb8708b4",
       "official": false,
       "tagline": "A pixel-art spark that mirrors what Claude Code is doing and opens a mini chat.",
       "icon": "smart_toy",

@@ -40,9 +40,9 @@
     {
       "source": "README.md",
       "destination": "README.md",
-      "sha256": "38b78c6a954ee8144961192f489b49d449fc938943ad6b26a32e54d453bc7d31",
+      "sha256": "090616467c59200a86b48a7331e9d19afea5c1f04a425dce60054cc838ba548f",
       "mode": "0644",
-      "size": 11701,
+      "size": 11690,
       "install": false
     },
     {
@@ -112,9 +112,9 @@
     {
       "source": "bin/companion-chat",
       "destination": "bin/companion-chat",
-      "sha256": "1b0273ea92109a9128c87a7c7710d5462213a63f78935db88938bab41f1f159b",
+      "sha256": "8752668e1f83bd3ff0fb25b70a9374f59c2122b3fad8e4058f8737b6b9f49289",
       "mode": "0755",
-      "size": 4892,
+      "size": 4878,
       "install": true
     },
     {
@@ -136,9 +136,9 @@
     {
       "source": "bin/companion-watch",
       "destination": "bin/companion-watch",
-      "sha256": "66e221e732b9a37cd039f6d399123a568c825b891b92362140f8258a0640e175",
+      "sha256": "21e5d7e24661a229835ac51036af77243e6379f7563d85a339a6345daf613650",
       "mode": "0755",
-      "size": 5207,
+      "size": 5554,
       "install": true
     },
     {
@@ -200,9 +200,9 @@
     {
       "source": "docs/claude-integration.md",
       "destination": "docs/claude-integration.md",
-      "sha256": "47725aed8e8dd889091f214e3be7d9f3bcc4477d18a9d2ea4617337df5f00628",
+      "sha256": "968857a33be26381a93e4cce98781679c8441c63a44b5a2a168544fea89b0ff2",
       "mode": "0644",
-      "size": 4514,
+      "size": 4572,
       "install": false
     },
     {
@@ -272,9 +272,9 @@
     {
       "source": "manifest.json",
       "destination": "manifest.json",
-      "sha256": "8b2baa52678f6cd8cf84a2a8da99d3c53b8c3e91e2e5f41c7a5d729d7fa80283",
+      "sha256": "758abc6fe4c09e34765508fee8f7b12edb7118ac99f4af52e573cab127cd66a9",
       "mode": "0644",
-      "size": 5121,
+      "size": 5014,
       "install": true
     },
     {

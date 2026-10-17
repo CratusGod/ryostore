@@ -17,8 +17,8 @@ in the frame); the answer is a real `claude -p` response.*
 > reviewed by Anthropic. "Claude" and "Claude Code" are Anthropic's names; the spark is
 > an original drawing, not Anthropic's logo.
 
-It is a [Ryoku](https://ryoku.sh) desktop-widget plugin (Quickshell on Hyprland): QML plus
-four small bash scripts. No resident app, no compiled code, no account of its own.
+It is a [Ryoku](https://ryoku.sh) desktop-widget plugin for the shared Quickshell
+desktop: QML plus four small bash scripts. No resident app, no compiled code, no account of its own.
 
 ## What it does
 
@@ -37,7 +37,7 @@ four small bash scripts. No resident app, no compiled code, no account of its ow
 
 | What | Why |
 | --- | --- |
-| [Ryoku](https://ryoku.sh) (Hyprland + Quickshell) | the widget host |
+| [Ryoku](https://ryoku.sh) + Quickshell | the widget host |
 | `claude` (Claude Code CLI) | does all the talking to Claude; the widget guides you to install it |
 | `jq`, `inotify-tools` (`inotifywait`) | read the CLI's JSON output; watch session files without polling |
 | A Claude plan with Claude Code access (Pro, Max, Team, Enterprise) or an Anthropic Console account | needed to sign in; the free claude.ai plan does not include Claude Code |
@@ -148,7 +148,7 @@ kept out of the menu so it stays short.
 | Seasonal outfit | auto | off, auto (northern or southern hemisphere), or one season |
 | Claude Code activity | follow | *Off* disables the session watcher (chat only) |
 | Chat working folder | *(empty)* | empty = a private state folder with no project files; set a folder to let Claude work on a project |
-| Chat permissions | ask | `default` (tools needing approval are denied), `plan`, or `acceptEdits` |
+| Chat permissions | ask | `default` (tools needing approval are denied) or `plan` |
 | Sign-in account type | Claude account | or Anthropic Console (API billing) |
 
 ## What it runs, reads, writes and contacts
@@ -172,8 +172,8 @@ Written for the Ryoku plugin rules (R6 to R11); the same facts, in one place.
 - **Writes:** the plugin itself writes only `$XDG_STATE_HOME/ryoku/plugins/claude-companion/`
   (the id of your current chat, a few bytes) and temporary files; never `~/.claude`, never
   shell config. The `claude` processes it starts write their usual session data (and the
-  credentials after sign-in) in Claude Code's own config directory, and with the
-  `acceptEdits` permission they can edit files in the chat working folder.
+  credentials after sign-in) in Claude Code's own config directory. The plugin offers only
+  `default` and `plan` modes; it does not bypass permissions or pre-approve tools.
 - **Network:** none of its own. `claude` talks to `api.anthropic.com`; signing in involves
   `claude.ai` / `claude.com` / `platform.claude.com`; the install guide button opens
   `code.claude.com` in your browser. They are declared in `capabilities.network`.
@@ -186,7 +186,7 @@ Written for the Ryoku plugin rules (R6 to R11); the same facts, in one place.
 ## Limits worth knowing
 
 - The chat is headless: a tool that needs approval is denied and Claude says so. Pick
-  `plan` or `acceptEdits` in the settings if you want something else.
+  `plan` in the settings for a read-only planning session.
 - Success and error are inferred (Claude Code publishes no "outcome" event): a turn that
   ends after a failed tool can still read as success.
 - The widget lives on the wallpaper layer, so windows cover it; opening the panel grows

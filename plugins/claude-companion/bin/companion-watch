@@ -48,6 +48,15 @@ last_activity() {
         else "text" end' 2>/dev/null || echo text
 }
 
+valid_pid() {
+    case "$1" in "" | *[!0-9]*) return 1 ;; *) return 0 ;; esac
+}
+
+valid_sid() {
+    case "$1" in "" | *[!0-9a-fA-F-]*) return 1 ;; esac
+    [ "${#1}" -eq 36 ]
+}
+
 snapshot() {
     local n=0 best=idle tool="" waitingFor="" err=false rank=0
     local f pid line status wf sid cwd r act enc tr
@@ -55,7 +64,7 @@ snapshot() {
         [ -e "$f" ] || continue
         line=$(jq -r '[(.pid|tostring), .status // "idle", .waitingFor // "", .sessionId // "", .cwd // ""] | join("\u001f")' "$f" 2>/dev/null) || continue
         IFS=$'\x1f' read -r pid status wf sid cwd <<<"$line"
-        [ -n "$pid" ] && [ -d "/proc/$pid" ] || continue
+        valid_pid "$pid" && [ -d "/proc/$pid" ] || continue
         n=$((n + 1))
         case "$status" in
             busy | running | working) r=2 ;;
@@ -68,9 +77,12 @@ snapshot() {
         if [ "$r" -eq 3 ]; then
             best=waiting; waitingFor="$wf"; tool=""
         elif [ "$r" -eq 2 ]; then
-            enc="${cwd//[^A-Za-z0-9]/-}"
-            tr="$projects/$enc/$sid.jsonl"
-            act=$(last_activity "$tr")
+            act=text
+            if valid_sid "$sid"; then
+                enc="${cwd//[^A-Za-z0-9]/-}"
+                tr="$projects/$enc/$sid.jsonl"
+                act=$(last_activity "$tr")
+            fi
             case "$act" in
                 tool:*) best=working; tool="${act#tool:}" ;;
                 error) best=thinking; err=true ;;
@@ -84,9 +96,11 @@ snapshot() {
             [ -e "$f" ] || continue
             line=$(jq -r '[(.pid|tostring), .sessionId // "", .cwd // ""] | join("\u001f")' "$f" 2>/dev/null) || continue
             IFS=$'\x1f' read -r pid sid cwd <<<"$line"
-            [ -d "/proc/$pid" ] || continue
-            enc="${cwd//[^A-Za-z0-9]/-}"
-            [ "$(last_activity "$projects/$enc/$sid.jsonl")" = error ] && err=true
+            valid_pid "$pid" && [ -d "/proc/$pid" ] || continue
+            if valid_sid "$sid"; then
+                enc="${cwd//[^A-Za-z0-9]/-}"
+                [ "$(last_activity "$projects/$enc/$sid.jsonl")" = error ] && err=true
+            fi
         done
     fi
     jq -cn --arg s "$best" --arg t "$tool" --arg w "$waitingFor" --argjson n "$n" --argjson e "$err" \

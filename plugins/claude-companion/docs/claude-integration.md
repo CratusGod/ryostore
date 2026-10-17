@@ -67,7 +67,8 @@ survives closing the panel and restarting the shell. **new** in the panel delete
 - Authentication is whatever `claude` already has. No key or conversation is stored by the plugin.
 - Default working folder is the plugin state dir (no project files); set **Chat working folder** to
   give Claude a project. Default permission mode is `default`: tools needing approval are denied in
-  headless mode and Claude says so. `plan` and `acceptEdits` are selectable.
+  headless mode and Claude says so. `plan` is also selectable; the plugin does not expose a
+  permission-bypass or tool-allowing mode.
 - Network: `claude` itself talks to `api.anthropic.com`; the plugin opens no connection.
 
 ## First run

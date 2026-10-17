@@ -39,7 +39,7 @@ command -v claude >/dev/null 2>&1 || { echo '{"k":"error","msg":"claude CLI not 
 command -v jq >/dev/null 2>&1 || { echo '{"k":"error","msg":"jq not found in PATH"}'; exit 127; }
 
 [ -n "$cwd" ] && [ -d "$cwd" ] || cwd="$state"
-case "$perm" in default | acceptEdits | plan) ;; *) perm=default ;; esac
+case "$perm" in default | plan) ;; *) perm=default ;; esac
 
 args=(-p --output-format stream-json --verbose --include-partial-messages --permission-mode "$perm")
 sid=$(cat "$sfile" 2>/dev/null || true)

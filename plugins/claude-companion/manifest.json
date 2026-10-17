@@ -188,10 +188,6 @@
           {
             "value": "plan",
             "label": "Plan only"
-          },
-          {
-            "value": "acceptEdits",
-            "label": "Auto-accept file edits"
           }
         ]
       },
