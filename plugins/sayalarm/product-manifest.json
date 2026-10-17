@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "id": "sayalarm",
+  "category": "plugins",
+  "version": "1.0.0",
+  "destination": "ryoku/plugins/sayalarm",
+  "files": [
+    {
+      "source": "LICENSE",
+      "destination": "LICENSE",
+      "sha256": "887788bb068f70db132f817aa9b3457cd4d47984bb89dcc3fd9fa3452a492b70",
+      "mode": "0644",
+      "size": 1067,
+      "install": false
+    },
+    {
+      "source": "README.md",
+      "destination": "README.md",
+      "sha256": "b9e8d9984b85e871416ed87486183890e1d307a675cc0b27c3c36457f053b2f7",
+      "mode": "0644",
+      "size": 2446,
+      "install": false
+    },
+    {
+      "source": "assets/preview-widget.png",
+      "destination": "assets/preview-widget.png",
+      "sha256": "afad90c8be533ecb7b0e6c150d3eba38d68fe25152eeec7081d6ff18d1968e21",
+      "mode": "0644",
+      "size": 11070,
+      "install": false
+    },
+    {
+      "source": "bin/next-alarm",
+      "destination": "bin/next-alarm",
+      "sha256": "53c3f2514983252940c4a364e933505da137c8cbc540395fccbd798311a26db3",
+      "mode": "0755",
+      "size": 1982,
+      "install": true
+    },
+    {
+      "source": "bin/open-sayalarm",
+      "destination": "bin/open-sayalarm",
+      "sha256": "8f51bb419897ff72086dd0e16da85c18af6cfa5ad618a40bc2bacce409095617",
+      "mode": "0755",
+      "size": 531,
+      "install": true
+    },
+    {
+      "source": "content/Panel.qml",
+      "destination": "content/Panel.qml",
+      "sha256": "567f82521b9202e3942433f52ec15f76ced67a1266caad3cd0141e4797ea7903",
+      "mode": "0644",
+      "size": 3459,
+      "install": true
+    },
+    {
+      "source": "content/Widget.qml",
+      "destination": "content/Widget.qml",
+      "sha256": "7cee8105d8f1f14289101fe570e9720e9718e23d6b73e946d08a491ac1399c1b",
+      "mode": "0644",
+      "size": 1682,
+      "install": true
+    },
+    {
+      "source": "manifest.json",
+      "destination": "manifest.json",
+      "sha256": "632491cf9b7a083ba69dc180bb7a625cee794024c7f6e5d190a1cd35904d9d89",
+      "mode": "0644",
+      "size": 996,
+      "install": true
+    },
+    {
+      "source": "service/Main.qml",
+      "destination": "service/Main.qml",
+      "sha256": "6e3d82d3dfe61f8dbd1cbf8a99bbc6ab28141efec75875d5ced24bfd03b4e632",
+      "mode": "0644",
+      "size": 2318,
+      "install": true
+    }
+  ],
+  "license": "MIT"
+}

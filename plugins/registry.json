@@ -1680,6 +1680,35 @@
       "accent": "#8f8378",
       "surface": "#101010",
       "manifest": "product-manifest.json"
+    },
+    {
+      "id": "sayalarm",
+      "name": "SayAlarm",
+      "path": "plugins/sayalarm",
+      "version": "1.0.0",
+      "author": "KingsMill8",
+      "upstream": "https://github.com/KingsMill8/sayAlarm/tree/main/ryoku-bar-widget",
+      "official": false,
+      "tagline": "Your next SayAlarm on the bar.",
+      "description": "Shows the next SayAlarm time, note and live countdown on the bar, with a quick-open details panel.",
+      "icon": "alarm",
+      "tags": [
+        "bar-widget"
+      ],
+      "hosts": [
+        "topbarGlyph"
+      ],
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png"
+      ],
+      "lastUpdated": "2026-10-17",
+      "manifestSha256": "ad6b0484f22248ef9a48583a218dc8f55abc80c5fcf550951e19b2c5927fe2ee",
+      "summary": "Shows the next SayAlarm time, note and live countdown on the bar, with a quick-open details panel.",
+      "accent": "#8f8378",
+      "surface": "#101010",
+      "license": "MIT",
+      "manifest": "product-manifest.json"
     }
   ]
 }
