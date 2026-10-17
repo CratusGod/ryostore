@@ -42,7 +42,7 @@ Rectangle {
             label: root.notificationCount > 0 ? String(root.notificationCount) : ""
             active: root.notificationCount > 0
             accentIndex: 0
-            onClicked: ShellState.requestSurfaceActive("quick-settings#notifications", undefined)
+            onClicked: ShellState.requestSurfaceActive("sidebar-left", undefined)
         }
 
         C.UtilityButton {
@@ -93,7 +93,7 @@ Rectangle {
             colors: root.colors
             icon: "tune"
             accentIndex: 4
-            onClicked: ShellState.requestSurfaceActive("quick-settings", undefined)
+            onClicked: ShellState.requestSurfaceActive("sidebar-left", undefined)
         }
     }
 }

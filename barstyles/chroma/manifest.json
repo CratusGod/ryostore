@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "chroma",
   "category": "barstyles",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "destination": "ryoku/barstyles/chroma",
   "files": [
     {
@@ -73,8 +73,8 @@
       "source": "components/StatusCluster.qml",
       "destination": "components/StatusCluster.qml",
       "mode": "0644",
-      "size": 3294,
-      "sha256": "4b8187186035ec998b483911a448f7ffc00aab4d28c20d5fb5c5f75584c067ee",
+      "size": 3276,
+      "sha256": "3f8921f4a3ae376f1a7a180fa41e398981f5a3978d52e92125e81aed5592e6b0",
       "install": true
     },
     {
