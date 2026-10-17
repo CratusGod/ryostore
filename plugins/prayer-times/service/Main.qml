@@ -86,6 +86,9 @@ Item {
     onCountryChanged: svc.refresh()
     onMethodChanged: svc.refresh()
     onSchoolChanged: svc.refresh()
+    // The host sets pluginApi after the service exists, so the first fetch
+    // has to wait for it rather than run from Component.onCompleted alone.
+    onPluginApiChanged: svc.refresh()
 
     function fmtTime(hhmm) {
         var p = String(hhmm).split(":");

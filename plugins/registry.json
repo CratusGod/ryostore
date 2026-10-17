@@ -1762,7 +1762,7 @@
         "assets/preview-widget.png"
       ],
       "manifest": "product-manifest.json",
-      "manifestSha256": "036c2ebed2309b4935aa93e7daf5d2e80d00dfc01e447b31052857576a747801",
+      "manifestSha256": "2d60f91eab74b6fc5107c408de255f21ef360111125d428ea3962ed18a2b8306",
       "official": false,
       "license": "MIT",
       "tagline": "Daily prayer times in the bar, with the next prayer and a live countdown.",

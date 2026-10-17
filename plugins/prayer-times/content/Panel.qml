@@ -23,6 +23,12 @@ Item {
     readonly property bool stale: service ? service.stale === true : false
     readonly property string error: service ? String(service.error) : ""
 
+    // Opening the panel retries only when there is nothing fresh to show, so a
+    // failed first fetch recovers without a request on every open.
+    onActiveChanged: if (active && root.service
+                         && (root.service.fetchDate === "" || root.stale))
+        root.service.refresh()
+
     implicitWidth: widthBudget
     implicitHeight: col.implicitHeight + 24 * s
 
