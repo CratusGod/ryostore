@@ -1836,6 +1836,36 @@
       ],
       "lastUpdated": "2026-10-13",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/caffeinated"
+    },
+    {
+      "id": "power-button",
+      "name": "Session",
+      "version": "0.2.2",
+      "path": "plugins/power-button",
+      "author": "Felix <eu@leandrofelix.dev.br>",
+      "upstream": "https://github.com/leandrofelix-dev/power-button",
+      "summary": "Session menu on the QS Bar: shut down, reboot, hibernate, or lock through Ryoku's session commands.",
+      "description": "Session menu on the QS Bar: shut down, reboot, hibernate, or lock through Ryoku's session commands.",
+      "tags": [
+        "session",
+        "power",
+        "bar-widget"
+      ],
+      "accent": "#8f8378",
+      "surface": "#101010",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "124c6d33e2f1b8f8eb362b6b87409e6896c86c424f54a104c6b2cf8c6a82778d",
+      "official": false,
+      "tagline": "Session menu on the QS Bar: shut down, reboot, hibernate, or lock through Ryoku's session commands.",
+      "icon": "power_settings_new",
+      "hosts": [
+        "topbarGlyph"
+      ],
+      "lastUpdated": "2026-10-08"
     }
   ]
 }

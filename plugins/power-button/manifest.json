@@ -1,0 +1,50 @@
+{
+  "id": "power-button",
+  "name": "Session",
+  "version": "0.2.2",
+  "author": "Felix <eu@leandrofelix.dev.br>",
+  "description": "Session menu on the QS Bar: shut down, reboot, hibernate, or lock through Ryoku's session commands.",
+  "license": "MIT",
+  "official": false,
+  "tags": [
+    "session",
+    "power",
+    "bar-widget"
+  ],
+  "hosts": [
+    "topbarGlyph"
+  ],
+  "entryPoints": {
+    "main": "service/Main.qml",
+    "content": "content/Widget.qml",
+    "panel": "content/Panel.qml"
+  },
+  "panel": {
+    "width": 300
+  },
+  "files": [
+    "content/I18n.qml",
+    "assets/preview-widget.png"
+  ],
+  "capabilities": {
+    "densities": [
+      "glyph",
+      "full"
+    ]
+  },
+  "defaults": {
+    "host": "topbarGlyph",
+    "icon": "power_settings_new",
+    "label": "Session"
+  },
+  "dependencies": {
+    "commands": [
+      "busctl",
+      "ryoku-host",
+      "ryoku-shell"
+    ]
+  },
+  "metadata": {
+    "settings": []
+  }
+}
