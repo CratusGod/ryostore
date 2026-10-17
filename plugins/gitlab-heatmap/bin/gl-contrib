@@ -1,0 +1,126 @@
+#!/usr/bin/env python3
+"""Print a GitLab user's public contribution calendar as JSON.
+
+usage: gl-contrib <username>
+
+GitLab only exposes the rolling year: the public endpoint
+https://gitlab.com/users/<user>/calendar.json answers {"YYYY-MM-DD": count}
+with no token.
+
+Levels are computed here, not by GitLab: active-day counts are bucketed into
+quartiles (0 = no activity, 1-4 = quartile of the user's own distribution).
+"""
+import datetime
+import json
+import re
+import sys
+import urllib.error
+import urllib.parse
+import urllib.request
+
+USAGE = "usage: gl-contrib <username>"
+MAX_RESPONSE_BYTES = 1024 * 1024
+# GitLab usernames are 2-255 path-safe characters, cannot begin with
+# punctuation, and cannot end with a period.
+USER_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,253}[A-Za-z0-9_-]")
+
+
+class GitLabRedirectHandler(urllib.request.HTTPRedirectHandler):
+    """Refuse redirects outside the one declared network capability."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        target = urllib.parse.urlsplit(newurl)
+        if target.scheme != "https" or target.hostname != "gitlab.com":
+            raise urllib.error.HTTPError(newurl, code, "redirect outside gitlab.com", headers, fp)
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+def levels(counts):
+    """Map count -> level (0 for 0, 1-4 by quartile of the active days)."""
+    lv = {0: 0}
+    if not counts:
+        return lv
+    ordered = sorted(counts)
+    n = len(ordered)
+
+    def q(k):
+        return ordered[min(n - 1, max(0, (k * n) // 4))]
+
+    q1, q2, q3 = q(1), q(2), q(3)
+    for c in set(counts):
+        if c <= q1:
+            lv[c] = 1
+        elif c <= q2:
+            lv[c] = 2
+        elif c <= q3:
+            lv[c] = 3
+        else:
+            lv[c] = 4
+    return lv
+
+
+def main():
+    if len(sys.argv) != 2:
+        print(json.dumps({"error": USAGE}))
+        return 2
+    user = sys.argv[1].strip()
+    if not USER_RE.fullmatch(user):
+        print(json.dumps({"error": "invalid username"}))
+        return 2
+    encoded_user = urllib.parse.quote(user, safe="")
+    url = f"https://gitlab.com/users/{encoded_user}/calendar.json"
+    req = urllib.request.Request(url, headers={"User-Agent": "ryoku-gitlab-heatmap"})
+    try:
+        opener = urllib.request.build_opener(GitLabRedirectHandler())
+        with opener.open(req, timeout=15) as response:
+            payload = response.read(MAX_RESPONSE_BYTES + 1)
+    except urllib.error.HTTPError as error:
+        # gitlab.com answers 404, and 403 for unknown users (its enumeration
+        # guard); both mean "no such public user" for this widget.
+        message = "user not found" if error.code in (403, 404) else f"HTTP {error.code}"
+        print(json.dumps({"error": message}))
+        return 1
+    except (OSError, TimeoutError, urllib.error.URLError) as error:
+        print(json.dumps({"error": f"network: {error.__class__.__name__}"}))
+        return 1
+
+    if len(payload) > MAX_RESPONSE_BYTES:
+        print(json.dumps({"error": "bad response"}))
+        return 1
+    try:
+        raw = json.loads(payload.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        print(json.dumps({"error": "bad response"}))
+        return 1
+
+    if not isinstance(raw, dict) or len(raw) > 400:
+        print(json.dumps({"error": "bad response"}))
+        return 1
+
+    rows = []
+    for day, count in raw.items():
+        if not isinstance(day, str) or type(count) is not int or count < 0:
+            print(json.dumps({"error": "bad response"}))
+            return 1
+        try:
+            datetime.date.fromisoformat(day)
+        except ValueError:
+            print(json.dumps({"error": "bad response"}))
+            return 1
+        rows.append((day, count))
+
+    lv = levels([count for _, count in rows if count > 0])
+    days = [{
+        "date": day,
+        "count": count,
+        "level": lv.get(count, 0),
+    } for day, count in sorted(rows)]
+    print(json.dumps({
+        "user": user,
+        "days": days,
+    }))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

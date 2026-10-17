@@ -4,7 +4,7 @@
     {
       "id": "nacre",
       "name": "Nacre",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "path": "barstyles/nacre",
       "author": "Ryoku Team",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/barstyles/nacre",
@@ -21,7 +21,8 @@
       "preview": "assets/preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "819fac41dc92d267260fd998bf8a95f1155ce1a1318440e890d4c5e59943e8fa"
+      "manifestSha256": "bd9eb3b9b7f7cc1824fa6b31a092df98281a65e2677453070838b1be42f16b1d",
+      "lastUpdated": "2026-10-17"
     },
     {
       "id": "obi",
@@ -75,7 +76,7 @@
     {
       "id": "ricelin",
       "name": "Ricelin",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "path": "barstyles/ricelin",
       "author": "feelyourwarmth",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/barstyles/ricelin",
@@ -94,14 +95,14 @@
       "preview": "assets/preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "c5f8bed1fe6f4ca8dc5057d578df119f35122702f09c089f90e3d11887433064",
+      "manifestSha256": "f83fc2e1a5f86bf4df8a4928f0578917ffbd1d6ab661beacff6308507f0b244b",
       "official": false,
-      "lastUpdated": "2026-10-11"
+      "lastUpdated": "2026-10-13"
     },
     {
       "id": "chroma",
       "name": "Chroma",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "path": "barstyles/chroma",
       "author": "aethctl",
       "upstream": "https://github.com/aethctl/chroma-shell",
@@ -119,8 +120,8 @@
       "preview": "assets/preview.png",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "5f89f751af38057cd3e4f70e4245f659abb798092fffb7dbf1f3e3a5ee14380e",
-      "lastUpdated": "2026-10-02",
+      "manifestSha256": "f3f65bfc165fe6095e1eb41d92ff07cc4108e09d39d7a0d1284bbf6978c8cc1c",
+      "lastUpdated": "2026-10-17",
       "official": false,
       "license": "MIT"
     },

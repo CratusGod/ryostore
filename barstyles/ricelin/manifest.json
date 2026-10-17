@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "ricelin",
   "category": "barstyles",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "destination": "ryoku/barstyles/ricelin",
   "files": [
     {
@@ -161,8 +161,8 @@
       "source": "MinimizedTray.qml",
       "destination": "MinimizedTray.qml",
       "mode": "0644",
-      "size": 3767,
-      "sha256": "5a2caa684d1f0637619ff2b0bec61c2d3352492d8f75e5503735f1748baacf36",
+      "size": 3742,
+      "sha256": "9ebdff06661367b13a2c6242678a5d6b9868ad6eb5484fa59cffaa93d2172d54",
       "install": true
     },
     {

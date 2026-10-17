@@ -18,7 +18,7 @@ Item {
         // launcher, or the same quick-settings sidebar Super+Esc opens.
         onTapped: {
             if (Config.normalizedNacre.brandClick === "quicksettings")
-                ShellState.requestSurfaceActive("quick-settings", undefined)
+                ShellState.requestSurfaceActive("sidebar-left", undefined)
             else
                 Quickshell.execDetached(["ryoku-shell", "launcher"])
         }

@@ -21,7 +21,7 @@ Row {
     spacing: 8 * s
 
     readonly property bool parkedSupported: Wm.caps.specialWorkspace === true
-    readonly property bool isParked: function (name) { return String(name || "").indexOf("special:") === 0; }
+    function isParked(name) { return String(name || "").indexOf("special:") === 0; }
 
     /**
      * Resolve the workspace to restore into: the active workspace of the monitor

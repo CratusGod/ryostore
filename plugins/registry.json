@@ -1356,6 +1356,38 @@
       "lastUpdated": "2026-10-02"
     },
     {
+      "id": "gitlab-heatmap",
+      "name": "GitLab Heatmap",
+      "version": "0.1.0",
+      "path": "plugins/gitlab-heatmap",
+      "upstream": "https://github.com/Matcraft94/ryostore",
+      "author": "Lucy E. Arias <matcraft94@pm.me>",
+      "summary": "Your GitLab contribution calendar on the wallpaper, with quick styles, eight palettes, streaks and frosted glass.",
+      "description": "Your GitLab contribution calendar on the wallpaper, with quick styles, eight palettes, streaks and frosted glass.",
+      "tags": [
+        "gitlab",
+        "contributions",
+        "heatmap",
+        "calendar",
+        "desktop-widget"
+      ],
+      "accent": "#e24329",
+      "surface": "#101010",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "7d14efd87f26c03b811b40e10ba9bb5560bc2f0e09060557d4d72d2cf37fd67b",
+      "official": false,
+      "tagline": "Your GitLab contribution calendar on the wallpaper, with quick styles, eight palettes, streaks and frosted glass.",
+      "icon": "calendar_month",
+      "hosts": [
+        "desktopWidget"
+      ],
+      "lastUpdated": "2026-10-13"
+    },
+    {
       "id": "kdeconnect-status",
       "name": "KDE Connect",
       "version": "0.1.0",
@@ -1680,6 +1712,160 @@
       "accent": "#8f8378",
       "surface": "#101010",
       "manifest": "product-manifest.json"
+    },
+    {
+      "id": "claude-companion",
+      "name": "Claude Companion",
+      "version": "0.1.0",
+      "path": "plugins/claude-companion",
+      "author": "AdriLabTech <labs.lownoise@gmail.com>",
+      "upstream": "https://github.com/AdriLabTech/claude-companion",
+      "summary": "A pixel-art spark on your desktop that mirrors what Claude Code is doing, opens a mini chat, guides first-time sign-in and wears seasonal outfits.",
+      "description": "A pixel-art spark that sits on your desktop, mirrors what Claude Code is doing, and opens a small chat when clicked. Guides first-time users through installing and signing in, and dresses for Christmas, Halloween, summer, spring and autumn.",
+      "tags": [
+        "desktop-widget"
+      ],
+      "accent": "#d97757",
+      "surface": "#101010",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "e0bf8760b866a8f92f56c554910dff30a1f13e03873f4eb73636240dbb8708b4",
+      "official": false,
+      "tagline": "A pixel-art spark that mirrors what Claude Code is doing and opens a mini chat.",
+      "icon": "smart_toy",
+      "hosts": [
+        "desktopWidget"
+      ],
+      "lastUpdated": "2026-10-16"
+    },
+    {
+      "id": "prayer-times",
+      "name": "Prayer Times",
+      "version": "1.1.0",
+      "path": "plugins/prayer-times",
+      "author": "hshindys <hshindys@users.noreply.github.com>",
+      "upstream": "https://github.com/hshindys/prayer-times",
+      "summary": "Daily prayer times in the bar, with the next prayer and a live countdown.",
+      "description": "Daily prayer times in the bar: a crescent mark with the next prayer and countdown. Click to open the panel with all six times, the Hijri date, offline cache status, and a manual refresh. Times come from the Aladhan API; city and calculation method are configurable.",
+      "tags": [
+        "bar-widget",
+        "prayer",
+        "calendar"
+      ],
+      "accent": "#8f8378",
+      "surface": "#101010",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "2d60f91eab74b6fc5107c408de255f21ef360111125d428ea3962ed18a2b8306",
+      "official": false,
+      "license": "MIT",
+      "tagline": "Daily prayer times in the bar, with the next prayer and a live countdown.",
+      "icon": "dark_mode",
+      "hosts": [
+        "topbarGlyph"
+      ],
+      "lastUpdated": "2026-10-17"
+    },
+    {
+      "id": "sayalarm",
+      "name": "SayAlarm",
+      "path": "plugins/sayalarm",
+      "version": "1.0.0",
+      "author": "KingsMill8",
+      "upstream": "https://github.com/KingsMill8/sayAlarm/tree/main/ryoku-bar-widget",
+      "official": false,
+      "tagline": "Your next SayAlarm on the bar.",
+      "description": "Shows the next SayAlarm time, note and live countdown on the bar, with a quick-open details panel.",
+      "icon": "alarm",
+      "tags": [
+        "bar-widget"
+      ],
+      "hosts": [
+        "topbarGlyph"
+      ],
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png"
+      ],
+      "lastUpdated": "2026-10-17",
+      "manifestSha256": "ad6b0484f22248ef9a48583a218dc8f55abc80c5fcf550951e19b2c5927fe2ee",
+      "summary": "Shows the next SayAlarm time, note and live countdown on the bar, with a quick-open details panel.",
+      "accent": "#8f8378",
+      "surface": "#101010",
+      "license": "MIT",
+      "manifest": "product-manifest.json"
+    },
+    {
+      "id": "caffeinated",
+      "name": "Caffeinated",
+      "version": "0.1.0",
+      "path": "plugins/caffeinated",
+      "author": "Madhav Khosla <madhav.khoslaa@gmail.com>",
+      "summary": "One switch: the whole machine stays awake, even with the lid closed.",
+      "description": "System-wide caffeine: one switch keeps the whole machine awake (no sleep, even with the lid closed), screen on and unlocked or locking as usual.",
+      "tags": [
+        "caffeine",
+        "power",
+        "idle",
+        "lid",
+        "bar-widget"
+      ],
+      "accent": "#8f8378",
+      "surface": "#101010",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/screenshot-bar-panel.png",
+        "assets/screenshot-bar.png",
+        "assets/screenshot-settings.png",
+        "assets/preview-widget.png",
+        "assets/preview-panel.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "5f606e83afa2c09e24f68255a8ec2b51133267a3c17538fd922cc9784d320ff9",
+      "official": false,
+      "tagline": "One switch: the whole machine stays awake, even with the lid closed.",
+      "icon": "coffee",
+      "hosts": [
+        "topbarGlyph"
+      ],
+      "lastUpdated": "2026-10-13",
+      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/caffeinated"
+    },
+    {
+      "id": "power-button",
+      "name": "Session",
+      "version": "0.2.2",
+      "path": "plugins/power-button",
+      "author": "Felix <eu@leandrofelix.dev.br>",
+      "upstream": "https://github.com/leandrofelix-dev/power-button",
+      "summary": "Session menu on the QS Bar: shut down, reboot, hibernate, or lock through Ryoku's session commands.",
+      "description": "Session menu on the QS Bar: shut down, reboot, hibernate, or lock through Ryoku's session commands.",
+      "tags": [
+        "session",
+        "power",
+        "bar-widget"
+      ],
+      "accent": "#8f8378",
+      "surface": "#101010",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "124c6d33e2f1b8f8eb362b6b87409e6896c86c424f54a104c6b2cf8c6a82778d",
+      "official": false,
+      "tagline": "Session menu on the QS Bar: shut down, reboot, hibernate, or lock through Ryoku's session commands.",
+      "icon": "power_settings_new",
+      "hosts": [
+        "topbarGlyph"
+      ],
+      "lastUpdated": "2026-10-08"
     }
   ]
 }
