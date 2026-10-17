@@ -40,9 +40,9 @@
     {
       "source": "README.md",
       "destination": "README.md",
-      "sha256": "f76bd5b64fc1b553fd7bd278535bfdf47786bc26f7a917b3f63362481cd1545f",
+      "sha256": "9eeae0f0a3a10a2b33988615ef4187f8baaf1444edee1abc9d7de62c8756a40c",
       "mode": "0644",
-      "size": 3399,
+      "size": 3532,
       "install": false
     },
     {
@@ -88,9 +88,9 @@
     {
       "source": "bin/caffeinated",
       "destination": "bin/caffeinated",
-      "sha256": "1f294c14216f2a51ba28b04d3c330e9636d0b56fb58bd2a198af31e9b3e3d814",
+      "sha256": "9e5c28d39c8656ecd1389e03f1eea819a2322de66b5e1b7e0e93c487e88ec431",
       "mode": "0755",
-      "size": 8885,
+      "size": 10154,
       "install": true
     },
     {
@@ -120,17 +120,17 @@
     {
       "source": "manifest.json",
       "destination": "manifest.json",
-      "sha256": "7ac87639e3558042a9479bf6e4950bb1368e16d73f965fe8804fc0045f4f3c8e",
+      "sha256": "25617b6d1f245ac0280dbbecb75b0b269ca32c13f5c465e642d4dd6292dd78c4",
       "mode": "0644",
-      "size": 2192,
+      "size": 2371,
       "install": true
     },
     {
       "source": "service/Main.qml",
       "destination": "service/Main.qml",
-      "sha256": "6143948ad648deaf5cc2a9eb21ebc78af14cfe555f943275fa635e2427d557e6",
+      "sha256": "21b86e9e9007b01e4bad200118023df682253c6a3abcc1a584e3613c8aaef542",
       "mode": "0644",
-      "size": 4349,
+      "size": 4360,
       "install": true
     }
   ]

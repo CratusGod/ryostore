@@ -75,8 +75,8 @@ Item {
     onBatteryFloorChanged: reapply()
 
     // Liveness marks: the inhibitor releases itself if the shell stays
-    // detached (plugin disabled or removed) past a grace period. A reload
-    // detaches and re-attaches within seconds, which keeps it.
+    // detached (plugin disabled) past a grace period; a removed helper is
+    // detected by the holder itself. A reload re-attaches within seconds.
     onStateDirChanged: if (script && stateDir) Quickshell.execDetached([script, "attach", stateDir, String(Date.now())])
     Component.onCompleted: {
         if (script && stateDir) Quickshell.execDetached([script, "attach", stateDir, String(Date.now())]);

@@ -38,8 +38,8 @@ Enabling starts `systemd-inhibit --mode=block` with `sleep:handle-lid-switch`
 reload. logind rejects a plain suspend request while a strong block inhibitor is
 held, so both the idle-timeout suspend and Ryoku's lid-close suspend
 (`ryoku-clamshell` → `ryoku-shell suspend`) stay off. Their lock step still
-runs first, so a closed lid still locks. Opening the lid, or disabling, lets a
-pending lid-close suspend go ahead.
+runs first, so a closed lid still locks. Opening the lid cancels that close;
+turning Caffeinated off while it remains closed lets the retry suspend.
 
 The inhibitor releases itself, and the panel says why, when:
 
@@ -48,8 +48,8 @@ The inhibitor releases itself, and the panel says why, when:
   for the normal low-battery action, which a strong inhibitor would otherwise
   block;
 - the login session ends;
-- the plugin has been disabled or removed for 2 minutes (a shell reload
-  re-attaches within seconds and keeps it);
+- the plugin has been disabled for 2 minutes;
+- the plugin has been removed for two watchdog checks (normally within 30 s);
 - you click **TURN OFF**.
 
 After a reboot it starts off.
@@ -57,12 +57,13 @@ After a reboot it starts off.
 ## What it runs, reads and writes
 
 - **Runs** `bin/caffeinated`, which calls `systemd-inhibit`, `setsid`, `flock`,
-  `loginctl` and `ryoku-shell lock`, always with argv arrays.
+  `loginctl`, `ryoku-shell lock`, and the declared core text/file utilities.
+  Every variable argument remains a distinct, quoted argument.
 - **Reads** `/sys/class/power_supply/*` (battery level and AC), `/proc/<pid>`
   of its own inhibitor, and its own login session's state.
 - **Writes** only under `$XDG_STATE_HOME/ryoku/plugins/caffeinated/`: the
-  inhibitor pid, mode, floor, shell attach/detach marks, and the last release
-  reason.
+  action lock, inhibitor pid, mode, floor, shell attach/detach marks, and the
+  last release reason.
 - **No** network access, no privileged commands, no `pkexec`.
 
 ## Settings

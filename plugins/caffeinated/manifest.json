@@ -28,8 +28,7 @@
   ],
   "capabilities": {
     "densities": [
-      "glyph",
-      "compact"
+      "glyph"
     ]
   },
   "defaults": {
@@ -40,12 +39,26 @@
     "icon": "coffee",
     "label": "Caffeinated"
   },
+  "commands": [
+    "bin/caffeinated"
+  ],
   "dependencies": {
     "commands": [
-      "systemd-inhibit",
-      "setsid",
+      "awk",
+      "cat",
+      "chmod",
+      "date",
       "flock",
+      "head",
       "loginctl",
+      "mkdir",
+      "mv",
+      "readlink",
+      "rm",
+      "setsid",
+      "sleep",
+      "systemd-inhibit",
+      "tr",
       "ryoku-shell"
     ]
   },
