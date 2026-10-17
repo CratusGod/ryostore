@@ -1708,6 +1708,37 @@
         "desktopWidget"
       ],
       "lastUpdated": "2026-10-16"
+    },
+    {
+      "id": "prayer-times",
+      "name": "Prayer Times",
+      "version": "1.1.0",
+      "path": "plugins/prayer-times",
+      "author": "hshindys <hshindys@users.noreply.github.com>",
+      "upstream": "https://github.com/hshindys/prayer-times",
+      "summary": "Daily prayer times in the bar, with the next prayer and a live countdown.",
+      "description": "Daily prayer times in the bar: a crescent mark with the next prayer and countdown. Click to open the panel with all six times, the Hijri date, offline cache status, and a manual refresh. Times come from the Aladhan API; city and calculation method are configurable.",
+      "tags": [
+        "bar-widget",
+        "prayer",
+        "calendar"
+      ],
+      "accent": "#8f8378",
+      "surface": "#101010",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "052db9bf408913b07706a05b47429a985b08e5dba6b8fe5338eba759dc6ebe6c",
+      "official": false,
+      "license": "MIT",
+      "tagline": "Daily prayer times in the bar, with the next prayer and a live countdown.",
+      "icon": "dark_mode",
+      "hosts": [
+        "topbarGlyph"
+      ],
+      "lastUpdated": "2026-10-17"
     }
   ]
 }
