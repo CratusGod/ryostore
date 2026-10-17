@@ -7,9 +7,11 @@ refresh. Not official, not reviewed by Ryoku.
 
 ## What runs
 
-- `bin/prayers <city> <country> <method> <school>` (python3, no third-party
-  modules): one HTTPS GET per day to `https://api.aladhan.com/v1/timingsByCity`.
-  No key, no account. The user agent is `ryoku-prayer-times/1.0`.
+- `bin/prayers <city> <country> <method> <school> <state-dir>` (python3, no
+  third-party modules): one scheduled HTTPS GET per day to
+  `https://api.aladhan.com/v1/timingsByCity`, plus explicit refreshes and
+  setting changes. No key, no account. The user agent is
+  `ryoku-prayer-times/1.0`.
 - `notify-send -a "Prayer Times" ...`: one desktop notification per prayer,
   fired when the countdown reaches the configured minutes-before (default 5).
   Fires once per prayer per day.
@@ -27,12 +29,12 @@ refresh. Not official, not reviewed by Ryoku.
 
 ## What it writes
 
-- Day cache: `$XDG_CACHE_HOME/ryoku/plugins/prayer-times/timings.json`
-  (one small JSON file). On network failure the widget serves this cache and
-  marks itself stale instead of going blank.
+- Day cache: `$XDG_STATE_HOME/ryoku/plugins/prayer-times/timings.json`
+  (one small JSON file, replaced atomically). On network failure the widget
+  serves this cache and marks itself stale instead of going blank.
 - Settings only through `pluginApi.saveSetting` (the bar's Community page).
   Never touches `shell.json`, `plugins.json`, or anything outside its own
-  cache dir.
+  state dir.
 
 ## Network capability
 
@@ -41,5 +43,5 @@ refresh. Not official, not reviewed by Ryoku.
 
 ## Cost
 
-One request a day plus a local 20-second countdown tick. No polling, no
-background traffic.
+One scheduled request a day, plus explicit refreshes or setting changes, and a
+local 20-second countdown tick. There is no background network polling.

@@ -77,7 +77,8 @@ Item {
     function refresh() {
         var bin = svc.fetchBin();
         if (bin === "" || fetchProc.running) return;
-        fetchProc.command = [bin, svc.city, svc.country, svc.method, svc.school];
+        fetchProc.command = [bin, svc.city, svc.country, svc.method, svc.school,
+                             String(svc.pluginApi.stateDir || "")];
         fetchProc.running = true;
     }
 

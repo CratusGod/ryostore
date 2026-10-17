@@ -1,29 +1,41 @@
 #!/usr/bin/env python3
 """Fetch today's prayer times from the Aladhan API, with disk-cache fallback.
 
-Usage: prayers <city> <country> <method> <school>
+Usage: prayers <city> <country> <method> <school> <state-dir>
 Prints one JSON object: {"date", "hijri", "times": {Fajr..Isha}}.
 On network failure the last cached day is printed with "stale": true.
 Exits 1 only when there is neither network nor cache.
-Cache lives under $XDG_CACHE_HOME/ryoku/plugins/prayer-times/.
+Cache lives in the plugin state directory supplied by Ryoku.
 """
 
 import json
 import os
 import sys
+import tempfile
 import urllib.parse
 import urllib.request
 
 ORDER = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"]
 
 
-def cache_path():
-    base = os.environ.get(
-        "XDG_CACHE_HOME", os.path.join(os.path.expanduser("~"), ".cache")
+def cache_path(state_dir):
+    os.makedirs(state_dir, mode=0o700, exist_ok=True)
+    return os.path.join(state_dir, "timings.json")
+
+
+def write_cache(path, value):
+    fd, temporary = tempfile.mkstemp(
+        prefix=".timings.", suffix=".tmp", dir=os.path.dirname(path), text=True
     )
-    d = os.path.join(base, "ryoku", "plugins", "prayer-times")
-    os.makedirs(d, exist_ok=True)
-    return os.path.join(d, "timings.json")
+    try:
+        with os.fdopen(fd, "w") as f:
+            json.dump(value, f)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(temporary, path)
+    finally:
+        if os.path.exists(temporary):
+            os.unlink(temporary)
 
 
 def main():
@@ -31,7 +43,11 @@ def main():
     country = sys.argv[2] if len(sys.argv) > 2 else "Egypt"
     method = sys.argv[3] if len(sys.argv) > 3 else "5"
     school = sys.argv[4] if len(sys.argv) > 4 else "0"
-    cp = cache_path()
+    state_dir = sys.argv[5] if len(sys.argv) > 5 else ""
+    if not state_dir:
+        print(json.dumps({"error": "plugin state directory is required"}))
+        return 1
+    cp = cache_path(state_dir)
     q = urllib.parse.urlencode(
         {"city": city, "country": country, "method": method, "school": school}
     )
@@ -52,8 +68,7 @@ def main():
             ),
             "times": {k: payload["timings"][k][:5] for k in ORDER},
         }
-        with open(cp, "w") as f:
-            json.dump(out, f)
+        write_cache(cp, out)
     except Exception:
         try:
             with open(cp) as f:

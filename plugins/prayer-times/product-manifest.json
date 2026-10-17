@@ -40,9 +40,9 @@
     {
       "source": "README.md",
       "destination": "README.md",
-      "sha256": "b7cfab77d1b57c6bf01d0244f8d230da208ebaf280ad2e4980078b7b13d35dcc",
+      "sha256": "0ba46a1acf067dbf1397552fd31493f43ba3108591ca34c1068c18af0f0bc12b",
       "mode": "0644",
-      "size": 1885,
+      "size": 2036,
       "install": false
     },
     {
@@ -56,17 +56,17 @@
     {
       "source": "bin/prayers",
       "destination": "bin/prayers",
-      "sha256": "e59027a3eb2dd3670f60d9e62c7c684652ef45096c785bc2426baa67e6821b84",
+      "sha256": "fa27248118271ba3d7f064b46b5fd16d26b98fe4e5a087e095a5f0ca06debad7",
       "mode": "0755",
-      "size": 2230,
+      "size": 2679,
       "install": true
     },
     {
       "source": "content/Panel.qml",
       "destination": "content/Panel.qml",
-      "sha256": "2f607ce926bd4adba11193761f76cdecefb54f013902b113eb3466ebd5f1c335",
+      "sha256": "fa584950273aff1cb0418bac1b3dfa07ec326e225d7bc7f49ac44e9dd01e414d",
       "mode": "0644",
-      "size": 4176,
+      "size": 4104,
       "install": true
     },
     {
@@ -88,10 +88,11 @@
     {
       "source": "service/Main.qml",
       "destination": "service/Main.qml",
-      "sha256": "a507dfa9d1976907738bac852105ebecf52c83468e60ae33213ae69ea351087a",
+      "sha256": "be968b70f351dcc03860118181cec044fcb051ad4da289343e6009a7e4e6696b",
       "mode": "0644",
-      "size": 7032,
+      "size": 7099,
       "install": true
     }
-  ]
+  ],
+  "license": "MIT"
 }
