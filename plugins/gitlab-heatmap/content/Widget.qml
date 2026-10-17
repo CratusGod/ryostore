@@ -27,9 +27,7 @@ Item {
     function num(k, d, lo, hi) { return Math.max(lo, Math.min(hi, Number(cfg(k, d)))); }
 
     // ── settings in use ──
-    // GitLab only serves the rolling year, so the range is always "last":
-    // the last `months` months ending today.
-    readonly property string range: "last"
+    // GitLab serves the rolling year; `months` selects the visible tail.
     readonly property int months: Math.round(num("months", 12, 1, 12))
     readonly property string palette: cfg("palette", "accent")
     readonly property string colorScale: cfg("colorScale", "github")
@@ -37,8 +35,6 @@ Item {
     readonly property bool mondayFirst: cfg("weekStart", "sun") === "mon"
     readonly property string monthFormat: cfg("monthFormat", "short")
     readonly property string weekdayStyle: cfg("weekdayStyle", "alt")
-    // Future days: dim | hide | show (older installs had a dimFuture toggle).
-    readonly property string futureMode: cfg("futureDays", cfg("dimFuture", true) === false ? "show" : "dim")
     readonly property bool showMonths: cfg("showMonths", true) === true
     readonly property bool showWeekdays: cfg("showWeekdays", true) === true
     readonly property bool showToolbar: cfg("showToolbar", true) === true
@@ -47,7 +43,7 @@ Item {
     readonly property bool markToday: cfg("highlightToday", true) === true
     readonly property bool showEmpty: cfg("showEmpty", true) === true
     // Hovered day: a floating tip (default), in the toolbar, or nowhere.
-    readonly property string hoverStyle: cfg("hoverStyle", cfg("hoverInfo", true) === false ? "off" : "tooltip")
+    readonly property string hoverStyle: cfg("hoverStyle", "tooltip")
     readonly property bool showTodayCount: cfg("showTodayCount", true) === true
     readonly property bool showBorder: cfg("showBorder", true) === true
     readonly property bool clickOpens: cfg("clickOpens", false) === true
@@ -57,7 +53,6 @@ Item {
     readonly property var wpSource: pluginApi && pluginApi.wallpaperSource ? pluginApi.wallpaperSource : null
     readonly property bool glass: cfg("bgStyle", "glass") === "glass" && wpSource !== null
 
-    readonly property int year: service ? service.year : new Date().getFullYear()
     readonly property string user: service ? service.username : ""
     readonly property var days: service ? service.days : ({})
 
@@ -75,24 +70,16 @@ Item {
     readonly property bool cornerGear: !showToolbar && showMonths && showWeekdays
     readonly property real gearSpace: !showToolbar && !cornerGear ? 30 * s : 0
 
-    // ── range ──
+    // ── rolling range ──
     readonly property string todayIso: _iso(new Date())
     readonly property date startDate: {
-        if (range === "last") {
-            var t = new Date();
-            return new Date(t.getFullYear(), t.getMonth() - months, t.getDate() + 1);
-        }
-        return new Date(year, 0, 1);
+        var today = new Date();
+        return new Date(today.getFullYear(), today.getMonth() - months, today.getDate() + 1);
     }
-    // In "last" mode the grid ends today; in a year it runs to Dec 31, or to
-    // today when future days are hidden.
     readonly property int dayCount: {
-        var t = new Date();
-        var today = new Date(t.getFullYear(), t.getMonth(), t.getDate());
-        var upToToday = Math.round((today - startDate) / 86400000) + 1;
-        if (range === "last") return upToToday;
-        var full = ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) ? 366 : 365;
-        return futureMode === "hide" && year === t.getFullYear() ? Math.max(1, upToToday) : full;
+        var today = new Date();
+        today = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        return Math.round((today - startDate) / 86400000) + 1;
     }
 
     function wd(d) { return mondayFirst ? (d.getDay() + 6) % 7 : d.getDay(); }
@@ -184,13 +171,7 @@ Item {
         "Quick styles": "Estilos rápidos",
         "Apply": "Aplicar",
         "Data": "Datos",
-        "Period": "Periodo",
-        "Year": "Año",
-        "Last months": "Últimos meses",
         "Months to show": "Meses a mostrar",
-        "Future days": "Días futuros",
-        "Dim": "Atenuar",
-        "Hide": "Ocultar",
         "Color scale": "Escala de color",
         "Relative to your best": "Relativa a tu máximo",
         "Refresh every": "Actualizar cada",
@@ -622,8 +603,10 @@ Item {
                             font.family: Theme.font
                             font.pixelSize: 12 * root.s
                             font.weight: Font.DemiBold
-                            maximumLength: 39
-                            validator: RegularExpressionValidator { regularExpression: /[A-Za-z0-9-]*/ }
+                            maximumLength: 255
+                            validator: RegularExpressionValidator {
+                                regularExpression: /[A-Za-z0-9][A-Za-z0-9_.-]{0,253}[A-Za-z0-9_-]/
+                            }
                             onAccepted: {
                                 root.service.setUsername(text);
                                 focus = false;
@@ -770,7 +753,6 @@ Item {
                             readonly property var p: root.layout.pos[index] || ({ x: 0, y: 0, iso: "" })
                             readonly property string iso: p.iso
                             readonly property var dayInfo: root.days[iso]
-                            readonly property bool future: iso > root.todayIso
 
                             x: p.x
                             y: p.y
@@ -778,7 +760,6 @@ Item {
                             height: root.cell
                             radius: root.cellRadius
                             color: root.tint(root.levelOf(dayInfo))
-                            opacity: !future || root.futureMode === "show" ? 1 : root.futureMode === "dim" ? 0.35 : 0
                             border.width: root.markToday && iso === root.todayIso ? 1 : 0
                             border.color: Theme.bright
 
@@ -794,7 +775,7 @@ Item {
                                 }
                                 onExited: if (root.hoverText === root._label(day.iso, day.dayInfo ? day.dayInfo.count : 0)) root.hoverText = ""
                                 onClicked: if (root.clickOpens && root.user.length > 0)
-                                    Qt.openUrlExternally("https://gitlab.com/" + root.user)
+                                    Qt.openUrlExternally("https://gitlab.com/" + encodeURIComponent(root.user))
                             }
                         }
                     }
@@ -958,7 +939,6 @@ Item {
                                         required property var modelData
                                         readonly property var f: modelData
                                         readonly property var cur: root.cfg(f.key, f.def)
-                                        visible: !f.only || f.only === root.range
                                         width: (settingsGrid.width - (settingsGrid.columns - 1) * settingsGrid.columnSpacing) / settingsGrid.columns
                                         height: Math.max(22 * root.s, controls.implicitHeight)
 

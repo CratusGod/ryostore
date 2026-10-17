@@ -1360,7 +1360,7 @@
       "name": "GitLab Heatmap",
       "version": "0.1.0",
       "path": "plugins/gitlab-heatmap",
-      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/gitlab-heatmap",
+      "upstream": "https://github.com/Matcraft94/ryostore",
       "author": "Lucy E. Arias <matcraft94@pm.me>",
       "summary": "Your GitLab contribution calendar on the wallpaper, with quick styles, eight palettes, streaks and frosted glass.",
       "description": "Your GitLab contribution calendar on the wallpaper, with quick styles, eight palettes, streaks and frosted glass.",
@@ -1378,7 +1378,7 @@
         "assets/preview-widget.png"
       ],
       "manifest": "product-manifest.json",
-      "manifestSha256": "baa4dfddb88c940ee1bc115c9f1a3348be3c8ba585bc21d20c197df8741e9f85",
+      "manifestSha256": "7d14efd87f26c03b811b40e10ba9bb5560bc2f0e09060557d4d72d2cf37fd67b",
       "official": false,
       "tagline": "Your GitLab contribution calendar on the wallpaper, with quick styles, eight palettes, streaks and frosted glass.",
       "icon": "calendar_month",

@@ -79,9 +79,8 @@ plugin (MIT, by safloresmo). Beyond the obvious provider swap:
 
 ## What it runs, reads and writes
 
-- **Runs** `bin/gl-contrib <username> <year|last>` (Python 3, stdlib only) on
-  load, on refresh, and every `refreshMin` minutes (default 30). The year
-  argument is accepted for parity but the rolling year is always returned.
+- **Runs** `bin/gl-contrib <username>` (Python 3, stdlib only) on load, on
+  refresh, and every `refreshMin` minutes (default 30).
 - **Network**: `gitlab.com` only, the public endpoint
   `https://gitlab.com/users/<user>/calendar.json`. No token, no login; it
   sees exactly what a logged-out visitor sees on your public profile.

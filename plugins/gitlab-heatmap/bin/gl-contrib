@@ -1,25 +1,38 @@
 #!/usr/bin/env python3
 """Print a GitLab user's public contribution calendar as JSON.
 
-usage: gl-contrib <username> <year|last>
+usage: gl-contrib <username>
 
 GitLab only exposes the rolling year: the public endpoint
 https://gitlab.com/users/<user>/calendar.json answers {"YYYY-MM-DD": count}
-with no token. The <year|last> argument is accepted for command-line parity
-with gh-contrib, but the rolling year is always returned (year == "last").
+with no token.
 
 Levels are computed here, not by GitLab: active-day counts are bucketed into
 quartiles (0 = no activity, 1-4 = quartile of the user's own distribution).
 """
+import datetime
 import json
 import re
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 
-USAGE = "usage: gl-contrib <username> <year|last>"
-# GitLab usernames allow letters, digits, '_', '.', '-'.
-USER_RE = re.compile(r"[A-Za-z0-9](?:[A-Za-z0-9_.-]{0,100})")
+USAGE = "usage: gl-contrib <username>"
+MAX_RESPONSE_BYTES = 1024 * 1024
+# GitLab usernames are 2-255 path-safe characters, cannot begin with
+# punctuation, and cannot end with a period.
+USER_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,253}[A-Za-z0-9_-]")
+
+
+class GitLabRedirectHandler(urllib.request.HTTPRedirectHandler):
+    """Refuse redirects outside the one declared network capability."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        target = urllib.parse.urlsplit(newurl)
+        if target.scheme != "https" or target.hostname != "gitlab.com":
+            raise urllib.error.HTTPError(newurl, code, "redirect outside gitlab.com", headers, fp)
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 
 def levels(counts):
@@ -47,42 +60,63 @@ def levels(counts):
 
 
 def main():
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 2:
         print(json.dumps({"error": USAGE}))
         return 2
-    user, _year = sys.argv[1].strip(), sys.argv[2].strip()
+    user = sys.argv[1].strip()
     if not USER_RE.fullmatch(user):
         print(json.dumps({"error": "invalid username"}))
         return 2
-    url = f"https://gitlab.com/users/{user}/calendar.json"
+    encoded_user = urllib.parse.quote(user, safe="")
+    url = f"https://gitlab.com/users/{encoded_user}/calendar.json"
     req = urllib.request.Request(url, headers={"User-Agent": "ryoku-gitlab-heatmap"})
     try:
-        with urllib.request.urlopen(req, timeout=15) as r:
-            raw = json.loads(r.read().decode("utf-8", "replace"))
-    except urllib.error.HTTPError as e:
+        opener = urllib.request.build_opener(GitLabRedirectHandler())
+        with opener.open(req, timeout=15) as response:
+            payload = response.read(MAX_RESPONSE_BYTES + 1)
+    except urllib.error.HTTPError as error:
         # gitlab.com answers 404, and 403 for unknown users (its enumeration
         # guard); both mean "no such public user" for this widget.
-        print(json.dumps({"error": "user not found" if e.code in (403, 404) else f"HTTP {e.code}"}))
+        message = "user not found" if error.code in (403, 404) else f"HTTP {error.code}"
+        print(json.dumps({"error": message}))
         return 1
-    except Exception as e:  # network down, DNS, timeout, bad JSON
-        print(json.dumps({"error": f"network: {e.__class__.__name__}"}))
+    except (OSError, TimeoutError, urllib.error.URLError) as error:
+        print(json.dumps({"error": f"network: {error.__class__.__name__}"}))
         return 1
 
-    if not isinstance(raw, dict):
+    if len(payload) > MAX_RESPONSE_BYTES:
+        print(json.dumps({"error": "bad response"}))
+        return 1
+    try:
+        raw = json.loads(payload.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError):
         print(json.dumps({"error": "bad response"}))
         return 1
 
-    lv = levels([int(c) for c in raw.values() if int(c) > 0])
+    if not isinstance(raw, dict) or len(raw) > 400:
+        print(json.dumps({"error": "bad response"}))
+        return 1
+
+    rows = []
+    for day, count in raw.items():
+        if not isinstance(day, str) or type(count) is not int or count < 0:
+            print(json.dumps({"error": "bad response"}))
+            return 1
+        try:
+            datetime.date.fromisoformat(day)
+        except ValueError:
+            print(json.dumps({"error": "bad response"}))
+            return 1
+        rows.append((day, count))
+
+    lv = levels([count for _, count in rows if count > 0])
     days = [{
-        "date": d,
-        "count": int(raw[d]),
-        "level": lv.get(int(raw[d]), 0),
-    } for d in sorted(raw)]
+        "date": day,
+        "count": count,
+        "level": lv.get(count, 0),
+    } for day, count in sorted(rows)]
     print(json.dumps({
         "user": user,
-        "year": "last",  # GitLab serves the rolling year only
-        "total": sum(d["count"] for d in days),
-        "first": days[0]["date"] if days else "",
         "days": days,
     }))
     return 0
