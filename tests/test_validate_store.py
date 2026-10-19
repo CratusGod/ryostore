@@ -463,7 +463,7 @@ class ValidateStoreTest(unittest.TestCase):
 class MigratedCatalogueTest(unittest.TestCase):
     def test_migrated_categories_satisfy_store_contract(self) -> None:
         root = MODULE_PATH.parent.parent
-        for category in ("rices", "plugins", "bundles", "barstyles", "launchers", "fastfetch"):
+        for category in ("rices", "plugins", "bundles", "barstyles", "launchers", "docks", "fastfetch"):
             with self.subTest(category=category):
                 self.assertEqual(
                     validate_store.validate_tree(root, (category,)),
@@ -707,12 +707,14 @@ def build_plugin_source(root: Path, product_id: str = "demo") -> dict:
     write_json(root / "plugins" / "registry.json", {"schema": 1, "plugins": [entry]})
     return entry
 
-def build_launcher_product(root: Path, product_id: str = "demo") -> None:
-    """A launcher folder plus its registry row, packed by the real pack tool."""
-    product = root / "launchers" / product_id
+def build_folder_product(root: Path, category: str, product_id: str = "demo") -> None:
+    """A launcher or dock folder plus its registry row, packed by the real pack tool."""
+    spec = validate_store.FOLDER_PRODUCTS[category]
+    product = root / category / product_id
     (product / "assets").mkdir(parents=True, exist_ok=True)
-    (product / "Main.qml").write_text("import QtQuick\nItem {}\n", encoding="utf-8")
-    (product / "Preview.qml").write_text("import QtQuick\nItem {}\n", encoding="utf-8")
+    (product / spec.entry).write_text("import QtQuick\nItem {}\n", encoding="utf-8")
+    if spec.preview:
+        (product / spec.preview).write_text("import QtQuick\nItem {}\n", encoding="utf-8")
     (product / "README.md").write_text("# Demo\n", encoding="utf-8")
     (product / "LICENSE").write_text("MIT\n", encoding="utf-8")
     (product / "assets" / "preview.png").write_bytes(b"fixture preview")
@@ -720,12 +722,12 @@ def build_launcher_product(root: Path, product_id: str = "demo") -> None:
         "id": product_id,
         "name": "Demo",
         "version": "1.0.0",
-        "path": f"launchers/{product_id}",
+        "path": f"{category}/{product_id}",
         "author": "Ryoku",
-        "upstream": f"https://github.com/ryoku-dev/ryostore/tree/main/launchers/{product_id}",
-        "summary": "Demo launcher",
-        "description": "Demo launcher.",
-        "tags": ["grid"],
+        "upstream": f"https://github.com/ryoku-dev/ryostore/tree/main/{category}/{product_id}",
+        "summary": f"Demo {spec.noun}",
+        "description": f"Demo {spec.noun}.",
+        "tags": ["demo"],
         "accent": "#cdc4ba",
         "surface": "#101010",
         "preview": "assets/preview.png",
@@ -735,11 +737,13 @@ def build_launcher_product(root: Path, product_id: str = "demo") -> None:
         "lastUpdated": "2020-01-01",
         "official": False,
     }
-    write_json(root / "launchers" / "registry.json", {"schema": 1, "launchers": [entry]})
-    pack_product.pack_product(root, "launchers", product_id)
+    write_json(root / category / "registry.json", {"schema": 1, category: [entry]})
+    pack_product.pack_product(root, category, product_id)
 
 
-class LaunchersTest(unittest.TestCase):
+class FolderProductsTest(unittest.TestCase):
+    """Launchers and docks: QML folders the shell runs in place."""
+
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
         self.root = Path(self.temp.name)
@@ -747,34 +751,42 @@ class LaunchersTest(unittest.TestCase):
     def tearDown(self) -> None:
         self.temp.cleanup()
 
-    def errors(self) -> list[str]:
-        return validate_store.validate_tree(self.root, ("launchers",))
+    def errors(self, category: str) -> list[str]:
+        return validate_store.validate_tree(self.root, (category,))
 
-    def manifest(self, product_id: str = "demo") -> dict:
-        path = self.root / "launchers" / product_id / "manifest.json"
+    def manifest(self, category: str, product_id: str = "demo") -> dict:
+        path = self.root / category / product_id / "manifest.json"
         return json.loads(path.read_text(encoding="utf-8"))
 
-    def test_packed_launcher_installs_whole_and_validates(self) -> None:
-        build_launcher_product(self.root)
-        self.assertEqual(self.errors(), [])
-        installs = {row["source"]: row["install"] for row in self.manifest()["files"]}
-        self.assertEqual(installs, {
-            "LICENSE": True, "Main.qml": True, "Preview.qml": True, "README.md": True,
-            "assets/preview.png": False,
-        })
-        self.assertEqual(self.manifest()["destination"], "ryoku/launchers/demo")
+    def test_packed_product_installs_whole_and_validates(self) -> None:
+        for category, spec in validate_store.FOLDER_PRODUCTS.items():
+            with self.subTest(category=category):
+                build_folder_product(self.root, category)
+                self.assertEqual(self.errors(category), [])
+                installs = {row["source"]: row["install"] for row in self.manifest(category)["files"]}
+                expected = {"LICENSE": True, spec.entry: True, "README.md": True, "assets/preview.png": False}
+                if spec.preview:
+                    expected[spec.preview] = True
+                self.assertEqual(installs, expected)
+                self.assertEqual(self.manifest(category)["destination"], f"ryoku/{category}/demo")
 
-    def test_a_launcher_cannot_take_a_shipped_launcher_id(self) -> None:
-        build_launcher_product(self.root, "hero")
-        self.assertIn("launchers/hero: id is taken by a launcher Ryoku ships", self.errors())
+    def test_a_product_cannot_take_an_id_the_shell_ships(self) -> None:
+        for category, spec in validate_store.FOLDER_PRODUCTS.items():
+            with self.subTest(category=category):
+                shipped = sorted(spec.reserved)[0]
+                build_folder_product(self.root, category, shipped)
+                self.assertIn(f"{category}/{shipped}: id is taken by a {spec.noun} Ryoku ships",
+                              self.errors(category))
 
-    def test_a_launcher_without_main_qml_is_rejected(self) -> None:
-        build_launcher_product(self.root)
-        (self.root / "launchers" / "demo" / "Main.qml").rename(
-            self.root / "launchers" / "demo" / "Launcher.qml")
-        pack_product.pack_product(self.root, "launchers", "demo")
-        self.assertIn("launchers/demo: Main.qml must be declared with install true", self.errors())
-
+    def test_a_product_without_its_entry_is_rejected(self) -> None:
+        for category, spec in validate_store.FOLDER_PRODUCTS.items():
+            with self.subTest(category=category):
+                build_folder_product(self.root, category)
+                folder = self.root / category / "demo"
+                (folder / spec.entry).rename(folder / "Other.qml")
+                pack_product.pack_product(self.root, category, "demo")
+                self.assertIn(f"{category}/demo: {spec.entry} must be declared with install true",
+                              self.errors(category))
 
 
 class PackProductTest(unittest.TestCase):

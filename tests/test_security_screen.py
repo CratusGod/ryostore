@@ -246,6 +246,24 @@ class TestLauncherImports(Base):
         self.assertEqual(sev(env, "launcher.import_escape"), "blocking")
 
 
+class TestDockImports(Base):
+    def test_shell_imports_and_in_folder_imports_are_clean(self):
+        # A dock wears the shell's dock model and the Stage Editor frame.
+        write(self.root, "docks/demo/Dock.qml",
+              'import QtQuick\nimport shell.services\nimport shell.modules.stage.frame\n'
+              'import "parts"\nItem{}\n')
+        write(self.root, "docks/demo/parts/Tile.qml", "import QtQuick\nItem{}\n")
+        env = self.run_screen()
+        self.assertFalse(has(env, "dock.import_escape"))
+        self.assertFalse(has(env, "plugin.forbidden_import"))
+
+    def test_relative_import_outside_the_dock_blocks(self):
+        write(self.root, "docks/demo/Dock.qml",
+              'import QtQuick\nimport "../../launchers/tatami"\nItem{}\n')
+        env = self.run_screen()
+        self.assertEqual(sev(env, "dock.import_escape"), "blocking")
+
+
 class TestDynamicExecution(Base):
     def test_python_dynamic_exec(self):
         src = (
