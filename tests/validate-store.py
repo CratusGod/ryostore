@@ -13,9 +13,13 @@ from typing import Iterable
 
 
 CATEGORIES = (
-    "rices", "lockscreens", "barstyles", "fastfetch", "plugins", "bundles",
+    "rices", "lockscreens", "barstyles", "launchers", "fastfetch", "plugins", "bundles",
     "decors", "launcher-images", "fastfetch-emblems", "ryotunes-skins", "vesktop-themes",
 )
+# The launchers the Ryoku shell ships (its modules/launcher/catalog.json). The
+# shell always opens its own launcher for one of these ids, so a Store launcher
+# cannot take one.
+RESERVED_LAUNCHER_IDS = {"main", "hero", "okshell", "kairos", "spotlight", "python"}
 REQUIRED_ENTRY_FIELDS = (
     "id", "name", "version", "path", "author", "summary", "description",
     "tags", "accent", "surface", "preview", "screenshots", "manifest",
@@ -431,6 +435,29 @@ def validate_ryotunes_skin(entry: dict, product: Path, manifest: object, errors:
         errors.append(f"{label}: preview must be declared with install false")
 
 
+def validate_launcher(entry: dict, manifest: object, errors: list[str]) -> None:
+    """A launcher installs whole into ryoku/launchers/<id> and runs from its
+    Main.qml, so the manifest must install that entry point (and Preview.qml when
+    it ships one), and the id must not be one the shell's own launchers use."""
+    product_id = entry.get("id", "?")
+    label = f"launchers/{product_id}"
+    if product_id in RESERVED_LAUNCHER_IDS:
+        errors.append(f"{label}: id is taken by a launcher Ryoku ships")
+    if not isinstance(manifest, dict):
+        return
+    if manifest.get("destination") != f"ryoku/launchers/{product_id}":
+        errors.append(f"{label}: manifest destination must be ryoku/launchers/{product_id}")
+    installs = {
+        row["source"]: row.get("install")
+        for row in (manifest.get("files") if isinstance(manifest.get("files"), list) else [])
+        if isinstance(row, dict) and isinstance(row.get("source"), str)
+    }
+    if installs.get("Main.qml") is not True:
+        errors.append(f"{label}: Main.qml must be declared with install true")
+    if "Preview.qml" in installs and installs["Preview.qml"] is not True:
+        errors.append(f"{label}: Preview.qml must be declared with install true")
+
+
 def validate_entry(category: str, entry: object, root: Path, errors: list[str], require_media: bool) -> None:
     if not isinstance(entry, dict):
         errors.append(f"{category}/?: registry entry must be an object")
@@ -503,6 +530,8 @@ def validate_entry(category: str, entry: object, root: Path, errors: list[str], 
             validate_bundle_components(entry, manifest, errors)
         elif category == "ryotunes-skins":
             validate_ryotunes_skin(entry, product, manifest, errors)
+        elif category == "launchers":
+            validate_launcher(entry, manifest, errors)
 
 
 def validate_tree(
