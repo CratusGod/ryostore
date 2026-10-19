@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "docks": [
+    {
+      "id": "engawa",
+      "name": "Engawa",
+      "version": "1.0.0",
+      "path": "docks/engawa",
+      "author": "Ryoku Team",
+      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/docks/engawa",
+      "discord": "https://discord.gg/8KjBmUEyKA",
+      "summary": "Veranda plank dock",
+      "description": "One plank flush with the screen edge, every app on a board of its own: pins first, a nail for each open window, a vermilion nail for the one you are in, and a name tag on hover. Works on all four edges.",
+      "tags": [
+        "plank",
+        "flush",
+        "nails"
+      ],
+      "accent": "#e1ded0",
+      "surface": "#191111",
+      "preview": "assets/preview.webp",
+      "screenshots": [
+        "assets/left.webp"
+      ],
+      "manifest": "manifest.json",
+      "manifestSha256": "b445bd70c32b78b1200535f70055959bfb97ea9c125fe9945b9b041005f7d163",
+      "license": "GPL-3.0-or-later",
+      "lastUpdated": "2026-10-19",
+      "official": true
+    }
+  ]
+}

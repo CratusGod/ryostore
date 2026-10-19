@@ -39,6 +39,7 @@ manifest fields:
 | --- | --- | --- |
 | A shell plugin (desktop, popout, or QS Bar widget) | `plugins/template/` | [`plugins/AUTHORING.md`](plugins/AUTHORING.md) |
 | An app launcher (what Super+Space opens) | `launchers/template/` | [`launchers/AUTHORING.md`](launchers/AUTHORING.md) |
+| A dock (the app strip every bar style shares) | `docks/template/` | [`docks/AUTHORING.md`](docks/AUTHORING.md) |
 | A rice (whole-desktop look) | Save current setup in Settings | [`rices/AUTHORING.md`](rices/AUTHORING.md) |
 | A colour scheme | `colorschemes/template/` | [`colorschemes/AUTHORING.md`](colorschemes/AUTHORING.md) |
 | A bundle (tool set) | `bundles/the-ricer/` | [`bundles/README.md`](bundles/README.md) |
@@ -103,7 +104,7 @@ with you.
 - **No window manager in the code.** Ryoku runs the same shell on Hyprland and on
   niri, so an item reaches the desktop through the shell, never through one
   compositor: no `hyprctl`, no compositor socket, no `Quickshell.Hyprland` (the
-  facade is `Ryoku.Ui.Singletons` -> `Wm` in a bar style or a launcher, and the
+  facade is `Ryoku.Ui.Singletons` -> `Wm` in a bar style, a dock or a launcher, and the
   Quickshell Wayland protocols in a plugin), no compositor config path, and no branching on
   which compositor is running. A feature the compositor genuinely cannot do is
   gated on the capability (`Wm.caps`), not on its name. An item that needs a

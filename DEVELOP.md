@@ -5,9 +5,9 @@ from a folder on your disk, in your own live desktop, before it ever reaches the
 store. Build, point the desktop at your copy, watch it hot-reload, fix, repeat.
 
 There are two override paths. Use the plugin one for a single plugin; use the
-store one for anything else (rices, colour schemes, lockscreens, launchers,
-bundles, and so on) or to preview your whole catalogue exactly as users will see
-it.
+store one for anything else (rices, colour schemes, lockscreens, docks,
+launchers, bundles, and so on) or to preview your whole catalogue exactly as
+users will see it.
 
 ## 1. Test a plugin live
 
@@ -58,12 +58,12 @@ mkdir -p ~/.config/ryoku
 echo "file://$HOME/Work/ryostore" > ~/.config/ryoku/ryostore-base
 ```
 
-Open the Store (or Settings). Your rice, colour scheme, lockscreen, launcher,
-bundle, or whatever you are building now appears in its catalogue and installs
-from your disk. Edit a `registry.json`, reopen the Store, and your change is
-live. A launcher you change needs a repack (`tools/pack-product.py`) and a fresh
-install before Super+Space shows the new copy; `launchers/AUTHORING.md` has the
-loop.
+Open the Store (or Settings). Your rice, colour scheme, lockscreen, dock,
+launcher, bundle, or whatever you are building now appears in its catalogue and
+installs from your disk. Edit a `registry.json`, reopen the Store, and your
+change is live. A dock or launcher you change needs a repack
+(`tools/pack-product.py`) and a fresh install before the desktop shows the new
+copy; `docks/AUTHORING.md` and `launchers/AUTHORING.md` have the loop.
 
 For a one-off session instead of the persistent file, set the environment
 variable (a base URL for a fork, or a `file://` path for a local tree):
