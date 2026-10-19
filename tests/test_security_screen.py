@@ -227,6 +227,25 @@ class TestPluginImports(Base):
         self.assertFalse(has(env, "plugin.forbidden_import"))
 
 
+class TestLauncherImports(Base):
+    def test_shell_imports_and_in_folder_imports_are_clean(self):
+        # A launcher wears the shell's services the way a bar style does.
+        write(self.root, "launchers/demo/Main.qml",
+              'import QtQuick\nimport shell.services\nimport Ryoku.Ui.Singletons\nimport "parts"\nItem{}\n')
+        write(self.root, "launchers/demo/parts/Tile.qml", "import QtQuick\nItem{}\n")
+        env = self.run_screen()
+        self.assertFalse(has(env, "launcher.import_escape"))
+        self.assertFalse(has(env, "plugin.forbidden_import"))
+
+    def test_relative_import_outside_the_launcher_blocks(self):
+        # Installed, the launcher runs from a copy of its own folder alone, so a
+        # reach into a neighbour breaks at best and borrows its code at worst.
+        write(self.root, "launchers/demo/Main.qml",
+              'import QtQuick\nimport "../other/parts"\nItem{}\n')
+        env = self.run_screen()
+        self.assertEqual(sev(env, "launcher.import_escape"), "blocking")
+
+
 class TestDynamicExecution(Base):
     def test_python_dynamic_exec(self):
         src = (

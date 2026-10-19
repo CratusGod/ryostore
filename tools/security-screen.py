@@ -134,6 +134,7 @@ RULES: dict[str, tuple[str, str]] = {
     # plugin imports (R4)
     "plugin.forbidden_import": (SEV_BLOCK, "Plugin imports shell/UI internals"),
     "plugin.import_escape": (SEV_BLOCK, "Plugin relative import escapes the plugin folder"),
+    "launcher.import_escape": (SEV_BLOCK, "Launcher relative import escapes the launcher folder"),
     "plugin.unknown_import": (SEV_WARN, "Plugin imports a module outside the allowlist"),
     # dynamic execution
     "exec.eval_exec": (SEV_BLOCK, "Python eval/exec/compile of code"),
@@ -919,13 +920,14 @@ _BENIGN_HOSTS = {
 }
 
 
-def scan_js_qml(coll: Collector, path: str, text: str, plugin_root: Optional[str]) -> None:
+def scan_js_qml(coll: Collector, path: str, text: str, plugin_root: Optional[str],
+                launcher_root: Optional[str] = None) -> None:
     stripped = strip_js_comments(text)
     file_dir = str(PurePosixPath(path).parent)
     for lineno, line in iter_lines(stripped):
         imp = _IMPORT.match(line)
         if imp:
-            _screen_import(coll, path, lineno, imp, file_dir, plugin_root)
+            _screen_import(coll, path, lineno, imp, file_dir, plugin_root, launcher_root)
         if _JS_EVAL.search(line):
             coll.add("exec.js_eval", path, lineno,
                      "JavaScript eval / Function() constructor", tag="jseval")
@@ -934,8 +936,18 @@ def scan_js_qml(coll: Collector, path: str, text: str, plugin_root: Optional[str
                      "dynamic QML construction via Qt.createQmlObject", tag="createqml")
 
 
+def launcher_root_for(path: str) -> Optional[str]:
+    """A launcher installs as one folder, launchers/<id>, and runs from a copy of
+    it, so a relative import may reach nothing outside that folder."""
+    parts = PurePosixPath(path).parts
+    if len(parts) >= 3 and parts[0] == "launchers":
+        return f"{parts[0]}/{parts[1]}"
+    return None
+
+
 def _screen_import(coll: Collector, path: str, lineno: int, imp: re.Match,
-                   file_dir: str, plugin_root: Optional[str]) -> None:
+                   file_dir: str, plugin_root: Optional[str],
+                   launcher_root: Optional[str] = None) -> None:
     rel = imp.group("path")
     mod = imp.group("mod")
     if mod:
@@ -952,17 +964,21 @@ def _screen_import(coll: Collector, path: str, lineno: int, imp: re.Match,
             coll.add("plugin.unknown_import", path, lineno,
                      f"import outside the plugin allowlist ({mod})", tag=mod)
     elif rel is not None:
-        if plugin_root is None:
+        if plugin_root is not None:
+            root, rule, kind = plugin_root, "plugin.import_escape", "plugin"
+        elif launcher_root is not None:
+            root, rule, kind = launcher_root, "launcher.import_escape", "launcher"
+        else:
             return
         target = resolve_within(file_dir, rel)
         if target is None:
-            coll.add("plugin.import_escape", path, lineno,
+            coll.add(rule, path, lineno,
                      f"relative import escapes the repository ({rel})", tag=rel)
             return
-        root_prefix = plugin_root + "/" if plugin_root else ""
-        if plugin_root and target != plugin_root and not target.startswith(root_prefix):
-            coll.add("plugin.import_escape", path, lineno,
-                     f"relative import escapes the plugin folder ({rel})", tag=rel)
+        root_prefix = root + "/" if root else ""
+        if root and target != root and not target.startswith(root_prefix):
+            coll.add(rule, path, lineno,
+                     f"relative import escapes the {kind} folder ({rel})", tag=rel)
 
 
 def scan_network_hosts(coll: Collector, path: str, text: str,
@@ -1604,7 +1620,7 @@ def scan_blob(coll: Collector, blob: Blob, roots: dict[str, dict]) -> None:
     if ext in SHELL_EXTS or re.search(r"\b(?:ba|z|da)?sh\b", shebang):
         scan_shell(coll, path, text, declared_cmds)
     if ext in JS_QML_EXTS:
-        scan_js_qml(coll, path, text, proot)
+        scan_js_qml(coll, path, text, proot, launcher_root_for(path))
 
     # undeclared network hosts: only inside a plugin folder, only in code.
     if proot is not None and not is_doc and (

@@ -463,7 +463,7 @@ class ValidateStoreTest(unittest.TestCase):
 class MigratedCatalogueTest(unittest.TestCase):
     def test_migrated_categories_satisfy_store_contract(self) -> None:
         root = MODULE_PATH.parent.parent
-        for category in ("rices", "plugins", "bundles", "barstyles", "fastfetch"):
+        for category in ("rices", "plugins", "bundles", "barstyles", "launchers", "fastfetch"):
             with self.subTest(category=category):
                 self.assertEqual(
                     validate_store.validate_tree(root, (category,)),
@@ -706,6 +706,75 @@ def build_plugin_source(root: Path, product_id: str = "demo") -> dict:
     }
     write_json(root / "plugins" / "registry.json", {"schema": 1, "plugins": [entry]})
     return entry
+
+def build_launcher_product(root: Path, product_id: str = "demo") -> None:
+    """A launcher folder plus its registry row, packed by the real pack tool."""
+    product = root / "launchers" / product_id
+    (product / "assets").mkdir(parents=True, exist_ok=True)
+    (product / "Main.qml").write_text("import QtQuick\nItem {}\n", encoding="utf-8")
+    (product / "Preview.qml").write_text("import QtQuick\nItem {}\n", encoding="utf-8")
+    (product / "README.md").write_text("# Demo\n", encoding="utf-8")
+    (product / "LICENSE").write_text("MIT\n", encoding="utf-8")
+    (product / "assets" / "preview.png").write_bytes(b"fixture preview")
+    entry = {
+        "id": product_id,
+        "name": "Demo",
+        "version": "1.0.0",
+        "path": f"launchers/{product_id}",
+        "author": "Ryoku",
+        "upstream": f"https://github.com/ryoku-dev/ryostore/tree/main/launchers/{product_id}",
+        "summary": "Demo launcher",
+        "description": "Demo launcher.",
+        "tags": ["grid"],
+        "accent": "#cdc4ba",
+        "surface": "#101010",
+        "preview": "assets/preview.png",
+        "screenshots": [],
+        "manifest": "manifest.json",
+        "manifestSha256": "0" * 64,
+        "lastUpdated": "2020-01-01",
+        "official": False,
+    }
+    write_json(root / "launchers" / "registry.json", {"schema": 1, "launchers": [entry]})
+    pack_product.pack_product(root, "launchers", product_id)
+
+
+class LaunchersTest(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temp = tempfile.TemporaryDirectory()
+        self.root = Path(self.temp.name)
+
+    def tearDown(self) -> None:
+        self.temp.cleanup()
+
+    def errors(self) -> list[str]:
+        return validate_store.validate_tree(self.root, ("launchers",))
+
+    def manifest(self, product_id: str = "demo") -> dict:
+        path = self.root / "launchers" / product_id / "manifest.json"
+        return json.loads(path.read_text(encoding="utf-8"))
+
+    def test_packed_launcher_installs_whole_and_validates(self) -> None:
+        build_launcher_product(self.root)
+        self.assertEqual(self.errors(), [])
+        installs = {row["source"]: row["install"] for row in self.manifest()["files"]}
+        self.assertEqual(installs, {
+            "LICENSE": True, "Main.qml": True, "Preview.qml": True, "README.md": True,
+            "assets/preview.png": False,
+        })
+        self.assertEqual(self.manifest()["destination"], "ryoku/launchers/demo")
+
+    def test_a_launcher_cannot_take_a_shipped_launcher_id(self) -> None:
+        build_launcher_product(self.root, "hero")
+        self.assertIn("launchers/hero: id is taken by a launcher Ryoku ships", self.errors())
+
+    def test_a_launcher_without_main_qml_is_rejected(self) -> None:
+        build_launcher_product(self.root)
+        (self.root / "launchers" / "demo" / "Main.qml").rename(
+            self.root / "launchers" / "demo" / "Launcher.qml")
+        pack_product.pack_product(self.root, "launchers", "demo")
+        self.assertIn("launchers/demo: Main.qml must be declared with install true", self.errors())
+
 
 
 class PackProductTest(unittest.TestCase):

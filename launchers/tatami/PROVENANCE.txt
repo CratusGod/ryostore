@@ -1,0 +1,9 @@
+Tatami Ryoku app launcher
+
+Source: Ryoku catalogue, launchers/tatami
+Author: Ryoku Team
+License: GNU General Public License version 3; see LICENSE
+
+Written for Ryoku's launcher host as the first launcher in the App launchers
+catalogue. It uses only the shell's public services (AppLaunch, Icons) and the
+Ryoku.Ui tokens.
