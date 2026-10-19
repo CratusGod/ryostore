@@ -10,10 +10,10 @@ Two categories ship a per-file manifest (schema 1, with ``destination`` and a
 ``product-manifest.json``, destination ``ryoku/plugins/<id>``) and
 ``ryotunes-skins`` (manifest ``manifest.json``, destination
 ``ryoku/ryotunes-skins/<id>``). Both name their manifest file in the registry
-entry's ``manifest`` field. ``barstyles`` and ``launchers`` ship ``manifest.json``
-the same way (destination ``ryoku/<category>/<id>``), with one difference this
-tool honours: a bar style or a launcher installs its README/LICENSE beside its
-QML, while a plugin and a skin hold documentation back. Every other category
+entry's ``manifest`` field. ``barstyles``, ``launchers`` and ``docks`` ship
+``manifest.json`` the same way (destination ``ryoku/<category>/<id>``), with one
+difference this tool honours: a bar style, a launcher or a dock installs its
+README/LICENSE beside its QML, while a plugin and a skin hold documentation back. Every other category
 installs differently and has no such manifest to reproduce, so generalising
 further would be guesswork.
 
@@ -49,22 +49,23 @@ import sys
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-SUPPORTED_CATEGORIES = ("plugins", "barstyles", "launchers", "ryotunes-skins")
+SUPPORTED_CATEGORIES = ("plugins", "barstyles", "launchers", "docks", "ryotunes-skins")
 
 # Categories whose products install their documentation alongside their payload.
-# A bar style or a launcher is a folder of QML that installs whole, so its README
-# and LICENSE land next to it; a plugin and a skin hold documentation back.
-DOCS_SHIPPED_CATEGORIES = {"barstyles", "launchers"}
+# A bar style, a launcher or a dock is a folder of QML that installs whole, so its
+# README and LICENSE land next to it; a plugin and a skin hold documentation back.
+DOCS_SHIPPED_CATEGORIES = {"barstyles", "launchers", "docks"}
 
 # The file-row field order each category already ships. It is per category
 # because a regenerated row must be byte-identical to the row it replaces: the
-# plugins, skins and launchers were written by this tool (digest before mode),
-# the categories authored by hand put mode and size first. Emitting the other
-# order would rewrite every row of a manifest whose content did not change.
+# plugins, skins, launchers and docks were written by this tool (digest before
+# mode), the categories authored by hand put mode and size first. Emitting the
+# other order would rewrite every row of a manifest whose content did not change.
 ROW_ORDER = {
     "plugins": ("source", "destination", "sha256", "mode", "size", "install"),
     "ryotunes-skins": ("source", "destination", "sha256", "mode", "size", "install"),
     "launchers": ("source", "destination", "sha256", "mode", "size", "install"),
+    "docks": ("source", "destination", "sha256", "mode", "size", "install"),
     "barstyles": ("source", "destination", "mode", "size", "sha256", "install"),
 }
 

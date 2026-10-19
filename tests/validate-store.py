@@ -13,13 +13,29 @@ from typing import Iterable
 
 
 CATEGORIES = (
-    "rices", "lockscreens", "barstyles", "launchers", "fastfetch", "plugins", "bundles",
+    "rices", "lockscreens", "barstyles", "launchers", "docks", "fastfetch", "plugins", "bundles",
     "decors", "launcher-images", "fastfetch-emblems", "ryotunes-skins", "vesktop-themes",
 )
-# The launchers the Ryoku shell ships (its modules/launcher/catalog.json). The
-# shell always opens its own launcher for one of these ids, so a Store launcher
-# cannot take one.
-RESERVED_LAUNCHER_IDS = {"main", "hero", "okshell", "kairos", "spotlight", "python"}
+
+
+class FolderProduct:
+    """A category whose product installs whole into ryoku/<category>/<id> and
+    runs from its own folder: entry is the file the shell loads, preview the
+    optional Settings preview, and reserved the ids of the ones the shell ships
+    (the shell always runs its own for those, so a Store product cannot take
+    one)."""
+
+    def __init__(self, noun: str, entry: str, preview: str | None, reserved: set[str]):
+        self.noun, self.entry, self.preview, self.reserved = noun, entry, preview, reserved
+
+
+FOLDER_PRODUCTS = {
+    # The shell's modules/launcher/catalog.json.
+    "launchers": FolderProduct("launcher", "Main.qml", "Preview.qml",
+                               {"main", "hero", "okshell", "kairos", "spotlight", "python"}),
+    # The shell's services/Dock.qml builtinDesigns.
+    "docks": FolderProduct("dock", "Dock.qml", None, {"ryoku", "python", "shima", "ii", "none"}),
+}
 REQUIRED_ENTRY_FIELDS = (
     "id", "name", "version", "path", "author", "summary", "description",
     "tags", "accent", "surface", "preview", "screenshots", "manifest",
@@ -435,27 +451,28 @@ def validate_ryotunes_skin(entry: dict, product: Path, manifest: object, errors:
         errors.append(f"{label}: preview must be declared with install false")
 
 
-def validate_launcher(entry: dict, manifest: object, errors: list[str]) -> None:
-    """A launcher installs whole into ryoku/launchers/<id> and runs from its
-    Main.qml, so the manifest must install that entry point (and Preview.qml when
-    it ships one), and the id must not be one the shell's own launchers use."""
+def validate_folder_product(category: str, entry: dict, manifest: object, errors: list[str]) -> None:
+    """A folder product installs whole into ryoku/<category>/<id> and runs from
+    its entry, so the manifest must install that entry (and the preview when it
+    ships one), and the id must not be one the shell ships."""
+    product = FOLDER_PRODUCTS[category]
     product_id = entry.get("id", "?")
-    label = f"launchers/{product_id}"
-    if product_id in RESERVED_LAUNCHER_IDS:
-        errors.append(f"{label}: id is taken by a launcher Ryoku ships")
+    label = f"{category}/{product_id}"
+    if product_id in product.reserved:
+        errors.append(f"{label}: id is taken by a {product.noun} Ryoku ships")
     if not isinstance(manifest, dict):
         return
-    if manifest.get("destination") != f"ryoku/launchers/{product_id}":
-        errors.append(f"{label}: manifest destination must be ryoku/launchers/{product_id}")
+    if manifest.get("destination") != f"ryoku/{category}/{product_id}":
+        errors.append(f"{label}: manifest destination must be ryoku/{category}/{product_id}")
     installs = {
         row["source"]: row.get("install")
         for row in (manifest.get("files") if isinstance(manifest.get("files"), list) else [])
         if isinstance(row, dict) and isinstance(row.get("source"), str)
     }
-    if installs.get("Main.qml") is not True:
-        errors.append(f"{label}: Main.qml must be declared with install true")
-    if "Preview.qml" in installs and installs["Preview.qml"] is not True:
-        errors.append(f"{label}: Preview.qml must be declared with install true")
+    if installs.get(product.entry) is not True:
+        errors.append(f"{label}: {product.entry} must be declared with install true")
+    if product.preview and product.preview in installs and installs[product.preview] is not True:
+        errors.append(f"{label}: {product.preview} must be declared with install true")
 
 
 def validate_entry(category: str, entry: object, root: Path, errors: list[str], require_media: bool) -> None:
@@ -530,8 +547,8 @@ def validate_entry(category: str, entry: object, root: Path, errors: list[str], 
             validate_bundle_components(entry, manifest, errors)
         elif category == "ryotunes-skins":
             validate_ryotunes_skin(entry, product, manifest, errors)
-        elif category == "launchers":
-            validate_launcher(entry, manifest, errors)
+        elif category in FOLDER_PRODUCTS:
+            validate_folder_product(category, entry, manifest, errors)
 
 
 def validate_tree(

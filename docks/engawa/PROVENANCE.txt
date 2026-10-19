@@ -1,0 +1,9 @@
+Engawa Ryoku dock
+
+Source: Ryoku catalogue, docks/engawa
+Author: Ryoku Team
+License: GNU General Public License version 3; see LICENSE
+
+Written for Ryoku's dock host as the first dock in the Docks catalogue. It uses
+only the shell's public dock model (Dock), its services (AppLaunch, Icons), the
+Stage Editor frame and the Ryoku.Ui tokens.

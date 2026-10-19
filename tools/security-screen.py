@@ -135,6 +135,7 @@ RULES: dict[str, tuple[str, str]] = {
     "plugin.forbidden_import": (SEV_BLOCK, "Plugin imports shell/UI internals"),
     "plugin.import_escape": (SEV_BLOCK, "Plugin relative import escapes the plugin folder"),
     "launcher.import_escape": (SEV_BLOCK, "Launcher relative import escapes the launcher folder"),
+    "dock.import_escape": (SEV_BLOCK, "Dock relative import escapes the dock folder"),
     "plugin.unknown_import": (SEV_WARN, "Plugin imports a module outside the allowlist"),
     # dynamic execution
     "exec.eval_exec": (SEV_BLOCK, "Python eval/exec/compile of code"),
@@ -921,13 +922,13 @@ _BENIGN_HOSTS = {
 
 
 def scan_js_qml(coll: Collector, path: str, text: str, plugin_root: Optional[str],
-                launcher_root: Optional[str] = None) -> None:
+                folder_root: Optional[tuple[str, str]] = None) -> None:
     stripped = strip_js_comments(text)
     file_dir = str(PurePosixPath(path).parent)
     for lineno, line in iter_lines(stripped):
         imp = _IMPORT.match(line)
         if imp:
-            _screen_import(coll, path, lineno, imp, file_dir, plugin_root, launcher_root)
+            _screen_import(coll, path, lineno, imp, file_dir, plugin_root, folder_root)
         if _JS_EVAL.search(line):
             coll.add("exec.js_eval", path, lineno,
                      "JavaScript eval / Function() constructor", tag="jseval")
@@ -936,18 +937,22 @@ def scan_js_qml(coll: Collector, path: str, text: str, plugin_root: Optional[str
                      "dynamic QML construction via Qt.createQmlObject", tag="createqml")
 
 
-def launcher_root_for(path: str) -> Optional[str]:
-    """A launcher installs as one folder, launchers/<id>, and runs from a copy of
-    it, so a relative import may reach nothing outside that folder."""
+# Products that install as one folder, <category>/<id>, and run from a copy of
+# it, so a relative import may reach nothing outside that folder. Each maps to
+# the kind its import rule is named after.
+FOLDER_PRODUCTS = {"launchers": "launcher", "docks": "dock"}
+
+
+def folder_product_root_for(path: str) -> Optional[tuple[str, str]]:
     parts = PurePosixPath(path).parts
-    if len(parts) >= 3 and parts[0] == "launchers":
-        return f"{parts[0]}/{parts[1]}"
+    if len(parts) >= 3 and parts[0] in FOLDER_PRODUCTS:
+        return f"{parts[0]}/{parts[1]}", FOLDER_PRODUCTS[parts[0]]
     return None
 
 
 def _screen_import(coll: Collector, path: str, lineno: int, imp: re.Match,
                    file_dir: str, plugin_root: Optional[str],
-                   launcher_root: Optional[str] = None) -> None:
+                   folder_root: Optional[tuple[str, str]] = None) -> None:
     rel = imp.group("path")
     mod = imp.group("mod")
     if mod:
@@ -965,11 +970,12 @@ def _screen_import(coll: Collector, path: str, lineno: int, imp: re.Match,
                      f"import outside the plugin allowlist ({mod})", tag=mod)
     elif rel is not None:
         if plugin_root is not None:
-            root, rule, kind = plugin_root, "plugin.import_escape", "plugin"
-        elif launcher_root is not None:
-            root, rule, kind = launcher_root, "launcher.import_escape", "launcher"
+            root, kind = plugin_root, "plugin"
+        elif folder_root is not None:
+            root, kind = folder_root
         else:
             return
+        rule = f"{kind}.import_escape"
         target = resolve_within(file_dir, rel)
         if target is None:
             coll.add(rule, path, lineno,
@@ -1620,7 +1626,7 @@ def scan_blob(coll: Collector, blob: Blob, roots: dict[str, dict]) -> None:
     if ext in SHELL_EXTS or re.search(r"\b(?:ba|z|da)?sh\b", shebang):
         scan_shell(coll, path, text, declared_cmds)
     if ext in JS_QML_EXTS:
-        scan_js_qml(coll, path, text, proot, launcher_root_for(path))
+        scan_js_qml(coll, path, text, proot, folder_product_root_for(path))
 
     # undeclared network hosts: only inside a plugin folder, only in code.
     if proot is not None and not is_doc and (
