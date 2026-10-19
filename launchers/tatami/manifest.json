@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "id": "tatami",
+  "category": "launchers",
+  "version": "1.0.0",
+  "destination": "ryoku/launchers/tatami",
+  "files": [
+    {
+      "source": "CornerTicks.qml",
+      "destination": "CornerTicks.qml",
+      "sha256": "0b702f815251673e1b4fc3710e1cbb9099c4473d0dc606325bdde09b9ab594e8",
+      "mode": "0644",
+      "size": 1125,
+      "install": true
+    },
+    {
+      "source": "LICENSE",
+      "destination": "LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "mode": "0644",
+      "size": 35149,
+      "install": true
+    },
+    {
+      "source": "Main.qml",
+      "destination": "Main.qml",
+      "sha256": "8091f5931ec44a677f82c449d93c078692d5616680a417748151f3196945083f",
+      "mode": "0644",
+      "size": 3130,
+      "install": true
+    },
+    {
+      "source": "PROVENANCE.txt",
+      "destination": "PROVENANCE.txt",
+      "sha256": "73eb2938c158559f9b55f66a829b22fe2925e1d508bc7a76f34f09dd52ced995",
+      "mode": "0644",
+      "size": 321,
+      "install": true
+    },
+    {
+      "source": "Preview.qml",
+      "destination": "Preview.qml",
+      "sha256": "0d1351541625a8c9d409172c1887a77d61275075671a05292b500343eb905e31",
+      "mode": "0644",
+      "size": 5288,
+      "install": true
+    },
+    {
+      "source": "README.md",
+      "destination": "README.md",
+      "sha256": "c1f7b3766f89b6748c088ef88b9989a32baaaaf0c32682c7b23ad5f44e2edb35",
+      "mode": "0644",
+      "size": 869,
+      "install": true
+    },
+    {
+      "source": "Sheet.qml",
+      "destination": "Sheet.qml",
+      "sha256": "c5d618522755b32152aefed6f65f6ce29a64c38d4cfdc2a0446d1dc06934ae10",
+      "mode": "0644",
+      "size": 14300,
+      "install": true
+    },
+    {
+      "source": "Tile.qml",
+      "destination": "Tile.qml",
+      "sha256": "29e026124907d0d9da046ae315cfaf658706c30cc1fade6b9b97dc4b0a0cb1bb",
+      "mode": "0644",
+      "size": 2814,
+      "install": true
+    },
+    {
+      "source": "assets/preview.webp",
+      "destination": "assets/preview.webp",
+      "sha256": "f0d801fa8ac91e6afb33c5ae9fe326f4fc15b33bbddeab5ce1e85c67267da23f",
+      "mode": "0644",
+      "size": 79746,
+      "install": false
+    },
+    {
+      "source": "assets/sections.webp",
+      "destination": "assets/sections.webp",
+      "sha256": "8b07088e6a4c2fbfce599f0b278022b832edf1adaf9c4829813da9ca6e6f00e7",
+      "mode": "0644",
+      "size": 39132,
+      "install": false
+    },
+    {
+      "source": "lib/shelf.js",
+      "destination": "lib/shelf.js",
+      "sha256": "47b59e26eeee1a19322d2596c7e1d7243a055761e76ca67b832a8cd6a42f3e75",
+      "mode": "0644",
+      "size": 4769,
+      "install": true
+    }
+  ],
+  "license": "GPL-3.0-or-later"
+}

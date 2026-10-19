@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "launchers": [
+    {
+      "id": "tatami",
+      "name": "Tatami",
+      "version": "1.0.0",
+      "path": "launchers/tatami",
+      "author": "Ryoku Team",
+      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/launchers/tatami",
+      "discord": "https://discord.gg/8KjBmUEyKA",
+      "summary": "Full-screen app shelf",
+      "description": "Every app at once as a grid of mats under a section index, with search across names, keywords and descriptions, and keyboard travel across the grid.",
+      "tags": [
+        "grid",
+        "full-screen",
+        "sections"
+      ],
+      "accent": "#e1ded0",
+      "surface": "#191111",
+      "preview": "assets/preview.webp",
+      "screenshots": [
+        "assets/sections.webp"
+      ],
+      "manifest": "manifest.json",
+      "manifestSha256": "ee586aff04043758d7793687867494a49f2f0efc4891d32367dd6d7da336e10b",
+      "lastUpdated": "2026-10-19",
+      "official": true,
+      "license": "GPL-3.0-or-later"
+    }
+  ]
+}
