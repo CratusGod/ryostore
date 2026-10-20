@@ -2,8 +2,8 @@
 
 Right-click video tools for creators, installed into the Nautilus file manager as
 a **Scripts -> Ryoku Creator** submenu. Select one or more videos, right-click,
-and pick an action. Everything runs on `ffmpeg`, plus a `whisper.cpp` build you
-supply yourself for the captions action; output lands next to the source with a
+and pick an action. Everything runs on `ffmpeg`, plus whisper.cpp's `whisper-cli`
+for the captions action; output lands next to the source with a
 suffix, and progress shows as a notification.
 
 Shipped by the **Influencer** bundle; installs with the bundle and removes
@@ -20,7 +20,7 @@ cleanly with it (or on its own from the Extras tab).
 | Transcode to H.264 | `_h264.mp4` | Universal H.264/AAC (plays everywhere, Discord inline). |
 | Transcode to H.265 | `_h265.mp4` | HEVC, ~40% smaller, `hvc1`-tagged. |
 | Extract audio (MP3) | `.mp3` | ~190 kbps VBR audio pull. |
-| Generate captions (SRT) | `.srt` | Local, offline speech-to-text; needs a `whisper.cpp` build you supply, then fetches a small model once. |
+| Generate captions (SRT) | `.srt` | Local, offline speech-to-text; needs whisper.cpp's `whisper-cli` (see below), then fetches a small model once. |
 | Make GIF | `.gif` | Clean looping GIF (palette, 480px, 15fps). Keep clips short. |
 | Compress to 8 MiB | `_8MiB.mp4` | Two-pass H.264 that fits under 8 MiB (Discord-safe). |
 | Strip metadata | `_clean.*` | Drop GPS/device/EXIF from videos and images, no re-encode for video. |
@@ -33,3 +33,21 @@ cleanly with it (or on its own from the Extras tab).
 - `Compress to 8 MiB` computes bitrate from duration and bails if a clip is too
   long to fit at usable quality.
 - Remote selections (`smb://`, `mtp://`) are skipped (no local path).
+
+## On every edition
+
+The actions call the system's own `ffmpeg`. On Arch, CachyOS and Void it carries
+libx264 and libx265, and every action works as described above. Fedora's
+`ffmpeg-free` leaves both encoders out, so there:
+
+- the H.264 actions (the four reformats, Transcode to H.264 and Compress to
+  8 MiB) encode through OpenH264 at 8 Mb/s, and Compress to 8 MiB makes one
+  bitrate-held pass instead of two;
+- Transcode to H.265 uses the graphics card's encoder (NVENC, then VA-API) and
+  says so in its notification when neither can take the clip. An `ffmpeg` built
+  with libx265, such as RPM Fusion's, brings the software encoder back.
+
+Captions need whisper.cpp's `whisper-cli`. Arch and CachyOS ship it in their
+`whisper-cpp` package. Fedora's `whisper-cpp` carries only the library and Void
+has no package, so build whisper.cpp yourself there; the action finds
+`whisper-cli` on your `PATH`.

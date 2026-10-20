@@ -52,14 +52,16 @@ shell substitution is rejected.
 A logo can also need no asset at all:
 
 ```jsonc
-"logo": { "type": "builtin", "source": "arch" }
-"logo": { "type": "small",   "source": "arch" }
+"logo": { "type": "builtin" }
+"logo": { "type": "small" }
 "logo": { "type": "none" }
 "logo": { "type": "data", "source": "  /\\\n /  \\\n/____\\\n" }
 ```
 
-`data` processes `$1`-`$9` colour placeholders; `data-raw` prints verbatim.
-Ship only art you are free to redistribute, and say where it came from in
+`builtin` and `small` draw the logo of the system the readout runs on, so leave
+`source` out of them (see [Every Ryoku edition](#every-ryoku-edition)). `data`
+processes `$1`-`$9` colour placeholders; `data-raw` prints verbatim. Ship only
+art you are free to redistribute, and say where it came from in
 `PROVENANCE.txt`.
 
 Image logos draw through the kitty graphics protocol. Ryoku ships kitty, so
@@ -70,6 +72,43 @@ without the picture.
 There are no `command` modules. Anything that shells out depends on the user's
 tools and can hang a terminal on every launch. Use the built-in module instead,
 or drop the row.
+
+## Every Ryoku edition
+
+Ryoku runs on Arch, CachyOS, Fedora and Void, and a preset can be applied on
+any of them, so the readout has to describe the machine in front of it, not the
+one it was designed on. The validator holds every preset to three rules:
+
+- **Logo.** A `builtin` or `small` logo with no `source` draws the running
+  system's own logo. Naming one (`"source": "arch"`) draws Arch everywhere, so
+  it is rejected.
+- **Package counts.** The `packages` module's default format names the manager
+  in use: `139 (pacman)`, `149 (rpm)`, `31 (xbps)`. `{pacman}`, `{rpm}` and
+  `{xbps}` each print nothing on the editions that use another manager, so a
+  format that names one names all three, for example
+  `{?pacman}{pacman}{?}{?rpm}{rpm}{?}{?xbps}{xbps}{?}`. `{all}` works too.
+- **Glyphs.** No key or line may use a Nerd Font mark that stands for one
+  system: a distribution's logo, or the Windows, Apple or Android marks. The
+  logo already shows which system it is; give an OS row Tux (`\uf31a`) or
+  another neutral glyph.
+
+To name the base system in a line, write `{$RYOKU_BASE_OS}`. Ryoku sets it to
+`Arch` on Arch and CachyOS and to `Fedora` or `Void` on those editions; never
+write a distribution's name into a custom line.
+
+Use Nerd Fonts 3 code points. The ones Nerd Fonts 3 dropped (`U+F500` to
+`U+FD46`) draw an empty box in every font Ryoku ships.
+
+Check the readout on each edition before you submit. Containers are enough:
+
+```sh
+docker run --rm -e RYOKU_BASE_OS=Void -v "$PWD/fastfetch:/ff:ro" \
+  ghcr.io/void-linux/void-glibc:latest sh -c 'xbps-install -Syu xbps >/dev/null 2>&1;
+  xbps-install -Sy fastfetch >/dev/null 2>&1; fastfetch -c /ff/<id>/config.jsonc --pipe false'
+docker run --rm -e RYOKU_BASE_OS=Fedora -v "$PWD/fastfetch:/ff:ro" \
+  fedora:44 sh -c 'dnf -yq install fastfetch >/dev/null 2>&1;
+  fastfetch -c /ff/<id>/config.jsonc --pipe false'
+```
 
 ## Sizing an emblem
 

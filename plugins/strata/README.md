@@ -28,10 +28,11 @@ is seen, kept in `ports` under the state dir so it never changes.
 ## What it runs, reads, writes
 
 - `bin/strata-models list` every 5 s (reads the folders above, `ss -ltn` when assigning a port) and
-  `systemctl --user is-active strata-model.service`.
-- On click: `use` writes `current`; `start` stops `strata-model.service` if it runs, then launches the
-  selected model as that transient user unit with `systemd-run --user` (command lines above);
-  `stop` stops it. Model servers you started by hand are left alone.
-- Nothing to install: the unit is transient, nothing is enabled, nothing starts at login.
+  `bin/strata-models status` (`ryoku-host transient is-active strata-model`).
+- On click: `use` writes `current`; `start` stops the `strata-model` job if it runs, then launches
+  the selected model as that transient user job with `ryoku-host transient start` (a systemd user
+  unit, or a runit service on Void; command lines above); `stop` stops it. Model servers you
+  started by hand are left alone.
+- Nothing to install: the job is transient, nothing is enabled, nothing starts at login.
 - Writes only under `$XDG_STATE_HOME/ryoku/plugins/strata/`. No privileged commands. Network: none
   itself; it only shows the local servers' `127.0.0.1` address.

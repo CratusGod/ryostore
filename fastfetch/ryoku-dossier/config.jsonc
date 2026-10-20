@@ -27,7 +27,7 @@
   "modules": [
     "break",
     { "type": "title", "format": "{#1;title}{user-name}{#}{#separator} @ {#}{#1;title}{host-name}{#}" },
-    { "type": "custom", "format": "{#keys}\u25a0{#} {#separator}RYOKU \u00b7 \u529b \u00b7 a hand-built Arch desktop{#}" },
+    { "type": "custom", "format": "{#keys}\u25a0{#} {#separator}RYOKU \u00b7 \u529b \u00b7 a hand-built {$RYOKU_BASE_OS} desktop{#}" },
     "break",
     { "type": "custom", "format": "{#keys}\u2500\u2500{#} {#1;title}VITALS{#} {#38;2;58;46;36}\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500{#}" },
     { "type": "cpu", "key": "CPU" },

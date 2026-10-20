@@ -14,46 +14,41 @@ This bundle is stored under `bundles/spiceflow` because the project started as
 Spiceflow, a Spotify-only tool. The current project and its name in Ryostore are
 Ryoku Palette Bridge because it now handles all three apps.
 
-Ryostore installs the bridge and automatically configures integrations for
-compatible apps already present on the machine. The source is kept at
-`~/.local/share/ryoku-palette-bridge`, so you can add another integration
-later:
+Ryoku ships the bridge itself on every edition (Arch, CachyOS, Fedora and Void)
+and runs it as a session service. This bundle turns that service back on if it
+was switched off and configures the compatible apps already on the machine. Add
+another integration later with:
 
 ```bash
-~/.local/share/ryoku-palette-bridge/install-integrations.sh --all
+/usr/share/ryoku/palette-bridge/install-integrations.sh --all
 ```
 
-Check the core service and published palette at any time:
+On Fedora and Void, Vesktop and Zen usually come from Flathub, whose sandbox
+keeps each app's settings in its own `~/.var/app` folder. When the app is not
+installed natively, the bridge sets it up there, so the Flathub builds follow
+the wallpaper too. Spotify goes through Spicetify, which has its own steps for
+a Flathub Spotify.
+
+Check the service and published palette at any time:
 
 ```bash
 ryoku-palette-bridge-doctor
 ```
 
-Installing this bundle enables and starts the user service, then configures
-supported apps already present. Spotify may restart during initial setup.
-Version 2.1.0 pins the tested performance fixes and uses its own detection
-command so an older bridge binary does not cause Ryostore to skip the upgrade.
-Directly rerunning the installer repairs an inactive service. Ryostore's
-Installed badge checks command presence, not service health; use the doctor
-above to check a running installation.
+Spotify may restart during initial setup. Ryostore's Installed badge checks
+command presence, not service health; use the doctor above to check a running
+installation.
 
-Zen's live extension must be signed by Mozilla. The repository includes a
-guided setup:
-
-```bash
-~/.local/share/ryoku-palette-bridge/setup-zen-signing.sh
-```
-
-Zen needs one restart to load its profile preferences and stylesheet. Its
-extension must be installed separately before live updates work; installing
-this bundle alone does not install the signed extension. The source remains
-at the path above; select it as Build source in Win+W's Palette Bridge page
-when using Ryoku versions that include those settings.
+Zen's live extension must be signed by Mozilla; the upstream repository has a
+guided setup for that. Zen needs one restart to load its profile preferences
+and stylesheet, and its extension must be installed separately before live
+updates work; installing this bundle alone does not install the signed
+extension.
 
 Maintainer: Sipper1236 (Rayyan), through the upstream GitHub issue tracker.
 This community bundle is maintained by its contributor, not the Ryoku team.
-Installation contacts github.com to fetch the pinned source and builds it with
-Go. Optional app setup invokes Spicetify and Ryoku materialization, writes the
+Installation downloads nothing: the bridge comes from Ryoku's own packages.
+Optional app setup invokes Spicetify and Ryoku materialization, writes the
 Matugen user overlay and the detected apps' theme configuration, and records
 integration ownership. Runtime palette traffic stays on 127.0.0.1:47616.
 Zen signing uses Mozilla's add-on service; Vesktop loads Midnight from
@@ -61,8 +56,7 @@ refact0r.github.io and its icon from upload.wikimedia.org.
 
 The top-level `installers/ryoku-palette-bridge.sh` is a compatibility copy for
 older Ryostore clients that cannot resolve bundle-local installers. The installer
-test checks that both copies remain identical. The source build runs from its
-own checkout so it also works when launched from the Store's working directory.
+test checks that both copies remain identical.
 
 Source: <https://github.com/Sipper1236/ryoku-palette-bridge>
 

@@ -7,7 +7,7 @@ bundle card.
 
 ## Core
 
-| Tool | What it is | Source |
+| Tool | What it is | Arch / CachyOS |
 | --- | --- | --- |
 | wireguard-tools | Command-line tools for WireGuard VPN tunnels. | pacman |
 | openvpn | OpenVPN client and server for classic VPN profiles. | pacman |
@@ -16,11 +16,20 @@ bundle card.
 
 ## Services / Clients
 
-| Client | What it is | Source |
+| Client | What it is | Arch / CachyOS |
 | --- | --- | --- |
 | proton-vpn-gtk-app | Official Proton VPN GTK desktop client. | pacman |
 | mullvad-vpn-bin | Mullvad VPN desktop client. | AUR |
 | cloudflare-warp-bin | Cloudflare WARP client and `warp-cli`. | AUR |
+
+## On Fedora and Void
+
+The last column is where a tool comes from on Arch and CachyOS. On Fedora and
+Void, Ryoku installs the core tools from that edition's own repositories, under
+its own package names. The three provider clients are not in Fedora's or Void's
+repositories: Proton, Mullvad and Cloudflare publish their own Fedora
+repositories, which Ryoku does not add, so the store lists them greyed out with
+where to get them instead.
 
 ## Notes
 

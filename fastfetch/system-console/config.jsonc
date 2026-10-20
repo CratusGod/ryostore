@@ -4,7 +4,6 @@
     "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
     "logo": {
         "type": "small",
-        "source": "arch", // search for logos: fastfetch --list-logos or --print-logos
         "color": {
             "1": "blink_cyan",
             "2": "blink_blue"

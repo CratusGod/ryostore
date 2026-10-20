@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "gaming",
   "category": "bundles",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "destination": "ryoku/bundles/gaming",
   "name": "Gaming",
   "description": "The native Linux gaming stack: launchers, the Wine and Proton compatibility layer, DirectX-to-Vulkan translation, performance overlays, controller support, a Wayland-friendly Discord, and console emulators for every system with a proven package. Ryoku's hardware layer installs the matching 32-bit GPU drivers, so games run at full hardware capacity.",
@@ -390,8 +390,8 @@
       "source": "README.md",
       "destination": "README.md",
       "mode": "0644",
-      "size": 4961,
-      "sha256": "304bca9bc7b912f977daf58f896e98f529ff6c5faaeee2be0d66eeb6d35c6fcf",
+      "size": 5820,
+      "sha256": "fb35f6c0a445a764bb440bfccefd6e4e92b1435137133c323993f65a2ab3f360",
       "install": true
     },
     {

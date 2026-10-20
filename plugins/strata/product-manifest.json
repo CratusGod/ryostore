@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "strata",
   "category": "plugins",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "destination": "ryoku/plugins/strata",
   "files": [
     {
@@ -40,9 +40,9 @@
     {
       "source": "README.md",
       "destination": "README.md",
-      "sha256": "56ad9ad18147ed3dbb2774f6ba0d3e0432a1899ce4534183c66595cb22ac2f88",
+      "sha256": "650abdfd8daf2b407554fd2a53855f1b87c9a3fc94722813c80cd6fe704448fe",
       "mode": "0644",
-      "size": 2170,
+      "size": 2252,
       "install": false
     },
     {
@@ -64,9 +64,9 @@
     {
       "source": "bin/strata-models",
       "destination": "bin/strata-models",
-      "sha256": "c0e9dc5417e424ce05dca1eb61f93203ee737b27df56371ef87e426a484c2d9e",
+      "sha256": "fde5eb2dee3df2ac41daf2593edfa6c1f7ad433d23ef24d991d920b4e49be2a2",
       "mode": "0755",
-      "size": 5313,
+      "size": 5699,
       "install": true
     },
     {
@@ -88,17 +88,17 @@
     {
       "source": "manifest.json",
       "destination": "manifest.json",
-      "sha256": "bfa159a4299775ec7bf90851a9b2f0cba75cdeb98356103f2871e98e41c5dbec",
+      "sha256": "3a1c4f955e1cb23d1e0441398c8af94f9a32c3390842e59ad712f2cad41f30a7",
       "mode": "0644",
-      "size": 1549,
+      "size": 1529,
       "install": true
     },
     {
       "source": "service/Main.qml",
       "destination": "service/Main.qml",
-      "sha256": "e846230a44d906bd4b434377fbee09272693c9041d2baefdbd3c25447151866a",
+      "sha256": "9cd46576311aa7c92e04434ddb976aa4f071e27356729d196347dff2383a3c5b",
       "mode": "0644",
-      "size": 4538,
+      "size": 4483,
       "install": true
     }
   ]

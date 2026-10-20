@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "game-memory-mode",
   "category": "plugins",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "destination": "ryoku/plugins/game-memory-mode",
   "files": [
     {
@@ -24,9 +24,9 @@
     {
       "source": "README.md",
       "destination": "README.md",
-      "sha256": "dad3a9b5bc2a10905c628a8364b8c46d203ba30ad36bfecbd82c20d57b4d76ea",
+      "sha256": "a94f0ace2dceaec5d4d03d57aa453705ae18005c8e8b60faa5b39bf711dda5bc",
       "mode": "0644",
-      "size": 6940,
+      "size": 6953,
       "install": false
     },
     {
@@ -40,9 +40,9 @@
     {
       "source": "bin/game-memory",
       "destination": "bin/game-memory",
-      "sha256": "fee510853b619c8de53866b440c58ba7668dca14b4e0d23ad8e1fdbd74c35c38",
+      "sha256": "e5f19e3eda7481388ce3b4843800aadce55f17fae51292bc9d326c7326b7eaa2",
       "mode": "0755",
-      "size": 15020,
+      "size": 15264,
       "install": true
     },
     {
@@ -96,9 +96,9 @@
     {
       "source": "manifest.json",
       "destination": "manifest.json",
-      "sha256": "13524c74aee0f0c4f4a89fc9ab390cdf1042889317e58f2d601fbf953a7b49d9",
+      "sha256": "f3bf37b9c15a4aa5b6d3eecaeb45a6c63a189c9ccf3b9f3d3ac2be73d40bcd1f",
       "mode": "0644",
-      "size": 1534,
+      "size": 1535,
       "install": true
     },
     {

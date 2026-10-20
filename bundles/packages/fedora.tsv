@@ -1,0 +1,128 @@
+arch	fedora	lanes	notes
+ananicy-cpp	-	cachyos-layer	Part of the CachyOS performance layer, which only Ryoku on Arch and CachyOS can add.
+antimicrox	antimicrox	gaming	
+asciiquarium	asciiquarium	rice-showcase	
+audacity	audacity	the-influencer	
+base-devel	gcc gcc-c++ make cmake meson ninja-build pkgconf-pkg-config git	developer-essentials	
+blender	blender	the-influencer	
+brave-bin	-	web-browsers	Brave publishes its Fedora package from its own repository, which Ryoku does not add; get it from Flathub (com.brave.Browser).
+btop	btop	rice-showcase	
+bun	-	developer-essentials	Bun is not packaged for Fedora; install it with the official script from bun.sh.
+cachyos-ananicy-rules	-	cachyos-layer	Part of the CachyOS performance layer, which only Ryoku on Arch and CachyOS can add.
+cachyos-settings	-	cachyos-layer	Part of the CachyOS performance layer, which only Ryoku on Arch and CachyOS can add.
+cava	cava	rice-showcase	
+cbonsai	cbonsai	rice-showcase	
+chromium	chromium	web-browsers	
+clang	clang	developer-essentials	
+cloudflare-warp-bin	-	vpn-networking	Cloudflare publishes WARP from its own repository, which Ryoku does not add.
+cmake	cmake	developer-essentials	
+cmatrix	cmatrix	rice-showcase	
+corectrl	corectrl	gaming	
+cowsay	cowsay	rice-showcase	
+curl	curl	developer-essentials,spiceflow	
+darktable	darktable	the-influencer	
+distroav	-	the-influencer	DistroAV is not packaged for Fedora.
+docker	moby-engine	developer-essentials	
+docker-compose	docker-compose	developer-essentials	
+dolphin-emu	dolphin-emu	gaming	
+dosbox	dosbox-staging	gaming	
+easyeffects	easyeffects	the-influencer	
+fastfetch	fastfetch	rice-showcase	
+fd	fd-find	developer-essentials	
+figlet	figlet	rice-showcase	
+firefox	firefox	web-browsers	
+firefox-developer-edition	-	web-browsers	Firefox Developer Edition is not packaged for Fedora; download it from mozilla.org.
+fzf	fzf	developer-essentials	
+game-devices-udev	game-devices-udev	gaming	repo=ryoku
+gamemode	gamemode	gaming	
+gamescope	gamescope	gaming	
+gdb	gdb	developer-essentials	
+gimp	gimp	the-influencer	
+git	git	developer-essentials	
+github-cli	gh	developer-essentials	
+go	golang	developer-essentials,the-influencer	
+goverlay	goverlay	gaming	
+gpu-screen-recorder	gpu-screen-recorder	the-influencer	repo=ryoku
+handbrake	-	the-influencer	HandBrake is not in Fedora's repositories; get it from Flathub (fr.handbrake.ghb).
+heroic-games-launcher-bin	-	gaming	Heroic is not packaged for Fedora; get it from Flathub (com.heroicgameslauncher.hgl).
+inkscape	inkscape	the-influencer	
+jdk-openjdk	java-latest-openjdk-devel	developer-essentials	
+jq	jq	developer-essentials	
+kdenlive	kdenlive	the-influencer	
+krita	krita	the-influencer	
+lib32-gamemode	gamemode.i686	gaming	
+lib32-mangohud	mangohud.i686	gaming	
+lib32-vkd3d	libvkd3d.i686	gaming	
+libretro-beetle-psx-hw	-	gaming	Not packaged for Fedora; the Flathub RetroArch (org.libretro.RetroArch) can download this core.
+libretro-core-info	-	gaming	Not packaged for Fedora; the Flathub RetroArch (org.libretro.RetroArch) includes the core info files.
+libretro-genesis-plus-gx	-	gaming	Not packaged for Fedora; the Flathub RetroArch (org.libretro.RetroArch) can download this core.
+libretro-mesen	-	gaming	Not packaged for Fedora; the Flathub RetroArch (org.libretro.RetroArch) can download this core.
+libretro-mupen64plus-next	-	gaming	Not packaged for Fedora; the Flathub RetroArch (org.libretro.RetroArch) can download this core.
+libretro-snes9x	-	gaming	Not packaged for Fedora; the Flathub RetroArch (org.libretro.RetroArch) can download this core.
+librewolf	-	web-browsers	LibreWolf is not packaged for Fedora; get it from Flathub (io.gitlab.librewolf-community).
+linux-cachyos	-	cachyos-layer	Part of the CachyOS performance layer, which only Ryoku on Arch and CachyOS can add.
+linux-cachyos-headers	-	cachyos-layer	Part of the CachyOS performance layer, which only Ryoku on Arch and CachyOS can add.
+linux-headers	kernel-devel kernel-headers	the-influencer	
+lldb	lldb	developer-essentials	
+lolcat	lolcat	rice-showcase	
+losslesscut-bin	-	the-influencer	LosslessCut is not packaged for Fedora; get it from Flathub (no.mifi.losslesscut).
+lutris	lutris	gaming	
+mame	mame	gaming	
+mangohud	mangohud	gaming	
+melonds	-	gaming	melonDS is not packaged for Fedora; get it from Flathub (net.kuribo64.melonDS).
+mgba-qt	-	gaming	mGBA is not packaged for Fedora; get it from Flathub (io.mgba.mGBA).
+mullvad-vpn-bin	-	vpn-networking	Mullvad publishes its Fedora package from its own repository, which Ryoku does not add.
+networkmanager-openvpn	NetworkManager-openvpn NetworkManager-openvpn-gnome	vpn-networking	
+networkmanager-strongswan	NetworkManager-strongswan NetworkManager-strongswan-gnome	vpn-networking	
+ninja	ninja-build	developer-essentials	
+nodejs	nodejs24	developer-essentials,ryoku-zed-theme	
+noise-suppression-for-voice	-	the-influencer	Not packaged for Fedora; EasyEffects, also in this bundle, has RNNoise noise reduction built in.
+npm	nodejs24-npm	developer-essentials,the-influencer	
+obs-backgroundremoval	-	the-influencer	Not packaged for Fedora; get it with OBS from Flathub (com.obsproject.Studio.Plugin.BackgroundRemoval).
+obs-pipewire-audio-capture	-	the-influencer	Not packaged for Fedora.
+obs-studio	obs-studio	the-influencer	
+obs-vkcapture	obs-studio-plugin-vkcapture	the-influencer	
+openvpn	openvpn	vpn-networking	
+owncast-bin	-	the-influencer	Owncast is not packaged for Fedora; download it from owncast.online.
+pcsx2	-	gaming	PCSX2 is not packaged for Fedora; get it from Flathub (net.pcsx2.PCSX2).
+pipes.sh	-	rice-showcase	Not packaged for Fedora; pipes.sh is a single script from github.com/pipeseroni/pipes.sh.
+ppsspp	-	gaming	PPSSPP is not packaged for Fedora; get it from Flathub (org.ppsspp.PPSSPP).
+proton-cachyos-native	-	cachyos-layer	Part of the CachyOS performance layer, which only Ryoku on Arch and CachyOS can add.
+proton-vpn-gtk-app	-	vpn-networking	Proton VPN publishes its Fedora app from its own repository, which Ryoku does not add.
+protontricks	protontricks	gaming	
+protonup-qt	-	gaming	ProtonUp-Qt is not packaged for Fedora; get it from Flathub (net.davidotek.pupgui2).
+python	python3	developer-essentials	
+python-pip	python3-pip	developer-essentials	
+qprompt	-	the-influencer	QPrompt is not packaged for Fedora; get it from Flathub (com.cuperino.qprompt).
+reaper	-	the-influencer	REAPER is proprietary and not packaged for Fedora; download it from reaper.fm.
+retroarch	retroarch	gaming	
+ripgrep	ripgrep	developer-essentials	
+rpcs3-bin	-	gaming	RPCS3 is not packaged for Fedora; get it from Flathub (net.rpcs3.RPCS3).
+rustup	rustup	developer-essentials	
+ryotunes	ryotunes	ryotunes	repo=ryoku
+sc-controller	-	gaming	SC Controller is not packaged for Fedora.
+scummvm	scummvm	gaming	
+scx-scheds	-	cachyos-layer	Part of the CachyOS performance layer, which only Ryoku on Arch and CachyOS can add.
+shotcut	shotcut	the-influencer	
+sl	sl	rice-showcase	
+steam	-	gaming	Steam needs RPM Fusion on Fedora, which Ryoku does not enable; get it from Flathub (com.valvesoftware.Steam).
+subtitleedit	-	the-influencer	Subtitle Edit is not packaged for Fedora; Subtitle Editor (subtitleeditor) is a native alternative.
+tmux	tmux	developer-essentials	
+toilet	toilet	rice-showcase	
+tty-clock	-	rice-showcase	tty-clock is not packaged for Fedora.
+umu-launcher	-	gaming	umu-launcher is not packaged for Fedora.
+upscayl-bin	-	the-influencer	Upscayl is not packaged for Fedora; get it from Flathub (org.upscayl.Upscayl).
+v4l2loopback-dkms	v4l2loopback v4l2loopback-dkms	the-influencer	repo=ryoku
+vesktop-bin	-	gaming	Vesktop is not packaged for Fedora; get it from Flathub (dev.vencord.Vesktop).
+visual-studio-code-bin	-	developer-essentials	Microsoft publishes Visual Studio Code from its own repository, which Ryoku does not add; get it from Flathub (com.visualstudio.code).
+vkbasalt	vkBasalt	gaming	
+vkd3d	libvkd3d	gaming	
+wf-recorder	wf-recorder	the-influencer	
+wget	wget2-wget	developer-essentials	
+whisper-cpp	-	the-influencer	Fedora's whisper-cpp ships only the library, not whisper-cli; build whisper.cpp yourself to use the Generate captions action.
+wine	wine	gaming	
+winetricks	winetricks	gaming	
+wireguard-tools	wireguard-tools	vpn-networking	
+wl-screenrec	-	the-influencer	wl-screenrec is not packaged for Fedora; gpu-screen-recorder, also in this bundle, records the screen.
+yt-dlp	yt-dlp	the-influencer	
+zen-browser-bin	-	web-browsers	Zen ships only as an upstream binary build; Ryoku does not mirror a browser it cannot keep current.

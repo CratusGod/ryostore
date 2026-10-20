@@ -16,7 +16,7 @@ One tested NVIDIA desktop reclaimed 1825 MiB of GPU memory with these actions. S
 
 Install **Game Mode Optimizer** from Ryostore → Plugins, or install a reviewed local copy with `ryoku plugin add <folder> --bar --yes`. Click the controller icon on the QS Bar for its panel. Preferences are also under **QS Bar Settings → Community**.
 
-Requires Python 3, systemd user services and Ryogami. FFmpeg is needed to extract a still frame from video; selecting an existing static image avoids extraction. Voxtype is optional: an absent or inactive service is left alone. No root access or separate service installation is required. The first client starts a helper; the bar monitors it. If the widget is unloaded and no game remains, the helper restores the desktop and exits after 15 seconds without requests. Existing service-managed deployments may still run `bin/game-memory daemon` directly.
+Requires Python 3 and Ryogami. FFmpeg is needed to extract a still frame from video; selecting an existing static image avoids extraction. Voxtype is optional: an absent or inactive service is left alone. No root access or separate service installation is required. The first client starts a helper; the bar monitors it. If the widget is unloaded and no game remains, the helper restores the desktop and exits after 15 seconds without requests. Existing service-managed deployments may still run `bin/game-memory daemon` directly.
 
 ### Automatic game launches
 
@@ -41,9 +41,9 @@ Close wrapped games, turn Gaming/manual mode off, and remove the wrapper from la
 ## How it plugs in
 
 - `service/Main.qml` polls the local helper and passes declared settings. The bar glyph only opens the panel; actions occur in the panel or follow the user's Gaming/launcher configuration.
-- `bin/game-memory` runs an unprivileged Python helper and CLI. It executes `systemctl --user` for Voxtype and `ffmpeg` for a still frame. Games are passed as argv arrays to `bin/game-memory-run`; no shell strings are generated.
+- `bin/game-memory` runs an unprivileged Python helper and CLI. It runs `ryoku-host svc --user` for Voxtype (systemd, or runit on Void) and `ffmpeg` for a still frame. Games are passed as argv arrays to `bin/game-memory-run`; no shell strings are generated.
 - Reads: published Ryoku `flags.json` Gaming state, the user's `/proc` process identities/groups, boot identity, Voxtype service status/enablement, selected wallpaper/image files, and Ryogami's local JSON-RPC socket.
-- Writes: only `$XDG_STATE_HOME/ryoku/plugins/game-memory-mode` (private state, preferences, snapshots, still frames and controller socket). Restores wallpapers through the owning Ryogami API. Stops/starts only `voxtype.service`; never changes its enablement. No launcher configuration, shell stores, login scripts, user units or shipped Ryoku files are edited.
+- Writes: only `$XDG_STATE_HOME/ryoku/plugins/game-memory-mode` (private state, preferences, snapshots, still frames and controller socket). Restores wallpapers through the owning Ryogami API. Stops/starts only the Voxtype user service; never changes its enablement. No launcher configuration, shell stores, login scripts, user units or shipped Ryoku files are edited.
 - No network access, downloads, privileged operations, NVIDIA dependency or compositor-specific API. Source code runs with the user's permissions and is not sandboxed by the store.
 
 Limitations: active wallpaper auto-rotation refuses activation; turn rotation off first. Video/static wallpapers work automatically; Wallpaper Engine needs a static image path. Failed preparation blocks a wrapped launch and reports an error. GPU memory cannot be released by merely pausing a video or suspending the voice process, so these are stopped/replaced. A game that changes its process group independently of its launcher may escape group tracking; automatic holds are intended for launchers that preserve the game process group.

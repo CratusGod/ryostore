@@ -735,5 +735,52 @@ class TestJsFunctionAndSubprocess(Base):
         self.assertEqual(sev(env, "exec.subprocess_shell"), "blocking")
 
 
+class TestEditionPortability(Base):
+    """Item code reaches the system through ryoku-host; a distro or init tool is
+    only allowed where the catalogue keeps the item on editions that have it."""
+
+    def flagged(self, env):
+        return sorted((f["path"], f["line"]) for f in rules(env, "edition.distro_tool"))
+
+    def test_tool_at_command_position_blocks(self):
+        write(self.root, "plugins/demo/content/Widget.qml",
+              'import QtQuick\nItem {\n    property var argv: ["systemctl", "suspend"]\n}\n')
+        write(self.root, "bundles/kit/installers/count.sh",
+              "#!/bin/bash\ncount=$(pacman -Qq | wc -l)\nif systemd-inhibit --list; then :; fi\n")
+        env = self.run_screen()
+        self.assertEqual(sev(env, "edition.distro_tool"), "blocking")
+        self.assertEqual(self.flagged(env), [
+            ("bundles/kit/installers/count.sh", 2),
+            ("bundles/kit/installers/count.sh", 3),
+            ("plugins/demo/content/Widget.qml", 3),
+        ])
+
+    def test_part_gated_to_its_edition_may_use_the_tool(self):
+        write(self.root, "bundles/kit/bundle.json", json.dumps({"items": [
+            {"type": "script", "name": "aur-build", "packageManagers": ["pacman"],
+             "packageManagersReason": "Builds from the AUR."},
+            {"type": "script", "name": "dnf-only", "packageManagers": ["dnf"],
+             "packageManagersReason": "Fedora only."},
+        ]}))
+        write(self.root, "bundles/kit/installers/aur-build.sh", "#!/bin/bash\nmakepkg -si --noconfirm\n")
+        write(self.root, "bundles/kit/installers/dnf-only.sh", "#!/bin/bash\nmakepkg -si\n")
+        env = self.run_screen()
+        self.assertEqual(self.flagged(env), [("bundles/kit/installers/dnf-only.sh", 2)])
+
+    def test_prose_labels_case_patterns_and_tooling_are_quiet(self):
+        write(self.root, "plugins/demo/content/Widget.qml",
+              'import QtQuick\nItem {\n'
+              '    property string unit: "rpm"\n'
+              '    property string hint: "Install jq with your package manager (pacman, dnf or xbps-install)."\n'
+              '}\n')
+        write(self.root, "plugins/demo/bin/inhibitor",
+              "#!/bin/bash\ncase $(cat /proc/1/comm) in\n"
+              "systemd-inhibit | elogind-inhibit) echo held ;;\nesac\n")
+        write(self.root, "tools/check.py", 'TOOLS = ("pacman", "dnf")\n')
+        env = self.run_screen()
+        self.assertEqual(self.flagged(env), [])
+
+
+
 if __name__ == "__main__":
     unittest.main()

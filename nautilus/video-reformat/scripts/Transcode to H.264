@@ -2,13 +2,23 @@
 # Transcode to universal H.264/AAC mp4 (shares/plays everywhere, Discord inline).
 set -uo pipefail
 notify() { command -v notify-send >/dev/null && notify-send -a "Ryoku Creator" "$1" "${2:-}"; }
+# libx264 where ffmpeg has it. An ffmpeg built without it (Fedora's ffmpeg-free)
+# encodes H.264 through OpenH264, which takes a bitrate rather than a quality.
+# Read the list whole: piped into grep -q under pipefail, ffmpeg can die of
+# SIGPIPE part-way through it and read as missing.
+encoders="$(ffmpeg -hide_banner -encoders 2>/dev/null)"
+if grep -qw libx264 <<<"$encoders"; then
+  video=(-c:v libx264 -crf 20 -preset medium)
+else
+  video=(-c:v libopenh264 -b:v 8M)
+fi
 n=0
 while IFS= read -r f; do
   [ -n "$f" ] || continue
   case "${f,,}" in *.mp4 | *.mov | *.mkv | *.webm | *.avi | *.m4v) ;; *) continue ;; esac
   out="${f%.*}_h264.mp4"
   if ffmpeg -nostdin -y -i "$f" \
-    -c:v libx264 -crf 20 -preset medium -pix_fmt yuv420p \
+    "${video[@]}" -pix_fmt yuv420p \
     -c:a aac -b:a 160k "$out" 2>/dev/null; then
     n=$((n + 1))
     notify "Transcoded to H.264" "$(basename "$out")"

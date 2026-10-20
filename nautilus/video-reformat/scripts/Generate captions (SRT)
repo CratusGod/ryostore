@@ -7,7 +7,7 @@ set -uo pipefail
 notify() { command -v notify-send >/dev/null && notify-send -a "Ryoku Creator" "$1" "${2:-}"; }
 
 wc="$(command -v whisper-cli || command -v whisper-cpp || command -v main || true)"
-[ -n "$wc" ] || { notify "whisper.cpp not found" "no Arch or AUR package ships one; build it yourself to use this action"; exit 1; }
+[ -n "$wc" ] || { notify "whisper.cpp not found" "this action needs whisper.cpp's whisper-cli: install your system's whisper-cpp package if it ships one, or build whisper.cpp yourself"; exit 1; }
 
 model_dir="${XDG_DATA_HOME:-$HOME/.local/share}/ryoku/whisper"
 model="$model_dir/ggml-base.en.bin"

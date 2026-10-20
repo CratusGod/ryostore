@@ -52,7 +52,7 @@ PillSurface {
     readonly property var actions: [
         { key: "lock",     glyph: "lock",     label: "Lock",     confirm: false, argv: ["ryoku-shell", "lock"] },
         { key: "logout",   glyph: "logout",   label: "Logout",   confirm: true,  session: "logout" },
-        { key: "suspend",  glyph: "suspend",  label: "Suspend",  confirm: true,  argv: ["systemctl", "suspend"] },
+        { key: "suspend",  glyph: "suspend",  label: "Suspend",  confirm: true,  session: "suspend" },
         { key: "reboot",   glyph: "reboot",   label: "Restart",  confirm: true,  session: "reboot" },
         { key: "shutdown", glyph: "shutdown", label: "Shutdown", confirm: true,  session: "shutdown" }
     ]

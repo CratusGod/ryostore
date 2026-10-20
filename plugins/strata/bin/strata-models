@@ -1,6 +1,7 @@
 #!/bin/sh
 # Finds every installed engine and its ready models; one model runs at a time, as the transient
-# user unit strata-model.service (systemd-run; nothing to install, nothing starts at login).
+# user job strata-model (ryoku-host transient: a systemd user unit, or a runit service on Void;
+# nothing to install, nothing starts at login).
 #
 # strata-models list <state>          one "key<TAB>engine<TAB>label<TAB>port<TAB>unit<TAB>path" line per model
 # strata-models current <state>       print the selected model key ("engine:name"), or nothing
@@ -8,6 +9,7 @@
 # strata-models start <state>         start the selected model (stops the previous one)
 # strata-models run <key> <state>     select a model and start it
 # strata-models stop                  stop the running model
+# strata-models status                print "active" while a model runs, else "inactive"
 #
 # Engines: Strata ($STRATA_DIR, default ~/Strata), TabbyAPI ($TABBY_DIR, default ~/tabbyAPI),
 # llama.cpp (llama-server on the PATH; *.gguf in $GGUF_DIRS, space-separated, default ~/models).
@@ -15,7 +17,7 @@ home() { case "$1" in "~") echo "$HOME" ;; "~/"*) echo "$HOME/${1#\~/}" ;; *) ec
 strata=$(home "${STRATA_DIR:-$HOME/Strata}")
 tabby=$(home "${TABBY_DIR:-$HOME/tabbyAPI}")
 gguf_dirs=$(for g in ${GGUF_DIRS:-$HOME/models}; do home "$g"; done)
-unit=strata-model.service
+job="strata-model"
 
 # a stable port per model, kept in <state>/ports ("key port"); skips ports already taken or in use
 port_for() { # key state [fixed]
@@ -32,7 +34,7 @@ port_for() { # key state [fixed]
 }
 
 row() { # key engine label port path
-    printf '%s\t%s\t%s\t%s\t%s\t%s\n' "$1" "$2" "$3" "$4" "$unit" "$5"
+    printf '%s\t%s\t%s\t%s\t%s\t%s\n' "$1" "$2" "$3" "$4" "$job" "$5"
 }
 
 list() { # state
@@ -73,24 +75,30 @@ current() { # state
 }
 lookup() { list "$2" | awk -F '\t' -v k="$1" '$1 == k'; }
 
+# one model as the transient job, from its own directory: systemd takes WorkingDirectory and
+# restarts it on failure; runit starts it once from the directory it is launched in
+launch() { # dir command...
+    dir=$1; shift
+    (cd "$dir" && ryoku-host transient start "$job" --prop WorkingDirectory="$dir" \
+        --prop Restart=on-failure -- "$@")
+}
+
 start() { # state
     k=$(current "$1")
     [ -n "$k" ] || { echo "no model selected" >&2; exit 2; }
     r=$(lookup "$k" "$1")
     [ -n "$r" ] || { echo "model not ready" >&2; exit 2; }
     port=$(echo "$r" | cut -f4); path=$(echo "$r" | cut -f6)
-    systemctl --user stop "$unit" 2>/dev/null
-    systemctl --user reset-failed "$unit" 2>/dev/null
-    set -- systemd-run --user --unit="$unit" --collect --property=Restart=on-failure
+    ryoku-host transient stop "$job" 2>/dev/null
     case "$k" in
     strata:*)
         py="$strata/.venv/bin/python"; [ -x "$py" ] || py=python3
-        "$@" --working-directory="$strata" -- "$py" "$strata/serve/server.py" --engine strata \
+        launch "$strata" "$py" "$strata/serve/server.py" --engine strata \
             --config "$path" --port "$port" --lazy --idle-unload 900 ;;
     tabby:*)
-        "$@" --working-directory="$tabby" -- "$tabby/run.sh" --port "$port" --model-name "$(basename "$path")" ;;
+        launch "$tabby" "$tabby/run.sh" --port "$port" --model-name "$(basename "$path")" ;;
     llama:*)
-        "$@" --working-directory="$HOME" -- llama-server -m "$path" --host 127.0.0.1 --port "$port" -c 16384 ;;
+        launch "$HOME" llama-server -m "$path" --host 127.0.0.1 --port "$port" -c 16384 ;;
     esac
 }
 
@@ -101,13 +109,14 @@ use)
     case "$2" in ''|*[!A-Za-z0-9._:-]*) echo "bad model key" >&2; exit 2 ;; esac
     [ -n "$(lookup "$2" "$3")" ] || { echo "no such model" >&2; exit 2; }
     mkdir -p "$3" && echo "$2" > "$3/current"
-    if systemctl --user is-active --quiet "$unit"; then start "$3"; fi ;;
+    if ryoku-host transient is-active "$job"; then start "$3"; fi ;;
 start) start "$2" ;;
 run)
     case "$2" in ''|*[!A-Za-z0-9._:-]*) echo "bad model key" >&2; exit 2 ;; esac
     [ -n "$(lookup "$2" "$3")" ] || { echo "no such model" >&2; exit 2; }
     mkdir -p "$3" && echo "$2" > "$3/current"
     start "$3" ;;
-stop) systemctl --user stop "$unit" 2>/dev/null ;;
-*) echo "usage: $0 list|current|use|start|run|stop (see the header)" >&2; exit 2 ;;
+stop) ryoku-host transient stop "$job" 2>/dev/null ;;
+status) if ryoku-host transient is-active "$job"; then echo active; else echo inactive; fi ;;
+*) echo "usage: $0 list|current|use|start|run|stop|status (see the header)" >&2; exit 2 ;;
 esac

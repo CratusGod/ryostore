@@ -194,7 +194,7 @@ Singleton {
     Process {
         id: getPackages
         running: false
-        command: ["bash", "-c", "pacman_count=$(pacman -Q | wc -l); flatpak_count=$(flatpak list 2>/dev/null | wc -l || echo 0); if [ \"$flatpak_count\" -gt 0 ]; then echo \"$pacman_count pacman, $flatpak_count fp\"; else echo \"$pacman_count pacman\"; fi"]
+        command: ["bash", "-c", "count=$(ryoku-host pkg count); manager=$(ryoku-host pkgmgr); flatpak_count=$(flatpak list 2>/dev/null | wc -l || echo 0); if [ \"$flatpak_count\" -gt 0 ]; then echo \"$count $manager, $flatpak_count fp\"; else echo \"$count $manager\"; fi"]
         stdout: SplitParser { onRead: data => root.packages = data.trim() }
     }
 

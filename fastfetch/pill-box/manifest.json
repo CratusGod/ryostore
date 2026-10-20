@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "pill-box",
   "category": "fastfetch",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "destination": "ryoku/fastfetch/pill-box",
   "files": [
     {
@@ -17,8 +17,8 @@
       "source": "PROVENANCE.txt",
       "destination": "PROVENANCE.txt",
       "mode": "0644",
-      "size": 1327,
-      "sha256": "21a92843e1031e60d9aca3f9ed29120ce1d5698687ffe56117317962cdf45034",
+      "size": 1345,
+      "sha256": "250b08422f9ab9d71c6347e3f7df54b5e058c66978aa1c36f22756e0c64210ef",
       "install": true
     },
     {

@@ -1,7 +1,7 @@
 {
   "id": "video-reformat",
   "name": "Video Reformat",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Ryoku <releases@ryoku.dev>",
   "description": "Right-click video reformat, transcode, compress, caption, and thumbnail tools built on ffmpeg and whisper.cpp.",
   "subdir": "Ryoku Creator",

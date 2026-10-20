@@ -15,9 +15,12 @@ A plugin runs straight from its source folder, with no registry entry and no
 install. Point the shell at your plugins folder and restart it once:
 
 ```sh
-systemctl --user set-environment RYOSTORE_PLUGINS_DIR="$HOME/Work/ryostore/plugins"
-systemctl --user restart ryoku-shell
+ryoku-host svc env RYOSTORE_PLUGINS_DIR="$HOME/Work/ryostore/plugins"
+ryoku-host svc --user restart ryoku-shell
 ```
+
+`ryoku-host` hands the variable to the shell's service on whichever init your
+edition runs.
 
 `RYOSTORE_PLUGINS_DIR` takes a colon-separated list, so you can add several
 folders. Now open Settings (`Super+comma`), go to **Add-ons -> Plugins**, find
@@ -25,11 +28,11 @@ your plugin, toggle it on, and place it as a **Desktop widget** or **Frame
 popout**.
 
 Saved edits hot-reload: change `content/Widget.qml`, reopen the widget, and the
-change is there (restart `ryoku-shell` if something looks cached). Watch the log
-while you work:
+change is there (restart `ryoku-shell` if something looks cached). Watch the
+shell's log while you work:
 
 ```sh
-journalctl --user -u ryoku-shell -f
+qs log -c shell -f
 ```
 
 Confirm, at every density you declare, that it reports a size and renders, that
@@ -37,8 +40,8 @@ drag / corner-resize / the right-click menu work, that every setting actually
 changes the view, and that the log shows no QML errors. When you are done:
 
 ```sh
-systemctl --user unset-environment RYOSTORE_PLUGINS_DIR
-systemctl --user restart ryoku-shell
+ryoku-host svc env RYOSTORE_PLUGINS_DIR=
+ryoku-host svc --user restart ryoku-shell
 ```
 
 The full plugin contract, hosts, densities, settings schema, and the per-plugin

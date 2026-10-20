@@ -49,7 +49,7 @@
     {
       "id": "imi",
       "name": "Imi",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "path": "barstyles/imi",
       "author": "dodo986",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/barstyles/imi",
@@ -68,15 +68,15 @@
       "preview": "assets/preview.png",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "55bc215d38d6b2eb7dc02a3430ec749c0d025af743adecc3ed8909dc6fc288d9",
-      "lastUpdated": "2026-10-07",
+      "manifestSha256": "6ef47607ce8cb3d50b8a52e2732f3f1922c42e77b59c9e48253b96296e13eea0",
+      "lastUpdated": "2026-10-20",
       "official": false,
       "license": "GPL-3.0-only"
     },
     {
       "id": "ricelin",
       "name": "Ricelin",
-      "version": "1.2.1",
+      "version": "1.2.2",
       "path": "barstyles/ricelin",
       "author": "feelyourwarmth",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/barstyles/ricelin",
@@ -95,9 +95,9 @@
       "preview": "assets/preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "f83fc2e1a5f86bf4df8a4928f0578917ffbd1d6ab661beacff6308507f0b244b",
+      "manifestSha256": "0338a7cfae86c1886b63eedd9473602ba957f4fab346d6a8defe8f496bd807b6",
       "official": false,
-      "lastUpdated": "2026-10-13"
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "chroma",
@@ -155,7 +155,7 @@
     {
       "id": "sukunabikona",
       "name": "Sukunabikona",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "path": "barstyles/sukunabikona",
       "author": "aethctl",
       "upstream": "https://github.com/Ryoku-dev/ryostore/tree/main/barstyles/sukunabikona",
@@ -175,8 +175,8 @@
       "preview": "assets/preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "f7b25b78c8c752f6732e830f8fe041f5110c3b2b6f9dded37bbf8faed191d3ba",
-      "lastUpdated": "2026-10-02",
+      "manifestSha256": "f8be00c89fb3934724e2c321a940e08c6b3478680763d9d63a4a265a1d5712bd",
+      "lastUpdated": "2026-10-21",
       "official": false,
       "license": "GPL-3.0-only"
     }

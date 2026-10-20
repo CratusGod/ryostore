@@ -355,7 +355,7 @@ Scope {
         WlrLayershell.namespace: "sukunabikona-rail"
         anchors { top: true; bottom: true; left: true; right: true }
         visible: !shell.hasFullscreen
-        mask: Region { item: rail }
+        mask: Region { item: railWindow.compact ? null : rail }
 
         C.RyokuRail {
             id: rail

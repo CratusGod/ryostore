@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "arc-reactor",
   "category": "fastfetch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "ryoku/fastfetch/arc-reactor",
   "files": [
     {
@@ -17,16 +17,16 @@
       "source": "PROVENANCE.txt",
       "destination": "PROVENANCE.txt",
       "mode": "0644",
-      "size": 901,
-      "sha256": "4cfe929d58d57c203441bee04cb8dea32b528dc79a224d275e2b639c1435cc93",
+      "size": 1023,
+      "sha256": "d139f06be49b9c7d15a5c46e523defc4c202fad504fed65ff023d2875f362ffe",
       "install": true
     },
     {
       "source": "config.jsonc",
       "destination": "config.jsonc",
       "mode": "0644",
-      "size": 2685,
-      "sha256": "e05aa0d218b0ab09084a37040456d7f06d0e92f76f4ce76e3414e89f059f73d5",
+      "size": 2663,
+      "sha256": "a8aabe0e244fb851d4bf9ecb0ec971af7a254383b03dc32099d1e2687294988b",
       "install": true
     },
     {
