@@ -99,11 +99,11 @@ function formatElapsed(ms) {
 }
 
 
+// Install hints use Ryoku's host seam, which names packages for this edition
+// (Arch, CachyOS, Fedora or Void), so a single command fits every machine.
 function distroPills() {
     return [
-        { key: "arch", label: "Arch" },
-        { key: "fedora", label: "Fedora" },
-        { key: "debian", label: "Debian" }
+        { key: "ryoku", label: "Ryoku" }
     ];
 }
 
@@ -113,7 +113,7 @@ function knownDistro(distro) {
 }
 
 function initialDistro(detected) {
-    return knownDistro(detected) ? String(detected) : "arch";
+    return knownDistro(detected) ? String(detected) : "ryoku";
 }
 
 function commandFor(dependency, distro) {

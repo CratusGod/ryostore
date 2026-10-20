@@ -40,11 +40,9 @@ MouseArea {
 
     Process {
         id: updateProc
-        command: [
-            "kitty", "--hold",
-            "fish", "-i", "-l", "-c",
-            "yay -Syu --combinedupgrade=false"
-        ]
+        // ryoku update --system takes the base system with this edition's own
+        // package manager, then Ryoku's set.
+        command: ["kitty", "--hold", "ryoku", "update", "--system"]
         onExited: (exitCode, exitStatus) => {
             Updates.refresh()
             notifyTimer.restart()
