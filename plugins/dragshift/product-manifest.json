@@ -1,0 +1,321 @@
+{
+  "schema": 1,
+  "id": "dragshift",
+  "category": "plugins",
+  "version": "0.2.0",
+  "destination": "ryoku/plugins/dragshift",
+  "files": [
+    {
+      "source": ".gitignore",
+      "destination": ".gitignore",
+      "sha256": "0950e029a8423bfbed02dc6e0ff418efd037fad38b7ee9e6cd68f46d949afae7",
+      "mode": "0644",
+      "size": 45,
+      "install": true
+    },
+    {
+      "source": "AGENTS.md",
+      "destination": "AGENTS.md",
+      "sha256": "a4d0de565af21012458d3a53f511bc57966d13e4557170da5568081edf6fcedf",
+      "mode": "0644",
+      "size": 4628,
+      "install": true
+    },
+    {
+      "source": "CLAUDE.md",
+      "destination": "CLAUDE.md",
+      "sha256": "09ffb8ebdb8adf50bf4bde26dfe2109b4af3a4a8cc3f30cc536be42bb912c033",
+      "mode": "0644",
+      "size": 152,
+      "install": true
+    },
+    {
+      "source": "LICENSE",
+      "destination": "LICENSE",
+      "sha256": "159e233883012069640d32b100042037e6665fb6b20deff98f26804a0146e105",
+      "mode": "0644",
+      "size": 1066,
+      "install": false
+    },
+    {
+      "source": "NOTICE",
+      "destination": "NOTICE",
+      "sha256": "88df86dded27ab5996789bc0c4b3d56b2293c97f3a35038095767a9396790552",
+      "mode": "0644",
+      "size": 1361,
+      "install": false
+    },
+    {
+      "source": "README.md",
+      "destination": "README.md",
+      "sha256": "ed841732687b7631bb68fe6fb67dec8013621f07b7b829dce9e78515053d28de",
+      "mode": "0644",
+      "size": 8380,
+      "install": false
+    },
+    {
+      "source": "assets/preview-widget.png",
+      "destination": "assets/preview-widget.png",
+      "sha256": "31de47846978cfa3302285a34fd25b97c7bd3142410ffffaf801cdc6445ebe39",
+      "mode": "0644",
+      "size": 227605,
+      "install": false
+    },
+    {
+      "source": "bin/dragshift",
+      "destination": "bin/dragshift",
+      "sha256": "89546b859efe18e18015c1609e2713174344cddd61c2e056f65ed43c908b569c",
+      "mode": "0755",
+      "size": 1865,
+      "install": true
+    },
+    {
+      "source": "bin/dragshift_editor.py",
+      "destination": "bin/dragshift_editor.py",
+      "sha256": "96680356ee88b369b8327761bc0faa859bc7ffdff6f81d093ebdb6b7ee455af7",
+      "mode": "0755",
+      "size": 4106,
+      "install": true
+    },
+    {
+      "source": "bin/dragshift_engine.py",
+      "destination": "bin/dragshift_engine.py",
+      "sha256": "618ecfe8a7038e990740d815ec0fd7f1b7cf6026b40ea56f1d106200e85d7c90",
+      "mode": "0755",
+      "size": 15927,
+      "install": true
+    },
+    {
+      "source": "content/Panel.qml",
+      "destination": "content/Panel.qml",
+      "sha256": "b11b5da0b99484f2b898346a2b85a5d71477d1cd18efacea0e4156659df9eb90",
+      "mode": "0644",
+      "size": 11932,
+      "install": true
+    },
+    {
+      "source": "content/Widget.qml",
+      "destination": "content/Widget.qml",
+      "sha256": "d908ae9c23fea7464be117b29aa8bb1e0b1d1930fe46bb20473f60755ad24d31",
+      "mode": "0644",
+      "size": 3494,
+      "install": true
+    },
+    {
+      "source": "content/urls.js",
+      "destination": "content/urls.js",
+      "sha256": "3a1aee74dd9e650601476a5cd06deadf1160358375ff50501b3c2846cb6c2439",
+      "mode": "0644",
+      "size": 958,
+      "install": true
+    },
+    {
+      "source": "engine/PIN",
+      "destination": "engine/PIN",
+      "sha256": "1f6137ff712400a36a68ee2c03d027b2095a3614e14b10aac93a33917a32edc5",
+      "mode": "0644",
+      "size": 41,
+      "install": true
+    },
+    {
+      "source": "engine/requirements.in",
+      "destination": "engine/requirements.in",
+      "sha256": "0250f191989694e47bf304c43979a701b7a06af4aef57fe774da76b38dc4ae2b",
+      "mode": "0644",
+      "size": 395,
+      "install": true
+    },
+    {
+      "source": "engine/requirements.lock",
+      "destination": "engine/requirements.lock",
+      "sha256": "ce897a7a1e003285d8a65ed5b9cf5e6fd8525f63fee084a1e6b33439e3c1909c",
+      "mode": "0644",
+      "size": 59108,
+      "install": true
+    },
+    {
+      "source": "engine/setup.sh",
+      "destination": "engine/setup.sh",
+      "sha256": "087f6b59ee0988a6674bdd2198f32862794c5855bc0e2f1763dc864358077d12",
+      "mode": "0755",
+      "size": 2080,
+      "install": true
+    },
+    {
+      "source": "engine/update.sh",
+      "destination": "engine/update.sh",
+      "sha256": "3b8cd0d545434b927cfe88416eee8d24a4e4572a284a0ee84243f2ed10018b99",
+      "mode": "0755",
+      "size": 2262,
+      "install": true
+    },
+    {
+      "source": "hypr/trigger.lua",
+      "destination": "hypr/trigger.lua",
+      "sha256": "4998ca1b0436d1bfafc295adbf879cd8a10a85d7c3d2eeaae680f24b51da9c56",
+      "mode": "0644",
+      "size": 2485,
+      "install": true
+    },
+    {
+      "source": "manifest.json",
+      "destination": "manifest.json",
+      "sha256": "e6911f37b47a68305504db6fecfe4706be3b63a2f5b91aa084e7afec82412329",
+      "mode": "0644",
+      "size": 2896,
+      "install": true
+    },
+    {
+      "source": "service/CardView.qml",
+      "destination": "service/CardView.qml",
+      "sha256": "eda9e5f4ab898a9f8ede6e71b67d1c8f820280c3737e60f16b472e49f61c1fb6",
+      "mode": "0644",
+      "size": 8060,
+      "install": true
+    },
+    {
+      "source": "service/JobRunner.qml",
+      "destination": "service/JobRunner.qml",
+      "sha256": "260728d75fc3893877a2f4c4137e807d9b4ed285645f60edb7c77663147f5756",
+      "mode": "0644",
+      "size": 2310,
+      "install": true
+    },
+    {
+      "source": "service/Main.qml",
+      "destination": "service/Main.qml",
+      "sha256": "216054831894a20373dd8db8b15c1c8c8d47170fcbd0b528bb2f31fe53bd989d",
+      "mode": "0644",
+      "size": 17574,
+      "install": true
+    },
+    {
+      "source": "service/MenuView.qml",
+      "destination": "service/MenuView.qml",
+      "sha256": "a7509e7604f7dd3ba6c3dd3d41e2f4282cfbaa72b40075d7eebf9e5f4b126bfa",
+      "mode": "0644",
+      "size": 8941,
+      "install": true
+    },
+    {
+      "source": "service/RadialMenu.qml",
+      "destination": "service/RadialMenu.qml",
+      "sha256": "40658f8a314c16b9a1f7ceae8bb08f175d28aed6b254aeaf5dc7c50fc5763429",
+      "mode": "0644",
+      "size": 11312,
+      "install": true
+    },
+    {
+      "source": "service/Toasts.qml",
+      "destination": "service/Toasts.qml",
+      "sha256": "225f65c65ef8539da8880d5e1ccf076ff85f5622ec1cb9a137a62e5f4e9e210d",
+      "mode": "0644",
+      "size": 6263,
+      "install": true
+    },
+    {
+      "source": "service/menu.js",
+      "destination": "service/menu.js",
+      "sha256": "109305dd0e9bd8a28f8d42cb8aad2a381dc1012693a248d3f84fceb09b2d2d73",
+      "mode": "0644",
+      "size": 4707,
+      "install": true
+    },
+    {
+      "source": "service/shaders/card.frag",
+      "destination": "service/shaders/card.frag",
+      "sha256": "859f00e182dba6708f26aa68867b412b674f6a7edcf2d0878a49ac1a5e840907",
+      "mode": "0644",
+      "size": 2213,
+      "install": true
+    },
+    {
+      "source": "service/shaders/card.frag.qsb",
+      "destination": "service/shaders/card.frag.qsb",
+      "sha256": "61c301bfdd42bf53a648bd2f59c991ae09c8dc5a596564e9fec7a6c23de74c4f",
+      "mode": "0644",
+      "size": 4655,
+      "install": true
+    },
+    {
+      "source": "service/shaders/glass.frag",
+      "destination": "service/shaders/glass.frag",
+      "sha256": "702a80b2f5551e14abee55f5473df761f1e3ba13cdeae188c0b1c086c4973a61",
+      "mode": "0644",
+      "size": 8120,
+      "install": true
+    },
+    {
+      "source": "service/shaders/glass.frag.qsb",
+      "destination": "service/shaders/glass.frag.qsb",
+      "sha256": "998797031bceb4e0c73466adbdc126c4f303b97b5b24b68823ef78497e552c0c",
+      "mode": "0644",
+      "size": 13362,
+      "install": true
+    },
+    {
+      "source": "service/shaders/ink.frag",
+      "destination": "service/shaders/ink.frag",
+      "sha256": "3f19a3edf47c417b4666f57b5c84199a16a9afcca643d19721ac11039a4ef808",
+      "mode": "0644",
+      "size": 1223,
+      "install": true
+    },
+    {
+      "source": "service/shaders/ink.frag.qsb",
+      "destination": "service/shaders/ink.frag.qsb",
+      "sha256": "b7667149075716f5220e242d2135e1689ce39140ec6fd747d1d70b95d594d5d1",
+      "mode": "0644",
+      "size": 2703,
+      "install": true
+    },
+    {
+      "source": "tests/conftest.py",
+      "destination": "tests/conftest.py",
+      "sha256": "fa88289619de63bc16980a5de1a6881b1b7221b97bb319b670204ead69b05bf9",
+      "mode": "0644",
+      "size": 2899,
+      "install": true
+    },
+    {
+      "source": "tests/test_editor.py",
+      "destination": "tests/test_editor.py",
+      "sha256": "a1698fd70d08830b1ad9a621f4c04c2aecbf030678e3de01203f3a2e5c356a4f",
+      "mode": "0644",
+      "size": 3895,
+      "install": true
+    },
+    {
+      "source": "tests/test_engine.py",
+      "destination": "tests/test_engine.py",
+      "sha256": "1ea6b0f99789be42448a91005fba256e0d7def2e9d3278ece4f88733c5ea8d6e",
+      "mode": "0644",
+      "size": 12492,
+      "install": true
+    },
+    {
+      "source": "tests/test_launcher.py",
+      "destination": "tests/test_launcher.py",
+      "sha256": "a2cea44949c2d648dd07092e4af6aa21eef3b43263ce050dd3201365744e4e5d",
+      "mode": "0644",
+      "size": 2407,
+      "install": true
+    },
+    {
+      "source": "tests/test_menu.py",
+      "destination": "tests/test_menu.py",
+      "sha256": "ece9e7025457d892c484ff8b3a465ab9504d64eb8605d8231b2a8ac68804f077",
+      "mode": "0644",
+      "size": 3278,
+      "install": true
+    },
+    {
+      "source": "tests/test_urls.py",
+      "destination": "tests/test_urls.py",
+      "sha256": "9b11feac36e8e1271b82deb6c78f239a584bb0db12f155c547566d9ec7ee3d0a",
+      "mode": "0644",
+      "size": 1351,
+      "install": true
+    }
+  ]
+}

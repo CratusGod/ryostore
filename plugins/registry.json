@@ -1866,6 +1866,39 @@
         "topbarGlyph"
       ],
       "lastUpdated": "2026-10-08"
+    },
+    {
+      "id": "dragshift",
+      "name": "DragShift",
+      "version": "0.2.0",
+      "path": "plugins/dragshift",
+      "author": "CratusGod <nghiabigg652@gmail.com>",
+      "summary": "DragShift on Wayland: start dragging a file, press Shift, and drop it on a liquid-glass radial menu to convert or edit it.",
+      "description": "DragShift on Wayland: start dragging a file, press Shift, and drop it on a liquid-glass radial menu to convert or edit it. Results land next to the originals, which are never changed.",
+      "tags": [
+        "files",
+        "convert",
+        "images",
+        "pdf",
+        "compress",
+        "dragshift",
+        "bar-widget"
+      ],
+      "accent": "#8f8378",
+      "surface": "#101010",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "153f67ea712390f4b63aa303f78c4f8dbe70fa7b3d40b5643f360241092e7932",
+      "official": false,
+      "tagline": "DragShift on Wayland: start dragging a file, press Shift, and drop it on a liquid-glass radial menu to convert or edit it.",
+      "icon": "swap_horiz",
+      "hosts": [
+        "topbarGlyph"
+      ],
+      "lastUpdated": "2026-10-20"
     }
   ]
 }
