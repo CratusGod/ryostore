@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "web-browsers",
   "category": "bundles",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "destination": "ryoku/bundles/web-browsers",
   "name": "Web Browsers",
   "description": "A browser shelf for daily use, web development, privacy testing, and Chromium/Firefox compatibility checks: Firefox, Firefox Developer Edition, Chromium, Brave, LibreWolf, and Zen Browser.",
@@ -79,8 +79,8 @@
       "source": "README.md",
       "destination": "README.md",
       "mode": "0644",
-      "size": 1101,
-      "sha256": "5a5ec1ecb098a7f446707b2d30270254221d23490e1766c726bcb7537a490bf9",
+      "size": 1458,
+      "sha256": "8bc32d62a72a72fc9777d0b7a0bc76683e912ccfd21b6f1531ba224889a028f5",
       "install": true
     },
     {

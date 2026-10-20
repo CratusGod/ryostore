@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "vpn-networking",
   "category": "bundles",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "destination": "ryoku/bundles/vpn-networking",
   "name": "VPN & Networking",
   "description": "VPN basics and desktop clients for WireGuard, OpenVPN, IPsec/IKEv2, Proton VPN, Mullvad VPN, and Cloudflare WARP.",
@@ -89,8 +89,8 @@
       "source": "README.md",
       "destination": "README.md",
       "mode": "0644",
-      "size": 1259,
-      "sha256": "f1610217ca259275ad4f75c39031213d71da6f1e038f08a85e91b14da76f684c",
+      "size": 1714,
+      "sha256": "06f7fe331824780e5b48e8b532e869fcdf41858b039eb7ef5ab3a4899eea93e5",
       "install": true
     },
     {

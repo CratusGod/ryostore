@@ -7,7 +7,7 @@ Showcase, Install all**, or pick individual tools from the card.
 
 ## Core tools
 
-| Tool | What it is | Source |
+| Tool | What it is | Arch / CachyOS |
 | --- | --- | --- |
 | cmatrix | Matrix-style terminal rain. | pacman |
 | cbonsai | Animated terminal bonsai tree. | pacman |
@@ -21,11 +21,20 @@ Showcase, Install all**, or pick individual tools from the card.
 
 ## Optional extras
 
-| Tool | What it is | Source |
+| Tool | What it is | Arch / CachyOS |
 | --- | --- | --- |
 | pipes.sh | Animated terminal pipes screensaver. | AUR |
 | tty-clock | Large terminal clock. | AUR |
 | asciiquarium | Animated ASCII aquarium. | AUR |
+
+## On Fedora and Void
+
+The last column is where a tool comes from on Arch and CachyOS. On Fedora and
+Void, Ryoku installs each tool from that edition's own repositories, under its
+own package name. A tool an edition does not package stays listed in the store,
+greyed out with the reason: pipes.sh is not packaged for Fedora or Void (Void's
+pipes.c package has the same screensaver as the `cpipes` command), and
+tty-clock is not packaged for Fedora.
 
 ## Notes
 

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "rice-showcase",
   "category": "bundles",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "destination": "ryoku/bundles/rice-showcase",
   "name": "Rice Showcase",
   "description": "Terminal toys and visual tools for showing off a desktop rice: Matrix rain, bonsai, audio visualizers, system readouts, ASCII banners, and classic terminal animations.",
@@ -149,8 +149,8 @@
       "source": "README.md",
       "destination": "README.md",
       "mode": "0644",
-      "size": 1332,
-      "sha256": "aacfbca0453208c70443a73a9acd94eb2ad7524819a60e2408fb8a4ae159ed63",
+      "size": 1798,
+      "sha256": "b0ba260727bf83c762081a175670c91bf424270ba69dc6e96c37bb0322e614a2",
       "install": true
     },
     {

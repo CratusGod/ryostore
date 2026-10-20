@@ -3,9 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "theme:bootstrap": "bun scripts/theme.ts --bootstrap",
-    "theme:verify-monochrome": "bun scripts/theme.ts --verify-monochrome",
-    "theme:sync": "bun scripts/theme.ts --sync",
-    "install:sync": "bun scripts/install-sync.ts"
+    "theme:bootstrap": "node scripts/theme.ts --bootstrap",
+    "theme:verify-monochrome": "node scripts/theme.ts --verify-monochrome",
+    "theme:sync": "node scripts/theme.ts --sync"
   }
 }

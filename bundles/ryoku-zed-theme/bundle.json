@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "ryoku-zed-theme",
   "category": "bundles",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "destination": "ryoku/bundles/ryoku-zed-theme",
   "name": "Ryoku for Zed",
   "description": "Keep Zed's UI and syntax colors in step with Ryoku's wallpaper palette, including monochrome wallpapers.",
@@ -17,12 +17,12 @@
   "items": [
     {
       "type": "package",
-      "name": "bun",
-      "detect": "bun",
+      "name": "nodejs",
+      "detect": "node",
       "tier": "core",
       "source": "official",
-      "summary": "Run the local palette generator and watcher.",
-      "upstream": "https://bun.sh"
+      "summary": "Run the local palette generator.",
+      "upstream": "https://nodejs.org"
     },
     {
       "type": "script",
@@ -31,7 +31,7 @@
       "tier": "core",
       "interactive": false,
       "source": "ryoku",
-      "summary": "Install the dynamic Zed theme and enable the local Ryoku palette watcher.",
+      "summary": "Install the dynamic Zed theme and hook it into Ryoku's palette updates.",
       "upstream": "https://github.com/Ryoku-dev/ryostore"
     }
   ],
@@ -40,8 +40,8 @@
       "source": "README.md",
       "destination": "README.md",
       "mode": "0644",
-      "size": 2456,
-      "sha256": "6ebc890f851d562c8d84b44d8298d880db0fb5bb621bd1f707fbb77ea981e7bb",
+      "size": 2558,
+      "sha256": "b8086bd64e6aa7778d6d67dcbec240c40db4ea7ccb2d699d4f53f1318c97a053",
       "install": false
     },
     {
@@ -72,8 +72,8 @@
       "source": "installers/ryoku-zed-theme.sh",
       "destination": "installers/ryoku-zed-theme.sh",
       "mode": "0755",
-      "size": 26330,
-      "sha256": "04d155c2afb045cd6399224ff15474855e96ac0d9f2e3e2968de5945835fdc65",
+      "size": 27032,
+      "sha256": "9c9790c71dd95eec741492e013e4acd719dbedfabba3952422206eb95c43fc90",
       "install": false
     },
     {
@@ -88,24 +88,24 @@
       "source": "runtime/package.json",
       "destination": "runtime/package.json",
       "mode": "0644",
-      "size": 324,
-      "sha256": "a89cd14db35619686e1ebf7feb768b09a3f6cb7667fb66c5e7621ad6032a9881",
+      "size": 276,
+      "sha256": "13d3d3a2baa196c627ba26984013c3b03acc7470f79f11574ff4352e02936298",
       "install": false
     },
     {
       "source": "runtime/scripts/install-sync.ts",
       "destination": "runtime/scripts/install-sync.ts",
       "mode": "0644",
-      "size": 3396,
-      "sha256": "f9c5d1caeb4cfa43dad010802a58e28196666674b3c812a3d080e474b41546e2",
+      "size": 3802,
+      "sha256": "41454760063bdae2f1e66f8ca340c6202bf43b6023b4ec45e57ca279adf1d636",
       "install": false
     },
     {
       "source": "runtime/scripts/theme.ts",
       "destination": "runtime/scripts/theme.ts",
       "mode": "0644",
-      "size": 12398,
-      "sha256": "224af967d731935a2dd96e1cee24036db77ee2775ba70e9bc5fc5d4f4566ed4b",
+      "size": 12406,
+      "sha256": "0618c3c2f3ea142a885ee0d4a2e77a2ce1e1358973c0029e4c9a13805547f968",
       "install": false
     },
     {

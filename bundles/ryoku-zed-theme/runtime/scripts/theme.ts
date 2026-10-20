@@ -4,9 +4,9 @@ import { dirname, join, resolve } from "node:path";
 
 type Json = Record<string, any>;
 const home = homedir();
-const args = new Set(Bun.argv.slice(2));
+const args = new Set(process.argv.slice(2));
 const mode = args.has("--bootstrap") ? "bootstrap" : args.has("--verify-monochrome") ? "verify-monochrome" : "sync";
-const root = resolve(import.meta.dir, "..");
+const root = resolve(import.meta.dirname, "..");
 const checkedIn = join(root, "themes", "ryoku.json");
 const sourcePath = process.env.RYOKU_ZED_SOURCE ?? join(home, ".config/zed/themes/matugen.json");
 const outputPath = process.env.RYOKU_ZED_OUTPUT ?? join(home, ".config/zed/themes/ryoku-dynamic.json");
