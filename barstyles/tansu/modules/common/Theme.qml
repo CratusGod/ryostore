@@ -72,11 +72,15 @@ QtObject {
     // Ink on a lit accent gradient: the palette's on-colour, swapped for a dark
     // or light one when the pair doesn't contrast (presets aren't always paired).
     readonly property color inkOnAccent: {
-        const bg = Qt.tint(accentMint, Qt.rgba(accentCyan.r, accentCyan.g, accentCyan.b, 0.5))
-        const role = Ryoku.Theme.onPrimary
-        if (Ryoku.Theme.contrastRatio(role, bg) >= 4.5)
-            return role
-        return Ryoku.Theme.relLum(bg) > 0.45 ? "#141414" : "#fafafa"
+        const dark = Qt.color("#17121a")
+        const light = Qt.color("#fffafd")
+        const darkMin = Math.min(
+            Ryoku.Theme.contrastRatio(dark, accentMint),
+            Ryoku.Theme.contrastRatio(dark, accentCyan))
+        const lightMin = Math.min(
+            Ryoku.Theme.contrastRatio(light, accentMint),
+            Ryoku.Theme.contrastRatio(light, accentCyan))
+        return darkMin >= lightMin ? dark : light
     }
     readonly property color paper: Ryoku.Theme.surfaceContainerLow
     readonly property color paperHover: Ryoku.Theme.surfaceContainerHigh
@@ -256,8 +260,8 @@ QtObject {
 
     readonly property string fontStyleBold: "ExtraBold"
 
-    readonly property int fontSizeTitle: 10
-    readonly property int fontSizeSub: 7
+    readonly property int fontSizeTitle: 12
+    readonly property int fontSizeSub: 10
     readonly property int fontSizeIdle: 12
     readonly property int fontSizeInfo: 12
     readonly property color colSubText: Qt.rgba(colBorder.r, colBorder.g, colBorder.b, 0.667)

@@ -64,12 +64,12 @@ Pill {
         id: artistMetrics
         font.family: Theme.fontFamily
         font.pixelSize: root.artistSize
-        font.weight: Font.Medium
+        font.weight: Font.DemiBold
         text: root.artist
     }
 
-    property int titleSize: Theme.fontSizeTitle
-    property int artistSize: Theme.fontSizeSub
+    property int titleSize: 13
+    property int artistSize: 11
     property int idleSize: Theme.fontSizeIdle
 
     property bool leftOpensPanel: true
@@ -119,10 +119,10 @@ Pill {
     readonly property real artWidth: root.capsule ? 24 : 35
     readonly property real dividerWidth: root.capsule ? 0 : 2
     readonly property real textMargin: 10
-    readonly property color ink: root.capsule ? Theme.capInk : Theme.colBorder
+    readonly property color ink: root.capsule ? Theme.capInk : Theme.inkOnAccent
 
     cornerRadius: Theme.radiusBadge
-    ringWidth: 5
+    ringWidth: 3
     fillColor: Theme.surface
 
     readonly property Gradient mediaGradient: Gradient {
@@ -270,10 +270,6 @@ Pill {
                 anchors.centerIn: parent
                 width: parent.width
                 spacing: 1
-                opacity: root.dim
-                Behavior on opacity {
-                    NumberAnimation { duration: 150 }
-                }
 
                 Text {
                     id: titleText
@@ -284,6 +280,8 @@ Pill {
                     color: root.ink
                     font.family: Theme.fontFamily
                     font.pixelSize: root.capsule ? Theme.fontSizeInfo : (root.active ? root.titleSize : root.idleSize)
+                    lineHeightMode: Text.FixedHeight
+                    lineHeight: Math.round(font.pixelSize * 1.05)
                     font.weight: Font.ExtraBold
                     font.styleName: Theme.fontStyleBold
                 }
@@ -295,10 +293,12 @@ Pill {
                     elide: Text.ElideRight
                     visible: root.active && root.artist !== "" && !root.capsule
                     text: root.artist
-                    color: Theme.colSubText
+                    color: Theme.inkOnAccent
                     font.family: Theme.fontFamily
                     font.pixelSize: root.artistSize
-                    font.weight: Font.Medium
+                    lineHeightMode: Text.FixedHeight
+                    lineHeight: Math.round(font.pixelSize * 1.05)
+                    font.weight: Font.DemiBold
                 }
             }
         }

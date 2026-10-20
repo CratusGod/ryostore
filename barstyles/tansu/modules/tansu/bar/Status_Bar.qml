@@ -510,7 +510,7 @@ Item {
             visible: !status_Bar.vertical && status_Bar.shows("activeWindow")
             Layout.alignment: status_Bar.crossAlign
             cornerRadius: Theme.radiusBadge
-            ringWidth: 5
+            ringWidth: 3
 
             readonly property bool hasWindow: status_Bar.windowApp !== "" || status_Bar.windowTitle !== ""
 
@@ -562,12 +562,12 @@ Item {
                     wrapMode: Text.NoWrap
                     textFormat: Text.PlainText
                     lineHeightMode: Text.FixedHeight
-                    lineHeight: Math.round(font.pixelSize * 1.25)
+                    lineHeight: Math.round(font.pixelSize * 1.05)
                     text: activeWindow.line1.replace(/\s+/g, " ")
-                    color: status_Bar.capsule ? Theme.capInk : Theme.colBorder
+                    color: status_Bar.capsule ? Theme.capInk : Theme.inkOnAccent
                     font.family: Theme.fontFamily
                     font.pixelSize: status_Bar.capsule ? Theme.fontSizeInfo
-                        : (activeWindow.hasWindow ? Theme.fontSizeTitle : Theme.fontSizeIdle)
+                        : (activeWindow.hasWindow ? 13 : Theme.fontSizeIdle)
                     font.weight: Font.ExtraBold
                     font.styleName: Theme.fontStyleBold
                 }
@@ -583,13 +583,13 @@ Item {
                     wrapMode: Text.NoWrap
                     textFormat: Text.PlainText
                     lineHeightMode: Text.FixedHeight
-                    lineHeight: Math.round(font.pixelSize * 1.25)
+                    lineHeight: Math.round(font.pixelSize * 1.05)
                     visible: activeWindow.line2 !== "" && !status_Bar.capsule
                     text: activeWindow.line2.replace(/\s+/g, " ")
-                    color: Theme.colSubText
+                    color: Theme.inkOnAccent
                     font.family: Theme.fontFamily
-                    font.pixelSize: Theme.fontSizeSub
-                    font.weight: Font.Medium
+                    font.pixelSize: 11
+                    font.weight: Font.DemiBold
                 }
             }
         }

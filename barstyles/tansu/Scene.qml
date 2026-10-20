@@ -2,6 +2,8 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
+import Ryoku.Ui.Singletons
+import shell.services as Ryoku
 import "services"
 import "modules/tansu/bar"
 import "modules/tansu/quickPanel"
@@ -12,8 +14,17 @@ Scope {
     property var modelData: null
 
     readonly property var screen: root.modelData
-    readonly property bool isPrimary: !!root.screen && Quickshell.screens.length > 0
-        && Quickshell.screens[0].name === root.screen.name
+    readonly property bool isPrimary: {
+        if (!root.screen)
+            return false
+        for (const screen of Quickshell.screens) {
+            if (screen && screen.name
+                    && Tokens.barEnabledFor(screen.name)
+                    && Ryoku.Config.barStyleFor(screen.name) === "tansu")
+                return screen.name === root.screen.name
+        }
+        return false
+    }
     readonly property var phone: PhoneLink.panel
 
     // The one bar to build (Variants, below), carrying the edge it is on.

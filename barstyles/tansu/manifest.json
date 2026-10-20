@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "tansu",
   "category": "barstyles",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "destination": "ryoku/barstyles/tansu",
   "files": [
     {
@@ -33,8 +33,8 @@
       "source": "Scene.qml",
       "destination": "Scene.qml",
       "mode": "0644",
-      "size": 2913,
-      "sha256": "9049426b74e9f2250f18bd34ca74b8ff7d0b327a084463c6399eab385959606a",
+      "size": 3231,
+      "sha256": "443b0dc9d56966070d6446ef5bd9040914cdb8f3a9a08938cb390d7225fbf674",
       "install": true
     },
     {
@@ -42,7 +42,7 @@
       "destination": "VERSION",
       "mode": "0644",
       "size": 6,
-      "sha256": "78b591400c56b7b67b8cb3b2b8a8e65e9093897f02ce0878e6b5405c68620fa7",
+      "sha256": "7d072b48526b023950e4c48db01e8c273554a6401119f5691e7589ba9bc65d9d",
       "install": true
     },
     {
@@ -5769,8 +5769,8 @@
       "source": "modules/common/Theme.qml",
       "destination": "modules/common/Theme.qml",
       "mode": "0644",
-      "size": 11268,
-      "sha256": "3417bbdefa0285d6721627a384cf7f186857d25d9286b5aab89573205139e387",
+      "size": 11414,
+      "sha256": "347019198fa4cc5c681a4c6219082398654051c4b14adb94dee07e78438ac0d8",
       "install": true
     },
     {
@@ -6161,8 +6161,8 @@
       "source": "modules/tansu/bar/MediaPill.qml",
       "destination": "modules/tansu/bar/MediaPill.qml",
       "mode": "0644",
-      "size": 14475,
-      "sha256": "e46e1d6497e951efd10bddc293e35130af97f0a3d05326a1c9deb67612f31bf4",
+      "size": 14544,
+      "sha256": "12ae29cef51ab30d2f47d95f046388c4e864112f0e57b249c564958062643ed4",
       "install": true
     },
     {
@@ -6241,8 +6241,8 @@
       "source": "modules/tansu/bar/Status_Bar.qml",
       "destination": "modules/tansu/bar/Status_Bar.qml",
       "mode": "0644",
-      "size": 40876,
-      "sha256": "9b60628706cb7111b7e06a0e88b19af44ccf74aeccf16ef3280a109a2b485d89",
+      "size": 40849,
+      "sha256": "4205bf74fe5a1053dce47cce2690441fddb24ce54d75782ec12aadd8ab26fee2",
       "install": true
     },
     {
@@ -6329,8 +6329,8 @@
       "source": "modules/tansu/bar/WeatherPopup.qml",
       "destination": "modules/tansu/bar/WeatherPopup.qml",
       "mode": "0644",
-      "size": 43877,
-      "sha256": "0a47ab76b0b6e4be3e1b6849fa674f76becb3e83be8a8dedd63fd2a17aa530b0",
+      "size": 43870,
+      "sha256": "46fd9ec52b07ec40b106dfd1bd06b30f1cc9eee9d2853d840d3a4529886a15fd",
       "install": true
     },
     {
