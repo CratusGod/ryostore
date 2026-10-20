@@ -375,6 +375,11 @@ def normalized_bundle_components(manifest: object) -> list[dict] | None:
             component["group"] = group
         component["interactive"] = item.get("interactive", False)
         component["summary"] = item.get("summary") or ""
+        # A part limited to some editions carries its gate inline too, so the
+        # Store can grey it out without fetching bundle.json.
+        for field in ("packageManagers", "packageManagersReason"):
+            if field in item:
+                component[field] = item[field]
         if (
             not all(isinstance(component[field], str) and component[field]
                     for field in ("type", "name", "detect", "tier"))
