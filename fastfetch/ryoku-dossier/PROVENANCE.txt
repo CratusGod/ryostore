@@ -1,1 +1,3 @@
 Ryoku Dossier is an original Ryoku Team configuration derived from the Fastfetch configuration shipped by Ryoku. It was adapted for standalone redistribution by removing the machine-local emblem path and using only built-in Fastfetch modules. Its palette was later moved into the display.color slots and referenced through {#keys}, {#title} and {#separator}, so the readout can follow the system colour without touching the layout.
+
+Ported for every Ryoku edition: the tagline names the base system it runs on through RYOKU_BASE_OS, which Ryoku's shells set from ryoku-base-os, the same way Ryoku's own readout does, instead of always saying Arch.

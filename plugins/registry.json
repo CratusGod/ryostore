@@ -772,7 +772,7 @@
     {
       "id": "mjw-resources",
       "name": "Resources",
-      "version": "2.0.2",
+      "version": "2.0.3",
       "path": "plugins/mjw-resources",
       "author": "pctrade (end4-pC) <https://github.com/pctrade/end4-pC>",
       "upstream": "https://github.com/neur0map/MJ-widgets",
@@ -795,14 +795,14 @@
         "assets/preview-widget.png"
       ],
       "manifest": "product-manifest.json",
-      "manifestSha256": "ac2bb8330645c58ca97f3564cde021792d80eb46eb8395d2bfd160a83e02353c",
+      "manifestSha256": "8006b389f32707a3adcfcac38646a64fe5a21ed3f8fe047de274e4429d9ac753",
       "official": false,
       "tagline": "CPU, memory, disk and battery gauges read live from /proc, /sys and UPower — the illogical-impulse resources card.",
       "icon": "speed",
       "hosts": [
         "desktopWidget"
       ],
-      "lastUpdated": "2026-09-24"
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "mjw-sticker",
@@ -1022,7 +1022,7 @@
     {
       "id": "mjw-usercard",
       "name": "User Card",
-      "version": "2.0.2",
+      "version": "2.0.3",
       "path": "plugins/mjw-usercard",
       "author": "pctrade (end4-pC) <https://github.com/pctrade/end4-pC>",
       "upstream": "https://github.com/neur0map/MJ-widgets",
@@ -1045,14 +1045,14 @@
         "assets/preview-widget.png"
       ],
       "manifest": "product-manifest.json",
-      "manifestSha256": "29cba4f9a43163f39c0c58f2e4311a474d2ccd33e447f40a778630970b326c4c",
+      "manifestSha256": "9ad93df9785e576ba13220de00c12dac185e13151698a7a16de7980e0beb0d8c",
       "official": false,
       "tagline": "Greeting card with your name, host, uptime and weather quip plus lock, settings and session buttons — the illogical-impulse user card.",
       "icon": "badge",
       "hosts": [
         "desktopWidget"
       ],
-      "lastUpdated": "2026-09-24"
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "mjw-visualizer",
@@ -1418,7 +1418,7 @@
     {
       "id": "strata",
       "name": "Local LLM Manager",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "path": "plugins/strata",
       "author": "guyb <blumguy111@gmail.com>",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/strata",
@@ -1435,14 +1435,14 @@
         "assets/preview-panel.png"
       ],
       "manifest": "product-manifest.json",
-      "manifestSha256": "c0f9626812f2b8e155247286d14d53cfcbf9982f9897bc2a9134335971b1b923",
+      "manifestSha256": "c91c48db99aae8ffc6eeb2681388b62a0de70133499087ed174ed79b1b7d5494",
       "official": false,
       "tagline": "Pick a local model and start or stop it from the bar.",
       "icon": "",
       "hosts": [
         "topbarGlyph"
       ],
-      "lastUpdated": "2026-10-06"
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "launchpad",
@@ -1688,7 +1688,7 @@
       "id": "game-memory-mode",
       "name": "Game Mode Optimizer",
       "path": "plugins/game-memory-mode",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "author": "Sannidhya Sandheer",
       "upstream": "https://github.com/Ryoku-dev/ryostore/tree/main/plugins/game-memory-mode",
       "official": false,
@@ -1706,8 +1706,8 @@
       "screenshots": [
         "assets/preview-widget.png"
       ],
-      "lastUpdated": "2026-10-10",
-      "manifestSha256": "10817b4efd9e87ce49ad4caeee2491a5917ead72306a56a7075e5bf9650f1fde",
+      "lastUpdated": "2026-10-20",
+      "manifestSha256": "b5ae2fbec1a7f267cca0ce27154ea37d5860dd3580bbbff1fb6274891e1e73f5",
       "summary": "Temporarily stop voice typing and replace animated wallpapers while gaming; restore the desktop afterwards.",
       "accent": "#8f8378",
       "surface": "#101010",
@@ -1716,7 +1716,7 @@
     {
       "id": "claude-companion",
       "name": "Claude Companion",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "path": "plugins/claude-companion",
       "author": "AdriLabTech <labs.lownoise@gmail.com>",
       "upstream": "https://github.com/AdriLabTech/claude-companion",
@@ -1732,14 +1732,14 @@
         "assets/preview-widget.png"
       ],
       "manifest": "product-manifest.json",
-      "manifestSha256": "e0bf8760b866a8f92f56c554910dff30a1f13e03873f4eb73636240dbb8708b4",
+      "manifestSha256": "3aee23d2996e84b1137d4e7889fe66e4b61d879221815a1d1ae6458fcba73fc7",
       "official": false,
       "tagline": "A pixel-art spark that mirrors what Claude Code is doing and opens a mini chat.",
       "icon": "smart_toy",
       "hosts": [
         "desktopWidget"
       ],
-      "lastUpdated": "2026-10-16"
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "prayer-times",
@@ -1804,7 +1804,7 @@
     {
       "id": "caffeinated",
       "name": "Caffeinated",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "path": "plugins/caffeinated",
       "author": "Madhav Khosla <madhav.khoslaa@gmail.com>",
       "summary": "One switch: the whole machine stays awake, even with the lid closed.",
@@ -1827,14 +1827,14 @@
         "assets/preview-panel.png"
       ],
       "manifest": "product-manifest.json",
-      "manifestSha256": "5f606e83afa2c09e24f68255a8ec2b51133267a3c17538fd922cc9784d320ff9",
+      "manifestSha256": "027257aec1d943b3c6bb92683b33ec505275f72097995c4359e9541a65392a18",
       "official": false,
       "tagline": "One switch: the whole machine stays awake, even with the lid closed.",
       "icon": "coffee",
       "hosts": [
         "topbarGlyph"
       ],
-      "lastUpdated": "2026-10-13",
+      "lastUpdated": "2026-10-20",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/caffeinated"
     },
     {

@@ -46,11 +46,7 @@ ContentPage {
     }
 
     function runSystemUpdate() {
-        Quickshell.execDetached([
-            "kitty", "--hold",
-            "fish", "-i", "-l", "-c",
-            "yay -Syu --combinedupgrade=false"
-        ])
+        Quickshell.execDetached(["kitty", "--hold", "ryoku", "update", "--system"])
         Qt.callLater(() => GlobalStates.settingsOpen = false)
     }
 

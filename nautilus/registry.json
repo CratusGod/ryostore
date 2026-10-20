@@ -5,7 +5,7 @@
       "id": "video-reformat",
       "name": "Video Reformat",
       "path": "nautilus/video-reformat",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": "Ryoku <releases@ryoku.dev>",
       "official": true,
       "subdir": "Ryoku Creator",

@@ -32,7 +32,7 @@
     },
     {
       "type": "packages",
-      "format": "{pacman}",
+      "format": "{?pacman}{pacman}{?}{?rpm}{rpm}{?}{?xbps}{xbps}{?}",
       "key": " ├ 󰏖 "
     },
     {

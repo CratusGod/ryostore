@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "day-brief",
   "category": "fastfetch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "ryoku/fastfetch/day-brief",
   "files": [
     {
@@ -17,16 +17,16 @@
       "source": "PROVENANCE.txt",
       "destination": "PROVENANCE.txt",
       "mode": "0644",
-      "size": 912,
-      "sha256": "776a54ed7f5a99a899e44d2a6da60c97b0f6b6b1e37b6a180fcdfcedf57aea9a",
+      "size": 1107,
+      "sha256": "2490f50f4a7ffc8835fcea1ddc9c8612f75e6f2f5bb97a9964cc10d899cd3f39",
       "install": true
     },
     {
       "source": "config.jsonc",
       "destination": "config.jsonc",
       "mode": "0644",
-      "size": 2956,
-      "sha256": "61314a6cfad25ad5540833a287fe01d188a4e75de630b14adda402952cca52b4",
+      "size": 2934,
+      "sha256": "f054b13b9f9a87b7884fe086188ab60972a02b6a30753a6628eb7fd8797c4b5b",
       "install": true
     },
     {

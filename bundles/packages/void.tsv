@@ -1,0 +1,128 @@
+arch	void	lanes	notes
+ananicy-cpp	-	cachyos-layer	Part of the CachyOS performance layer, which only Ryoku on Arch and CachyOS can add.
+antimicrox	antimicrox	gaming	
+asciiquarium	asciiquarium	rice-showcase	
+audacity	audacity	the-influencer	
+base-devel	base-devel	developer-essentials	
+blender	blender	the-influencer	
+brave-bin	-	web-browsers	Brave is not packaged for Void; get it from Flathub (com.brave.Browser).
+btop	btop	rice-showcase	
+bun	-	developer-essentials	Bun is not packaged for Void; install it with the official script from bun.sh.
+cachyos-ananicy-rules	-	cachyos-layer	Part of the CachyOS performance layer, which only Ryoku on Arch and CachyOS can add.
+cachyos-settings	-	cachyos-layer	Part of the CachyOS performance layer, which only Ryoku on Arch and CachyOS can add.
+cava	cava	rice-showcase	
+cbonsai	cbonsai	rice-showcase	
+chromium	chromium	web-browsers	
+clang	clang	developer-essentials	
+cloudflare-warp-bin	-	vpn-networking	Cloudflare WARP is not packaged for Void.
+cmake	cmake	developer-essentials	
+cmatrix	cmatrix	rice-showcase	
+corectrl	corectrl	gaming	
+cowsay	cowsay	rice-showcase	
+curl	curl	developer-essentials,spiceflow	
+darktable	darktable	the-influencer	
+distroav	-	the-influencer	DistroAV is not packaged for Void.
+docker	docker	developer-essentials	
+docker-compose	docker-compose	developer-essentials	
+dolphin-emu	dolphin-emu	gaming	
+dosbox	dosbox	gaming	
+easyeffects	easyeffects	the-influencer	
+fastfetch	fastfetch	rice-showcase	
+fd	fd	developer-essentials	
+figlet	figlet	rice-showcase	
+firefox	firefox	web-browsers	
+firefox-developer-edition	-	web-browsers	Firefox Developer Edition is not packaged for Void; download it from mozilla.org.
+fzf	fzf	developer-essentials	
+game-devices-udev	game-devices-udev	gaming	repo=ryoku
+gamemode	gamemode	gaming	
+gamescope	gamescope	gaming	
+gdb	gdb	developer-essentials	
+gimp	gimp	the-influencer	
+git	git	developer-essentials	
+github-cli	github-cli	developer-essentials	
+go	go	developer-essentials,the-influencer	
+goverlay	-	gaming	GOverlay is not packaged for Void.
+gpu-screen-recorder	gpu-screen-recorder	the-influencer	repo=ryoku
+handbrake	handbrake	the-influencer	
+heroic-games-launcher-bin	-	gaming	Heroic is not packaged for Void; get it from Flathub (com.heroicgameslauncher.hgl).
+inkscape	inkscape	the-influencer	
+jdk-openjdk	openjdk25	developer-essentials	
+jq	jq	developer-essentials	
+kdenlive	kdenlive	the-influencer	
+krita	krita	the-influencer	
+lib32-gamemode	libgamemode-32bit	gaming	repo=multilib
+lib32-mangohud	MangoHud-32bit	gaming	repo=multilib
+lib32-vkd3d	-	gaming	Not packaged for Void; Wine and Proton carry their own copy.
+libretro-beetle-psx-hw	-	gaming	Not packaged for Void; download the core from RetroArch's Online Updater.
+libretro-core-info	-	gaming	Not packaged for Void; RetroArch's Online Updater downloads the core info files.
+libretro-genesis-plus-gx	-	gaming	Not packaged for Void; download the core from RetroArch's Online Updater.
+libretro-mesen	-	gaming	Not packaged for Void; download the core from RetroArch's Online Updater.
+libretro-mupen64plus-next	-	gaming	Not packaged for Void; download the core from RetroArch's Online Updater.
+libretro-snes9x	-	gaming	Not packaged for Void; download the core from RetroArch's Online Updater.
+librewolf	-	web-browsers	LibreWolf is not packaged for Void; get it from Flathub (io.gitlab.librewolf-community).
+linux-cachyos	-	cachyos-layer	Part of the CachyOS performance layer, which only Ryoku on Arch and CachyOS can add.
+linux-cachyos-headers	-	cachyos-layer	Part of the CachyOS performance layer, which only Ryoku on Arch and CachyOS can add.
+linux-headers	linux-headers	the-influencer	
+lldb	lldb	developer-essentials	
+lolcat	lolcat-c	rice-showcase	
+losslesscut-bin	-	the-influencer	LosslessCut is not packaged for Void; get it from Flathub (no.mifi.losslesscut).
+lutris	lutris	gaming	
+mame	mame	gaming	
+mangohud	MangoHud	gaming	
+melonds	melonDS	gaming	
+mgba-qt	mgba-qt	gaming	
+mullvad-vpn-bin	-	vpn-networking	Mullvad VPN is not packaged for Void.
+networkmanager-openvpn	NetworkManager-openvpn	vpn-networking	
+networkmanager-strongswan	NetworkManager-strongswan	vpn-networking	
+ninja	ninja	developer-essentials	
+nodejs	nodejs	developer-essentials,ryoku-zed-theme	
+noise-suppression-for-voice	-	the-influencer	Not packaged for Void; EasyEffects, also in this bundle, has RNNoise noise reduction built in.
+npm	nodejs	developer-essentials,the-influencer	
+obs-backgroundremoval	-	the-influencer	Not packaged for Void; get it with OBS from Flathub (com.obsproject.Studio.Plugin.BackgroundRemoval).
+obs-pipewire-audio-capture	obs-pipewire-audio-capture	the-influencer	
+obs-studio	obs	the-influencer	
+obs-vkcapture	-	the-influencer	OBS game capture for Vulkan and OpenGL is not packaged for Void.
+openvpn	openvpn	vpn-networking	
+owncast-bin	-	the-influencer	Owncast is not packaged for Void; download it from owncast.online.
+pcsx2	-	gaming	PCSX2 is not packaged for Void; get it from Flathub (net.pcsx2.PCSX2).
+pipes.sh	-	rice-showcase	Not packaged for Void; the pipes.c package has the same screensaver as the cpipes command.
+ppsspp	ppsspp	gaming	
+proton-cachyos-native	-	cachyos-layer	Part of the CachyOS performance layer, which only Ryoku on Arch and CachyOS can add.
+proton-vpn-gtk-app	-	vpn-networking	Proton VPN's app is not packaged for Void.
+protontricks	protontricks	gaming	
+protonup-qt	-	gaming	ProtonUp-Qt is not packaged for Void; get it from Flathub (net.davidotek.pupgui2).
+python	python3	developer-essentials	
+python-pip	python3-pip	developer-essentials	
+qprompt	qprompt	the-influencer	
+reaper	-	the-influencer	REAPER is proprietary and not packaged for Void; download it from reaper.fm.
+retroarch	retroarch	gaming	
+ripgrep	ripgrep	developer-essentials	
+rpcs3-bin	-	gaming	RPCS3 is not packaged for Void; get it from Flathub (net.rpcs3.RPCS3).
+rustup	rustup	developer-essentials	
+ryotunes	ryotunes	ryotunes	repo=ryoku
+sc-controller	sc-controller	gaming	
+scummvm	scummvm	gaming	
+scx-scheds	scx	cachyos-layer	
+shotcut	shotcut	the-influencer	
+sl	sl	rice-showcase	
+steam	steam libgcc-32bit libstdc++-32bit libdrm-32bit libglvnd-32bit	gaming	repo=nonfree,multilib
+subtitleedit	-	the-influencer	Subtitle Edit is not packaged for Void; Subtitle Editor (subtitleeditor) is a native alternative.
+tmux	tmux	developer-essentials	
+toilet	toilet	rice-showcase	
+tty-clock	tty-clock	rice-showcase	
+umu-launcher	-	gaming	umu-launcher is not packaged for Void.
+upscayl-bin	-	the-influencer	Upscayl is not packaged for Void; get it from Flathub (org.upscayl.Upscayl).
+v4l2loopback-dkms	v4l2loopback	the-influencer	
+vesktop-bin	-	gaming	Vesktop is not packaged for Void; get it from Flathub (dev.vencord.Vesktop).
+visual-studio-code-bin	-	developer-essentials	Microsoft's build is not packaged for Void; the vscode package is the open-source build, or get it from Flathub (com.visualstudio.code).
+vkbasalt	vkBasalt	gaming	
+vkd3d	-	gaming	Not packaged for Void; Wine and Proton carry their own copy.
+wf-recorder	wf-recorder	the-influencer	
+wget	wget	developer-essentials	
+whisper-cpp	-	the-influencer	Void has no whisper.cpp package; build whisper.cpp yourself to use the Generate captions action.
+wine	wine	gaming	
+winetricks	winetricks	gaming	
+wireguard-tools	wireguard-tools	vpn-networking	
+wl-screenrec	-	the-influencer	wl-screenrec is not packaged for Void; gpu-screen-recorder, also in this bundle, records the screen.
+yt-dlp	yt-dlp	the-influencer	
+zen-browser-bin	-	web-browsers	Zen ships only as an upstream binary build; Ryoku does not mirror a browser it cannot keep current.

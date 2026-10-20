@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "mjw-resources",
   "category": "plugins",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "destination": "ryoku/plugins/mjw-resources",
   "files": [
     {
@@ -72,9 +72,9 @@
     {
       "source": "content/Battery.qml",
       "destination": "content/Battery.qml",
-      "sha256": "33d813c1e82fde810074d60d885b2467eba2aff30a232d90fd654b41d32fabfb",
+      "sha256": "0270d630a866f0d71475c3fe8325d550708505cd15de65c20746cf42135c046b",
       "mode": "0644",
-      "size": 4255,
+      "size": 4234,
       "install": true
     },
     {
@@ -352,7 +352,7 @@
     {
       "source": "manifest.json",
       "destination": "manifest.json",
-      "sha256": "ebbb38ad4a0793949e7557ae0788c3073330930301de1e5974f399df36b2b828",
+      "sha256": "a010aae655db8c3e63c2eaa2711afb74037cdabf35f4d466152eec6a45403ac4",
       "mode": "0644",
       "size": 2587,
       "install": true

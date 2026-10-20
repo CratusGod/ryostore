@@ -1,7 +1,7 @@
 {
   "id": "caffeinated",
   "name": "Caffeinated",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Madhav Khosla <madhav.khoslaa@gmail.com>",
   "description": "System-wide caffeine: one switch keeps the whole machine awake (no sleep, even with the lid closed), screen on and unlocked or locking as usual.",
   "license": "MIT",
@@ -57,7 +57,7 @@
       "rm",
       "setsid",
       "sleep",
-      "systemd-inhibit",
+      "ryoku-host",
       "tr",
       "ryoku-shell"
     ]

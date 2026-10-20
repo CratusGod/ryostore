@@ -3,6 +3,16 @@
 # Reels / Shorts / TikTok native. Edges are trimmed; no bars.
 set -uo pipefail
 notify() { command -v notify-send >/dev/null && notify-send -a "Ryoku Creator" "$1" "${2:-}"; }
+# libx264 where ffmpeg has it. An ffmpeg built without it (Fedora's ffmpeg-free)
+# would quietly write MPEG-4 Part 2 instead of H.264, so name OpenH264 there.
+# Read the list whole: piped into grep -q under pipefail, ffmpeg can die of
+# SIGPIPE part-way through it and read as missing.
+encoders="$(ffmpeg -hide_banner -encoders 2>/dev/null)"
+if grep -qw libx264 <<<"$encoders"; then
+  video=(-c:v libx264)
+else
+  video=(-c:v libopenh264 -b:v 8M)
+fi
 n=0
 while IFS= read -r f; do
   [ -n "$f" ] || continue
@@ -10,7 +20,7 @@ while IFS= read -r f; do
   out="${f%.*}_9x16.mp4"
   if ffmpeg -nostdin -y -i "$f" \
     -vf "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1" \
-    -c:a copy "$out" 2>/dev/null; then
+    "${video[@]}" -c:a copy "$out" 2>/dev/null; then
     n=$((n + 1))
     notify "Reformatted to 9:16" "$(basename "$out")"
   else

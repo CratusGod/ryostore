@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "service-manual",
   "category": "fastfetch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "ryoku/fastfetch/service-manual",
   "files": [
     {
@@ -17,8 +17,8 @@
       "source": "PROVENANCE.txt",
       "destination": "PROVENANCE.txt",
       "mode": "0644",
-      "size": 1152,
-      "sha256": "ae0643f94278fd1179d2242fcf09430dad9f0c9678a0e2725b22b2815e2e9220",
+      "size": 1238,
+      "sha256": "1cfe2c78a0cdb6001a46d3acbc9615883041452a8049a796e8d6c59a4564f636",
       "install": true
     },
     {
@@ -26,7 +26,7 @@
       "destination": "config.jsonc",
       "mode": "0644",
       "size": 4252,
-      "sha256": "0588fbcbfcd4bce74e919550a779c7ab78d13a7451f1da65840e1494eb4dda03",
+      "sha256": "b11126965023f767decc99b3e0900eeb03e728c3d71e4d651a8b02ffb56c7d10",
       "install": true
     },
     {

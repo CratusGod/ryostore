@@ -240,7 +240,7 @@ Item {
                     text: root.setup === "noCli"
                         ? "Claude Companion talks to Claude through the official Claude Code CLI. Follow the install guide for your system (a one-line installer or your package manager), then check again."
                         : root.setup === "noJq"
-                        ? "Install `jq` with your package manager (for example pacman -S jq, apt install jq or dnf install jq), then check again."
+                        ? "Install `jq` (sudo ryoku-host pkg install jq), then check again."
                         : root.setup === "signingIn"
                         ? "A browser window should have opened. If it did not, open the link. If the page shows a code, paste it below."
                         : root.setup === "signedOut"

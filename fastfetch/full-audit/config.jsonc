@@ -5,7 +5,6 @@
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
   "logo": {
     "type": "builtin",
-    "source": "arch",
     "padding": { "top": 1, "left": 1, "right": 2 }
   },
   "display": {
@@ -19,7 +18,7 @@
   "modules": [
     {
       "type": "os",
-      "key": "\u256d\u2500\uf3ff"
+      "key": "\u256d\u2500\uf31a"
     },
     {
       "type": "kernel",
@@ -28,11 +27,11 @@
     },
     {
       "type": "packages",
-      "key": "\u251c\u2500\udb82\udfaf"
+      "key": "\u251c\u2500\udb80\udfd6"
     },
     {
       "type": "wm",
-      "key": "\u2570\u2500\uf359"
+      "key": "\u2570\u2500\uf2d2"
     },
     "break",
     {
@@ -104,7 +103,7 @@
     "break",
     {
       "type": "custom",
-      "format": "\u001b[1m\u001b[31m  \u001b[1m\u001b[32m  \u001b[1m\u001b[33m  \u001b[1m\u001b[34m  \u001b[1m\u001b[35m  \u001b[1m\u001b[36m  \u001b[1m\u001b[37m  \u001b[1m\u001b[30m       \u001b[1m\u001b[91m  \u001b[1m\u001b[92m  \u001b[1m\u001b[93m  \u001b[1m\u001b[94m  \u001b[1m\u001b[95m  \u001b[1m\u001b[96m  \u001b[1m\u001b[97m  \u001b[1m\u001b[90m"
+      "format": "\u001b[1m\u001b[31m  \u001b[1m\u001b[32m  \u001b[1m\u001b[33m  \u001b[1m\u001b[34m  \u001b[1m\u001b[35m  \u001b[1m\u001b[36m  \u001b[1m\u001b[37m  \u001b[1m\u001b[30m       \u001b[1m\u001b[91m  \u001b[1m\u001b[92m  \u001b[1m\u001b[93m  \u001b[1m\u001b[94m  \u001b[1m\u001b[95m  \u001b[1m\u001b[96m  \u001b[1m\u001b[97m  \u001b[1m\u001b[90m"
     }
   ]
 }

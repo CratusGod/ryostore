@@ -1,39 +1,50 @@
+import { spawnSync } from "node:child_process";
 import { copyFile, mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { constants } from "node:fs";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
 
 const home = homedir();
-const root = resolve(import.meta.dir, "..");
-const systemd = join(home, ".config/systemd/user");
-const serviceName = "ryoku-zed-theme-sync.service";
-const pathName = "ryoku-zed-theme-sync.path";
-const bun = process.execPath;
-const initialSync = Bun.spawn([bun, "run", "theme:sync"], { cwd: root, stdout: "inherit", stderr: "inherit" });
-const initialSyncCode = await initialSync.exited;
-if (initialSyncCode !== 0) throw new Error(`Initial theme sync exited with ${initialSyncCode}; no watcher was installed.`);
-await mkdir(systemd, { recursive: true });
-const service = `[Unit]\nDescription=Sync the Ryoku palette into a Zed theme\n\n[Service]\nType=oneshot\nWorkingDirectory=${root}\nExecStart=${bun} run theme:sync\n`;
-const path = `[Unit]\nDescription=Watch Ryoku's generated Zed Matugen theme\n\n[Path]\nPathChanged=${home}/.config/zed/themes/matugen.json\nUnit=${serviceName}\n\n[Install]\nWantedBy=default.target\n`;
-const missing: Array<[string, string]> = [];
-for (const [name, content] of [[serviceName, service], [pathName, path]] as const) {
-  const destination = join(systemd, name);
-  try {
-    const current = await readFile(destination, "utf8");
-    if (current !== content) throw new Error(`${destination} already exists with different content; move it aside before installing this watcher.`);
-  } catch (error) {
-    if (error instanceof Error && !("code" in error && error.code === "ENOENT")) throw error;
-    missing.push([destination, content]);
-  }
-}
-for (const [destination, content] of missing) await writeFile(destination, content, { flag: "wx" });
+const root = resolve(import.meta.dirname, "..");
+const config = process.env.XDG_CONFIG_HOME ?? join(home, ".config");
+const syncCommand = process.argv[2];
+if (!syncCommand) throw new Error("usage: install-sync.ts <sync command path>");
 
-const reload = Bun.spawn(["systemctl", "--user", "daemon-reload"], { stdout: "inherit", stderr: "inherit" });
-const reloadCode = await reload.exited;
-if (reloadCode !== 0) throw new Error(`systemctl daemon-reload exited with ${reloadCode}`);
-const proc = Bun.spawn(["systemctl", "--user", "enable", "--now", pathName], { stdout: "inherit", stderr: "inherit" });
-const code = await proc.exited;
-if (code !== 0) throw new Error(`systemctl exited with ${code}`);
+const initialSync = spawnSync(process.execPath, [join(root, "scripts/theme.ts"), "--sync"], { cwd: root, stdio: "inherit" });
+if (initialSync.status !== 0) throw new Error(`Initial theme sync exited with ${initialSync.status}; no palette hook was installed.`);
+
+// Matugen renders matugen.json on every palette change, on every Ryoku edition,
+// so a post_hook on that template keeps ryoku-dynamic.json in step without a
+// watcher service. Ryoku keeps user changes to apps.toml in its user_edits
+// overlay (seeded from the shipped file, as the palette bridge does).
+const overlayDir = join(config, "ryoku/user_edits/matugen");
+const overlayApps = join(overlayDir, "apps.toml");
+let apps: string;
+try {
+  apps = await readFile(overlayApps, "utf8");
+} catch (error) {
+  if (!(error instanceof Error && "code" in error && error.code === "ENOENT")) throw error;
+  apps = await readFile(join(config, "matugen/apps.toml"), "utf8");
+}
+const lines = apps.split("\n");
+const start = lines.findIndex((line) => line.trim() === "[templates.zed]");
+if (start < 0) throw new Error(`${overlayApps} has no [templates.zed] section; the hook was not installed.`);
+let end = lines.findIndex((line, index) => index > start && /^\s*\[/.test(line));
+if (end < 0) end = lines.length;
+const body = lines.slice(start + 1, end).filter((line) => !/^\s*post_hook\s*=/.test(line));
+let last = body.length;
+while (last > 0 && body[last - 1].trim() === "") last--;
+const quoted = `'${syncCommand.replaceAll("'", `'\\''`)}'`;
+body.splice(last, 0, `post_hook = ${JSON.stringify(quoted)}`);
+const updated = [...lines.slice(0, start + 1), ...body, ...lines.slice(end)].join("\n");
+if (updated !== apps) {
+  await mkdir(overlayDir, { recursive: true });
+  const temp = `${overlayApps}.ryoku-tmp-${Date.now()}`;
+  await writeFile(temp, updated, { mode: 0o644, flag: "wx" });
+  await rename(temp, overlayApps);
+}
+const materialize = spawnSync("ryoku", ["materialize"], { stdio: "inherit" });
+if (materialize.status !== 0) throw new Error(`ryoku materialize exited with ${materialize.status ?? materialize.error}; the palette hook is saved in ${overlayApps} and applies on the next one.`);
 
 const settings = join(home, ".config/zed/settings.json");
 const currentSettings = await readFile(settings, "utf8");
@@ -51,4 +62,4 @@ if (selectedSettings !== currentSettings) {
 } else {
   console.log(`Ryoku Dynamic Dark is already selected in ${settings}; left settings unchanged.`);
 }
-console.log("Installed the optional palette watcher. It writes ryoku-dynamic.json beside matugen.json and leaves Matugen untouched.");
+console.log("Installed the palette hook. Matugen runs it after each palette change; it writes ryoku-dynamic.json beside matugen.json.");

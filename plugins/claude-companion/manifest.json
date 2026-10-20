@@ -1,7 +1,7 @@
 {
   "id": "claude-companion",
   "name": "Claude Companion",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "AdriLabTech <labs.lownoise@gmail.com>",
   "description": "A pixel-art spark that sits on your desktop, mirrors what Claude Code is doing, and opens a small chat when clicked. Guides first-time users through installing and signing in.",
   "license": "MIT",

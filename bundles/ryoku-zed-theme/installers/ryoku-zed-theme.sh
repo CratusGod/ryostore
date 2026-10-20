@@ -3,14 +3,16 @@
 # Reviewed source is mirrored in runtime/ and embedded here because Ryostore
 # caches only the installer script before execution.
 set -euo pipefail
-version=1.0.0
+version=1.1.0
 data_home="${XDG_DATA_HOME:-$HOME/.local/share}"
 source_dir="$data_home/ryoku/zed-theme"
 marker="$source_dir/.ryostore-owned"
 command_marker="$source_dir/.ryostore-command-owned"
 command_path="$HOME/.local/bin/ryoku-zed-theme-sync-installed"
-command -v bun >/dev/null || { echo "ryoku-zed-theme: install Bun first" >&2; exit 1; }
-command -v systemctl >/dev/null || { echo "ryoku-zed-theme: systemctl is required" >&2; exit 1; }
+command -v node >/dev/null || { echo "ryoku-zed-theme: install Node.js first" >&2; exit 1; }
+node -e 'const [major, minor] = process.versions.node.split(".").map(Number); process.exit(major >= 24 || (major === 23 && minor >= 6) || (major === 22 && minor >= 18) ? 0 : 1)' \
+  || { echo "ryoku-zed-theme: needs Node.js 22.18 or newer, which runs TypeScript directly" >&2; exit 1; }
+command -v ryoku >/dev/null || { echo "ryoku-zed-theme: follows Ryoku's palette and needs the ryoku command" >&2; exit 1; }
 if [[ -e "$source_dir" && ! -f "$marker" ]]; then echo "ryoku-zed-theme: refusing to overwrite unowned path: $source_dir" >&2; exit 1; fi
 if [[ -e "$command_path" && ! -f "$command_marker" ]]; then echo "ryoku-zed-theme: refusing to overwrite unowned command: $command_path" >&2; exit 1; fi
 install -d "$source_dir/scripts" "$source_dir/themes"
@@ -21,9 +23,9 @@ import { dirname, join, resolve } from "node:path";
 
 type Json = Record<string, any>;
 const home = homedir();
-const args = new Set(Bun.argv.slice(2));
+const args = new Set(process.argv.slice(2));
 const mode = args.has("--bootstrap") ? "bootstrap" : args.has("--verify-monochrome") ? "verify-monochrome" : "sync";
-const root = resolve(import.meta.dir, "..");
+const root = resolve(import.meta.dirname, "..");
 const checkedIn = join(root, "themes", "ryoku.json");
 const sourcePath = process.env.RYOKU_ZED_SOURCE ?? join(home, ".config/zed/themes/matugen.json");
 const outputPath = process.env.RYOKU_ZED_OUTPUT ?? join(home, ".config/zed/themes/ryoku-dynamic.json");
@@ -295,42 +297,53 @@ if (mode === "bootstrap") {
 }
 RYOKU_THEME_TS
 cat > "$source_dir/scripts/install-sync.ts" <<'RYOKU_INSTALL_SYNC_TS'
+import { spawnSync } from "node:child_process";
 import { copyFile, mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { constants } from "node:fs";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
 
 const home = homedir();
-const root = resolve(import.meta.dir, "..");
-const systemd = join(home, ".config/systemd/user");
-const serviceName = "ryoku-zed-theme-sync.service";
-const pathName = "ryoku-zed-theme-sync.path";
-const bun = process.execPath;
-const initialSync = Bun.spawn([bun, "run", "theme:sync"], { cwd: root, stdout: "inherit", stderr: "inherit" });
-const initialSyncCode = await initialSync.exited;
-if (initialSyncCode !== 0) throw new Error(`Initial theme sync exited with ${initialSyncCode}; no watcher was installed.`);
-await mkdir(systemd, { recursive: true });
-const service = `[Unit]\nDescription=Sync the Ryoku palette into a Zed theme\n\n[Service]\nType=oneshot\nWorkingDirectory=${root}\nExecStart=${bun} run theme:sync\n`;
-const path = `[Unit]\nDescription=Watch Ryoku's generated Zed Matugen theme\n\n[Path]\nPathChanged=${home}/.config/zed/themes/matugen.json\nUnit=${serviceName}\n\n[Install]\nWantedBy=default.target\n`;
-const missing: Array<[string, string]> = [];
-for (const [name, content] of [[serviceName, service], [pathName, path]] as const) {
-  const destination = join(systemd, name);
-  try {
-    const current = await readFile(destination, "utf8");
-    if (current !== content) throw new Error(`${destination} already exists with different content; move it aside before installing this watcher.`);
-  } catch (error) {
-    if (error instanceof Error && !("code" in error && error.code === "ENOENT")) throw error;
-    missing.push([destination, content]);
-  }
-}
-for (const [destination, content] of missing) await writeFile(destination, content, { flag: "wx" });
+const root = resolve(import.meta.dirname, "..");
+const config = process.env.XDG_CONFIG_HOME ?? join(home, ".config");
+const syncCommand = process.argv[2];
+if (!syncCommand) throw new Error("usage: install-sync.ts <sync command path>");
 
-const reload = Bun.spawn(["systemctl", "--user", "daemon-reload"], { stdout: "inherit", stderr: "inherit" });
-const reloadCode = await reload.exited;
-if (reloadCode !== 0) throw new Error(`systemctl daemon-reload exited with ${reloadCode}`);
-const proc = Bun.spawn(["systemctl", "--user", "enable", "--now", pathName], { stdout: "inherit", stderr: "inherit" });
-const code = await proc.exited;
-if (code !== 0) throw new Error(`systemctl exited with ${code}`);
+const initialSync = spawnSync(process.execPath, [join(root, "scripts/theme.ts"), "--sync"], { cwd: root, stdio: "inherit" });
+if (initialSync.status !== 0) throw new Error(`Initial theme sync exited with ${initialSync.status}; no palette hook was installed.`);
+
+// Matugen renders matugen.json on every palette change, on every Ryoku edition,
+// so a post_hook on that template keeps ryoku-dynamic.json in step without a
+// watcher service. Ryoku keeps user changes to apps.toml in its user_edits
+// overlay (seeded from the shipped file, as the palette bridge does).
+const overlayDir = join(config, "ryoku/user_edits/matugen");
+const overlayApps = join(overlayDir, "apps.toml");
+let apps: string;
+try {
+  apps = await readFile(overlayApps, "utf8");
+} catch (error) {
+  if (!(error instanceof Error && "code" in error && error.code === "ENOENT")) throw error;
+  apps = await readFile(join(config, "matugen/apps.toml"), "utf8");
+}
+const lines = apps.split("\n");
+const start = lines.findIndex((line) => line.trim() === "[templates.zed]");
+if (start < 0) throw new Error(`${overlayApps} has no [templates.zed] section; the hook was not installed.`);
+let end = lines.findIndex((line, index) => index > start && /^\s*\[/.test(line));
+if (end < 0) end = lines.length;
+const body = lines.slice(start + 1, end).filter((line) => !/^\s*post_hook\s*=/.test(line));
+let last = body.length;
+while (last > 0 && body[last - 1].trim() === "") last--;
+const quoted = `'${syncCommand.replaceAll("'", `'\\''`)}'`;
+body.splice(last, 0, `post_hook = ${JSON.stringify(quoted)}`);
+const updated = [...lines.slice(0, start + 1), ...body, ...lines.slice(end)].join("\n");
+if (updated !== apps) {
+  await mkdir(overlayDir, { recursive: true });
+  const temp = `${overlayApps}.ryoku-tmp-${Date.now()}`;
+  await writeFile(temp, updated, { mode: 0o644, flag: "wx" });
+  await rename(temp, overlayApps);
+}
+const materialize = spawnSync("ryoku", ["materialize"], { stdio: "inherit" });
+if (materialize.status !== 0) throw new Error(`ryoku materialize exited with ${materialize.status ?? materialize.error}; the palette hook is saved in ${overlayApps} and applies on the next one.`);
 
 const settings = join(home, ".config/zed/settings.json");
 const currentSettings = await readFile(settings, "utf8");
@@ -348,7 +361,7 @@ if (selectedSettings !== currentSettings) {
 } else {
   console.log(`Ryoku Dynamic Dark is already selected in ${settings}; left settings unchanged.`);
 }
-console.log("Installed the optional palette watcher. It writes ryoku-dynamic.json beside matugen.json and leaves Matugen untouched.");
+console.log("Installed the palette hook. Matugen runs it after each palette change; it writes ryoku-dynamic.json beside matugen.json.");
 RYOKU_INSTALL_SYNC_TS
 cat > "$source_dir/themes/ryoku.json" <<'RYOKU_THEME_JSON'
 {
@@ -633,20 +646,19 @@ cat > "$source_dir/package.json" <<'RYOKU_PACKAGE_JSON'
   "private": true,
   "type": "module",
   "scripts": {
-    "theme:bootstrap": "bun scripts/theme.ts --bootstrap",
-    "theme:verify-monochrome": "bun scripts/theme.ts --verify-monochrome",
-    "theme:sync": "bun scripts/theme.ts --sync",
-    "install:sync": "bun scripts/install-sync.ts"
+    "theme:bootstrap": "node scripts/theme.ts --bootstrap",
+    "theme:verify-monochrome": "node scripts/theme.ts --verify-monochrome",
+    "theme:sync": "node scripts/theme.ts --sync"
   }
 }
 RYOKU_PACKAGE_JSON
 printf '%s\n' "$version" > "$marker"
 cd "$source_dir"
-bun scripts/install-sync.ts
+node scripts/install-sync.ts "$command_path"
 install -d "$HOME/.local/bin"
 cat > "$command_path" <<'RYOKU_COMMAND'
 #!/bin/bash
-exec bun "${XDG_DATA_HOME:-$HOME/.local/share}/ryoku/zed-theme/scripts/theme.ts" --sync "$@"
+exec node "${XDG_DATA_HOME:-$HOME/.local/share}/ryoku/zed-theme/scripts/theme.ts" --sync "$@"
 RYOKU_COMMAND
 chmod 0755 "$command_path"
 printf '%s\n' "$version" > "$command_marker"

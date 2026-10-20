@@ -18,8 +18,10 @@ The top-level `registry.json` is the index the Hub reads to discover them.
       "id": "the-ricer",                 // matches the folder name and bundle.json id
       "name": "The Ricer",               // display name
       "description": "...",              // one-line blurb for the card
-      "sources": "pacman / AUR",         // where its items come from, for the card label
+      "sources": "System packages",      // where its items come from, for the card label
       "path": "bundles/the-ricer"
+      // "packageManagers": ["pacman"],   // optional gate, see "Every Ryoku edition"
+      // "packageManagersReason": "..."   // the sentence shown where it is unavailable
     }
   ]
 }
@@ -45,13 +47,16 @@ The top-level `registry.json` is the index the Hub reads to discover them.
 Each item has a `type`, a `name`, an optional one-line `summary`, an optional
 `source` and `upstream` (shown on the card), and a `detect` command:
 
-- **`package`** a pacman/AUR package. `ryostore-install` routes it
-  automatically: a package that resolves with `pacman -Si` installs from the
-  official repos via `ryoku-pkg-add`, the rest from the AUR via
-  `ryoku-pkg-aur-add`, so you only ever write the package name. Presence is
-  decided by `pacman -Qq <name>`; `detect` just documents the command the package
-  provides. Repo packages are batched into one install and AUR packages into
-  another; anything already present is skipped.
+- **`package`** a package, named as Arch names it. `ryostore-install` routes it
+  through `ryoku-host`, so you only ever write that one name. On Arch and
+  CachyOS a package that resolves with `pacman -Si` installs from the official
+  repos via `ryoku-pkg-add` and the rest from the AUR via `ryoku-pkg-aur-add`.
+  On Fedora and Void, which have no AUR, `ryoku-host` names the package for the
+  edition from `bundles/packages/<edition>.tsv` and installs it with the
+  edition's own manager; see [Every Ryoku edition](#every-ryoku-edition).
+  Presence is decided by the package manager; `detect` just documents the
+  command the package provides. Packages are batched; anything already present
+  is skipped.
 - **`script`** installed by running `bundles/<id>/installers/<name>.sh` (see
   [`installers/README.md`](../installers/README.md)). `detect` is the command the script produces, and the
   item is present when that command is on `PATH`.
@@ -61,14 +66,59 @@ Each item has a `type`, a `name`, an optional one-line `summary`, an optional
 `requires` lists prerequisites the actuator satisfies before a bundle's packages
 are routed, each idempotent and safe to repeat:
 
-- `multilib` enables the `[multilib]` repo (Steam and every `lib32-` package
-  live there).
-- `cachyos` adds the `[cachyos-v3]` repo (the CachyOS Kernel bundle).
+- `multilib` enables Arch's `[multilib]` repo (Steam and every `lib32-` package
+  live there). Fedora needs no step, and Void enables its multilib and nonfree
+  repositories per package, as the table rows name them.
+- `cachyos` adds the `[cachyos-v3]` repo (the CachyOS Kernel bundle). Only Arch
+  and CachyOS can, so that bundle carries a `packageManagers` gate.
 - `gpu-lib32` runs `ryoku-gpu-lib32` to install the 32-bit GPU drivers matching
-  the machine (Gaming lists it after `multilib`, so the repo is on first).
+  the machine, on every edition (Gaming lists it after `multilib`, so the repo
+  is on first).
 
 An unrecognised requirement aborts with a "run ryoku update" message rather than
 mis-routing the bundle's packages.
+
+## Every Ryoku edition
+
+Ryoku runs on Arch, CachyOS, Fedora and Void, and a bundle offers the same
+items on all of them. Item code never names a distribution's tools: scripts go
+through the `ryoku-host` seam (`ryoku-host pkg`, `ryoku-host svc`, ...), which
+the security screen enforces.
+
+**Edition tables.** `bundles/packages/void.tsv` and `bundles/packages/fedora.tsv`
+name every bundle package for that edition, one row per Arch name:
+
+```
+arch	void	lanes	notes
+steam	steam libgcc-32bit libstdc++-32bit libdrm-32bit libglvnd-32bit	gaming	repo=nonfree,multilib
+reaper	-	the-influencer	REAPER is proprietary and not packaged for Void; download it from reaper.fm.
+```
+
+The second column lists the edition's package names (several when one Arch
+package splits), or `-` when the edition has none; the note on a `-` row is the
+reason the Store shows. `lanes` lists the bundles that use the package. On Void,
+`repo=` names the official repositories a package needs switched on first, and
+`repo=ryoku` marks a package from Ryoku's own repository. `ryoku-host` lays the
+table under Ryoku's own edition table, and Ryoku's row wins.
+
+An item an edition cannot have stays listed in the Store, greyed out with its
+reason, and **Install all** skips it. The validator checks that the tables are
+sorted, that every bundle package has a row in each, and that every `-` row
+gives a reason. Check a row against the real repositories before you add it:
+
+```sh
+docker run --rm -v "$PWD/bundles/packages:/s:ro" -v "$(command -v ryoku-host):/rh:ro" \
+  -e RYOKU_HOST_PKGMGR=xbps ghcr.io/void-linux/void-glibc:latest \
+  sh -c 'xbps-install -Syu xbps >/dev/null; /rh pkg --overlay /s/void.tsv status <name>'
+```
+
+It prints `installed`, `available` or `unavailable` with the row's reason.
+
+**Gates.** When an item cannot be ported at all, because it needs the AUR or
+Arch's own repositories, it names the package managers that can have it:
+`"packageManagers": ["pacman"]` with a `"packageManagersReason"` sentence, on a
+registry entry for a whole bundle or on one item. Use a gate only when no
+edition table row could work.
 
 ## How installs run
 

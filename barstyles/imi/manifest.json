@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "imi",
   "category": "barstyles",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "destination": "ryoku/barstyles/imi",
   "files": [
     {
@@ -241,8 +241,8 @@
       "source": "modules/common/Config.qml",
       "destination": "modules/common/Config.qml",
       "mode": "0644",
-      "size": 61846,
-      "sha256": "9da623681a1ebf74229ec205ce842d976647fb46a07cc0e3d132da5b35c6d1cf",
+      "size": 61836,
+      "sha256": "4a173f9a9dadb3755e6cdaed4a49fe7c198e2068a59e0f80d5974c42bc4f3891",
       "install": true
     },
     {
@@ -2401,8 +2401,8 @@
       "source": "modules/imi/bar/UpdatesCount.qml",
       "destination": "modules/imi/bar/UpdatesCount.qml",
       "mode": "0644",
-      "size": 6174,
-      "sha256": "52b452657ea75655a825afe47f565f00e65a9fe13fb993fc7239bca23e9696cb",
+      "size": 6222,
+      "sha256": "29e3643172d76278be5444b95ef5c8a7820271e74d39a8433497045eb3880760",
       "install": true
     },
     {
@@ -2633,8 +2633,8 @@
       "source": "modules/imi/settings/pages/About.qml",
       "destination": "modules/imi/settings/pages/About.qml",
       "mode": "0644",
-      "size": 12486,
-      "sha256": "06a3591951e2be78223e6845209606c702620bfb0dc3d6523e5ec28a4bcab7d6",
+      "size": 12409,
+      "sha256": "fa2d4c70bbb644f9008b316dc3332c403d1e4935fa0197ed869ee145229eaf06",
       "install": true
     },
     {
@@ -2929,8 +2929,8 @@
       "source": "modules/imi/sidebarLeft/phone/phone_cards.js",
       "destination": "modules/imi/sidebarLeft/phone/phone_cards.js",
       "mode": "0644",
-      "size": 4906,
-      "sha256": "bb118435ccc17be03fbd81a83ed1139d85dbeed33c3d781f36f768b52d128299",
+      "size": 4975,
+      "sha256": "e8ce9a2913274a0e94075ec980651b2e3f7b6bb52f557f69f2034ec17f93f88e",
       "install": true
     },
     {
@@ -3681,8 +3681,8 @@
       "source": "services/PhoneDeps.qml",
       "destination": "services/PhoneDeps.qml",
       "mode": "0644",
-      "size": 28202,
-      "sha256": "eb2b993a85987f449868412d5490384fa0bd5ba3e5a9d50fe41c5255c5f87f5a",
+      "size": 27178,
+      "sha256": "128849053daa4227819ea39bff03eb007ee3b849a0bdc7b3715610eae9102e0a",
       "install": true
     },
     {
@@ -3769,8 +3769,8 @@
       "source": "services/SystemInfo.qml",
       "destination": "services/SystemInfo.qml",
       "mode": "0644",
-      "size": 7958,
-      "sha256": "55173d165c88362ffbb0a1b8351928e9c95c006e3768a525bd57a2fbec48a3f3",
+      "size": 7974,
+      "sha256": "ee4adc396763c74ee33d41151fb5d1887d4ef0815aa761bc306751f52dcdfef2",
       "install": true
     },
     {

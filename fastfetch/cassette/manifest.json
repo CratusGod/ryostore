@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "cassette",
   "category": "fastfetch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "ryoku/fastfetch/cassette",
   "files": [
     {
@@ -17,8 +17,8 @@
       "source": "PROVENANCE.txt",
       "destination": "PROVENANCE.txt",
       "mode": "0644",
-      "size": 1356,
-      "sha256": "4651cc3ea041874f337f195a4ab6f45eee3729abd4e74a8bcf523f74294f55c9",
+      "size": 1461,
+      "sha256": "3bc6e4ee5ee6fd2737bb980ad6a49f6fff04985eb039db626153769ba53fabc0",
       "install": true
     },
     {
@@ -26,7 +26,7 @@
       "destination": "config.jsonc",
       "mode": "0644",
       "size": 5704,
-      "sha256": "5864d29cf635a239bfeb01d1554191e524ed62c8e61990b277bc83f23af0fbba",
+      "sha256": "d39d38067760c0b7c4a673be94dd817487f9f9fe7fc291bc5893fd17054fcbfb",
       "install": true
     },
     {
