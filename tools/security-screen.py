@@ -134,6 +134,8 @@ RULES: dict[str, tuple[str, str]] = {
     # plugin imports (R4)
     "plugin.forbidden_import": (SEV_BLOCK, "Plugin imports shell/UI internals"),
     "plugin.import_escape": (SEV_BLOCK, "Plugin relative import escapes the plugin folder"),
+    "launcher.import_escape": (SEV_BLOCK, "Launcher relative import escapes the launcher folder"),
+    "dock.import_escape": (SEV_BLOCK, "Dock relative import escapes the dock folder"),
     "plugin.unknown_import": (SEV_WARN, "Plugin imports a module outside the allowlist"),
     # dynamic execution
     "exec.eval_exec": (SEV_BLOCK, "Python eval/exec/compile of code"),
@@ -159,6 +161,8 @@ RULES: dict[str, tuple[str, str]] = {
     "parse.python_error": (SEV_WARN, "Python source did not parse; AST checks skipped"),
     "parse.manifest_error": (SEV_WARN, "manifest.json did not parse; manifest checks skipped"),
     "parse.json_error": (SEV_WARN, "JSON document did not parse"),
+    # editions: Arch/CachyOS (pacman), Fedora (dnf), Void (xbps, runit)
+    "edition.distro_tool": (SEV_BLOCK, "Distro or init tool that only some Ryoku editions have"),
     "scan.line_too_long": (SEV_BLOCK, "Line too long to fully screen (failed closed)"),
     # exception allowlist integrity (trusted policy)
     "exception.invalid": (SEV_BLOCK, "Malformed exception in the trusted allowlist"),
@@ -919,13 +923,14 @@ _BENIGN_HOSTS = {
 }
 
 
-def scan_js_qml(coll: Collector, path: str, text: str, plugin_root: Optional[str]) -> None:
+def scan_js_qml(coll: Collector, path: str, text: str, plugin_root: Optional[str],
+                folder_root: Optional[tuple[str, str]] = None) -> None:
     stripped = strip_js_comments(text)
     file_dir = str(PurePosixPath(path).parent)
     for lineno, line in iter_lines(stripped):
         imp = _IMPORT.match(line)
         if imp:
-            _screen_import(coll, path, lineno, imp, file_dir, plugin_root)
+            _screen_import(coll, path, lineno, imp, file_dir, plugin_root, folder_root)
         if _JS_EVAL.search(line):
             coll.add("exec.js_eval", path, lineno,
                      "JavaScript eval / Function() constructor", tag="jseval")
@@ -934,8 +939,22 @@ def scan_js_qml(coll: Collector, path: str, text: str, plugin_root: Optional[str
                      "dynamic QML construction via Qt.createQmlObject", tag="createqml")
 
 
+# Products that install as one folder, <category>/<id>, and run from a copy of
+# it, so a relative import may reach nothing outside that folder. Each maps to
+# the kind its import rule is named after.
+FOLDER_PRODUCTS = {"launchers": "launcher", "docks": "dock"}
+
+
+def folder_product_root_for(path: str) -> Optional[tuple[str, str]]:
+    parts = PurePosixPath(path).parts
+    if len(parts) >= 3 and parts[0] in FOLDER_PRODUCTS:
+        return f"{parts[0]}/{parts[1]}", FOLDER_PRODUCTS[parts[0]]
+    return None
+
+
 def _screen_import(coll: Collector, path: str, lineno: int, imp: re.Match,
-                   file_dir: str, plugin_root: Optional[str]) -> None:
+                   file_dir: str, plugin_root: Optional[str],
+                   folder_root: Optional[tuple[str, str]] = None) -> None:
     rel = imp.group("path")
     mod = imp.group("mod")
     if mod:
@@ -952,17 +971,22 @@ def _screen_import(coll: Collector, path: str, lineno: int, imp: re.Match,
             coll.add("plugin.unknown_import", path, lineno,
                      f"import outside the plugin allowlist ({mod})", tag=mod)
     elif rel is not None:
-        if plugin_root is None:
+        if plugin_root is not None:
+            root, kind = plugin_root, "plugin"
+        elif folder_root is not None:
+            root, kind = folder_root
+        else:
             return
+        rule = f"{kind}.import_escape"
         target = resolve_within(file_dir, rel)
         if target is None:
-            coll.add("plugin.import_escape", path, lineno,
+            coll.add(rule, path, lineno,
                      f"relative import escapes the repository ({rel})", tag=rel)
             return
-        root_prefix = plugin_root + "/" if plugin_root else ""
-        if plugin_root and target != plugin_root and not target.startswith(root_prefix):
-            coll.add("plugin.import_escape", path, lineno,
-                     f"relative import escapes the plugin folder ({rel})", tag=rel)
+        root_prefix = root + "/" if root else ""
+        if root and target != root and not target.startswith(root_prefix):
+            coll.add(rule, path, lineno,
+                     f"relative import escapes the {kind} folder ({rel})", tag=rel)
 
 
 def scan_network_hosts(coll: Collector, path: str, text: str,
@@ -1464,6 +1488,125 @@ def apply_exceptions(findings: list[Finding], exceptions: list[Exception_],
 
 
 # --------------------------------------------------------------------------- #
+# Edition portability. Ryoku runs on Arch and CachyOS (pacman), Fedora (dnf)
+# and Void (xbps, runit). Item code reaches the system through the ryoku-host
+# seam, so a distro or init tool is allowed only in an item, or a bundle part
+# script, whose packageManagers gate keeps it on editions that have the tool.
+# --------------------------------------------------------------------------- #
+_SYSTEMD_TOOLS = ("systemctl", "systemd-run", "systemd-inhibit", "journalctl",
+                  "timedatectl", "hostnamectl", "localectl", "resolvectl")
+EDITION_TOOLS: dict[str, frozenset[str]] = {
+    **{tool: frozenset({"pacman"}) for tool in ("pacman", "pacman-key", "yay", "paru", "makepkg", "checkupdates")},
+    **{tool: frozenset({"dnf"}) for tool in ("dnf", "dnf5", "rpm")},
+    **{tool: frozenset({"pacman", "dnf"}) for tool in _SYSTEMD_TOOLS},
+}
+_EDITION_TOOL_NAMES = "|".join(sorted((re.escape(tool) for tool in EDITION_TOOLS), key=len, reverse=True))
+# A tool at command position: line or string start, after a separator or `!`,
+# after a shell keyword or wrapper (if, then, sudo, pkexec, setsid, env ...),
+# or after a terminal's -e / a shell's -c.
+_EDITION_TOOL_AT = re.compile(
+    r"(?:^|[;&|()!]\s*|\s-[ec]\s+['\"]?|"
+    r"\b(?:sudo|pkexec|doas|env|exec|nohup|command|builtin|setsid|if|then|elif|else|do|while|until"
+    r"|time|nice|ionice|stdbuf|xargs|timeout\s+\S+|flock\s+\S+|set\s+--)\s+)"
+    rf"(?P<tool>{_EDITION_TOOL_NAMES}|xbps-[a-z]+)(?P<rest>(?=$|[\s;&|)'\"]).*)"
+)
+_PACMAN_PATHS = re.compile(r"/var/(?:lib|cache)/pacman\b")
+_STRING_LITERAL = re.compile(r"\"(?:[^\"\\\n]|\\.)*\"|'(?:[^'\\\n]|\\.)*'|`(?:[^`\\\n]|\\.)*`")
+# The catalogue's own tooling names these tools on purpose; items never live there.
+_TOOLING_ROOTS = ("tools/", "tests/", "security/", "schema/", ".github/")
+
+
+def edition_tool_editions(tool: str) -> frozenset[str]:
+    return frozenset({"xbps"}) if tool.startswith("xbps-") else EDITION_TOOLS[tool]
+
+
+def discover_edition_gates(blobs: list[Blob]) -> dict[str, frozenset[str]]:
+    """Map a product folder, or one bundle part's installer script, to the
+    package managers its catalogue gate keeps it on. Unlisted paths run on every
+    edition."""
+    gates: dict[str, frozenset[str]] = {}
+
+    def gate_of(value: object) -> Optional[frozenset[str]]:
+        managers = value.get("packageManagers") if isinstance(value, dict) else None
+        if isinstance(managers, list) and managers and all(isinstance(m, str) for m in managers):
+            return frozenset(managers)
+        return None
+
+    for blob in blobs:
+        if blob.kind != "file" or blob.data is None:
+            continue
+        parts = PurePosixPath(blob.path).parts
+        try:
+            if len(parts) == 2 and parts[1] == "registry.json":
+                doc = load_json_bytes(blob.data)
+                entries = doc.get(parts[0]) if isinstance(doc, dict) else None
+                for entry in entries if isinstance(entries, list) else []:
+                    gate = gate_of(entry)
+                    if gate is not None and safe_relative(entry.get("path")):
+                        gates[str(entry["path"])] = gate
+            elif len(parts) == 3 and parts[0] == "bundles" and parts[2] == "bundle.json":
+                doc = load_json_bytes(blob.data)
+                items = doc.get("items") if isinstance(doc, dict) else None
+                for item in items if isinstance(items, list) else []:
+                    gate = gate_of(item)
+                    if gate is not None and item.get("type") == "script" and isinstance(item.get("name"), str):
+                        gates[f"bundles/{parts[1]}/installers/{item['name']}.sh"] = gate
+        except ValueError:
+            continue
+    return gates
+
+
+def edition_gate_for(path: str, gates: dict[str, frozenset[str]]) -> Optional[frozenset[str]]:
+    best: Optional[str] = None
+    for prefix in gates:
+        if path == prefix or path.startswith(prefix + "/"):
+            if best is None or len(prefix) > len(best):
+                best = prefix
+    return gates[best] if best is not None else None
+
+
+def scan_edition_tools(coll: Collector, path: str, text: str, kind: str,
+                       gate: Optional[frozenset[str]]) -> None:
+    """kind: shell lines (comments stripped), or string literals of QML/JS or
+    Python source. A finding names the tool and where the item would fail."""
+    def check(lineno: int, fragment: str) -> None:
+        for match in _EDITION_TOOL_AT.finditer(fragment):
+            tool = match.group("tool")
+            if tool == "rpm" and not re.match(r"\s+-", match.group("rest")):
+                continue  # a bare "rpm" in UI text is a fan speed, not the tool
+            editions = edition_tool_editions(tool)
+            if gate is not None and gate <= editions:
+                continue
+            coll.add("edition.distro_tool", path, lineno,
+                     f"{tool!r} only exists on some Ryoku editions; use the ryoku-host "
+                     f"seam, or limit the item with packageManagers", tag=tool)
+        if _PACMAN_PATHS.search(fragment) and not (gate is not None and gate <= frozenset({"pacman"})):
+            coll.add("edition.distro_tool", path, lineno,
+                     "pacman's database paths only exist on Arch and CachyOS", tag="pacman-path")
+
+    if kind == "shell":
+        for lineno, raw in iter_lines(text):
+            line = strip_shell_comment(raw).strip()
+            # A case arm's pattern names values, not commands; what follows
+            # its `)` still runs.
+            label = _CASE_LABEL.match(line)
+            check(lineno, line[label.end():].strip() if label else line)
+        return
+    if kind == "python":
+        try:
+            tree = ast.parse(text)
+        except (SyntaxError, ValueError):
+            return
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Constant) and isinstance(node.value, str):
+                check(getattr(node, "lineno", 0), node.value.strip())
+        return
+    for lineno, line in iter_lines(strip_js_comments(text)):
+        for literal in _STRING_LITERAL.finditer(line):
+            check(lineno, literal.group(0)[1:-1].strip())
+
+
+# --------------------------------------------------------------------------- #
 # Plugin-root discovery + the per-file dispatch
 # --------------------------------------------------------------------------- #
 def discover_plugin_roots(blobs: list[Blob]) -> dict[str, dict]:
@@ -1521,7 +1664,8 @@ def plugin_root_for(path: str, roots: dict[str, dict]) -> Optional[str]:
     return best
 
 
-def scan_blob(coll: Collector, blob: Blob, roots: dict[str, dict]) -> None:
+def scan_blob(coll: Collector, blob: Blob, roots: dict[str, dict],
+              gates: Optional[dict[str, frozenset[str]]] = None) -> None:
     path = blob.path
     if blob.kind == "symlink":
         coll.add("payload.symlink", path, 0, "symlink is forbidden in a submission", tag="lnk")
@@ -1599,12 +1743,20 @@ def scan_blob(coll: Collector, blob: Blob, roots: dict[str, dict]) -> None:
     if text.startswith("#!"):
         shebang = text.split("\n", 1)[0]
 
+    gate = edition_gate_for(path, gates or {})
+    item_code = not path.startswith(_TOOLING_ROOTS)
     if ext in PY_EXTS or "python" in shebang:
         scan_python(coll, path, text, declared_cmds)
+        if item_code:
+            scan_edition_tools(coll, path, text, "python", gate)
     if ext in SHELL_EXTS or re.search(r"\b(?:ba|z|da)?sh\b", shebang):
         scan_shell(coll, path, text, declared_cmds)
+        if item_code:
+            scan_edition_tools(coll, path, text, "shell", gate)
     if ext in JS_QML_EXTS:
-        scan_js_qml(coll, path, text, proot)
+        scan_js_qml(coll, path, text, proot, folder_product_root_for(path))
+        if item_code:
+            scan_edition_tools(coll, path, text, "script", gate)
 
     # undeclared network hosts: only inside a plugin folder, only in code.
     if proot is not None and not is_doc and (
@@ -1664,6 +1816,7 @@ def screen(root: Path, *, staged: bool = False, revision: Optional[str] = None,
             sha_by_path[blob.path] = blob.sha256
 
     roots = discover_plugin_roots(blobs)
+    gates = discover_edition_gates(blobs)
 
     try:
         exceptions = load_exceptions(policy_root, coll, today)
@@ -1673,7 +1826,7 @@ def screen(root: Path, *, staged: bool = False, revision: Optional[str] = None,
 
     for blob in blobs:
         try:
-            scan_blob(coll, blob, roots)
+            scan_blob(coll, blob, roots, gates)
         except ScreenError as exc:
             errors.append(str(exc))
         except Exception as exc:                       # never crash on one file

@@ -4,7 +4,7 @@
     {
       "id": "gaming",
       "name": "Gaming",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "path": "bundles/gaming",
       "author": "Ryoku Team",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/bundles/gaming",
@@ -23,7 +23,7 @@
         "assets/hero.png"
       ],
       "manifest": "bundle.json",
-      "manifestSha256": "2e2802871ff11b3f5b8d5529e038e0697437dc3062fccd8f5a3416d5164cab94",
+      "manifestSha256": "afd8fa3f73d6f6cdf6267eab7fceaf8b0bdbf1385dc5ea465aeac1c1981d0542",
       "components": [
         {
           "type": "package",
@@ -369,13 +369,13 @@
         }
       ],
       "tagline": "proton \u00b7 overlays \u00b7 emulators",
-      "sources": "pacman / AUR",
+      "sources": "System packages",
       "icon": "sports_esports"
     },
     {
       "id": "the-influencer",
       "name": "The Influencer",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "path": "bundles/the-influencer",
       "author": "Ryoku Team",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/bundles/the-influencer",
@@ -395,7 +395,7 @@
         "assets/hero.png"
       ],
       "manifest": "bundle.json",
-      "manifestSha256": "6bc20d2205fd601cab871bed1cb9253dc2b166d01d54183c41884259d48c6f83",
+      "manifestSha256": "09a5d8e1db96865e0c8fea6c95aaac40e629fb9521b7a1b98b678a84fa375c06",
       "components": [
         {
           "type": "nautilus-pack",
@@ -550,6 +550,22 @@
           "summary": "GUI and CLI batch transcoder with presets for each platform."
         },
         {
+          "type": "package",
+          "name": "npm",
+          "detect": "npm",
+          "tier": "core",
+          "interactive": false,
+          "summary": "Installs the capture-website command for thumbnails."
+        },
+        {
+          "type": "package",
+          "name": "go",
+          "detect": "go",
+          "tier": "core",
+          "interactive": false,
+          "summary": "Builds the youtubeuploader command."
+        },
+        {
           "type": "script",
           "name": "capture-website-cli",
           "detect": "capture-website",
@@ -571,7 +587,11 @@
           "detect": "davinci-resolve",
           "tier": "optional",
           "interactive": true,
-          "summary": "Pro NLE and color grading. Proprietary: you download the installer from Blackmagic, then this builds it. Free build on Linux cannot import H.264/H.265; use the DaVinci reformat action."
+          "summary": "Pro NLE and color grading. Proprietary: you download the installer from Blackmagic, then this builds it. Free build on Linux cannot import H.264/H.265; use the DaVinci reformat action.",
+          "packageManagers": [
+            "pacman"
+          ],
+          "packageManagersReason": "Builds DaVinci Resolve from the AUR, which only Ryoku on Arch and CachyOS has; elsewhere, use Blackmagic's own Linux installer."
         },
         {
           "type": "package",
@@ -652,16 +672,24 @@
           "tier": "optional",
           "interactive": false,
           "summary": "GUI subtitle editor for timing, styling, and format conversion."
+        },
+        {
+          "type": "package",
+          "name": "whisper-cpp",
+          "detect": "whisper-cli",
+          "tier": "optional",
+          "interactive": false,
+          "summary": "Offline speech-to-text (whisper-cli) for the Generate captions right-click action."
         }
       ],
       "tagline": "stream \u00b7 record \u00b7 edit \u00b7 publish",
-      "sources": "pacman / AUR / Go / npm / ryoku",
+      "sources": "System packages / Go / npm / Ryoku",
       "icon": "movie"
     },
     {
       "id": "ryoku-zed-theme",
       "name": "Ryoku for Zed",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "path": "bundles/ryoku-zed-theme",
       "author": "Ryoku Team",
       "upstream": "https://github.com/Ryoku-dev/ryostore/tree/main/bundles/ryoku-zed-theme",
@@ -684,15 +712,15 @@
         "assets/ryoku-blue.png"
       ],
       "manifest": "bundle.json",
-      "manifestSha256": "55677e06ebaa99ca4439e11ff8e097afd1b0f7a50da1225fe9d4a5c7d920a040",
+      "manifestSha256": "4f2ce5598840383c68296bcc0449edb937794752d0ce1c6ded989436dd082105",
       "components": [
         {
           "type": "package",
-          "name": "bun",
-          "detect": "bun",
+          "name": "nodejs",
+          "detect": "node",
           "tier": "core",
           "interactive": false,
-          "summary": "Run the local palette generator and watcher."
+          "summary": "Run the local palette generator."
         },
         {
           "type": "script",
@@ -700,21 +728,21 @@
           "detect": "ryoku-zed-theme-sync-installed",
           "tier": "core",
           "interactive": false,
-          "summary": "Install the dynamic Zed theme and enable the local Ryoku palette watcher."
+          "summary": "Install the dynamic Zed theme and hook it into Ryoku's palette updates."
         }
       ],
-      "sources": "bun / Ryoku / Zed",
+      "sources": "Node.js / Ryoku / Zed",
       "icon": "code"
     },
     {
       "id": "spiceflow",
       "name": "Ryoku Palette Bridge",
-      "version": "2.1.0",
+      "version": "3.0.1",
       "path": "bundles/spiceflow",
       "author": "Rayyan",
       "upstream": "https://github.com/Sipper1236/ryoku-palette-bridge",
       "summary": "wallpaper \u00b7 Zen \u00b7 Spotify \u00b7 Discord",
-      "description": "Wallpaper colours for Spotify and Vesktop, with optional Zen live theming through a separately installed signed extension. Installs and starts the bridge user service.",
+      "description": "Wallpaper colours for Spotify and Vesktop, with optional Zen live theming through a separately installed signed extension. Turns on the palette bridge Ryoku ships and connects it to your apps.",
       "tags": [
         "zen browser",
         "spotify",
@@ -731,24 +759,8 @@
         "assets/preview.png"
       ],
       "manifest": "bundle.json",
-      "manifestSha256": "af4a0d0939264f21fd099dd1847d75cd18c6491e96f31c6955e394beddedbaaa",
+      "manifestSha256": "373810fcbba49fcd44f7470d1ad6b81fcd5f33e6c78f620bfc5340b91d6b07aa",
       "components": [
-        {
-          "type": "package",
-          "name": "git",
-          "detect": "git",
-          "tier": "core",
-          "interactive": false,
-          "summary": "Fetch the pinned palette bridge source."
-        },
-        {
-          "type": "package",
-          "name": "go",
-          "detect": "go",
-          "tier": "core",
-          "interactive": false,
-          "summary": "Build the small palette bridge daemon."
-        },
         {
           "type": "package",
           "name": "curl",
@@ -760,17 +772,17 @@
         {
           "type": "script",
           "name": "ryoku-palette-bridge",
-          "detect": "ryoku-palette-bridge-store-2-1-0",
+          "detect": "ryoku-palette-bridge-store-3-0-0",
           "tier": "core",
           "interactive": false,
           "summary": "Apply your wallpaper colours to Zen, Spotify, and Discord."
         }
       ],
       "tagline": "wallpaper colours \u00b7 optional app integrations",
-      "sources": "GitHub / MIT",
+      "sources": "Ryoku / MIT",
       "icon": "palette",
       "official": false,
-      "lastUpdated": "2026-09-13"
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "cachyos-layer",
@@ -782,6 +794,10 @@
       "discord": "https://discord.gg/8KjBmUEyKA",
       "summary": "kernel \u00b7 tuning \u00b7 schedulers \u00b7 proton",
       "description": "Turn Ryoku into CachyOS: the performance-tuned kernel, cachyos-settings tuning, sched-ext schedulers, the ananicy-cpp auto-nice daemon and ruleset, and the CachyOS Proton build. Adds the CachyOS repos above Arch's, so opting in goes full CachyOS; the stock kernel stays as the boot fallback. Install all, or pick individual tools. Every item but scx-scheds needs the CachyOS repo.",
+      "packageManagers": [
+        "pacman"
+      ],
+      "packageManagersReason": "Adds CachyOS's own repositories and kernel, which only Ryoku on Arch and CachyOS can use.",
       "tags": [
         "faster kernel",
         "cachyos repo",
@@ -857,13 +873,13 @@
     {
       "id": "developer-essentials",
       "name": "Developer Essentials",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "path": "bundles/developer-essentials",
       "author": "Ryoku Team",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/bundles/developer-essentials",
       "discord": "https://discord.gg/8KjBmUEyKA",
       "summary": "build \u00b7 debug \u00b7 runtimes \u00b7 containers",
-      "description": "A practical workstation bootstrap for developers: Arch build basics, Git and GitHub CLI, fast shell search tools, terminal workflow helpers, C/C++ build and debug tools, major language runtimes, Docker, and Visual Studio Code.",
+      "description": "A practical workstation bootstrap for developers: build basics, Git and GitHub CLI, fast shell search tools, terminal workflow helpers, C/C++ build and debug tools, major language runtimes, Docker, and Visual Studio Code.",
       "tags": [
         "developer tools",
         "runtimes",
@@ -876,7 +892,7 @@
         "assets/hero.png"
       ],
       "manifest": "bundle.json",
-      "manifestSha256": "ec28b1698712235629a102babb0b17ac16ead2a203eb1229768c435a68a91da4",
+      "manifestSha256": "39c1eb4342a1daee7d0d9dcc8fb5e94d7f34893854db6b557e7daf6a53a23ef1",
       "components": [
         {
           "type": "package",
@@ -885,7 +901,7 @@
           "tier": "core",
           "group": "Core",
           "interactive": false,
-          "summary": "Arch's essential build toolchain group for compiling AUR packages and local projects."
+          "summary": "Essential build toolchain (compiler, make, pkg-config) for compiling local projects."
         },
         {
           "type": "package",
@@ -1114,13 +1130,13 @@
         }
       ],
       "tagline": "build \u00b7 debug \u00b7 runtimes \u00b7 containers",
-      "sources": "pacman / AUR",
+      "sources": "System packages",
       "icon": "code"
     },
     {
       "id": "web-browsers",
       "name": "Web Browsers",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "path": "bundles/web-browsers",
       "author": "Ryoku Team",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/bundles/web-browsers",
@@ -1139,7 +1155,7 @@
         "assets/hero.png"
       ],
       "manifest": "bundle.json",
-      "manifestSha256": "a2c7a47ec69b85062ed03cf5fe6d0e57d27d5ab89f8622c0e6984b729945b5e4",
+      "manifestSha256": "867fdbc68d39ad85dd32b2ba407de101bc8ced712efa0a00b2f45ac0a03dd03c",
       "components": [
         {
           "type": "package",
@@ -1197,13 +1213,13 @@
         }
       ],
       "tagline": "firefox \u00b7 chromium \u00b7 privacy browsers",
-      "sources": "pacman / AUR",
+      "sources": "System packages",
       "icon": "travel_explore"
     },
     {
       "id": "vpn-networking",
       "name": "VPN & Networking",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "path": "bundles/vpn-networking",
       "author": "Ryoku Team",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/bundles/vpn-networking",
@@ -1222,7 +1238,7 @@
         "assets/hero.png"
       ],
       "manifest": "bundle.json",
-      "manifestSha256": "d22e0efc84d9d70a46649d6d5973dfac0839048b30ec794a881c08b6af1e97bc",
+      "manifestSha256": "4a9c90db8e2a2ceb85b9311b38275958463635ce62ba0089343e4ed6e0d46053",
       "components": [
         {
           "type": "package",
@@ -1289,13 +1305,13 @@
         }
       ],
       "tagline": "wireguard \u00b7 openvpn \u00b7 vpn clients",
-      "sources": "pacman / AUR",
+      "sources": "System packages",
       "icon": "vpn_lock"
     },
     {
       "id": "rice-showcase",
       "name": "Rice Showcase",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "path": "bundles/rice-showcase",
       "author": "Ryoku Team",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/bundles/rice-showcase",
@@ -1314,7 +1330,7 @@
         "assets/hero.png"
       ],
       "manifest": "bundle.json",
-      "manifestSha256": "c861e32ad3100af96cf047c59ec370170b64e16a41547bdf8dd281cd37fb5b89",
+      "manifestSha256": "a900c62a6128f1060c881cc46fd78056661d6ca0ec7e58af9bfb1f060d1a7f2c",
       "components": [
         {
           "type": "package",
@@ -1435,7 +1451,7 @@
         }
       ],
       "tagline": "cmatrix \u00b7 bonsai \u00b7 visualizers",
-      "sources": "pacman / AUR",
+      "sources": "System packages",
       "icon": "auto_awesome"
     },
     {

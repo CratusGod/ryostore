@@ -33,11 +33,12 @@ enabling* (off by default) also locks right after **TURN ON**.
 
 ## How it works
 
-Enabling starts `systemd-inhibit --mode=block` with `sleep:handle-lid-switch`
-(plus `idle` in Stay unlocked) as a detached process, so it survives a shell
-reload. logind rejects a plain suspend request while a strong block inhibitor is
-held, so both the idle-timeout suspend and Ryoku's lid-close suspend
-(`ryoku-clamshell` → `ryoku-shell suspend`) stay off. Their lock step still
+Enabling starts a `--mode=block` logind inhibitor with `sleep:handle-lid-switch`
+(plus `idle` in Stay unlocked) through `ryoku-host inhibit`, which runs
+`systemd-inhibit`, or `elogind-inhibit` on Void, as a detached process, so it
+survives a shell reload. logind rejects a plain suspend request while a strong
+block inhibitor is held, so both the idle-timeout suspend and Ryoku's lid-close
+suspend (`ryoku-clamshell` → `ryoku-shell suspend`) stay off. Their lock step still
 runs first, so a closed lid still locks. Opening the lid cancels that close;
 turning Caffeinated off while it remains closed lets the retry suspend.
 
@@ -56,7 +57,7 @@ After a reboot it starts off.
 
 ## What it runs, reads and writes
 
-- **Runs** `bin/caffeinated`, which calls `systemd-inhibit`, `setsid`, `flock`,
+- **Runs** `bin/caffeinated`, which calls `ryoku-host inhibit`, `setsid`, `flock`,
   `loginctl`, `ryoku-shell lock`, and the declared core text/file utilities.
   Every variable argument remains a distinct, quoted argument.
 - **Reads** `/sys/class/power_supply/*` (battery level and AC), `/proc/<pid>`

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "pocket-card",
   "category": "fastfetch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "ryoku/fastfetch/pocket-card",
   "files": [
     {
@@ -17,16 +17,16 @@
       "source": "PROVENANCE.txt",
       "destination": "PROVENANCE.txt",
       "mode": "0644",
-      "size": 935,
-      "sha256": "d386e1d5cf1d73b4f2affd030c768877cc5e2624429b7f11ac9736a04b75176d",
+      "size": 1201,
+      "sha256": "2cf184d9ceebf063e528ed2f906ec710cdbbedc2d7d12fe8cbd42434ace27844",
       "install": true
     },
     {
       "source": "config.jsonc",
       "destination": "config.jsonc",
       "mode": "0644",
-      "size": 1442,
-      "sha256": "9162f36f1eaad6cc18c8148709c18d468f45dc548216f549d78f4d3ac04bee16",
+      "size": 1358,
+      "sha256": "87aec7cdaed22570c45a4703d93ed3bb73e7960ac15fc887f4acb5c9ec5df8f2",
       "install": true
     },
     {

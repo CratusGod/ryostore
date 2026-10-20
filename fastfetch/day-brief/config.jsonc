@@ -4,8 +4,7 @@
 {
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
   "logo": {
-    "type": "small",
-    "source": "arch"
+    "type": "small"
   },
   "display": {
     "separator": " \u279c  ",
@@ -39,7 +38,7 @@
     },
     {
       "type": "os",
-      "key": "\udb82\udcc7 Distro",
+      "key": "\udb80\udf3d Distro",
       "keyColor": "blue"
     },
     {

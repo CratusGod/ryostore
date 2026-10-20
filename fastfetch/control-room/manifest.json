@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "control-room",
   "category": "fastfetch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "ryoku/fastfetch/control-room",
   "files": [
     {
@@ -17,16 +17,16 @@
       "source": "PROVENANCE.txt",
       "destination": "PROVENANCE.txt",
       "mode": "0644",
-      "size": 2842,
-      "sha256": "b0aaab2bb7dcfbda51d996017d72db3be97491131222c7203b393fc34879cf3b",
+      "size": 3064,
+      "sha256": "c183b96b0a0ab694bd952bb0072698b960d555545e9bf0456c233081a9c4c9ba",
       "install": true
     },
     {
       "source": "config.jsonc",
       "destination": "config.jsonc",
       "mode": "0644",
-      "size": 6193,
-      "sha256": "2fd7a1aa71dead6cf5a62721a6ff23e5779d182abf0d45327ea044192e604dc3",
+      "size": 6235,
+      "sha256": "996d69a4148564418e610e64ef78b6df1e890e558f9d3277d3a199fb44494be8",
       "install": true
     },
     {

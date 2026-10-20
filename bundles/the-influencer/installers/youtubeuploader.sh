@@ -10,4 +10,9 @@ if ryoku-cmd-present youtubeuploader; then
   exit 0
 fi
 
+ryoku-cmd-present go || {
+  echo "youtubeuploader: needs Go, which this bundle installs first" >&2
+  exit 1
+}
+
 GOBIN="$HOME/.local/bin" go install github.com/porjo/youtubeuploader/cmd/youtubeuploader@latest

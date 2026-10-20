@@ -87,78 +87,65 @@ Singleton {
         return match ? match[1] : "";
     }
 
+    // Each hint goes through Ryoku's host seam, which installs the package under
+    // this edition's own name (Arch, CachyOS, Fedora or Void), so one command
+    // fits every machine.
     function dependency(key: string): var {
         const table = {
             "scrcpy": {
                 name: Translation.tr("scrcpy"),
                 description: Translation.tr("Mirrors your phone screen in a floating SDL window. The main binary for screen mirroring."),
                 commands: {
-                    arch: "sudo pacman -S scrcpy",
-                    fedora: "sudo dnf install scrcpy",
-                    debian: "sudo apt install scrcpy"
+                    ryoku: "sudo ryoku-host pkg install scrcpy"
                 }
             },
             "android-tools": {
                 name: Translation.tr("android-tools (adb)"),
                 description: Translation.tr("Required for USB connection, quick actions (screenshot, power button) and opening apps from notifications."),
                 commands: {
-                    arch: "sudo pacman -S android-tools",
-                    fedora: "sudo dnf install android-tools",
-                    debian: "sudo apt install android-tools-adb"
+                    ryoku: "sudo ryoku-host pkg install android-tools"
                 }
             },
             "droidcam-cli": {
                 name: Translation.tr("DroidCam CLI"),
                 description: Translation.tr("Connects to the DroidCam app on your phone and streams video to /dev/videoN"),
                 commands: {
-                    arch: "yay -S droidcam",
-                    fedora: "# Enable RPM Fusion first, then:\nsudo dnf install android-tools\n# Download from https://www.dev47apps.com/droidcam/linux/",
-                    debian: "# Download from https://www.dev47apps.com/droidcam/linux/\n# Or: sudo apt install droidcam"
+                    ryoku: "# DroidCam is not in Ryoku's package repositories; get it from:\n# https://www.dev47apps.com/droidcam/linux/"
                 }
             },
             "v4l2loopback": {
                 name: Translation.tr("v4l2loopback kernel module"),
                 description: Translation.tr("Creates virtual /dev/videoN devices that DroidCam writes to. Without it, droidcam-cli has nowhere to stream."),
                 commands: {
-                    arch: "yay -S v4l2loopback-dkms\nsudo modprobe v4l2loopback\necho v4l2loopback | sudo tee /etc/modules-load.d/v4l2loopback.conf",
-                    fedora: "sudo dnf install akmod-v4l2loopback\nsudo modprobe v4l2loopback\necho v4l2loopback | sudo tee /etc/modules-load.d/v4l2loopback.conf",
-                    debian: "sudo apt install v4l2loopback-dkms\nsudo modprobe v4l2loopback\necho v4l2loopback | sudo tee /etc/modules-load.d/v4l2loopback.conf"
+                    ryoku: "sudo ryoku-host pkg install v4l2loopback-dkms linux-headers\nsudo modprobe v4l2loopback\necho v4l2loopback | sudo tee /etc/modules-load.d/v4l2loopback.conf"
                 }
             },
             "v4l-utils": {
                 name: Translation.tr("v4l-utils (v4l2-ctl)"),
                 description: Translation.tr("Recommended for device detection and live mirror/flip controls"),
                 commands: {
-                    arch: "sudo pacman -S v4l-utils",
-                    fedora: "sudo dnf install v4l-utils",
-                    debian: "sudo apt install v4l-utils"
+                    ryoku: "sudo ryoku-host pkg install v4l-utils"
                 }
             },
             "mpv": {
                 name: Translation.tr("mpv (optional)"),
                 description: Translation.tr("Recommended for the webcam preview window. Falls back to ffplay/vlc if absent."),
                 commands: {
-                    arch: "sudo pacman -S mpv",
-                    fedora: "sudo dnf install mpv",
-                    debian: "sudo apt install mpv"
+                    ryoku: "sudo ryoku-host pkg install mpv"
                 }
             },
             "pactl": {
                 name: Translation.tr("pactl (PulseAudio/PipeWire CLI)"),
                 description: Translation.tr("Required for audio routing — creates a virtual null-sink that turns the phone mic stream into a recordable source."),
                 commands: {
-                    arch: "sudo pacman -S pulseaudio-utils",
-                    fedora: "sudo dnf install pulseaudio-utils",
-                    debian: "sudo apt install pulseaudio-utils"
+                    ryoku: "sudo ryoku-host pkg install libpulse"
                 }
             },
             "audio-backend": {
                 name: Translation.tr("scrcpy or DroidCam CLI"),
                 description: Translation.tr("At least one audio backend is needed. scrcpy is preferred (no extra app on phone). DroidCam CLI is the fallback."),
                 commands: {
-                    arch: "# Option 1 (preferred):\nsudo pacman -S scrcpy\n# Option 2:\nyay -S droidcam",
-                    fedora: "# Option 1 (preferred):\nsudo dnf install scrcpy\n# Option 2: install from https://www.dev47apps.com/droidcam/linux/",
-                    debian: "# Option 1 (preferred):\nsudo apt install scrcpy\n# Option 2:\nsudo apt install droidcam"
+                    ryoku: "# Option 1 (preferred):\nsudo ryoku-host pkg install scrcpy\n# Option 2: DroidCam, from https://www.dev47apps.com/droidcam/linux/"
                 }
             }
         };

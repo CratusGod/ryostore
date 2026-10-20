@@ -4,7 +4,7 @@ import QtQuick
 import Quickshell.Io
 
 // Finds every installed engine (Strata, TabbyAPI, llama.cpp) and its ready models through
-// bin/strata-models, polls their user units, and starts/stops the selected model (one at a time).
+// bin/strata-models, polls the model's user job, and starts/stops the selected model (one at a time).
 Item {
     id: svc
 
@@ -22,10 +22,10 @@ Item {
 
     property var models: []            // [{ key, engine, label, port, unit }]
     property string current: ""        // selected model key, "engine:name"
-    property string state: "unknown"   // the "most active" systemctl is-active result across units
-    property var unitStates: ({})      // unit -> systemctl is-active result
+    property string state: "unknown"   // the "most active" job state across units
+    property var unitStates: ({})      // unit -> "active" | "inactive"
     readonly property var engines: models.reduce((a, m) => a.includes(m.engine) ? a : a.concat([m.engine]), [])
-    readonly property var units: ["strata-model.service"]   // the one transient unit the script runs
+    readonly property var units: ["strata-model"]   // the one transient job the script runs
     readonly property var selected: models.find(m => m.key === current) || null
     readonly property bool running: state === "active"
     readonly property bool busy: state === "activating" || state === "deactivating" || ctl.running
@@ -41,7 +41,7 @@ Item {
     }
 
     function refresh() {
-        if (!poll.running) poll.running = true;
+        if (bin && !poll.running) poll.running = true;
         if (bin && !list.running) list.running = true;
         if (bin && !cur.running) cur.running = true;
     }
@@ -69,7 +69,7 @@ Item {
 
     Process {
         id: poll
-        command: ["systemctl", "--user", "is-active"].concat(svc.units)
+        command: [svc.bin, "status"]
         stdout: StdioCollector {
             onStreamFinished: {
                 const st = this.text.split("\n");

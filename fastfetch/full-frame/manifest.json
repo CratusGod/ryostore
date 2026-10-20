@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "full-frame",
   "category": "fastfetch",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "destination": "ryoku/fastfetch/full-frame",
   "files": [
     {
@@ -17,24 +17,16 @@
       "source": "PROVENANCE.txt",
       "destination": "PROVENANCE.txt",
       "mode": "0644",
-      "size": 1430,
-      "sha256": "743fa3c28478ceda548147927c3561c1141a779f7fa1e94da9be2f4496536cbe",
+      "size": 1232,
+      "sha256": "25571eecd67cf41bd0fce38b9cbb8fe73ffc0ef4b78a4bdb80f5063b8a2ff512",
       "install": true
     },
     {
       "source": "config.jsonc",
       "destination": "config.jsonc",
       "mode": "0644",
-      "size": 2499,
-      "sha256": "38d40fea31f5c91b9f5cbe09bf69a9243a26d471b3cde3f59e181dd941690e00",
-      "install": true
-    },
-    {
-      "source": "arch-mark.png",
-      "destination": "arch-mark.png",
-      "mode": "0644",
-      "size": 35006,
-      "sha256": "bc91685a9637874c4de84c60cf820dbb1ab3c4d093540daa0c3584dba68964bb",
+      "size": 2401,
+      "sha256": "6c19f5764ef86a5025e4494063720835944f9ed58233ce510e7ad83060f035aa",
       "install": true
     },
     {

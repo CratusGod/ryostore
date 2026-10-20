@@ -53,8 +53,11 @@ def rpc(path, method, params=None):
 def wall(method, params=None): return rpc(RUNTIME/'ryogami.sock', method, params)
 
 def unit(verb):
-    p=subprocess.run(['systemctl','--user',verb,'voxtype.service'],capture_output=True,text=True,timeout=15)
-    if verb.startswith('is-'): return p.stdout.strip()
+    # ryoku-host runs this edition's service manager (systemd, or runit on Void)
+    # and answers is-active / is-enabled with its exit status.
+    p=subprocess.run(['ryoku-host','svc','--user',verb,'voxtype'],capture_output=True,text=True,timeout=15)
+    if verb=='is-active': return 'active' if p.returncode==0 else 'inactive'
+    if verb=='is-enabled': return 'enabled' if p.returncode==0 else 'disabled'
     if p.returncode: raise RuntimeError(p.stderr.strip() or 'Voxtype '+verb+' failed')
     return p.stdout.strip()
 

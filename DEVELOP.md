@@ -5,8 +5,9 @@ from a folder on your disk, in your own live desktop, before it ever reaches the
 store. Build, point the desktop at your copy, watch it hot-reload, fix, repeat.
 
 There are two override paths. Use the plugin one for a single plugin; use the
-store one for anything else (rices, colour schemes, lockscreens, bundles, and so
-on) or to preview your whole catalogue exactly as users will see it.
+store one for anything else (rices, colour schemes, lockscreens, docks,
+launchers, bundles, and so on) or to preview your whole catalogue exactly as
+users will see it.
 
 ## 1. Test a plugin live
 
@@ -14,9 +15,12 @@ A plugin runs straight from its source folder, with no registry entry and no
 install. Point the shell at your plugins folder and restart it once:
 
 ```sh
-systemctl --user set-environment RYOSTORE_PLUGINS_DIR="$HOME/Work/ryostore/plugins"
-systemctl --user restart ryoku-shell
+ryoku-host svc env RYOSTORE_PLUGINS_DIR="$HOME/Work/ryostore/plugins"
+ryoku-host svc --user restart ryoku-shell
 ```
+
+`ryoku-host` hands the variable to the shell's service on whichever init your
+edition runs.
 
 `RYOSTORE_PLUGINS_DIR` takes a colon-separated list, so you can add several
 folders. Now open Settings (`Super+comma`), go to **Add-ons -> Plugins**, find
@@ -24,11 +28,11 @@ your plugin, toggle it on, and place it as a **Desktop widget** or **Frame
 popout**.
 
 Saved edits hot-reload: change `content/Widget.qml`, reopen the widget, and the
-change is there (restart `ryoku-shell` if something looks cached). Watch the log
-while you work:
+change is there (restart `ryoku-shell` if something looks cached). Watch the
+shell's log while you work:
 
 ```sh
-journalctl --user -u ryoku-shell -f
+qs log -c shell -f
 ```
 
 Confirm, at every density you declare, that it reports a size and renders, that
@@ -36,8 +40,8 @@ drag / corner-resize / the right-click menu work, that every setting actually
 changes the view, and that the log shows no QML errors. When you are done:
 
 ```sh
-systemctl --user unset-environment RYOSTORE_PLUGINS_DIR
-systemctl --user restart ryoku-shell
+ryoku-host svc env RYOSTORE_PLUGINS_DIR=
+ryoku-host svc --user restart ryoku-shell
 ```
 
 The full plugin contract, hosts, densities, settings schema, and the per-plugin
@@ -57,9 +61,12 @@ mkdir -p ~/.config/ryoku
 echo "file://$HOME/Work/ryostore" > ~/.config/ryoku/ryostore-base
 ```
 
-Open the Store (or Settings). Your rice, colour scheme, lockscreen, bundle, or
-whatever you are building now appears in its catalogue and installs from your
-disk. Edit a `registry.json`, reopen the Store, and your change is live.
+Open the Store (or Settings). Your rice, colour scheme, lockscreen, dock,
+launcher, bundle, or whatever you are building now appears in its catalogue and
+installs from your disk. Edit a `registry.json`, reopen the Store, and your
+change is live. A dock or launcher you change needs a repack
+(`tools/pack-product.py`) and a fresh install before the desktop shows the new
+copy; `docks/AUTHORING.md` and `launchers/AUTHORING.md` have the loop.
 
 For a one-off session instead of the persistent file, set the environment
 variable (a base URL for a fork, or a `file://` path for a local tree):

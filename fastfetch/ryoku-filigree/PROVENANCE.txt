@@ -14,3 +14,6 @@ and Ryoku mark treatment are the Ryoku submission assets.
 
 The renderer uses only local files and local system information. It contacts no
 network services.
+
+The OS key shows Tux rather than the NixOS mark, so the readout fits whichever
+distribution Ryoku runs on.

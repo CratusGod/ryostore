@@ -49,7 +49,7 @@
     {
       "id": "imi",
       "name": "Imi",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "path": "barstyles/imi",
       "author": "dodo986",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/barstyles/imi",
@@ -68,15 +68,15 @@
       "preview": "assets/preview.png",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "55bc215d38d6b2eb7dc02a3430ec749c0d025af743adecc3ed8909dc6fc288d9",
-      "lastUpdated": "2026-10-07",
+      "manifestSha256": "6ef47607ce8cb3d50b8a52e2732f3f1922c42e77b59c9e48253b96296e13eea0",
+      "lastUpdated": "2026-10-20",
       "official": false,
       "license": "GPL-3.0-only"
     },
     {
       "id": "ricelin",
       "name": "Ricelin",
-      "version": "1.2.1",
+      "version": "1.2.2",
       "path": "barstyles/ricelin",
       "author": "feelyourwarmth",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/barstyles/ricelin",
@@ -95,9 +95,9 @@
       "preview": "assets/preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "f83fc2e1a5f86bf4df8a4928f0578917ffbd1d6ab661beacff6308507f0b244b",
+      "manifestSha256": "0338a7cfae86c1886b63eedd9473602ba957f4fab346d6a8defe8f496bd807b6",
       "official": false,
-      "lastUpdated": "2026-10-13"
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "chroma",

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "spectrum",
   "category": "fastfetch",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "destination": "ryoku/fastfetch/spectrum",
   "files": [
     {
@@ -17,16 +17,16 @@
       "source": "PROVENANCE.txt",
       "destination": "PROVENANCE.txt",
       "mode": "0644",
-      "size": 323,
-      "sha256": "ed02ed25401c8a68f952840928b103d0131a74acd1f87ea2f7e32c8d2b382b55",
+      "size": 425,
+      "sha256": "1e4b657e97e3f5e4cb9ac2f76193a06659c825ec910125bf2b168254299a7605",
       "install": true
     },
     {
       "source": "config.jsonc",
       "destination": "config.jsonc",
       "mode": "0644",
-      "size": 2357,
-      "sha256": "be436eb7116a461cd33de1445963189560b1429a10c18dcb5784636e60f543f0",
+      "size": 2356,
+      "sha256": "3d9260f3cffa95bc95ad49e599afa3b5fa13d7b4bcd31b625a7b804e1fcece90",
       "install": true
     },
     {

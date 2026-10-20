@@ -13,9 +13,29 @@ from typing import Iterable
 
 
 CATEGORIES = (
-    "rices", "lockscreens", "barstyles", "fastfetch", "plugins", "bundles",
+    "rices", "lockscreens", "barstyles", "launchers", "docks", "fastfetch", "plugins", "bundles",
     "decors", "launcher-images", "fastfetch-emblems", "ryotunes-skins", "vesktop-themes",
 )
+
+
+class FolderProduct:
+    """A category whose product installs whole into ryoku/<category>/<id> and
+    runs from its own folder: entry is the file the shell loads, preview the
+    optional Settings preview, and reserved the ids of the ones the shell ships
+    (the shell always runs its own for those, so a Store product cannot take
+    one)."""
+
+    def __init__(self, noun: str, entry: str, preview: str | None, reserved: set[str]):
+        self.noun, self.entry, self.preview, self.reserved = noun, entry, preview, reserved
+
+
+FOLDER_PRODUCTS = {
+    # The shell's modules/launcher/catalog.json.
+    "launchers": FolderProduct("launcher", "Main.qml", "Preview.qml",
+                               {"main", "hero", "okshell", "kairos", "spotlight", "python"}),
+    # The shell's services/Dock.qml builtinDesigns.
+    "docks": FolderProduct("dock", "Dock.qml", None, {"ryoku", "python", "shima", "ii", "none"}),
+}
 REQUIRED_ENTRY_FIELDS = (
     "id", "name", "version", "path", "author", "summary", "description",
     "tags", "accent", "surface", "preview", "screenshots", "manifest",
@@ -30,6 +50,36 @@ HEX_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 COLOR_PATTERN = re.compile(r"^#[0-9A-Fa-f]{6}$")
 UPSTREAM_PATTERN = re.compile(r"^https://[^\s/]+\.[^\s/]+/\S+$")
 DISCORD_PATTERN = re.compile(r"^https://(?:discord\.gg|discord\.com/invite)/[A-Za-z0-9-]+$")
+# The package managers `ryoku-host pkgmgr` names, one per family of Ryoku
+# editions; an item limited to some of them declares `packageManagers`.
+PACKAGE_MANAGERS = ("pacman", "dnf", "xbps")
+# Bundle package items keep their Arch names. These tables name them on the
+# other editions; ryoku-host lays them under Ryoku's own edition tables.
+EDITION_TABLES = ("void", "fedora")
+NATIVE_PACKAGE_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9+_.-]*$")
+# Official Void repositories a row may need switched on first, and Ryoku's own
+# repository (configured by the installer on every edition).
+TABLE_REPOSITORIES = {"void": {"multilib", "nonfree", "multilib-nonfree", "ryoku"}, "fedora": {"ryoku"}}
+# Nerd Font code points that draw one operating system's own mark: the Font
+# Logos distributions and the dev, fa and md families' distribution, Windows,
+# Apple and Android marks. A fastfetch preset runs on whichever edition the
+# user has, so it may not claim one; its logo already shows the system, and Tux
+# (U+F31A, U+F17C, U+E712, U+F033D) is the neutral mark.
+DISTRIBUTION_MARKS = frozenset(int(code, 16) for code in """
+    F300 F301 F302 F303 F304 F305 F306 F307 F309 F30A F30B F30C F30D F30E F30F
+    F310 F311 F312 F313 F314 F315 F316 F317 F318 F319 F31B F31C F31D F31E F31F
+    F321 F322 F325 F326 F327 F328 F329 F32A F32B F32D F32E F32F F331 F333 F334
+    F337 F33A F33E F33F F340 F341 F342 F343 F344 F345 F346 F347 F348 F349 F34A
+    F374 F37D F37E F380 F382 F385
+    E62A E635 E70E E70F E711 E73A E77D E78A E7BB E7D9 E7E6 E843 E857
+    ED04 EF3D EF46 EF5D EF6D EF72 F179 F17A F17B F28F
+    F0032 F0035 F0372 F0548 F05B3 F08C7 F08DA F08DB F08E0 F08E8 F08ED F0A21
+    F111A F111B F160A
+""".split())
+# fastfetch's per-manager package counts. Each prints nothing on the editions
+# that use another manager, so a format names all of them or none.
+PACKAGE_COUNTS = {"pacman", "rpm", "xbps"}
+PACKAGE_COUNT_PATTERN = re.compile(r"\{(pacman|rpm|xbps)\}")
 MAX_FILE_SIZE = 256 * 1024 * 1024
 MAX_PRODUCT_SIZE = 512 * 1024 * 1024
 MAX_FILES = 2048
@@ -334,6 +384,25 @@ def validate_manifest(
                 errors.append(issue.replace("preview", kind, 1))
 
 
+def package_manager_gate_error(value: dict) -> str | None:
+    """An entry or bundle part may name the package managers it runs on, with the
+    sentence the Store shows everywhere else. None when absent or sound."""
+    managers = value.get("packageManagers")
+    reason = value.get("packageManagersReason")
+    if managers is None:
+        return None if reason is None else "packageManagersReason needs packageManagers"
+    if (
+        not isinstance(managers, list)
+        or not managers
+        or not all(isinstance(manager, str) and manager in PACKAGE_MANAGERS for manager in managers)
+        or len(set(managers)) != len(managers)
+    ):
+        return f"packageManagers must list distinct values from {', '.join(PACKAGE_MANAGERS)}"
+    if not isinstance(reason, str) or not reason.strip():
+        return "packageManagers needs a packageManagersReason sentence"
+    return None
+
+
 def normalized_bundle_components(manifest: object) -> list[dict] | None:
     if not isinstance(manifest, dict) or not isinstance(manifest.get("items"), list):
         return None
@@ -355,6 +424,11 @@ def normalized_bundle_components(manifest: object) -> list[dict] | None:
             component["group"] = group
         component["interactive"] = item.get("interactive", False)
         component["summary"] = item.get("summary") or ""
+        # A part limited to some editions carries its gate inline too, so the
+        # Store can grey it out without fetching bundle.json.
+        for field in ("packageManagers", "packageManagersReason"):
+            if field in item:
+                component[field] = item[field]
         if (
             not all(isinstance(component[field], str) and component[field]
                     for field in ("type", "name", "detect", "tier"))
@@ -368,9 +442,92 @@ def normalized_bundle_components(manifest: object) -> list[dict] | None:
 
 
 def validate_bundle_components(entry: dict, manifest: object, errors: list[str]) -> None:
+    label = f"bundles/{entry.get('id', '?')}"
     expected = normalized_bundle_components(manifest)
     if expected is None or entry.get("components") != expected:
-        errors.append(f"bundles/{entry.get('id', '?')}: components do not match manifest items")
+        errors.append(f"{label}: components do not match manifest items")
+        return
+    for item in manifest["items"]:
+        gate = package_manager_gate_error(item)
+        if gate:
+            errors.append(f"{label}: part {item.get('name')}: {gate}")
+
+
+def bundle_package_lanes(root: Path, entries: list) -> dict[str, set[str]]:
+    """Every bundle package item, mapped to the ids of the bundles listing it."""
+    lanes: dict[str, set[str]] = {}
+    for entry in entries:
+        if not isinstance(entry, dict) or not safe_relative(entry.get("path")) or not safe_relative(entry.get("manifest")):
+            continue
+        product = root.joinpath(*PurePosixPath(str(entry["path"])).parts)
+        manifest_path = product_file(product, entry["manifest"])
+        if manifest_path is None or not manifest_path.is_file():
+            continue
+        try:
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        items = manifest.get("items") if isinstance(manifest, dict) else None
+        for item in items if isinstance(items, list) else []:
+            if isinstance(item, dict) and item.get("type") == "package" and isinstance(item.get("name"), str):
+                lanes.setdefault(item["name"], set()).add(str(entry.get("id")))
+    return lanes
+
+
+def validate_bundle_tables(root: Path, entries: list, errors: list[str]) -> None:
+    """bundles/packages/<edition>.tsv: one sorted row per bundle package, each a
+    native name list or `-` with the sentence a user reads."""
+    lanes = bundle_package_lanes(root, entries)
+    for edition in EDITION_TABLES:
+        relative = f"bundles/packages/{edition}.tsv"
+        if contains_symlink(root, relative):
+            errors.append(f"{relative}: symlink forbidden")
+            continue
+        path = root / "bundles" / "packages" / f"{edition}.tsv"
+        if not path.is_file():
+            if lanes:
+                errors.append(f"{relative}: missing; every bundle package needs a row")
+            continue
+        lines = path.read_text(encoding="utf-8").split("\n")
+        if lines and lines[-1] == "":
+            lines.pop()
+        if not lines or lines[0] != f"arch\t{edition}\tlanes\tnotes":
+            errors.append(f"{relative}: header must be arch, {edition}, lanes, notes (tab-separated)")
+            continue
+        previous = b""
+        rows = set()
+        for number, line in enumerate(lines[1:], start=2):
+            where = f"{relative}:{number}"
+            fields = line.split("\t")
+            if len(fields) != 4:
+                errors.append(f"{where}: expected four tab-separated columns")
+                continue
+            arch, native, row_lanes, notes = fields
+            if arch.encode() <= previous:
+                errors.append(f"{where}: rows must be sorted by Arch name, once each")
+            previous = arch.encode()
+            rows.add(arch)
+            if arch not in lanes:
+                errors.append(f"{where}: {arch} is not a package in any bundle")
+                continue
+            expected_lanes = ",".join(sorted(lanes[arch]))
+            if row_lanes != expected_lanes:
+                errors.append(f"{where}: lanes must be {expected_lanes}")
+            if native == "-":
+                if not notes.strip() or notes.startswith("repo="):
+                    errors.append(f"{where}: a - row needs the sentence a user reads")
+                continue
+            if not all(NATIVE_PACKAGE_PATTERN.fullmatch(name) for name in native.split(" ")):
+                errors.append(f"{where}: invalid package names: {native}")
+            repositories = notes.removeprefix("repo=").split(",") if notes.startswith("repo=") else None
+            if notes and (
+                repositories is None
+                or len(set(repositories)) != len(repositories)
+                or not set(repositories) <= TABLE_REPOSITORIES[edition]
+            ):
+                errors.append(f"{where}: invalid repository note: {notes}")
+        for name in sorted(set(lanes) - rows):
+            errors.append(f"{relative}: {name} has no row")
 
 
 def validate_ryotunes_skin(entry: dict, product: Path, manifest: object, errors: list[str]) -> None:
@@ -431,6 +588,124 @@ def validate_ryotunes_skin(entry: dict, product: Path, manifest: object, errors:
         errors.append(f"{label}: preview must be declared with install false")
 
 
+def validate_folder_product(category: str, entry: dict, manifest: object, errors: list[str]) -> None:
+    """A folder product installs whole into ryoku/<category>/<id> and runs from
+    its entry, so the manifest must install that entry (and the preview when it
+    ships one), and the id must not be one the shell ships."""
+    product = FOLDER_PRODUCTS[category]
+    product_id = entry.get("id", "?")
+    label = f"{category}/{product_id}"
+    if product_id in product.reserved:
+        errors.append(f"{label}: id is taken by a {product.noun} Ryoku ships")
+    if not isinstance(manifest, dict):
+        return
+    if manifest.get("destination") != f"ryoku/{category}/{product_id}":
+        errors.append(f"{label}: manifest destination must be ryoku/{category}/{product_id}")
+    installs = {
+        row["source"]: row.get("install")
+        for row in (manifest.get("files") if isinstance(manifest.get("files"), list) else [])
+        if isinstance(row, dict) and isinstance(row.get("source"), str)
+    }
+    if installs.get(product.entry) is not True:
+        errors.append(f"{label}: {product.entry} must be declared with install true")
+    if product.preview and product.preview in installs and installs[product.preview] is not True:
+        errors.append(f"{label}: {product.preview} must be declared with install true")
+
+
+def strip_jsonc(text: str) -> str:
+    """fastfetch reads JSONC: drop comments and trailing commas outside strings
+    so the json module can parse it."""
+    out: list[str] = []
+    commas: list[int] = []
+    index, length, in_string = 0, len(text), False
+    while index < length:
+        char = text[index]
+        if in_string:
+            out.append(char)
+            if char == "\\" and index + 1 < length:
+                out.append(text[index + 1])
+                index += 2
+                continue
+            in_string = char != '"'
+            index += 1
+        elif text.startswith("//", index):
+            end = text.find("\n", index)
+            index = length if end < 0 else end
+        elif text.startswith("/*", index):
+            end = text.find("*/", index + 2)
+            index = length if end < 0 else end + 2
+        else:
+            if char == ",":
+                commas.append(len(out))
+            in_string = char == '"'
+            out.append(char)
+            index += 1
+    joined = "".join(out)
+    for at in commas:
+        if joined[at + 1:].lstrip()[:1] in ("]", "}"):
+            out[at] = ""
+    return "".join(out)
+
+
+def config_strings(value: object) -> Iterable[str]:
+    if isinstance(value, str):
+        yield value
+    elif isinstance(value, dict):
+        for key, item in value.items():
+            yield key
+            yield from config_strings(item)
+    elif isinstance(value, list):
+        for item in value:
+            yield from config_strings(item)
+
+
+def validate_fastfetch_preset(entry: dict, product: Path, errors: list[str]) -> None:
+    """A preset runs on whichever Ryoku edition the user has (Arch, CachyOS,
+    Fedora or Void), so its logo, package counts and glyphs follow that system
+    instead of naming one."""
+    label = f"fastfetch/{entry.get('id', '?')}"
+    config_path = product / "config.jsonc"
+    if not config_path.is_file() or config_path.is_symlink():
+        errors.append(f"{label}: config.jsonc missing")
+        return
+    try:
+        config = json.loads(strip_jsonc(config_path.read_text(encoding="utf-8")))
+    except (UnicodeDecodeError, ValueError) as error:
+        errors.append(f"{label}: config.jsonc does not parse: {error}")
+        return
+    if not isinstance(config, dict):
+        errors.append(f"{label}: config.jsonc must be an object")
+        return
+
+    logo = config.get("logo")
+    kind, source = "auto", logo
+    if isinstance(logo, dict):
+        kind, source = logo.get("type", "auto"), logo.get("source")
+    if (
+        isinstance(source, str) and source not in ("", "none")
+        and (kind in ("builtin", "small") or (kind == "auto" and "/" not in source))
+    ):
+        errors.append(
+            f"{label}: logo names the built-in {source!r} logo; leave source out so each edition draws its own"
+        )
+
+    texts = list(config_strings(config))
+    for text in texts:
+        named = set(PACKAGE_COUNT_PATTERN.findall(text))
+        if named and named != PACKAGE_COUNTS:
+            errors.append(
+                f"{label}: a package count names only {', '.join(sorted(named))}; "
+                "name pacman, rpm and xbps together or keep the default format"
+            )
+            break
+    marks = sorted({ord(char) for text in texts for char in text if ord(char) in DISTRIBUTION_MARKS})
+    if marks:
+        errors.append(
+            f"{label}: draws one system's own mark ({', '.join(f'U+{mark:04X}' for mark in marks)}); "
+            "use Tux (U+F31A) or a neutral glyph"
+        )
+
+
 def validate_entry(category: str, entry: object, root: Path, errors: list[str], require_media: bool) -> None:
     if not isinstance(entry, dict):
         errors.append(f"{category}/?: registry entry must be an object")
@@ -462,6 +737,9 @@ def validate_entry(category: str, entry: object, root: Path, errors: list[str], 
     discord = entry.get("discord")
     if discord is not None and (not isinstance(discord, str) or not DISCORD_PATTERN.fullmatch(discord)):
         errors.append(f"{label}: discord must be a discord.gg or discord.com/invite invite link")
+    gate = package_manager_gate_error(entry)
+    if gate:
+        errors.append(f"{label}: {gate}")
 
     path_value = entry.get("path")
     if not safe_relative(path_value):
@@ -503,6 +781,10 @@ def validate_entry(category: str, entry: object, root: Path, errors: list[str], 
             validate_bundle_components(entry, manifest, errors)
         elif category == "ryotunes-skins":
             validate_ryotunes_skin(entry, product, manifest, errors)
+        elif category in FOLDER_PRODUCTS:
+            validate_folder_product(category, entry, manifest, errors)
+        elif category == "fastfetch":
+            validate_fastfetch_preset(entry, product, errors)
 
 
 def validate_tree(
@@ -548,6 +830,8 @@ def validate_tree(
             if isinstance(product_id, str):
                 seen.add(product_id)
             validate_entry(category, entry, root, errors, require_media)
+        if category == "bundles":
+            validate_bundle_tables(root, entries, errors)
     return errors
 
 

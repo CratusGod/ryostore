@@ -16,7 +16,7 @@
   "modules": [
     {
       "type": "os",
-      "key": " ",
+      "key": " ",
       "format": "{name} {version}"
     },
     {

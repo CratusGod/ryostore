@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "id": "engawa",
+  "category": "docks",
+  "version": "1.0.0",
+  "destination": "ryoku/docks/engawa",
+  "files": [
+    {
+      "source": "Board.qml",
+      "destination": "Board.qml",
+      "sha256": "c31928b5bb74fbf29af16eb7427ab85bd9e118b9d8cc50a4e2dd8daf0832a6e9",
+      "mode": "0644",
+      "size": 5820,
+      "install": true
+    },
+    {
+      "source": "Dock.qml",
+      "destination": "Dock.qml",
+      "sha256": "67f88b533ea6b1927bd6e9e6f01f1daa32cac78fc12b7df643208a0d73145e61",
+      "mode": "0644",
+      "size": 6252,
+      "install": true
+    },
+    {
+      "source": "LICENSE",
+      "destination": "LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "mode": "0644",
+      "size": 35149,
+      "install": true
+    },
+    {
+      "source": "NameTag.qml",
+      "destination": "NameTag.qml",
+      "sha256": "ec52f5b8c0824d509eabc86bcae836eebf0db936239eb9c37b72fe5ad79b45a7",
+      "mode": "0644",
+      "size": 1888,
+      "install": true
+    },
+    {
+      "source": "PROVENANCE.txt",
+      "destination": "PROVENANCE.txt",
+      "sha256": "469c16602d0deff872c19c54c0507e7cf784b199e787fd30c44b1cbd3184e9e3",
+      "mode": "0644",
+      "size": 340,
+      "install": true
+    },
+    {
+      "source": "Plank.qml",
+      "destination": "Plank.qml",
+      "sha256": "34f26f971bbd38d48b8d3a900253835e98c609c9ba0de7b5ca2b5f042a216fec",
+      "mode": "0644",
+      "size": 2819,
+      "install": true
+    },
+    {
+      "source": "README.md",
+      "destination": "README.md",
+      "sha256": "593544bd26701593af56c44dc85e3129e12cd50390346880e4e30e3b1bed5f71",
+      "mode": "0644",
+      "size": 1129,
+      "install": true
+    },
+    {
+      "source": "assets/left.webp",
+      "destination": "assets/left.webp",
+      "sha256": "206469a571151097e13e8a9fa1b1b965d95980afff084c86522c10cc13f553ee",
+      "mode": "0644",
+      "size": 34858,
+      "install": false
+    },
+    {
+      "source": "assets/preview.webp",
+      "destination": "assets/preview.webp",
+      "sha256": "4154b87975ac2391cd3376a92b8722cc2e0f2d508d6678108d3eb7f4bd04481e",
+      "mode": "0644",
+      "size": 34974,
+      "install": false
+    }
+  ],
+  "license": "GPL-3.0-or-later"
+}

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "the-influencer",
   "category": "bundles",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "destination": "ryoku/bundles/the-influencer",
   "name": "The Influencer",
   "description": "A complete stream, record, edit, reformat, and publish kit: recorders, editors, audio and thumbnail tools, plus a right-click video toolkit in the file manager (reformat, transcode, compress, thumbnails).",
@@ -182,6 +182,24 @@
       "upstream": "https://handbrake.fr"
     },
     {
+      "type": "package",
+      "name": "npm",
+      "detect": "npm",
+      "tier": "core",
+      "source": "official",
+      "summary": "Installs the capture-website command for thumbnails.",
+      "upstream": "https://www.npmjs.com"
+    },
+    {
+      "type": "package",
+      "name": "go",
+      "detect": "go",
+      "tier": "core",
+      "source": "official",
+      "summary": "Builds the youtubeuploader command.",
+      "upstream": "https://go.dev"
+    },
+    {
       "type": "script",
       "name": "capture-website-cli",
       "detect": "capture-website",
@@ -207,7 +225,11 @@
       "interactive": true,
       "source": "aur",
       "summary": "Pro NLE and color grading. Proprietary: you download the installer from Blackmagic, then this builds it. Free build on Linux cannot import H.264/H.265; use the DaVinci reformat action.",
-      "upstream": "https://www.blackmagicdesign.com/products/davinciresolve"
+      "upstream": "https://www.blackmagicdesign.com/products/davinciresolve",
+      "packageManagers": [
+        "pacman"
+      ],
+      "packageManagersReason": "Builds DaVinci Resolve from the AUR, which only Ryoku on Arch and CachyOS has; elsewhere, use Blackmagic's own Linux installer."
     },
     {
       "type": "package",
@@ -297,6 +319,15 @@
       "source": "aur",
       "summary": "GUI subtitle editor for timing, styling, and format conversion.",
       "upstream": "https://www.nikse.dk/subtitleedit"
+    },
+    {
+      "type": "package",
+      "name": "whisper-cpp",
+      "detect": "whisper-cli",
+      "tier": "optional",
+      "source": "official",
+      "summary": "Offline speech-to-text (whisper-cli) for the Generate captions right-click action.",
+      "upstream": "https://github.com/ggml-org/whisper.cpp"
     }
   ],
   "files": [
@@ -304,8 +335,8 @@
       "source": "README.md",
       "destination": "README.md",
       "mode": "0644",
-      "size": 3494,
-      "sha256": "b78af8e8c79a0ae38eda74d4f9cbae54e02d77f97b002f9859ce8b70971b14b4",
+      "size": 4513,
+      "sha256": "92b2f37b060b025cc21be18b720977c16063f5a87c85743c1c767f23acbe51d0",
       "install": true
     },
     {
@@ -320,8 +351,8 @@
       "source": "installers/capture-website-cli.sh",
       "destination": "installers/capture-website-cli.sh",
       "mode": "0755",
-      "size": 317,
-      "sha256": "f4c3fad5b104e5b7097f6e39b7845f06e4f4c09bb3ccb8005f41adc444bf7e07",
+      "size": 434,
+      "sha256": "260720104f227ee82cf13d9ad399f464d8b46449f8b6917804c9b71266403f66",
       "install": true
     },
     {
@@ -336,8 +367,8 @@
       "source": "installers/youtubeuploader.sh",
       "destination": "installers/youtubeuploader.sh",
       "mode": "0755",
-      "size": 327,
-      "sha256": "b2da2d74f007d97e5d0c3ea3e9f529088428f3320def7036a01e7daa1d3d2bb7",
+      "size": 438,
+      "sha256": "32b104be17d97b19bd684e2d442c068a5b0a2c01799de21b27dd7de5691e3624",
       "install": true
     }
   ]

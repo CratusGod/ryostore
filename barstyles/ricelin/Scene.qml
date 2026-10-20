@@ -141,7 +141,7 @@ Item {
 
                 Process {
                     running: Flags.keepAwake
-                    command: ["systemd-inhibit", "--what=idle:sleep", "--who=Ricelin",
+                    command: ["ryoku-host", "inhibit", "--what=idle:sleep", "--who=Ricelin",
                               "--why=keep awake", "--mode=block", "sleep", "infinity"]
                 }
             }

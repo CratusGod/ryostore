@@ -26,8 +26,21 @@ PACK_SPEC.loader.exec_module(pack_product)
 
 CATEGORIES = (
     "rices", "lockscreens", "barstyles", "fastfetch", "plugins", "bundles",
-    "decors", "launcher-images", "fastfetch-emblems", "ryotunes-skins",
+    "decors", "launcher-images", "fastfetch-emblems", "ryotunes-skins", "vesktop-themes",
 )
+
+# A preset that follows whichever edition runs it, written as JSONC with a
+# comment, a trailing comma and a "//" inside a string to keep the parser honest.
+FASTFETCH_CONFIG = """// Demo - a fixture readout
+{
+  "logo": { "type": "small" },
+  "modules": [
+    { "type": "os", "key": "\\uf31a OS" },
+    { "type": "packages", "format": "{?pacman}{pacman}{?}{?rpm}{rpm}{?}{?xbps}{xbps}{?}" },
+    { "type": "custom", "format": "https://ryoku.dev" },
+  ]
+}
+"""
 
 
 def digest(path: Path) -> str:
@@ -73,6 +86,7 @@ def build_skin_product(root: Path, product_id: str = "demo") -> tuple[Path, dict
         "version": "1.0.0",
         "path": f"ryotunes-skins/{product_id}",
         "author": "Ryoku",
+        "upstream": f"https://github.com/ryoku-dev/ryostore/tree/main/ryotunes-skins/{product_id}",
         "summary": "Demo skin",
         "description": "Demo skin.",
         "tags": ["dark", "ryoku", "colorscheme"],
@@ -137,6 +151,19 @@ def build_product(root: Path, category: str, product_id: str = "demo") -> tuple[
                 "summary": "Fixture tool.",
             }
         ]
+    if category == "fastfetch":
+        config = product / "config.jsonc"
+        config.write_text(FASTFETCH_CONFIG, encoding="utf-8")
+        manifest["files"].append(
+            {
+                "source": "config.jsonc",
+                "destination": "config.jsonc",
+                "mode": "0644",
+                "size": config.stat().st_size,
+                "sha256": digest(config),
+                "install": True,
+            }
+        )
     manifest_path = product / "manifest.json"
     write_json(manifest_path, manifest)
     entry = {
@@ -145,6 +172,7 @@ def build_product(root: Path, category: str, product_id: str = "demo") -> tuple[
         "version": "1.0.0",
         "path": f"{category}/{product_id}",
         "author": "Ryoku Team",
+        "upstream": f"https://github.com/ryoku-dev/ryostore/tree/main/{category}/{product_id}",
         "summary": "Fixture summary",
         "description": "Fixture description",
         "tags": ["fixture"],
@@ -166,6 +194,10 @@ def build_tree(root: Path) -> dict[str, tuple[Path, dict]]:
         product, entry = build_product(root, category)
         write_json(root / category / "registry.json", {"schema": 1, category: [entry]})
         products[category] = (product, entry)
+    # Launchers and docks install as folders the shell loads; the pack tool
+    # writes their manifests.
+    for category in validate_store.FOLDER_PRODUCTS:
+        build_folder_product(root, category)
     return products
 
 
@@ -246,6 +278,67 @@ class ValidateStoreTest(unittest.TestCase):
             "bundles/demo: components do not match manifest items",
             self.errors(),
         )
+
+    def test_package_manager_gate_must_be_sound(self) -> None:
+        _, entry = self.products["plugins"]
+        cases = {
+            "packageManagers must list distinct values from pacman, dnf, xbps":
+                {"packageManagers": ["apt"], "packageManagersReason": "Debian only."},
+            "packageManagers needs a packageManagersReason sentence": {"packageManagers": ["pacman"]},
+            "packageManagersReason needs packageManagers": {"packageManagersReason": "Arch only."},
+        }
+        for message, gate in cases.items():
+            with self.subTest(message=message):
+                write_json(self.root / "plugins" / "registry.json", {"schema": 1, "plugins": [{**entry, **gate}]})
+                self.assertIn(f"plugins/demo: {message}", self.errors())
+        sound = {**entry, "packageManagers": ["pacman", "dnf"], "packageManagersReason": "Needs systemd."}
+        write_json(self.root / "plugins" / "registry.json", {"schema": 1, "plugins": [sound]})
+        self.assertEqual([error for error in self.errors() if "packageManagers" in error], [])
+
+    def test_bundle_part_gate_rides_in_the_registry_copy(self) -> None:
+        gate = {"packageManagers": ["pacman"], "packageManagersReason": "Builds from the AUR."}
+        self.rewrite_manifest("bundles", lambda manifest: manifest["items"][0].update(gate))
+        _, entry = self.products["bundles"]
+        self.assertIn("bundles/demo: components do not match manifest items", self.errors())
+        entry["components"][0].update(gate)
+        write_json(self.root / "bundles" / "registry.json", {"schema": 1, "bundles": [entry]})
+        self.assertEqual([error for error in self.errors() if error.startswith("bundles/demo")], [])
+
+    def write_table(self, edition: str, rows: list[str]) -> None:
+        path = self.root / "bundles" / "packages" / f"{edition}.tsv"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("".join(f"{row}\n" for row in [f"arch\t{edition}\tlanes\tnotes", *rows]), encoding="utf-8")
+
+    def test_bundle_package_tables_name_every_package_on_each_edition(self) -> None:
+        self.rewrite_manifest("bundles", lambda manifest: manifest["items"].append(
+            {"type": "package", "name": "steam", "summary": "Fixture game store."}))
+        product, entry = self.products["bundles"]
+        entry["components"] = validate_store.normalized_bundle_components(
+            json.loads((product / "manifest.json").read_text(encoding="utf-8")))
+        write_json(self.root / "bundles" / "registry.json", {"schema": 1, "bundles": [entry]})
+        self.assertIn("bundles/packages/void.tsv: missing; every bundle package needs a row", self.errors())
+
+        valid_void = ["steam\tsteam libgcc-32bit\tdemo\trepo=nonfree,multilib"]
+        valid_fedora = ["steam\t-\tdemo\tSteam needs RPM Fusion on Fedora."]
+        self.write_table("void", valid_void)
+        self.write_table("fedora", valid_fedora)
+        tables = lambda: [error for error in self.errors() if error.startswith("bundles/packages/")]
+        self.assertEqual(tables(), [])
+
+        cases = {
+            "bundles/packages/fedora.tsv:2: a - row needs the sentence a user reads": ("fedora", ["steam\t-\tdemo\t"]),
+            "bundles/packages/void.tsv:2: invalid repository note: repo=testing": ("void", ["steam\tsteam\tdemo\trepo=testing"]),
+            "bundles/packages/void.tsv:2: lanes must be demo": ("void", ["steam\tsteam\tgaming\t"]),
+            "bundles/packages/void.tsv: steam has no row": ("void", []),
+            "bundles/packages/void.tsv:3: rows must be sorted by Arch name, once each": ("void", valid_void * 2),
+            "bundles/packages/void.tsv:3: wine is not a package in any bundle": ("void", valid_void + ["wine\twine\tdemo\t"]),
+        }
+        for message, (edition, rows) in cases.items():
+            with self.subTest(message=message):
+                self.write_table(edition, rows)
+                self.assertIn(message, tables())
+                self.write_table("void", valid_void)
+                self.write_table("fedora", valid_fedora)
 
     def test_duplicate_ids(self) -> None:
         _, entry = self.products["rices"]
@@ -460,10 +553,58 @@ class ValidateStoreTest(unittest.TestCase):
         with mock.patch.object(validate_store.subprocess, "run", side_effect=responses):
             self.assertIsNone(validate_store.media_error(media, "fixture"))
 
+    def write_fastfetch_config(self, text: str) -> None:
+        product, _ = self.products["fastfetch"]
+        config = product / "config.jsonc"
+        config.write_text(text, encoding="utf-8")
+
+        def refresh(manifest: dict) -> None:
+            row = next(row for row in manifest["files"] if row["source"] == "config.jsonc")
+            row["size"], row["sha256"] = config.stat().st_size, digest(config)
+
+        self.rewrite_manifest("fastfetch", refresh)
+
+    def test_fastfetch_logo_pinned_to_one_distribution_is_rejected(self) -> None:
+        pinned = (
+            ('{ "type": "builtin", "source": "arch" }', "arch"),
+            ('{ "type": "small", "source": "void" }', "void"),
+            ('{ "source": "fedora" }', "fedora"),
+            ('"cachyos"', "cachyos"),
+        )
+        for logo, name in pinned:
+            with self.subTest(logo=logo):
+                self.write_fastfetch_config(FASTFETCH_CONFIG.replace('{ "type": "small" }', logo))
+                self.assertEqual(
+                    self.errors(),
+                    [f"fastfetch/demo: logo names the built-in '{name}' logo; leave source out so each edition draws its own"],
+                )
+        self.write_fastfetch_config(
+            FASTFETCH_CONFIG.replace('{ "type": "small" }', '{ "type": "data", "source": " /\\\\\\n/__\\\\\\n" }')
+        )
+        self.assertEqual(self.errors(), [])
+
+    def test_fastfetch_package_count_for_one_manager_is_rejected(self) -> None:
+        self.write_fastfetch_config(
+            FASTFETCH_CONFIG.replace("{?pacman}{pacman}{?}{?rpm}{rpm}{?}{?xbps}{xbps}{?}", "{pacman}")
+        )
+        self.assertEqual(
+            self.errors(),
+            ["fastfetch/demo: a package count names only pacman; name pacman, rpm and xbps together or keep the default format"],
+        )
+
+    def test_fastfetch_distribution_mark_is_rejected(self) -> None:
+        for key, mark in (("\\udb82\\udcc7 OS", "U+F08C7"), ("\\uf303 OS", "U+F303"), ("\\ue62a OS", "U+E62A")):
+            with self.subTest(mark=mark):
+                self.write_fastfetch_config(FASTFETCH_CONFIG.replace("\\uf31a OS", key))
+                self.assertEqual(
+                    self.errors(),
+                    [f"fastfetch/demo: draws one system's own mark ({mark}); use Tux (U+F31A) or a neutral glyph"],
+                )
+
 class MigratedCatalogueTest(unittest.TestCase):
     def test_migrated_categories_satisfy_store_contract(self) -> None:
         root = MODULE_PATH.parent.parent
-        for category in ("rices", "plugins", "bundles", "barstyles", "fastfetch"):
+        for category in ("rices", "plugins", "bundles", "barstyles", "launchers", "docks", "fastfetch"):
             with self.subTest(category=category):
                 self.assertEqual(
                     validate_store.validate_tree(root, (category,)),
@@ -691,6 +832,7 @@ def build_plugin_source(root: Path, product_id: str = "demo") -> dict:
         "version": "2.0.0",
         "path": f"plugins/{product_id}",
         "author": "Ryoku Team",
+        "upstream": f"https://github.com/ryoku-dev/ryostore/tree/main/plugins/{product_id}",
         "summary": "Fixture summary",
         "description": "Fixture description",
         "tags": ["bar-widget"],
@@ -706,6 +848,87 @@ def build_plugin_source(root: Path, product_id: str = "demo") -> dict:
     }
     write_json(root / "plugins" / "registry.json", {"schema": 1, "plugins": [entry]})
     return entry
+
+def build_folder_product(root: Path, category: str, product_id: str = "demo") -> None:
+    """A launcher or dock folder plus its registry row, packed by the real pack tool."""
+    spec = validate_store.FOLDER_PRODUCTS[category]
+    product = root / category / product_id
+    (product / "assets").mkdir(parents=True, exist_ok=True)
+    (product / spec.entry).write_text("import QtQuick\nItem {}\n", encoding="utf-8")
+    if spec.preview:
+        (product / spec.preview).write_text("import QtQuick\nItem {}\n", encoding="utf-8")
+    (product / "README.md").write_text("# Demo\n", encoding="utf-8")
+    (product / "LICENSE").write_text("MIT\n", encoding="utf-8")
+    (product / "assets" / "preview.png").write_bytes(b"fixture preview")
+    entry = {
+        "id": product_id,
+        "name": "Demo",
+        "version": "1.0.0",
+        "path": f"{category}/{product_id}",
+        "author": "Ryoku",
+        "upstream": f"https://github.com/ryoku-dev/ryostore/tree/main/{category}/{product_id}",
+        "summary": f"Demo {spec.noun}",
+        "description": f"Demo {spec.noun}.",
+        "tags": ["demo"],
+        "accent": "#cdc4ba",
+        "surface": "#101010",
+        "preview": "assets/preview.png",
+        "screenshots": [],
+        "manifest": "manifest.json",
+        "manifestSha256": "0" * 64,
+        "lastUpdated": "2020-01-01",
+        "official": False,
+    }
+    write_json(root / category / "registry.json", {"schema": 1, category: [entry]})
+    pack_product.pack_product(root, category, product_id)
+
+
+class FolderProductsTest(unittest.TestCase):
+    """Launchers and docks: QML folders the shell runs in place."""
+
+    def setUp(self) -> None:
+        self.temp = tempfile.TemporaryDirectory()
+        self.root = Path(self.temp.name)
+
+    def tearDown(self) -> None:
+        self.temp.cleanup()
+
+    def errors(self, category: str) -> list[str]:
+        return validate_store.validate_tree(self.root, (category,))
+
+    def manifest(self, category: str, product_id: str = "demo") -> dict:
+        path = self.root / category / product_id / "manifest.json"
+        return json.loads(path.read_text(encoding="utf-8"))
+
+    def test_packed_product_installs_whole_and_validates(self) -> None:
+        for category, spec in validate_store.FOLDER_PRODUCTS.items():
+            with self.subTest(category=category):
+                build_folder_product(self.root, category)
+                self.assertEqual(self.errors(category), [])
+                installs = {row["source"]: row["install"] for row in self.manifest(category)["files"]}
+                expected = {"LICENSE": True, spec.entry: True, "README.md": True, "assets/preview.png": False}
+                if spec.preview:
+                    expected[spec.preview] = True
+                self.assertEqual(installs, expected)
+                self.assertEqual(self.manifest(category)["destination"], f"ryoku/{category}/demo")
+
+    def test_a_product_cannot_take_an_id_the_shell_ships(self) -> None:
+        for category, spec in validate_store.FOLDER_PRODUCTS.items():
+            with self.subTest(category=category):
+                shipped = sorted(spec.reserved)[0]
+                build_folder_product(self.root, category, shipped)
+                self.assertIn(f"{category}/{shipped}: id is taken by a {spec.noun} Ryoku ships",
+                              self.errors(category))
+
+    def test_a_product_without_its_entry_is_rejected(self) -> None:
+        for category, spec in validate_store.FOLDER_PRODUCTS.items():
+            with self.subTest(category=category):
+                build_folder_product(self.root, category)
+                folder = self.root / category / "demo"
+                (folder / spec.entry).rename(folder / "Other.qml")
+                pack_product.pack_product(self.root, category, "demo")
+                self.assertIn(f"{category}/demo: {spec.entry} must be declared with install true",
+                              self.errors(category))
 
 
 class PackProductTest(unittest.TestCase):

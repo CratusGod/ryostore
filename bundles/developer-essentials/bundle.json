@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "developer-essentials",
   "category": "bundles",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "destination": "ryoku/bundles/developer-essentials",
   "name": "Developer Essentials",
-  "description": "A practical workstation bootstrap for developers: Arch build basics, Git and GitHub CLI, fast shell search tools, terminal workflow helpers, C/C++ build and debug tools, major language runtimes, Docker, and Visual Studio Code.",
+  "description": "A practical workstation bootstrap for developers: build basics, Git and GitHub CLI, fast shell search tools, terminal workflow helpers, C/C++ build and debug tools, major language runtimes, Docker, and Visual Studio Code.",
   "icon": "code",
   "accent": "#38bdf8",
   "preview": "assets/hero.png",
@@ -19,7 +19,7 @@
       "tier": "core",
       "group": "Core",
       "source": "official",
-      "summary": "Arch's essential build toolchain group for compiling AUR packages and local projects.",
+      "summary": "Essential build toolchain (compiler, make, pkg-config) for compiling local projects.",
       "upstream": "https://archlinux.org/groups/x86_64/base-devel/"
     },
     {
@@ -278,8 +278,8 @@
       "source": "README.md",
       "destination": "README.md",
       "mode": "0644",
-      "size": 2569,
-      "sha256": "44fdc36ac9266c4a54bd8c5434e4ab53e56be531c1bc35ae0da3dfdcbf50f199",
+      "size": 3209,
+      "sha256": "0438cc0e6102fab6fef570b14cb026552d179c21f9d6486ccc6fc9b5802767ac",
       "install": true
     },
     {

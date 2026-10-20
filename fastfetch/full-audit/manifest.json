@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "full-audit",
   "category": "fastfetch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "ryoku/fastfetch/full-audit",
   "files": [
     {
@@ -17,16 +17,16 @@
       "source": "PROVENANCE.txt",
       "destination": "PROVENANCE.txt",
       "mode": "0644",
-      "size": 917,
-      "sha256": "689a2323542e454ada0a10ca1982b2751ee0643234b90a28f145b9be16c69c08",
+      "size": 1343,
+      "sha256": "ec62eb32989a428372941498f584d3df8c1d5ec7f45f9bb6d01f92ce6f95e283",
       "install": true
     },
     {
       "source": "config.jsonc",
       "destination": "config.jsonc",
       "mode": "0644",
-      "size": 2736,
-      "sha256": "0d8bf58359a5de2d1dad57e9e07b41365a1af4a03ca0202d171701fa153432e5",
+      "size": 2714,
+      "sha256": "70bbf8574097619f3b01c6a811b267acb327d78f98db09c0843957e42ce573b7",
       "install": true
     },
     {

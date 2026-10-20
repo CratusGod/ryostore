@@ -16,6 +16,8 @@ index. An item is invisible to the desktop until it is listed in that registry.
 | `lockscreens/` | Lockscreen looks | Settings -> Lockscreen |
 | `decors/` | Poster / ornament art for the desktop | Settings -> Appearance |
 | `barstyles/` | Bar skins | Settings -> Bar |
+| `docks/` | Docks: the app strip on a screen edge, shared by every bar style, built by the community | Edit desktop -> Dock |
+| `launchers/` | App launchers: what Super+Space opens, built by the community | Settings -> App Launcher |
 | `fastfetch/` | Fastfetch presets | Settings -> Fastfetch |
 | `launcher-images/` | Launcher hero images | Settings -> Appearance |
 | `livewalls/` | Live (video) wallpapers | ryowalls -> Ryoku source |
@@ -48,7 +50,7 @@ install. An item may also carry an optional `discord` invite, shown as a Discord
 icon for reaching its author.
 
 **Users remain responsible for reviewing the code they install and its updates.**
-Plugins and bar styles run inside your desktop with your user permissions; being
+Plugins, bar styles, docks and launchers run inside your desktop with your user permissions; being
 listed is not sandboxing, an endorsement, or a promise of safety. Review external
 commands, network access, file access, and any permission prompts before enabling
 an item. Do not install code you do not trust.
@@ -72,9 +74,10 @@ Two guides, one job each:
   and a maintainer helps land it.
 
 Deep, per-catalogue authoring references live beside each catalogue
-(`plugins/AUTHORING.md`, `rices/AUTHORING.md`, `colorschemes/AUTHORING.md`,
-`fastfetch/AUTHORING.md`, `ryotunes-skins/AUTHORING.md`, `nautilus/AUTHORING.md`,
-`bundles/README.md`, `installers/README.md`, `livewalls/README.md`).
+(`plugins/AUTHORING.md`, `docks/AUTHORING.md`, `launchers/AUTHORING.md`,
+`rices/AUTHORING.md`, `colorschemes/AUTHORING.md`, `fastfetch/AUTHORING.md`,
+`ryotunes-skins/AUTHORING.md`, `nautilus/AUTHORING.md`, `bundles/README.md`,
+`installers/README.md`, `livewalls/README.md`).
 
 ## The rules, briefly
 

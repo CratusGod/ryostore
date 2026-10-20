@@ -14,7 +14,7 @@
     { "type":"datetime", "key":"{#keys}║  {#31}\uF43A time    {#keys}│" },
     { "type":"uptime", "key":"{#keys}║  {#33}\uDB80\uDD50 uptime  {#keys}│" },
     { "type":"custom", "format":"{#keys}╠════════════╪═══════════════════════════════════════════════════" },
-    { "type":"os", "key":"{#keys}║  {#34}\uF30A distro  {#keys}│", "format":"{2} {8}" },
+    { "type":"os", "key":"{#keys}║  {#34}\uF31A distro  {#keys}│", "format":"{2} {8}" },
     { "type":"kernel", "key":"{#keys}║  {#32}\uF013 kernel  {#keys}│" },
     { "type":"packages", "key":"{#keys}║  {#33}\uDB80\uDFD6 pkgs    {#keys}│" },
     { "type":"shell", "key":"{#keys}║  {#36}\uF489 shell   {#keys}│" },

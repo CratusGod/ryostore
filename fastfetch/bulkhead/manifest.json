@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "bulkhead",
   "category": "fastfetch",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "destination": "ryoku/fastfetch/bulkhead",
   "files": [
     {
@@ -17,16 +17,16 @@
       "source": "PROVENANCE.txt",
       "destination": "PROVENANCE.txt",
       "mode": "0644",
-      "size": 1309,
-      "sha256": "eb3119af68abb5c93a015ba567b8efa325dd8138ee2964315a5359093ee42fe8",
+      "size": 1327,
+      "sha256": "79e4d0ab97cd7e6f5a6262b8df3783c4b2c597b92fda5658fed829080e7039f0",
       "install": true
     },
     {
       "source": "config.jsonc",
       "destination": "config.jsonc",
       "mode": "0644",
-      "size": 3436,
-      "sha256": "7fe109943f7912f67e6bf9cbbf5ea0cec31c67cd5d583d3f308c800266c4eb83",
+      "size": 3442,
+      "sha256": "e8c917e7d2eb51c16ef9d011bb6897efc1b5c7c2b7b3ff1b6f1c0686296b8570",
       "install": true
     },
     {

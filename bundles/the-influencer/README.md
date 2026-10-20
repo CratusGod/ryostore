@@ -17,16 +17,17 @@ action. It runs on `ffmpeg`, installed by the bundle:
 - **Transcode** to H.264 or H.265, or **Transcode for DaVinci (DNxHR)** so the
   free Resolve build can import your footage.
 - **Compress to 8 MiB** (Discord-safe), **Make GIF**, **Extract audio (MP3)**.
-- **Generate captions (SRT)** with local, offline speech-to-text, if you install
-  a `whisper.cpp` build yourself. No Arch or AUR package provides one, so the
-  bundle does not ship it and this action stays inert until you do.
+- **Generate captions (SRT)** with local, offline speech-to-text through
+  whisper.cpp's `whisper-cli`. On Arch and CachyOS the optional `whisper-cpp`
+  item installs it; Fedora's `whisper-cpp` ships only the library and Void has
+  no package, so there you build whisper.cpp yourself.
 - **Strip metadata**, **Grab thumbnail**.
 
 See `nautilus/video-reformat/README.md`.
 
 ## Core tools
 
-| Tool | What it is | Source |
+| Tool | What it is | Arch / CachyOS |
 | --- | --- | --- |
 | obs-studio | Streaming and recording studio (PipeWire capture). | pacman |
 | obs-vkcapture | Vulkan/OpenGL game capture on Wayland. | AUR |
@@ -48,22 +49,39 @@ See `nautilus/video-reformat/README.md`.
 ## Optional tools (opt-in per item)
 
 DaVinci Resolve (interactive fetch, see below), REAPER (paid DAW), wl-screenrec,
-DistroAV (NDI), Owncast, Shotcut, Blender, Darktable, Upscayl, QPrompt, and
-Subtitle Edit.
+DistroAV (NDI), Owncast, Shotcut, Blender, Darktable, Upscayl, QPrompt,
+Subtitle Edit, and whisper.cpp for the captions action.
 
 ## DaVinci Resolve
 
 Resolve is proprietary; its licence forbids redistribution, so it cannot be
-bundled. Selecting it opens the Blackmagic download page, waits for you to save
-the installer `.zip`, then builds the AUR package. The **free** Linux build
-cannot import H.264/H.265 + AAC, so run the **Transcode for DaVinci (DNxHR)**
-right-click action on your clips first.
+bundled. On Arch and CachyOS, selecting it opens the Blackmagic download page,
+waits for you to save the installer `.zip`, then builds the AUR package. Fedora
+and Void have no AUR, so the store lists it greyed out there; Blackmagic's own
+Linux installer is the way in. The **free** Linux build cannot import
+H.264/H.265 + AAC, so run the **Transcode for DaVinci (DNxHR)** right-click
+action on your clips first.
+
+## On Fedora and Void
+
+The last column is where a tool comes from on Arch and CachyOS. On Fedora and
+Void, Ryoku installs each tool from that edition's own repositories, under its
+own package name; npm and Go come along so the two command-line tools can be
+built. A tool an edition does not package stays listed in the store, greyed out
+with the reason and where to get it instead (usually Flathub), and **Install
+all** skips it. Noise suppression is the one gap with a stand-in already in the
+bundle: EasyEffects has RNNoise built in.
+
+The right-click toolkit uses the system's own `ffmpeg`. Fedora's `ffmpeg-free`
+has no libx264 or libx265, so there the H.264 actions encode through OpenH264
+and Transcode to H.265 uses the graphics card's encoder; see
+`nautilus/video-reformat/README.md`.
 
 ## Notes
 
 - **Kernel headers:** `v4l2loopback-dkms` builds against the running kernel's
-  headers. Ryoku ships the CachyOS kernel, so if the DKMS build fails install
-  `linux-cachyos-headers` (or the headers matching your kernel) and re-run.
+  headers. If the DKMS build fails, install the headers matching your kernel
+  (`linux-cachyos-headers` on the CachyOS kernel) and re-run.
 - **NVIDIA on Wayland:** OBS NVENC and PipeWire capture want driver 555+.
 - Quick clip and instant-replay recording are covered by the shipped
   gpu-screen-recorder and Ryoku's record controls; OBS here is for streaming and
