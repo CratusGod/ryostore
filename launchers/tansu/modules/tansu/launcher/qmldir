@@ -1,0 +1,13 @@
+module tansu.launcher
+AppPlaceholder 1.0 AppPlaceholder.qml
+CalculatorCard 1.0 CalculatorCard.qml
+ClipboardCard 1.0 ClipboardCard.qml
+ColorCard 1.0 ColorCard.qml
+EmojiCard 1.0 EmojiCard.qml
+ExtraFrame 1.0 ExtraFrame.qml
+ExtraKey 1.0 ExtraKey.qml
+LauncherExtras 1.0 LauncherExtras.qml
+LauncherFace 1.0 LauncherFace.qml
+LauncherLcd 1.0 LauncherLcd.qml
+LauncherSurface 1.0 LauncherSurface.qml
+WebCard 1.0 WebCard.qml

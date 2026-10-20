@@ -27,6 +27,31 @@
       "lastUpdated": "2026-10-19",
       "official": true,
       "license": "GPL-3.0-or-later"
+    },
+    {
+      "id": "tansu",
+      "name": "Tansu",
+      "version": "1.0.2",
+      "path": "launchers/tansu",
+      "author": "dodo986",
+      "upstream": "https://github.com/dodo986/ryostore/tree/main/launchers/tansu",
+      "summary": "Phone-shaped app launcher",
+      "description": "A phone-shaped home screen: an app grid, a search box that answers with results, calculator, clipboard, colour and emoji cards, and the wallpaper board it turns into.",
+      "tags": [
+        "phone",
+        "grid",
+        "search",
+        "wallpapers"
+      ],
+      "accent": "#a2c9fd",
+      "surface": "#111418",
+      "preview": "assets/preview.webp",
+      "screenshots": [],
+      "manifest": "manifest.json",
+      "manifestSha256": "32da01be48ae2986b7b3c126e16a37dec10011a6adfc2894dd8e6dab9b5c005c",
+      "lastUpdated": "2026-10-20",
+      "official": false,
+      "license": "GPL-3.0-only"
     }
   ]
 }
