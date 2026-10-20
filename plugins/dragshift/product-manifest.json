@@ -62,14 +62,6 @@
       "install": false
     },
     {
-      "source": "bin/__pycache__/dragshiftcpython-314.pyc",
-      "destination": "bin/__pycache__/dragshiftcpython-314.pyc",
-      "sha256": "11b33d2e92fb34cae2eddb9591a6ca44b3638816296fdefe85490683204cfd77",
-      "mode": "0644",
-      "size": 4632,
-      "install": true
-    },
-    {
       "source": "bin/dragshift",
       "destination": "bin/dragshift",
       "sha256": "2f1ad932e41b8ff06a0d77caa9d8212128ebb303831f8b5aec38c5a2bea96137",
@@ -304,9 +296,9 @@
     {
       "source": "tests/test_launcher.py",
       "destination": "tests/test_launcher.py",
-      "sha256": "d9894ba614ae5b3b04648c7c79ca58caf1f2513f5a04e97a6419b2116fa7226c",
+      "sha256": "fbe16ca8ff76cafcd13223debf23ef20addb36623d77d36c1204922a3e885b3b",
       "mode": "0644",
-      "size": 4280,
+      "size": 4286,
       "install": true
     },
     {

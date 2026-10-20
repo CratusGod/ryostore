@@ -85,7 +85,7 @@ sys.exit(mod.run(sys.argv[2:], None))
 
 
 def _spawn(*cmd: str) -> subprocess.Popen:
-    return subprocess.Popen(["python3", "-c", _RUNNER, str(LAUNCHER), *cmd],
+    return subprocess.Popen(["python3", "-B", "-c", _RUNNER, str(LAUNCHER), *cmd],
                             stdout=subprocess.PIPE, text=True)
 
 
