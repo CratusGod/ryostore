@@ -71,3 +71,68 @@ def test_sigterm_unwinds_cleanly(jpg):
     p.send_signal(signal.SIGTERM)
     assert p.wait(timeout=20) != 0
     assert not list(big.parent.glob(".~*.part"))
+
+
+# ---- the engine runs as a child: exit codes and signals must pass through ----
+
+_RUNNER = """
+import importlib.machinery, importlib.util, sys
+loader = importlib.machinery.SourceFileLoader("launcher", sys.argv[1])
+spec = importlib.util.spec_from_loader("launcher", loader)
+mod = importlib.util.module_from_spec(spec); loader.exec_module(mod)
+sys.exit(mod.run(sys.argv[2:], None))
+"""
+
+
+def _spawn(*cmd: str) -> subprocess.Popen:
+    return subprocess.Popen(["python3", "-c", _RUNNER, str(LAUNCHER), *cmd],
+                            stdout=subprocess.PIPE, text=True)
+
+
+def _child_pid(parent: int) -> int:
+    import time
+    for _ in range(100):
+        kids = Path(f"/proc/{parent}/task/{parent}/children").read_text().split()
+        if kids:
+            return int(kids[0])
+        time.sleep(0.05)
+    raise AssertionError("child never started")
+
+
+def _gone(pid: int) -> bool:
+    import time
+    for _ in range(100):
+        try:
+            os.kill(pid, 0)
+        except ProcessLookupError:
+            return True
+        # a zombie of an exited parent is reaped by init; treat Z as gone
+        try:
+            if Path(f"/proc/{pid}/stat").read_text().split()[2] == "Z":
+                return True
+        except FileNotFoundError:
+            return True
+        time.sleep(0.05)
+    return False
+
+
+def test_run_passes_the_exit_code_through():
+    assert _spawn("sh", "-c", "exit 3").wait(timeout=10) == 3
+
+
+def test_sigterm_reaches_the_engine_child():
+    import signal
+    p = _spawn("sleep", "30")
+    kid = _child_pid(p.pid)
+    p.send_signal(signal.SIGTERM)
+    assert p.wait(timeout=10) == 128 + signal.SIGTERM
+    assert _gone(kid)
+
+
+def test_sigkill_of_the_launcher_takes_the_child_with_it():
+    import signal
+    p = _spawn("sleep", "30")
+    kid = _child_pid(p.pid)
+    p.send_signal(signal.SIGKILL)
+    p.wait(timeout=10)
+    assert _gone(kid)

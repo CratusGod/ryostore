@@ -1892,7 +1892,7 @@
         "assets/preview-widget.png"
       ],
       "manifest": "product-manifest.json",
-      "manifestSha256": "153f67ea712390f4b63aa303f78c4f8dbe70fa7b3d40b5643f360241092e7932",
+      "manifestSha256": "1df3a98569c71c59bf79e2058f2882cf2cd7248d3ebbebc0eb0f7295ff4396a1",
       "official": false,
       "tagline": "DragShift on Wayland: start dragging a file, press Shift, and drop it on a liquid-glass radial menu to convert or edit it.",
       "icon": "swap_horiz",

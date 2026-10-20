@@ -2,16 +2,21 @@
 """dragshift - the one command the DragShift bar plugin runs.
 
 Standard library only, so it works on whatever python3 pacman ships. It finds
-the engine checkout (--engine DIR, default ~/.local/share/dragshift/engine), then replaces itself
-with that checkout's own venv interpreter running dragshift_engine.py under
-`python -I`. That venv uses a uv-managed Python, so system Python upgrades
+the engine checkout (--engine DIR, default ~/.local/share/dragshift/engine), then runs
+that checkout's own venv interpreter on dragshift_engine.py under `python -I`,
+passing stdin/stdout through, forwarding SIGTERM/SIGINT/SIGHUP, and exiting with
+its code. The child also dies if this process is SIGKILLed (PR_SET_PDEATHSIG),
+so a cancelled job never keeps running unseen. That venv uses a uv-managed Python, so system Python upgrades
 never break it. If the venv is missing it answers in the same one-line JSON the
 engine uses, with the command that fixes it.
 
     dragshift [--engine DIR] [--output next|folder] COMMAND ARGS...
 """
+import ctypes
 import json
 import os
+import signal
+import subprocess
 import sys
 from pathlib import Path
 
@@ -41,7 +46,27 @@ def main(argv):
     env = dict(os.environ, DRAGSHIFT_ENGINE=str(engine))
     script = str(HERE / "dragshift_engine.py")
     # -I: ignore PYTHON* env and cwd; -B: never write __pycache__ into the plugin folder (R8)
-    os.execve(str(python), [str(python), "-I", "-B", script, *argv], env)
+    sys.exit(run([str(python), "-I", "-B", script, *argv], env))
+
+
+def _die_with_parent():
+    """In the child, before exec: get SIGKILL when the launcher goes away."""
+    try:
+        ctypes.CDLL(None, use_errno=True).prctl(1, signal.SIGKILL)  # PR_SET_PDEATHSIG
+    except (OSError, AttributeError):
+        pass
+
+
+def run(cmd, env):
+    """Run the engine as a child, forward termination signals, return its exit code."""
+    proc = subprocess.Popen(cmd, env=env, preexec_fn=_die_with_parent)
+
+    def forward(sig, _frame):
+        proc.send_signal(sig)
+    for sig in (signal.SIGTERM, signal.SIGINT, signal.SIGHUP):
+        signal.signal(sig, forward)
+    code = proc.wait()
+    return 128 - code if code < 0 else code
 
 
 if __name__ == "__main__":

@@ -59,9 +59,9 @@ when you save.
 - **Loud failures.** On load the plugin runs `bin/dragshift doctor`. If the
   engine is missing, broken or on the wrong commit, a red card names the one
   command that fixes it.
-- **Tests.** `tests/` has 131 tests: every command, every format, filenames with
+- **Tests.** `tests/` has 134 tests: every command, every format, filenames with
   spaces, unicode, `#` and `%20`, mixed and broken drops, honest Undo, cancel
-  (SIGTERM) cleanup, a real Crop save through DragShift's own window, the
+  (SIGTERM) cleanup, signal forwarding to the engine, a real Crop save through DragShift's own window, the
   drop-URL decoding, and menu parity (every slice is something the engine can do). `engine/update.sh` rollback was tested on failure and on
   SIGTERM mid-update; `engine/setup.sh` was tested repairing a venv whose Python vanished.
 
