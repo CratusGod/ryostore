@@ -36,7 +36,7 @@
     },
     {
       "type": "os",
-      "key": "\u2503\uf30f OS \u2503{#37}\u2502",
+      "key": "\u2503\uf17c OS \u2503{#37}\u2502",
       "format": "{name} {version} {arch}"
     },
     {

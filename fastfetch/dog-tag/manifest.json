@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "dog-tag",
   "category": "fastfetch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "ryoku/fastfetch/dog-tag",
   "files": [
     {
@@ -17,16 +17,16 @@
       "source": "PROVENANCE.txt",
       "destination": "PROVENANCE.txt",
       "mode": "0644",
-      "size": 875,
-      "sha256": "80be5dffbad363e865ba8d44640c3e4f89410c7ae029f46882dad1b8ae674524",
+      "size": 1064,
+      "sha256": "65b52e803b31f32f70ec3c36d7b0d76efaa9dc529be527d80fb9a2fec56d544d",
       "install": true
     },
     {
       "source": "config.jsonc",
       "destination": "config.jsonc",
       "mode": "0644",
-      "size": 1200,
-      "sha256": "4eafaa308432c5579a7400d0ff44f4aa4b6450754162a4cbcd6660c9cb2bfb84",
+      "size": 1198,
+      "sha256": "293b4260177d2a04465be98a75544ce22dd9972fde196eb672b806be99d62249",
       "install": true
     },
     {

@@ -4,7 +4,7 @@
     {
       "id": "ryoku-dossier",
       "name": "Ryoku Dossier",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "path": "fastfetch/ryoku-dossier",
       "author": "Ryoku Team",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/fastfetch/ryoku-dossier",
@@ -21,7 +21,8 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "3c297342f1f1734f5bd4e4bb0884bc3c50c515566fafa8e0f26d0d33a032ed93"
+      "manifestSha256": "9bb4d81a4008f2de996c1c7863c7c9cfa5f789b4feb42da50bb203008f5c1747",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "minimal-grid",
@@ -48,7 +49,7 @@
     {
       "id": "spectrum",
       "name": "Spectrum",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "path": "fastfetch/spectrum",
       "author": "awesome-fastfetch-collection",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -65,12 +66,13 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "d9ae5720590353b749f3804e398d06dcdafaa027b7150fcef9589bf74593479d"
+      "manifestSha256": "6f49a2277a9ab81b7e24212806e70aa2f65a513d8cae21c8bdc7d0c30498d585",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "system-console",
       "name": "System Console",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "path": "fastfetch/system-console",
       "author": "MiZentUi",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -87,12 +89,13 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "4858af4dc92fee595f79e07841ebeba3d059e4c9c78b19a86dac345d86285b24"
+      "manifestSha256": "1aa4da066e2156ca1bc4297dfa005c3c81397f8d92ecb413f682f9eae79e5f39",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "arc-reactor",
       "name": "Arc Reactor",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "fastfetch/arc-reactor",
       "author": "awesome-fastfetch-collection",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -110,7 +113,8 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "072f60379f99ce499a5107613c6525cddb885c4eb837e4ce782cc0403ca03e69"
+      "manifestSha256": "2681806e984c0bebae2676e1a203d208179fb7e2bda7aa1ec86cbaf5c67f5c86",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "block-banner",
@@ -138,7 +142,7 @@
     {
       "id": "bulkhead",
       "name": "Bulkhead",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "path": "fastfetch/bulkhead",
       "author": "Cmdr_Scotty",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -156,12 +160,13 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "73141480685782399f4385db69072ad686d5010642f5d955bcecd322748425f6"
+      "manifestSha256": "0d8173392f029c2412856d2fa3fb725f1db8185cc605bc80a03c5ef553753494",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "cassette",
       "name": "Cassette",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "fastfetch/cassette",
       "author": "esplatanukis2-wq",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -179,12 +184,13 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "ff98255105d7814bf508173b5df22cbb7e0e9f8bbf171e9439011b76dbe7549a"
+      "manifestSha256": "c8c8ee767bbeb5e10f71cf0aa06c4a45e55445ef6e2ea51e0a8a5fa2c338d2f4",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "control-room",
       "name": "Control Room",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "fastfetch/control-room",
       "author": "rorfetch",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -202,12 +208,13 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "a46051dd930f1d9ff325f1bf851683ce8da244a6e1f311024c08666beb59fe4f"
+      "manifestSha256": "f35bb0f1ad2a4c6f9476068259298343a472a106a86adfe2da154532c027825d",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "day-brief",
       "name": "Day Brief",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "fastfetch/day-brief",
       "author": "awesome-fastfetch-collection",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -225,12 +232,13 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "72a1e6284701339e55cbf9ec3f9929a8a51cfd194960f8c0a46fdb716f1fb0bf"
+      "manifestSha256": "770dd98aba899b105f432ef17040ac990ad32b1f99ab9f66088aa80d38738367",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "deep-specs",
       "name": "Deep Specs",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "path": "fastfetch/deep-specs",
       "author": "ghosttree",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -248,12 +256,13 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "2352e0f9cde16667855be107dd4056a376493ef02ec138240ef3d125d04651ab"
+      "manifestSha256": "dcd3e6848d3b6c6c3e2d96355186d996bdc19c339b0c3006cdbc4df64f885802",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "dog-tag",
       "name": "Dog Tag",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "fastfetch/dog-tag",
       "author": "awesome-fastfetch-collection",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -271,12 +280,13 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "0c7a03a9949aa5541ef4c4ec683ed3c162d6d9b124fc4d46c275f15431d9e9be"
+      "manifestSha256": "62ca24058cee0a37198736ea4175f9b70e9cda64329061c20988a3893ae49221",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "dual-panel",
       "name": "Dual Panel",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "fastfetch/dual-panel",
       "author": "kuruma-config",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -294,12 +304,13 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "105da8a46e5e3e7e17db66cc31f005aa6481c9c79c6d05a91a36ebd505936f7f"
+      "manifestSha256": "5271743752256f6b8a850fd7aed93c795f1069df7525ddbbe9446af04da8eeea",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "full-audit",
       "name": "Full Audit",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "fastfetch/full-audit",
       "author": "LainOS",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -317,12 +328,13 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "0197c0b9531f9e273654e158e92939887e1a17d1f061a5c2deebf67f821ff522"
+      "manifestSha256": "03eb61df89cb9ad8a517110ebd81395e0f72b40e46220c58d67d3454cbd5f35b",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "full-frame",
       "name": "Full Frame",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "path": "fastfetch/full-frame",
       "author": "sofijacom",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -340,12 +352,13 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "68f5bf28ac123d47aea03509f8365dca87e9ae7ef0771d87b54f0477c10f31f7"
+      "manifestSha256": "e337f7af4e6ae486f52736bb93584fd6ced2565c979714b66af44df5bda105b2",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "grimoire",
       "name": "Grimoire",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "fastfetch/grimoire",
       "author": "awesome-fastfetch-collection",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -363,12 +376,13 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "f34b562e44b25916e5dcc239e564d2d99b5afa1c1b9607c7893df592468144e9"
+      "manifestSha256": "39d4c8132246bf3af64f4d5bc6a7607763494dc57f3b12b554ae7186702ccb92",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "install-log",
       "name": "Install Log",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "fastfetch/install-log",
       "author": "harilvfs",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -386,12 +400,13 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "b567191a64d3bd35dc7fadda08da3eaff8ad12d641b424ed85eab7636afa3cca"
+      "manifestSha256": "670567a00ffd703a7af464a702934ddbd4d58c4a77ac679dbd3713e532547088",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "key-cards",
       "name": "Key Cards",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "fastfetch/key-cards",
       "author": "Beastboy999cr",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -409,12 +424,13 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "d25d6ffa99d738d3da6190ba03850d963a4235a0e3df105e4957c63f9f39a588"
+      "manifestSha256": "1fbbe72a07eae696068558749fd9c61ab471896e935223054ecb5424385f97db",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "pastel-brief",
       "name": "Pastel Brief",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "fastfetch/pastel-brief",
       "author": "awesome-fastfetch-collection",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -432,12 +448,13 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "9c7a71c3d39b9203a5e5761a278f3aacd741e4e79d6c5e9caa1e12744fa7088d"
+      "manifestSha256": "f4f42a66fce953b23ba498348d20e505a38351f7df362def2bd075d2911b5bc4",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "pill-box",
       "name": "Pill Box",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "path": "fastfetch/pill-box",
       "author": "awesome-fastfetch-collection",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -455,7 +472,8 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "fe653dc582564ff3d738b1537d8992ede6d818690c494e93c6bcf29f46c2b1ab"
+      "manifestSha256": "8dcf717a4f9940223c8c26b8d1dd357a00fe2595dee0127494a71c63b31930f0",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "pit-wall",
@@ -483,7 +501,7 @@
     {
       "id": "plain-column",
       "name": "Plain Column",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "fastfetch/plain-column",
       "author": "awesome-fastfetch-collection",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -501,12 +519,13 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "2f9e2b63b4ba6c28918aac7a41c14eb62b7052f652a9dcba8fd947acae309896"
+      "manifestSha256": "2e86c65024d3865b8ee82101dabb3686805d087ab2d9c97f49e7b2bc7ffc57aa",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "pocket-card",
       "name": "Pocket Card",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "fastfetch/pocket-card",
       "author": "kuruma-config",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -524,12 +543,13 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "ae42fec26837de38d6494d66ce28154e62d5a3ad42db1de045617ada89d1f328"
+      "manifestSha256": "e719914f86f2b94d3753e580361dbdab559de972340d3b5530eaa5c42a4666a1",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "service-manual",
       "name": "Service Manual",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "fastfetch/service-manual",
       "author": "awesome-fastfetch-collection",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -547,12 +567,13 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "a07acc16ac501a1fddc5540dfe6aab392e9788c38bdd02c6fe735d33f4890f55"
+      "manifestSha256": "a3aff9ac2276770c47e3fad346e085c9c33144f5cf4064c80d9470e8f15ad5d8",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "soft-column",
       "name": "Soft Column",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "path": "fastfetch/soft-column",
       "author": "aayushchalise",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -570,12 +591,13 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "6b1c457b9fe2e960162300bdec4c4b03aa2091365c0c4b625273774a0e4e787b"
+      "manifestSha256": "328edd3b093691c4ba6e0f30ec6b3d45a75f0b53ec9e8e5ebe3d9d117fba541d",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "terminal-online",
       "name": "Terminal Online",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "path": "fastfetch/terminal-online",
       "author": "kitty-cachyos",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -593,12 +615,13 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "f07e1b545e1d5d222bf7f78de25eff267054144bdb8e08ca3a29c3abef9be263"
+      "manifestSha256": "aee6825226c9df5af82b67100b9f498c3913970c3b9a6321d26a9c21b12d2c12",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "wide-card",
       "name": "Wide Card",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "fastfetch/wide-card",
       "author": "kuruma-config",
       "upstream": "https://github.com/Chintanpatel24/awesome-fastfetch-collection",
@@ -616,7 +639,8 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "23e9fcd1ca4965e65daab283a6c430934914803820ab600f5f23b8490a53d7ef"
+      "manifestSha256": "a4b7025693cd29e8fb3400f48d761b3e541bf3a5b5f5acc037438e2bb6d2efa1",
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "ryoku-mono",
@@ -996,7 +1020,7 @@
     {
       "id": "ryoku-filigree",
       "name": "Ryoku Filigree",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "fastfetch/ryoku-filigree",
       "author": "aethctl & Sipper1236",
       "upstream": "https://github.com/Ryoku-dev/ryostore/tree/main/fastfetch/ryoku-filigree",
@@ -1016,8 +1040,8 @@
       "preview": "preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "de008bd29af5cef559f5c9238373e6ea3988ed64aed71dd790048d3e6284d73d",
-      "lastUpdated": "2026-09-27",
+      "manifestSha256": "9c12404e0b5dc58561fb9159920b06700ef24ebaa26c8d8782ba2d0c827051f1",
+      "lastUpdated": "2026-10-20",
       "official": false,
       "license": "GPL-3.0-only"
     }

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "dual-panel",
   "category": "fastfetch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "ryoku/fastfetch/dual-panel",
   "files": [
     {
@@ -17,16 +17,16 @@
       "source": "PROVENANCE.txt",
       "destination": "PROVENANCE.txt",
       "mode": "0644",
-      "size": 1086,
-      "sha256": "510ba713a0d181a706795aaec0a8f102fe7023876f4abe6fd5ae3bab2c53e956",
+      "size": 1214,
+      "sha256": "7ab64df265ad5d6f179ab4c24dbb420fd08437aeeb261163aa88c0a0b9a8538b",
       "install": true
     },
     {
       "source": "config.jsonc",
       "destination": "config.jsonc",
       "mode": "0644",
-      "size": 2148,
-      "sha256": "dc7e1ae4acf30b236caeff3c938b910df001b0d40267c179667a24007efa7c7a",
+      "size": 2126,
+      "sha256": "7cb9c2d82d92782270aa7880a3db1b01a3c24e9475386aeb97082761d48f478e",
       "install": true
     },
     {

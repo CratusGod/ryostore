@@ -1,9 +1,9 @@
-// Dog Tag - military stencil readout beside the Arch mark: gold keys, red gauges, ' ~> ' rail
+// Dog Tag - military stencil readout beside the distribution's small logo: gold keys, red gauges, ' ~> ' rail
 // Ported for Ryoku from awesome-fastfetch-collection (configs/tf2soldier-config), MIT.
 // ryoku:recolor keys=primary
 {
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
-  "logo": { "type": "small", "source": "arch", "padding": { "right": 2 } },
+  "logo": { "type": "small", "padding": { "right": 2 } },
   "display": {
     "bar": { "char": { "elapsed": "/", "total": "/" }, "width": 20 },
     "percent": { "type": 3, "color": { "green": "red", "yellow": "red" }, "ndigits": 2 },
@@ -14,7 +14,7 @@
   "modules": [
     { "type": "title", "format": "{6}{7}{#keys}{host-name}{#}" },
     "break",
-    { "type": "os", "key": "OS \uE62A", "format": "{#blue}{4}{#} {?6}({#keys}{6}{#}){?} {?12}{12}{?}" },
+    { "type": "os", "key": "OS \uF31A", "format": "{#blue}{4}{#} {?6}({#keys}{6}{#}){?} {?12}{12}{?}" },
     { "type": "shell", "key": "Shell \uEBC7" },
     { "type": "cpu", "key": "CPU \uF4BC" },
     { "type": "gpu", "key": "GPU \uDB81\uDE1A" },

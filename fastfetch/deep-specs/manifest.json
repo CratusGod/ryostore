@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "deep-specs",
   "category": "fastfetch",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "destination": "ryoku/fastfetch/deep-specs",
   "files": [
     {
@@ -17,16 +17,16 @@
       "source": "PROVENANCE.txt",
       "destination": "PROVENANCE.txt",
       "mode": "0644",
-      "size": 1783,
-      "sha256": "81e341faada678e9221bf96e49f126505843c37b06bf685a2b898aca41ff7641",
+      "size": 1943,
+      "sha256": "e59b915924bb9d1bb734a6a7401d154fac45cb4fbb5654e257ec37631f472613",
       "install": true
     },
     {
       "source": "config.jsonc",
       "destination": "config.jsonc",
       "mode": "0644",
-      "size": 2233,
-      "sha256": "e6c389bb88e22fa62e4342ab244bc90ea98b6244a63d98354e4f17cd8748f1dc",
+      "size": 2275,
+      "sha256": "8e3e45214fe1c8f375fdd065d3cf08c8fc61b6ca83a046d3883889e855608bf5",
       "install": true
     },
     {

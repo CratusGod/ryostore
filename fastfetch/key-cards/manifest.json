@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "key-cards",
   "category": "fastfetch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "ryoku/fastfetch/key-cards",
   "files": [
     {
@@ -17,16 +17,16 @@
       "source": "PROVENANCE.txt",
       "destination": "PROVENANCE.txt",
       "mode": "0644",
-      "size": 960,
-      "sha256": "fe9b3ae9063e07ecc43e3cdc5ca2340343419306ab515f11e3077c8ab3ac73f0",
+      "size": 1195,
+      "sha256": "90aeb3378c2b4af7851910eb63bcda8869750abf34d3506044d4056cf7364fb6",
       "install": true
     },
     {
       "source": "config.jsonc",
       "destination": "config.jsonc",
       "mode": "0644",
-      "size": 2818,
-      "sha256": "086ad34cfc9bf4e3580cf3346ad6a879bd524af2322310275984c4b22c3894e6",
+      "size": 2806,
+      "sha256": "4cf728f846aca5cbc605d99a3d27a1605aa5b59073384a6aad097e37e104bf45",
       "install": true
     },
     {

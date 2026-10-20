@@ -52,7 +52,7 @@
   "modules": [
     {
       "type": "custom",
-      "format": " {#keys}╭──── {#title}󰣇  SYSTEM {#keys}───────────────────────────────────╮"
+      "format": " {#keys}╭──── {#title}󰌽  SYSTEM {#keys}───────────────────────────────────╮"
     },
     {
       "type": "title",
@@ -72,7 +72,7 @@
     },
     {
       "type": "os",
-      "key": " {#keys}│ {#title}󰣇 {#@141}OS        ",
+      "key": " {#keys}│ {#title}󰌽 {#@141}OS        ",
       "format": "{pretty-name} [{arch}]"
     },
     {
@@ -187,8 +187,8 @@
     },
     {
       "type": "packages",
-      "key": " {#keys}│ {#separator}   ├─{#@226}󰮯 {#@193}Pacman",
-      "format": "{#title}{pacman}{#output}"
+      "key": " {#keys}│ {#separator}   ├─{#@226}󰏖 {#@193}System",
+      "format": "{#title}{?pacman}{pacman}{?}{?rpm}{rpm}{?}{?xbps}{xbps}{?}{#output}"
     },
     {
       "type": "packages",

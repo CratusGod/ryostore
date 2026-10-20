@@ -1,9 +1,9 @@
-// Grimoire - rounded monochrome card beside the Arch mark, labels left, values right-aligned
+// Grimoire - rounded monochrome card beside the distribution's logo, labels left, values right-aligned
 // Ported for Ryoku from awesome-fastfetch-collection (configs/friefetch), MIT.
 // ryoku:recolor keys=foreground
 {
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
-  "logo": { "type": "builtin", "source": "arch", "padding": { "top": 2, "right": 4, "left": 2 } },
+  "logo": { "type": "builtin", "padding": { "top": 2, "right": 4, "left": 2 } },
   "display": { "separator": "  ", "color": { "keys": "#e6e6e6" } },
   "modules": [
     "break",

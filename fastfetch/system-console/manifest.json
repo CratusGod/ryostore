@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "system-console",
   "category": "fastfetch",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "destination": "ryoku/fastfetch/system-console",
   "files": [
     {
@@ -17,16 +17,16 @@
       "source": "PROVENANCE.txt",
       "destination": "PROVENANCE.txt",
       "mode": "0644",
-      "size": 825,
-      "sha256": "fd3fed6ca0610c84b9ec118ba830ad814949eb2564413d427ca40378fe81e677",
+      "size": 953,
+      "sha256": "5234026aa98ea265b058131e3f4b731cf7ca96e0cf5e044f271cab9ee16ccb0e",
       "install": true
     },
     {
       "source": "config.jsonc",
       "destination": "config.jsonc",
       "mode": "0644",
-      "size": 7262,
-      "sha256": "583f9630f7a47fdf6ffd2404ecddee8ceab953509c0e3b89f488e689b8135689",
+      "size": 7175,
+      "sha256": "6a2a8aa7af5ab504c437d3c7b98f1b4776a58057159cbbb1b5f57be36e21b3d1",
       "install": true
     },
     {

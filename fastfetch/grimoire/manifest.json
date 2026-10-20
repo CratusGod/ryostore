@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "grimoire",
   "category": "fastfetch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "ryoku/fastfetch/grimoire",
   "files": [
     {
@@ -17,16 +17,16 @@
       "source": "PROVENANCE.txt",
       "destination": "PROVENANCE.txt",
       "mode": "0644",
-      "size": 1112,
-      "sha256": "65682ba19fa375a2a45a21ad61ee8ca751bd0e3d3c06736658b0616274a19421",
+      "size": 1234,
+      "sha256": "7a23f7d76851141dd0bf2f21a9f9320fc5a8f9e0cc3979e4b1b06a68a8a4f7ba",
       "install": true
     },
     {
       "source": "config.jsonc",
       "destination": "config.jsonc",
       "mode": "0644",
-      "size": 2027,
-      "sha256": "291103119dc5c745cbf3eb79f4b344fe373a959484dab7437844ae6bbebb11f0",
+      "size": 2019,
+      "sha256": "189018d63f97642bd9c10d9a556a3ffd9b21064bd58399be4419d9daade4480b",
       "install": true
     },
     {
