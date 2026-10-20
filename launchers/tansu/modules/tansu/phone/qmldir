@@ -1,0 +1,7 @@
+module tansu.modules.tansu.phone
+PhoneBody 1.0 PhoneBody.qml
+PhoneCard 1.0 PhoneCard.qml
+PhoneKey 1.0 PhoneKey.qml
+PhonePlate 1.0 PhonePlate.qml
+TansuKey 1.0 TansuKey.qml
+TansuNavKey 1.0 TansuNavKey.qml

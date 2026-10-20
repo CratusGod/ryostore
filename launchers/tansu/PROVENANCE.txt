@@ -1,0 +1,18 @@
+Tansu Ryoku App Launcher
+
+Source: Ported from Tansu
+Upstream: https://github.com/Blapples/Tansu
+Commit: da96f04b96ef698bc69b5c3acac9f8252caf6303
+Author: dodo986 (port)
+Description: The Tansu launcher phone, ported one-to-one to Ryoku
+License: GNU General Public License version 3; see LICENSE
+
+This app launcher is the Tansu launcher: the phone-shaped home screen with the
+app grid, the search box and its cards (calculator, clipboard, colour, emoji and
+web search) and the system actions, together with the wallpaper board it turns
+into. It is adapted for native Ryoku integration: apps come from Quickshell's own
+DesktopEntries index, session actions (lock, sleep, log out, reboot, shut down)
+from Ryoku's SessionActions, Wi-Fi from Ryoku's Network, Bluetooth from
+Quickshell.Bluetooth, night light from Ryoku's Nightlight, and wallpapers from
+ryogami; the palette is Ryoku's Matugen theme. Its settings live in
+~/.config/ryoku/launcher-tansu.json.
