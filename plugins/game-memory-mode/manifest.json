@@ -1,7 +1,7 @@
 {
   "id": "game-memory-mode",
   "name": "Game Mode Optimizer",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Sannidhya Sandheer <148160409+sannidhyas@users.noreply.github.com>",
   "description": "Temporarily stop voice typing and replace animated wallpapers while gaming; restore the desktop afterwards.",
   "license": "MIT",
@@ -37,7 +37,7 @@
   "dependencies": {
     "commands": [
       "python3",
-      "systemctl",
+      "ryoku-host",
       "ffmpeg",
       "sleep"
     ]

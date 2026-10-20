@@ -1,7 +1,7 @@
 {
   "id": "strata",
   "name": "Local LLM Manager",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "author": "guyb <blumguy111@gmail.com>",
   "description": "Pick a local model and start or stop it from the bar. Finds Strata, TabbyAPI and llama.cpp engines and their models, one port per model.",
   "license": "MIT",
@@ -36,8 +36,7 @@
   },
   "dependencies": {
     "commands": [
-      "systemctl",
-      "systemd-run",
+      "ryoku-host",
       "ss"
     ]
   },

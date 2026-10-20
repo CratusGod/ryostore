@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "claude-companion",
   "category": "plugins",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "destination": "ryoku/plugins/claude-companion",
   "files": [
     {
@@ -184,9 +184,9 @@
     {
       "source": "content/Widget.qml",
       "destination": "content/Widget.qml",
-      "sha256": "ef89bfc6cefc7f27a8d7bd0c655bf400cd132db4963dee9b43120267808d0d51",
+      "sha256": "8e659a90fc140a1f8668941b3881ec59968d531606207976c7630abfdaf48cbe",
       "mode": "0644",
-      "size": 21433,
+      "size": 21379,
       "install": true
     },
     {
@@ -272,7 +272,7 @@
     {
       "source": "manifest.json",
       "destination": "manifest.json",
-      "sha256": "758abc6fe4c09e34765508fee8f7b12edb7118ac99f4af52e573cab127cd66a9",
+      "sha256": "6536ce0bbcc0c1f1a08dec056d39c25233956eb1533ae04349488aa38754810a",
       "mode": "0644",
       "size": 5014,
       "install": true

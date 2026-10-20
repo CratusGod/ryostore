@@ -90,7 +90,7 @@ Singleton {
 
     onIsSuspendingAndNotChargingChanged: {
         if (root.available && isSuspendingAndNotCharging) {
-            Quickshell.execDetached(["bash", "-c", `systemctl suspend || loginctl suspend`]);
+            Quickshell.execDetached(["ryoku-host", "power", "suspend"]);
         }
     }
 
