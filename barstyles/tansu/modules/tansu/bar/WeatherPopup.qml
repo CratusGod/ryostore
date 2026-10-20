@@ -54,7 +54,7 @@ TansuPopup {
 
     onOpenChanged: {
         if (open && root.source)
-            root.source.refreshIfStale()
+            root.source.refresh()
         if (open) {
             root.hoverHour = -1
             root.hoverDay = -1

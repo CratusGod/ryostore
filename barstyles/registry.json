@@ -183,7 +183,7 @@
     {
       "id": "tansu",
       "name": "Tansu",
-      "version": "1.4.0",
+      "version": "1.4.1",
       "path": "barstyles/tansu",
       "author": "dodo986",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/barstyles/tansu",
@@ -203,8 +203,8 @@
       "preview": "assets/preview.png",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "716fe0d248ab74027252044e1c5e7c1770282237b1fd79d7e855c4adb424c8d1",
-      "lastUpdated": "2026-10-20",
+      "manifestSha256": "ea90ab6a5f3dc012ebe55c0b671a7f24c8b43071f70a5318ad5e95cd83a6b967",
+      "lastUpdated": "2026-10-21",
       "official": false,
       "license": "GPL-3.0-only"
     }
