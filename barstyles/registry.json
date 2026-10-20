@@ -175,7 +175,7 @@
       "preview": "assets/preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "7d68e1f47f7e224999d7b0afcb8db8442e1fb2b8fd914c4de64eea8daf1be57e",
+      "manifestSha256": "f8be00c89fb3934724e2c321a940e08c6b3478680763d9d63a4a265a1d5712bd",
       "lastUpdated": "2026-10-21",
       "official": false,
       "license": "GPL-3.0-only"

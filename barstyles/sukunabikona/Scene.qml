@@ -355,8 +355,6 @@ Scope {
         WlrLayershell.namespace: "sukunabikona-rail"
         anchors { top: true; bottom: true; left: true; right: true }
         visible: !shell.hasFullscreen
-        // The rail only fades out when compact; drop it from the input mask too,
-        // or its invisible geometry keeps swallowing clicks.
         mask: Region { item: railWindow.compact ? null : rail }
 
         C.RyokuRail {
