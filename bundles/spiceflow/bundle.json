@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "spiceflow",
   "category": "bundles",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "destination": "ryoku/bundles/spiceflow",
   "name": "Ryoku Palette Bridge",
-  "description": "Wallpaper colours for Spotify and Vesktop, with optional Zen live theming through a separately installed signed extension. Installs and starts the bridge user service.",
+  "description": "Wallpaper colours for Spotify and Vesktop, with optional Zen live theming through a separately installed signed extension. Turns on the palette bridge Ryoku ships and connects it to your apps.",
   "icon": "palette",
   "accent": "#65d3ff",
   "preview": "assets/preview.png",
@@ -13,24 +13,6 @@
     "assets/preview.png"
   ],
   "items": [
-    {
-      "type": "package",
-      "name": "git",
-      "detect": "git",
-      "tier": "core",
-      "source": "official",
-      "summary": "Fetch the pinned palette bridge source.",
-      "upstream": "https://git-scm.com"
-    },
-    {
-      "type": "package",
-      "name": "go",
-      "detect": "go",
-      "tier": "core",
-      "source": "official",
-      "summary": "Build the small palette bridge daemon.",
-      "upstream": "https://go.dev"
-    },
     {
       "type": "package",
       "name": "curl",
@@ -43,10 +25,10 @@
     {
       "type": "script",
       "name": "ryoku-palette-bridge",
-      "detect": "ryoku-palette-bridge-store-2-1-0",
+      "detect": "ryoku-palette-bridge-store-3-0-0",
       "tier": "core",
       "interactive": false,
-      "source": "git",
+      "source": "ryoku",
       "summary": "Apply your wallpaper colours to Zen, Spotify, and Discord.",
       "upstream": "https://github.com/Sipper1236/ryoku-palette-bridge"
     }
@@ -56,8 +38,8 @@
       "source": "README.md",
       "destination": "README.md",
       "mode": "0644",
-      "size": 3235,
-      "sha256": "0dd204a9470ac98ecacfaef6a66edc336e62beda09a1a7ecd4757bc359133a64",
+      "size": 2625,
+      "sha256": "febd0274b6bf0fc2f8afdf0c94e11538e760a5aa20455df1d7a9321c17bbaa28",
       "install": false
     },
     {
@@ -72,8 +54,8 @@
       "source": "installers/ryoku-palette-bridge.sh",
       "destination": "installers/ryoku-palette-bridge.sh",
       "mode": "0755",
-      "size": 3558,
-      "sha256": "509511675f9571466864aab562155252b8e21c16a833b53ea381f229b26358ec",
+      "size": 1946,
+      "sha256": "3ffd8bdbb6e9c9a269b85e709d7a1d359f61191f2b7c6b4cc3fc23686449ca51",
       "install": false
     }
   ]

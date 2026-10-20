@@ -4,124 +4,80 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 installer="$repo_root/bundles/spiceflow/installers/ryoku-palette-bridge.sh"
 cmp "$installer" "$repo_root/installers/ryoku-palette-bridge.sh"
-expected_commit=$(sed -n 's/^commit=//p' "$installer")
 test_root=$(mktemp -d /tmp/ryostore-palette-installer.XXXXXX)
 trap 'rm -rf "$test_root"' EXIT
 fake_bin="$test_root/bin"
-repair_marker="$test_root/repaired"
-canonical_marker="$test_root/canonical-service"
-repair_log="$test_root/repair.log"
-curl_log="$test_root/curl.log"
-mkdir -p "$fake_bin" "$test_root/home"
+share="$test_root/share"
+service_on="$test_root/service-on"
+host_log="$test_root/host.log"
+integrations_log="$test_root/integrations.log"
+forbidden_log="$test_root/forbidden.log"
+mkdir -p "$fake_bin" "$share" "$test_root/home"
 
+# The packaged bridge: its command and its integration script.
+printf '#!/usr/bin/env bash\nexit 0\n' > "$fake_bin/ryoku-palette-bridge"
+cat > "$share/install-integrations.sh" <<'EOF'
+#!/usr/bin/env bash
+printf '%s\n' "$*" >> "$INTEGRATIONS_LOG"
+EOF
+
+# Presence answers only for this test's commands, never the machine running it.
 cat > "$fake_bin/ryoku-cmd-present" <<'EOF'
 #!/usr/bin/env bash
-[[ ${1:-} == ryoku-palette-bridge ]]
+[[ -x ${0%/*}/$1 || -x $HOME/.local/bin/$1 ]]
+EOF
+
+# Ryoku's host seam starts the session service on systemd and runit alike.
+cat > "$fake_bin/ryoku-host" <<'EOF'
+#!/usr/bin/env bash
+printf '%s\n' "$*" >> "$HOST_LOG"
+[[ $* == 'svc --user enable --now ryoku-palette-bridge' ]] && : > "$SERVICE_ON"
 EOF
 
 cat > "$fake_bin/curl" <<'EOF'
 #!/usr/bin/env bash
-printf 'request\n' >> "$FAKE_CURL_LOG"
-if [[ -f $REPAIR_MARKER ]]; then
-  printf 'ok\n'
-  exit 0
-fi
+[[ -f $SERVICE_ON ]] && printf 'ok\n'
+EOF
+
+# A distro or init tool would only work on some editions.
+for tool in systemctl git go; do
+  cat > "$fake_bin/$tool" <<'EOF'
+#!/usr/bin/env bash
+printf '%s %s\n' "${0##*/}" "$*" >> "$FORBIDDEN_LOG"
 exit 1
 EOF
+done
+printf '#!/usr/bin/env bash\nexit 0\n' > "$fake_bin/spicetify"
+chmod +x "$fake_bin"/* "$share/install-integrations.sh"
 
-cat > "$fake_bin/systemctl" <<'EOF'
-#!/usr/bin/env bash
-if [[ $* == *'is-active --quiet ryoku-palette-bridge.service'* &&
-      -f $CANONICAL_MARKER ]]; then
-  exit 0
+run_installer() {
+  HOME="$test_root/home" \
+  XDG_CONFIG_HOME="$test_root/home/.config" \
+  RYOKU_PALETTE_BRIDGE_SHARE="$share" \
+  SERVICE_ON="$service_on" \
+  HOST_LOG="$host_log" \
+  INTEGRATIONS_LOG="$integrations_log" \
+  FORBIDDEN_LOG="$forbidden_log" \
+  PATH="$fake_bin:$test_root/home/.local/bin:$PATH" \
+    "$installer"
+}
+
+run_installer
+grep -Fxq 'svc --user enable --now ryoku-palette-bridge' "$host_log"
+grep -Fxq -- '--spotify' "$integrations_log"
+test -x "$test_root/home/.local/bin/ryoku-palette-bridge-store-3-0-0"
+[[ ! -e $forbidden_log ]] || { cat "$forbidden_log"; exit 1; }
+
+# Installed and healthy: a second run changes nothing.
+run_installer | grep -Fq 'already installed and healthy'
+[[ $(wc -l < "$host_log") == 1 && $(wc -l < "$integrations_log") == 1 ]]
+
+# A Ryoku without the packaged bridge gets a clear way forward, not a build.
+rm "$fake_bin/ryoku-palette-bridge" "$test_root/home/.local/bin/ryoku-palette-bridge-store-3-0-0"
+if output=$(run_installer 2>&1); then
+  echo "installer succeeded without the packaged bridge" >&2
+  exit 1
 fi
-if [[ $* == *'enable --now ryoku-palette-bridge.service'* ||
-      $* == *'restart ryoku-palette-bridge.service'* ]]; then
-  : > "$CANONICAL_MARKER"
-  exit 0
-fi
-exit 1
-EOF
+grep -Fq 'run ryoku update' <<<"$output"
 
-cat > "$fake_bin/git" <<'EOF'
-#!/usr/bin/env bash
-set -euo pipefail
-[[ ${1:-} == -C ]]
-checkout=$2
-case ${3:-} in
-  init)
-    mkdir -p "$checkout/.git"
-    ;;
-  checkout)
-    printf '%s\n' "$EXPECTED_COMMIT" > "$checkout/.fake-head"
-    printf '%s\n' \
-      '#!/usr/bin/env bash' \
-      'set -euo pipefail' \
-      '[[ -d .git ]] || { echo "installer must build from its source directory" >&2; exit 1; }' \
-      'printf "run\\n" >> "$REPAIR_LOG"' \
-      ': > "$REPAIR_MARKER"' \
-      'true' > "$checkout/install.sh"
-    printf '%s\n' '#!/usr/bin/env bash' 'exit 0' > "$checkout/install-integrations.sh"
-    chmod +x "$checkout/install.sh" "$checkout/install-integrations.sh"
-    ;;
-  rev-parse)
-    cat "$checkout/.fake-head"
-    ;;
-  remote)
-    if [[ ${4:-} == get-url ]]; then
-      printf '%s\n' 'https://github.com/Sipper1236/ryoku-palette-bridge.git'
-    fi
-    ;;
-esac
-EOF
-chmod +x "$fake_bin/ryoku-cmd-present" "$fake_bin/curl" "$fake_bin/systemctl" "$fake_bin/git"
-
-HOME="$test_root/home" \
-XDG_CONFIG_HOME="$test_root/home/.config" \
-XDG_DATA_HOME="$test_root/home/.local/share" \
-REPAIR_MARKER="$repair_marker" \
-CANONICAL_MARKER="$canonical_marker" \
-REPAIR_LOG="$repair_log" \
-FAKE_CURL_LOG="$curl_log" \
-EXPECTED_COMMIT="$expected_commit" \
-PATH="$fake_bin:$PATH" \
-  "$installer"
-
-test -f "$repair_marker"
-test -f "$canonical_marker"
-test -x "$test_root/home/.local/share/ryoku-palette-bridge/install.sh"
-test -x "$test_root/home/.local/bin/ryoku-palette-bridge-store-2-1-0"
-[[ $(wc -l < "$curl_log") -ge 1 ]]
-
-mv "$canonical_marker" "$canonical_marker.first-run"
-HOME="$test_root/home" \
-XDG_CONFIG_HOME="$test_root/home/.config" \
-XDG_DATA_HOME="$test_root/home/.local/share" \
-REPAIR_MARKER="$repair_marker" \
-CANONICAL_MARKER="$canonical_marker" \
-REPAIR_LOG="$repair_log" \
-FAKE_CURL_LOG="$curl_log" \
-EXPECTED_COMMIT="$expected_commit" \
-PATH="$fake_bin:$PATH" \
-  "$installer"
-test -f "$canonical_marker"
-[[ $(wc -l < "$repair_log") == 2 ]]
-
-printf '%s\n' 8e6daccc30e3918f2c718bc6f36cdb7b544492a0 \
-  > "$test_root/home/.local/share/ryoku-palette-bridge/.fake-head"
-mv "$canonical_marker" "$canonical_marker.second-run"
-HOME="$test_root/home" \
-XDG_CONFIG_HOME="$test_root/home/.config" \
-XDG_DATA_HOME="$test_root/home/.local/share" \
-REPAIR_MARKER="$repair_marker" \
-CANONICAL_MARKER="$canonical_marker" \
-REPAIR_LOG="$repair_log" \
-FAKE_CURL_LOG="$curl_log" \
-EXPECTED_COMMIT="$expected_commit" \
-PATH="$fake_bin:$PATH" \
-  "$installer"
-grep -Fxq "$expected_commit" "$test_root/home/.local/share/ryoku-palette-bridge/.fake-head"
-test -f "$canonical_marker"
-[[ $(wc -l < "$repair_log") == 3 ]]
-
-printf 'PASS: Ryostore repairs, migrates, and updates verified bridge installs\n'
+printf 'PASS: Ryostore connects the packaged palette bridge on every edition\n'
