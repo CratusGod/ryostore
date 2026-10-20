@@ -249,7 +249,7 @@ Item {
                                 if (section.modelData.key === "convert")
                                     root.svc.convertTo(modelData.id, modelData.label);
                                 else if (section.modelData.key === "tools")
-                                    root.svc.runTool(modelData.id, modelData.label);
+                                    root.svc.runTool(modelData.id, modelData.label, modelData.all === true);
                                 else
                                     root.svc.openEditor(modelData.id, modelData.label);
                             }

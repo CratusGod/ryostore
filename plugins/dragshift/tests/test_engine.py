@@ -93,7 +93,8 @@ def test_actions_for_two_images_offers_a_combined_pdf(png, jpg):
 def test_actions_for_documents(request, fixture, cat):
     r = ok(["actions", str(request.getfixturevalue(fixture))])
     assert r["category"] == cat
-    assert r["convert"] and r["tools"] == [] and r["editors"] == []
+    assert r["convert"] and r["editors"] == []
+    assert [t["id"] for t in r["tools"]] == ["zip", "tar-gz", "tar-xz", "copy-path"]  # every drop can be archived
 
 
 def test_actions_skips_files_of_another_kind(png, pdf):
@@ -103,10 +104,12 @@ def test_actions_skips_files_of_another_kind(png, pdf):
     assert r["skipped"] == [str(pdf)]
 
 
-def test_actions_rejects_an_unsupported_file(tmp_path):
-    p = tmp_path / "song.mp3"
-    p.write_bytes(b"ID3")
-    assert "isn't supported" in fail(["actions", str(p)])["error"]
+def test_an_unsupported_file_can_only_be_archived(tmp_path):
+    p = tmp_path / "thing.xyz"
+    p.write_bytes(b"?")
+    r = ok(["actions", str(p)])
+    assert r["category"] == "any" and r["convert"] == [] and r["editors"] == []
+    assert "isn't a tool" in fail(["tool", "compress", str(p)])["error"]
 
 
 def test_actions_rejects_missing_and_relative_paths(tmp_path):
@@ -115,14 +118,14 @@ def test_actions_rejects_missing_and_relative_paths(tmp_path):
     fail(["actions"])
 
 
-def test_actions_rejects_a_lone_directory(tmp_path):
-    fail(["actions", str(tmp_path)])
+def test_a_lone_directory_is_a_folder(tmp_path):
+    assert ok(["actions", str(tmp_path)])["category"] == "folder"
 
 
 def test_one_bad_item_does_not_sink_the_batch(tmp_path, png, jpg):
-    mp3 = tmp_path / "song.mp3"
-    mp3.write_bytes(b"ID3")
-    r = ok(["actions", str(tmp_path), str(mp3), str(tmp_path / "gone.png"), str(png), str(jpg)])
+    odd = tmp_path / "thing.xyz"
+    odd.write_bytes(b"?")
+    r = ok(["actions", str(tmp_path), str(odd), str(tmp_path / "gone.png"), str(png), str(jpg)])
     assert r["category"] == "image" and r["files"] == [str(png), str(jpg)]
     assert len(r["skipped"]) == 3
 

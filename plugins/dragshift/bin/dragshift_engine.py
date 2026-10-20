@@ -8,16 +8,18 @@ exactly one JSON object on stdout: {"ok": true, ...} and exit 0, or
 anything else and never builds a shell string to call us (R9).
 
 Commands (paths must be absolute):
-    [--output next|folder] doctor
-    [--output next|folder] actions FILE...
-    [--output next|folder] convert --to TARGET FILE...
-    [--output next|folder] tool TOOL FILE...
-    [--output next|folder] editor [--dry] EDITOR FILE...
+    [OPTIONS] doctor
+    [OPTIONS] actions PATH...
+    [OPTIONS] convert --to TARGET PATH...
+    [OPTIONS] tool TOOL PATH...
+    [OPTIONS] editor [--dry] EDITOR FILE...
     trash PATH...
     reveal PATH
+OPTIONS: --output next|folder, --ocr-lang CODES (e.g. eng+vie)
 
-It writes only new files beside the originals (or in a "DragShift" subfolder
-beside them, with --output folder). Originals are never modified.
+PATHs may be folders: they can be archived, and their images batch-processed.
+It writes only new files and folders beside the originals (or in a "DragShift"
+subfolder beside them, with --output folder). Originals are never modified.
 """
 from __future__ import annotations
 
@@ -25,16 +27,25 @@ import importlib
 import importlib.util
 import json
 import os
+import shutil
 import signal
 import subprocess
 import sys
 import traceback
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))  # -I leaves our own dir off sys.path
+import ds_archive  # noqa: E402
+import ds_extras  # noqa: E402
+import ds_media  # noqa: E402
+
 PLUGIN_DIR = Path(__file__).resolve().parent.parent
 PIN_FILE = PLUGIN_DIR / "engine" / "PIN"
 DEFAULT_ENGINE = "~/.local/share/dragshift/engine"
 MAX_FILES = 500
+LEDGER_KEEP = 100
+OPTIONS = {"output": "next", "ocr_lang": "eng"}
+USER_ERRORS = (ds_archive.ArchiveError, ds_media.MediaError, ds_extras.ExtrasError)
 
 # Filled by load_engine(): the DragShift modules this bridge drives.
 convert = imaging = util = report = None
@@ -106,6 +117,9 @@ def doctor(path: Path, pin: str | None = None) -> dict:
     r["pinned"] = bool(pin) and r["sha"] == pin
     r["heif"] = bool(getattr(convert, "HEIF_OK", False))
     r["editors"] = importlib.util.find_spec("PySide6") is not None
+    r["ffmpeg"] = ds_media.available()
+    r["ocrLangs"] = ds_extras.ocr_langs()
+    r["wlcopy"] = shutil.which("wl-copy") is not None
     if not r["pinned"]:
         r["error"] = f"Engine is at {r['sha'][:12] or 'an unknown commit'}, plugin is tested with {pin[:12]}"
         r["fix"] = f"git -C {path} checkout --detach {pin}"
@@ -141,6 +155,42 @@ PDF_TOOLS = {
     "extract": ("Extract images", "Extract", lambda p: imaging.extract_pdf_images(p)),
     "strip-all": ("Remove metadata", "Metadata", lambda p: [imaging.strip_pdf_metadata(p)]),
 }
+
+VIDEO_TOOLS = {
+    "compress": ("Compress", "Compress", lambda p: [ds_media.compress_video(p, util.sibling)]),
+}
+
+
+def tools_for(cat: str) -> dict:
+    """One-file-at-a-time tools: id -> (label, report action, function(path) -> outputs)."""
+    return {"image": IMAGE_TOOLS, "pdf": PDF_TOOLS, "video": VIDEO_TOOLS}.get(cat, {})
+
+
+# Whole-job tools: id -> (label, handler(files of the kind, every dropped path) -> reply).
+# ANY_TOOLS work on every drop and take every dropped path, whatever its kind.
+def job_tools_for(cat: str) -> dict:
+    return {"image": {"copy": ("Copy", _t_copy_image), "ocr": ("Text", _t_ocr)},
+            "archive": {"extract": ("Extract", _t_extract)},
+            "folder": {"batch-webp": ("Images → WEBP", _t_batch("WEBP")),
+                       "batch-jpg": ("Images → JPG", _t_batch("JPG")),
+                       "batch-compress": ("Compress images", _t_batch("Compressed"))},
+            }.get(cat, {})
+
+
+def any_tools() -> dict:
+    t = {k: (f"{v[0]}", _t_pack(k)) for k, v in ds_archive.FORMATS.items()}
+    t["copy-path"] = ("Copy path", _t_copy_paths)
+    return t
+
+
+def targets_for(cat: str, suffix: str) -> list[str]:
+    if cat in ("video", "audio"):
+        return ds_media.targets_for(cat, suffix)
+    if cat in ("image", "pdf", "docx", "text"):
+        return convert.targets_for(cat, suffix)
+    return []
+
+
 # id -> (label, tools.py class, takes a list of paths, extra kwargs) - mirrors app.run_item
 IMAGE_EDITORS = {
     "crop": ("Crop", "CropWindow", False), "edit": ("Edit", "EditWindow", False),
@@ -167,40 +217,48 @@ def _resize(p, mode: str, value: int) -> Path:
     return imaging.resize_image(p, dims)
 
 
-def tools_for(cat: str) -> dict:
-    return {"image": IMAGE_TOOLS, "pdf": PDF_TOOLS}.get(cat, {})
-
-
 def editors_for(cat: str) -> dict:
     return {"image": IMAGE_EDITORS, "pdf": PDF_EDITORS}.get(cat, {})
 
 
 # ---------------------------------------------------------------- input checks
+def kind_of(p: Path) -> str | None:
+    if p.is_dir():
+        return "folder"
+    if ds_archive.archive_suffix(p):
+        return "archive"
+    return util.category(p) or ds_media.category(p)
+
+
 def check_files(args: list[str]) -> tuple[list[Path], list[Path]]:
-    """(regular files, dropped items that aren't one: folders, vanished files)."""
+    """(files and folders, dropped items that are neither: vanished, sockets...)."""
     if not args:
         raise Refusal("No files given")
     if len(args) > MAX_FILES:
         raise Refusal(f"Too many files ({len(args)}); the limit is {MAX_FILES}")
-    files, skipped = [], []
+    items, skipped = [], []
     for a in args:
         p = Path(a)
         if not p.is_absolute():
             raise Refusal(f"Not an absolute path: {a}")
-        (files if p.is_file() else skipped).append(p)
-    if not files:
+        (items if p.is_file() or p.is_dir() else skipped).append(p)
+    if not items:
         raise Refusal("No usable files: " + ", ".join(p.name or str(p) for p in skipped[:3]))
-    return files, skipped
+    return items, skipped
 
 
 def same_kind(checked: tuple[list[Path], list[Path]]) -> tuple[str, list[Path], list[Path]]:
-    """The first supported file decides the kind; everything else is skipped, never fatal."""
-    files, skipped = checked
-    cat = next((c for c in map(util.category, files) if c), None)
+    """The first file of a known kind decides; the rest of that kind come along.
+    All folders is "folder"; nothing known (unknown files, folders mixed in) is "any",
+    which can still be archived. Nothing is ever fatal here."""
+    items, skipped = checked
+    kinds = [kind_of(p) for p in items]
+    cat = next((k for k in kinds if k not in (None, "folder")), None)
     if cat is None:
-        raise Refusal(f"{files[0].suffix or 'This file type'} isn't supported")
-    keep = [f for f in files if util.category(f) == cat]
-    return cat, keep, skipped + [f for f in files if f not in keep]
+        cat = "folder" if all(k == "folder" for k in kinds) else "any"
+        return cat, list(items), list(skipped)
+    keep = [p for p, k in zip(items, kinds) if k == cat]
+    return cat, keep, skipped + [p for p in items if p not in keep]
 
 
 def summary(action: str, srcs: list[Path], outs: list[Path]) -> dict:
@@ -209,22 +267,180 @@ def summary(action: str, srcs: list[Path], outs: list[Path]) -> dict:
             "detail": res.detail, "good": res.good}
 
 
+def reply(title: str, detail: str, outs: list[Path] | None = None, good: str = "") -> dict:
+    return {"ok": True, "outs": [str(o) for o in outs or []], "title": title, "detail": detail, "good": good}
+
+
+# ---------------------------------------------------------------- created folders
+# Undo may move a *folder* to the Trash only if this engine created it (extract,
+# batch). The ledger lives in the plugin's own Ryoku state dir.
+def _ledger() -> Path:
+    state = Path(os.environ.get("XDG_STATE_HOME") or "~/.local/state").expanduser()
+    return state / "ryoku" / "plugins" / "dragshift" / "created-dirs"
+
+
+def created_dirs() -> list[str]:
+    try:
+        return [ln for ln in _ledger().read_text(encoding="utf-8").splitlines() if ln]
+    except OSError:
+        return []
+
+
+def remember_dir(d: Path) -> None:
+    led = _ledger()
+    led.parent.mkdir(parents=True, exist_ok=True)
+    keep = [x for x in created_dirs() if x != str(d)][-(LEDGER_KEEP - 1):] + [str(d)]
+    tmp = led.with_name(led.name + ".part")
+    tmp.write_text("\n".join(keep) + "\n", encoding="utf-8")
+    tmp.replace(led)
+
+
+def _tree_size(paths: list[Path]) -> int:
+    total = 0
+    for p in paths:
+        if p.is_file():
+            total += p.stat().st_size
+        elif p.is_dir():
+            for root, _, files in os.walk(p, followlinks=False):
+                total += sum((Path(root) / f).lstat().st_size for f in files)
+    return total
+
+
+# ---------------------------------------------------------------- whole-job tools
+def _t_pack(fmt: str):
+    def run_pack(files: list[Path], everything: list[Path]) -> dict:
+        dest, n, skipped = ds_archive.pack(everything, fmt, util.output_dir, util.unique_path)
+        before, after = util.human_size(_tree_size(everything)), util.human_size(dest.stat().st_size)
+        what = everything[0].name if len(everything) == 1 else f"{len(everything)} items"
+        detail = f"{dest.name} · {before} → {after}"
+        if skipped:
+            detail += f" · {skipped} link{'s' if skipped != 1 else ''} left out"
+        return reply(f"Archived {what}", detail, [dest])
+    return run_pack
+
+
+def _t_copy_paths(files: list[Path], everything: list[Path]) -> dict:
+    ds_extras.copy_paths(everything)
+    n = len(everything)
+    return reply("Path copied" if n == 1 else f"{n} paths copied", everything[0].name if n == 1 else "")
+
+
+def _t_copy_image(files: list[Path], everything: list[Path]) -> dict:
+    ds_extras.copy_image(files[0], convert.open_image)
+    return reply("Image copied", files[0].name + (" (first file)" if len(files) > 1 else ""))
+
+
+def _t_ocr(files: list[Path], everything: list[Path]) -> dict:
+    out, text = ds_extras.ocr(files[0], OPTIONS["ocr_lang"], convert.open_image, util.sibling)
+    words = len(text.split())
+    return reply("Text copied", f"{out.name} · {words} word{'s' if words != 1 else ''}", [out])
+
+
+def _t_extract(files: list[Path], everything: list[Path]) -> dict:
+    outs, count = [], 0
+    for f in files:
+        dest, n = ds_archive.unpack(f, util.output_dir, util.unique_path)
+        remember_dir(dest)
+        outs.append(dest)
+        count += n
+    title = "Extracted" if len(outs) == 1 else f"Extracted {len(outs)} archives"
+    return reply(title, f"{outs[0].name} · {count} item{'s' if count != 1 else ''} · "
+                        f"{util.human_size(_tree_size(outs))}", outs)
+
+
+def _images_in(folder: Path) -> list[Path]:
+    """Images anywhere under `folder`, skipping hidden folders and links."""
+    found = []
+    for root, dirs, names in os.walk(folder, followlinks=False):
+        dirs[:] = sorted(d for d in dirs if not d.startswith("."))
+        for n in sorted(names):
+            p = Path(root) / n
+            if not n.startswith(".") and not p.is_symlink() and util.category(p) == "image":
+                found.append(p)
+    return found
+
+
+def _t_batch(mode: str):
+    """Every image under each folder -> a new "<folder> <mode>" folder beside it,
+    keeping the subfolder layout. The originals are only read."""
+    def run_batch(folders: list[Path], everything: list[Path]) -> dict:
+        outs, done, failed, first_err = [], 0, 0, ""
+        for folder in folders:
+            images = _images_in(folder)
+            if mode != "Compressed":
+                images = [p for p in images if mode in convert.targets_for("image", p.suffix)]
+            if not images:
+                continue
+            if len(images) > MAX_FILES:
+                raise Refusal(f"{folder.name} has {len(images)} images; the limit is {MAX_FILES}")
+            root = util.unique_path(util.output_dir(folder) / f"{folder.name} {mode}")
+            root.mkdir()
+            remember_dir(root)
+            outs.append(root)
+            n, bad, err = _batch_into(folder, root, images, mode)
+            done, failed, first_err = done + n, failed + bad, first_err or err
+        if not outs:
+            raise Refusal(f"No images to convert in {folders[0].name}" if mode != "Compressed"
+                          else f"No images in {folders[0].name}")
+        if done == 0:
+            for r in outs:
+                _gio_trash(str(r))
+            raise Refusal(f"Every image failed: {first_err}")
+        title = f"{done} image{'s' if done != 1 else ''} → " + ("compressed" if mode == "Compressed" else mode)
+        detail = f"{outs[0].name} · {util.human_size(_tree_size(outs))}"
+        if failed:
+            detail += f" · {failed} failed ({first_err})"
+        return reply(title, detail, outs)
+    return run_batch
+
+
+def _batch_into(folder: Path, root: Path, images: list[Path], mode: str) -> tuple[int, int, str]:
+    original = util.output_dir
+
+    def mirrored(src) -> Path:  # upstream's sibling() asks this where to write
+        d = root / Path(src).parent.relative_to(folder)
+        d.mkdir(parents=True, exist_ok=True)
+        return d
+    done, failed, err = 0, 0, ""
+    util.output_dir = mirrored
+    try:
+        for img in images:
+            try:
+                if mode == "Compressed":
+                    imaging.compress_image(img)
+                else:
+                    convert.convert(img, "image", mode)
+                done += 1
+            except Exception as e:  # noqa: BLE001 - one bad image must not sink the batch
+                failed += 1
+                err = err or f"{img.name}: {e}"
+    finally:
+        util.output_dir = original
+    return done, failed, err
+
+
 # ---------------------------------------------------------------- commands
 def cmd_actions(args: list[str]) -> dict:
-    cat, files, skipped = same_kind(check_files(args))
+    checked = check_files(args)
+    everything = checked[0]
+    cat, files, skipped = same_kind(checked)
+    first = files[0]
     conv = []
-    for t in convert.targets_for(cat, files[0].suffix):
-        hint = FORMAT_HINTS.get(t, "")
+    for t in targets_for(cat, first.suffix):
+        hint = FORMAT_HINTS.get(t, "") if cat in ("image", "pdf", "docx", "text") else ds_media.HINTS.get(t, "")
         if cat == "image" and t == "PDF" and len(files) > 1:
             hint = f"{len(files)} images → 1 PDF"
         conv.append({"id": t, "label": t, "hint": hint})
     tools = [{"id": k, "label": v[0]} for k, v in tools_for(cat).items()]
     if cat == "pdf" and len(files) > 1:
         tools.insert(0, {"id": "merge", "label": f"Merge {len(files)}"})
+    tools += [{"id": k, "label": v[0]} for k, v in job_tools_for(cat).items()]
+    tools += [{"id": k, "label": v[0], "all": True} for k, v in any_tools().items()]
     many = len(files) > 1
     editors = [{"id": k, "label": v[0] + (" (first file)" if many and not v[2] else "")}
                for k, v in editors_for(cat).items()]
     return {"ok": True, "category": cat, "files": [str(f) for f in files],
+            "all": [str(p) for p in everything],
             "skipped": [str(f) for f in skipped], "convert": conv, "tools": tools, "editors": editors}
 
 
@@ -233,9 +449,11 @@ def cmd_convert(args: list[str]) -> dict:
         raise Refusal("usage: convert --to TARGET FILE...")
     target = args[1].upper()
     cat, files, _ = same_kind(check_files(args[2:]))
-    if target not in convert.targets_for(cat, files[0].suffix):
+    if target not in targets_for(cat, files[0].suffix):
         raise Refusal(f"Can't convert {cat} to {target}")
-    if cat == "image" and target == "PDF" and len(files) > 1:
+    if cat in ("video", "audio"):
+        outs = [ds_media.convert(f, cat, target, util.sibling) for f in files]
+    elif cat == "image" and target == "PDF" and len(files) > 1:
         outs = convert.images_to_single_pdf(files)
     else:
         outs = [o for f in files for o in convert.convert(f, cat, target)]
@@ -246,14 +464,20 @@ def cmd_tool(args: list[str]) -> dict:
     if not args:
         raise Refusal("usage: tool TOOL FILE...")
     name, rest = args[0], args[1:]
-    cat, files, _ = same_kind(check_files(rest))
+    checked = check_files(rest)
+    everything = checked[0]
+    if name in any_tools():
+        return any_tools()[name][1]([], everything)
+    cat, files, _ = same_kind(checked)
+    if name in job_tools_for(cat):
+        return job_tools_for(cat)[name][1](files, everything)
     if cat == "pdf" and name == "merge":
         if len(files) < 2:
             raise Refusal("Merge needs at least two PDFs")
         return summary("tool:Merge", files, [imaging.merge_pdfs(files)])
     spec = tools_for(cat).get(name)
     if spec is None:
-        raise Refusal(f"'{name}' isn't a {cat} tool")
+        raise Refusal(f"'{name}' isn't a tool for {'these items' if cat == 'any' else cat + ' files'}")
     _, action, fn = spec
     outs = [o for f in files for o in fn(f)]
     return summary(f"tool:{action}", files, outs)
@@ -261,19 +485,24 @@ def cmd_tool(args: list[str]) -> dict:
 
 def _gio_trash(path: str) -> bool:
     try:
-        return subprocess.run(["gio", "trash", "--", path], capture_output=True, timeout=15).returncode == 0
+        return subprocess.run(["gio", "trash", "--", path], capture_output=True, timeout=60).returncode == 0
     except (OSError, subprocess.SubprocessError):
         return False
 
 
 def cmd_trash(args: list[str]) -> dict:
-    """Undo: move these outputs to the Trash. Partial success is reported as failure."""
+    """Undo: move these outputs to the Trash. Partial success is reported as failure.
+    A folder is accepted only if this engine created it (see remember_dir)."""
     if not args:
         raise Refusal("usage: trash PATH...")
     paths = [Path(a) for a in args]
     if not all(p.is_absolute() for p in paths):
         raise Refusal("trash takes absolute paths only")
-    n = sum(1 for p in paths if p.is_file() and _gio_trash(str(p)))
+    ours = set(created_dirs())
+    for p in paths:
+        if p.is_dir() and not p.is_symlink() and str(p) not in ours:
+            raise Refusal(f"{p.name} is a folder DragShift didn't create; it was left alone")
+    n = sum(1 for p in paths if (p.is_file() or p.is_dir()) and _gio_trash(str(p)))
     # extract_pdf_images always makes a fresh "<name> images" folder (unique_path),
     # so an emptied one is ours. A "DragShift" output folder may predate us: kept.
     for d in {p.parent for p in paths}:
@@ -318,7 +547,6 @@ def cmd_editor(args: list[str]) -> dict:
     spec = editors_for(cat).get(name)
     if spec is None:
         raise Refusal(f"'{name}' isn't a {cat} editor")
-    sys.path.insert(0, str(Path(__file__).resolve().parent))  # -I leaves our own dir off sys.path
     import dragshift_editor  # Qt is imported only on this path
     return dragshift_editor.open_editor(sys.modules[__name__], spec, files, dry=dry)
 
@@ -333,11 +561,15 @@ def run(argv: list[str], env: dict | None = None) -> dict:
     try:
         os.environ.update(env or {})
         args = list(argv)
-        output = "next"
-        if args[:1] == ["--output"]:
-            if len(args) < 2 or args[1] not in ("next", "folder"):
+        OPTIONS.update(output="next", ocr_lang="eng")
+        while args[:1] in (["--output"], ["--ocr-lang"]):
+            if len(args) < 2:
+                raise Refusal(f"{args[0]} needs a value")
+            if args[0] == "--output" and args[1] not in ("next", "folder"):
                 raise Refusal("--output must be 'next' or 'folder'")
-            output, args = args[1], args[2:]
+            OPTIONS["output" if args[0] == "--output" else "ocr_lang"] = args[1]
+            args = args[2:]
+        output = OPTIONS["output"]
         if not args:
             raise Refusal("No command given")
         cmd, rest = args[0], args[1:]
@@ -348,7 +580,7 @@ def run(argv: list[str], env: dict | None = None) -> dict:
         load_engine(engine_dir())
         util.CONFIG["output"] = output
         return COMMANDS[cmd](rest)
-    except Refusal as e:
+    except (Refusal, *USER_ERRORS) as e:
         return {"ok": False, "error": str(e)}
     except Exception as e:  # noqa: BLE001 - every failure must still answer in JSON
         if util is not None and isinstance(e, util.UserError):

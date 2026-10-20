@@ -113,8 +113,8 @@ Scope {
         return list.length > 0 ? list[0] : null;
     }
 
-    function _load(paths) {
-        const b = M.build(paths, menu.heif);
+    function _load(paths, kinds) {
+        const b = M.build(paths, menu.heif, kinds);
         menu.paths = paths;
         menu.files = b.files;
         menu.rings = b.rings;
@@ -131,10 +131,13 @@ Scope {
         if (paths.length > 1) {
             menu.hubText = paths.length + " files";
         } else {
-            menu.hubText = M.ext(paths[0]).toUpperCase() || "1 file";
-            sizeProc.running = false;
-            sizeProc.command = ["stat", "-L", "-c", "%s", "--", paths[0]];
-            sizeProc.running = true;
+            menu.hubText = M.archiveSuffix(paths[0]).slice(1).toUpperCase() || M.ext(paths[0]).toUpperCase()
+                || (b.category === "folder" ? "Folder" : "1 file");
+            if (!kinds) {
+                sizeProc.running = false;
+                sizeProc.command = ["stat", "-L", "-c", "%F|%s", "--", paths[0]];
+                sizeProc.running = true;
+            }
         }
     }
 
@@ -168,9 +171,22 @@ Scope {
     Process {
         id: sizeProc
         stdout: StdioCollector {
+            // "directory|4096" or "regular file|12345": fixes the folder guess
+            // for names like "v1.2" or "Makefile", then shows the size.
             onStreamFinished: {
-                const n = parseInt(text);
-                if (!isNaN(n) && menu.paths.length === 1)
+                const parts = String(text).trim().split("|");
+                if (menu.paths.length !== 1 || parts.length !== 2)
+                    return;
+                const isDir = parts[0] === "directory";
+                const kinds = {};
+                kinds[menu.paths[0]] = isDir ? "dir" : "file";
+                const guess = M.category(menu.paths[0]);
+                if (guess !== M.category(menu.paths[0], kinds) && menu.hover < 0)
+                    menu._load(menu.paths, kinds);
+                const n = parseInt(parts[1]);
+                if (isDir)
+                    menu.hubText = "Folder";
+                else if (!isNaN(n))
                     menu.hubText = M.humanSize(n);
             }
         }
@@ -296,9 +312,15 @@ Scope {
                     menu._load(p);
                 drag.accept(Qt.CopyAction);
             }
+            // Off the slices the drop is refused, so letting go there is a clean
+            // cancel for the source app instead of a drop nobody takes.
             onPositionChanged: (drag) => {
-                menu._setHover(menu.hit(drag.x, drag.y));
-                drag.accept(Qt.CopyAction);
+                const h = menu.hit(drag.x, drag.y);
+                menu._setHover(h);
+                if (h >= 0)
+                    drag.accept(Qt.CopyAction);
+                else
+                    drag.accepted = false;
             }
             onExited: menu._setHover(-1)
             onDropped: (drop) => {
@@ -306,13 +328,15 @@ Scope {
                 if (idx >= 0 && idx < menu.items.length) {
                     drop.accept(Qt.CopyAction);
                     const item = menu.items[idx];
-                    const files = menu.files.slice();
-                    menu.close();
+                    const files = (item.all ? menu.paths : menu.files).slice();
                     // hand the drag back to the file manager first, work after
                     Qt.callLater(() => menu.activated(item, files));
-                } else {
-                    menu.close();
                 }
+                // Never unmap the window inside the drop handler: Qt would drop the
+                // offer before telling the source app the drag is over, and that app
+                // then stays stuck in "dragging" until it is restarted.
+                menu.hover = -1;
+                closeSoon.restart();
             }
         }
     }

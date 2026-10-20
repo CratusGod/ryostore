@@ -14,9 +14,9 @@ GPU shaders (`service/shaders/`).
 
 ## Using it
 
-1. Drag a file (from Dolphin, a browser, anywhere) and tap **Shift**.
+1. Drag a file or folder (from Dolphin, a browser, anywhere) and tap **Shift**.
 2. Hover a slice; the hub names it. Tap **Shift** again (or rest on the hub
-   after visiting a slice) to flip between the Convert and Tools rings.
+   after visiting a slice) to flip between the rings (Convert, Tools, Archive).
 3. Drop on a slice. Drop anywhere else, or press Esc, to cancel.
 
 The drop is always a copy: Shift normally means "move" to a file manager, and
@@ -33,11 +33,26 @@ game, so fire + Shift in a game is safe.
 | PDF | JPG, PNG (one per page), DOCX, TXT | Compress, Split pages, Rotate 90°, Extract images, Remove metadata; Merge when you drop two or more | Protect (password), Metadata |
 | Word `.docx` | PDF, TXT | | |
 | Text `.txt .md .csv …` | PDF, DOCX | | |
+| Video `.mp4 .mov .mkv .webm .avi` | MP4, WEBM, GIF (first 15 s), MP3 (audio only) | Compress (≤1080p H.264) | |
+| Audio `.mp3 .m4a .wav .flac .ogg .opus` | MP3, OPUS, WAV, FLAC | | |
+| Folders | | Archive: ZIP, TAR.GZ, TAR.XZ. Images: → WEBP, → JPG, Shrink all (every image inside, into a new `<folder> WEBP` folder with the same layout) | |
+| Archives `.zip .tar .tar.gz .tgz .tar.xz` | | Unpack (into a new folder) | |
+
+Every drop also gets an **Archive** ring (ZIP, TAR.GZ, TAR.XZ, Copy path) that
+takes *everything* you dragged, whatever its kind. Several items become
+`Archive.zip`. Images also get **Copy** (paste the image anywhere) and **Text**
+(reads the text with tesseract, saves `<name> Text.txt` and copies it).
+
+Archiving never follows symbolic links (they are left out and counted). Unpack
+refuses archives with entries that point outside the new folder, links in ZIPs,
+password-protected ZIPs, and archives larger than the free disk space; it
+writes to a hidden temporary folder and renames it only when it is complete.
 
 A glass card appears bottom-right with what changed (for example
 "2.4 MB → 610 KB · 75% smaller"), a thumbnail, and **Open**, **Show in folder**
 and **Undo** (moves the new files to the Trash, and says so if any couldn't be
-moved). It stays 6.5 s, pauses while hovered. Editors report into the same cards
+moved). Undo moves a *folder* only if DragShift made it (Unpack, batch); it keeps
+a list of those, the last 100, in its state dir. It stays 6.5 s, pauses while hovered. Editors report into the same cards
 when you save.
 
 ## How it is built to keep working
@@ -59,7 +74,7 @@ when you save.
 - **Loud failures.** On load the plugin runs `bin/dragshift doctor`. If the
   engine is missing, broken or on the wrong commit, a red card names the one
   command that fixes it.
-- **Tests.** `tests/` has 134 tests: every command, every format, filenames with
+- **Tests.** `tests/` has 198 tests: every command, every format, filenames with
   spaces, unicode, `#` and `%20`, mixed and broken drops, honest Undo, cancel
   (SIGTERM) cleanup, signal forwarding to the engine, a real Crop save through DragShift's own window, the
   drop-URL decoding, and menu parity (every slice is something the engine can do). `engine/update.sh` rollback was tested on failure and on
@@ -103,10 +118,13 @@ Reload with `ryoku wm act config.reload`, check with `hyprctl configerrors`.
   execs the engine venv's Python on `bin/dragshift_engine.py`. It also runs
   `git` (doctor reads the engine's commit), `gio trash` (Undo), `xdg-open`
   (Open), `dbus-send` to `org.freedesktop.FileManager1` (Show in folder) and
-  `notify-send` (fallback when the shell is down), `stat` (the hub's file size)
+  `notify-send` (fallback when the shell is down), `stat` (the hub's file size),
+  and, only when you pick those slices, `ffmpeg` (video/audio), `tesseract`
+  (Text) and `wl-copy` (Copy, Copy path). A missing one is reported with the
+  package that provides it; everything else keeps working
   and `qs ... ipc call dragshift` (editors report results; the Hyprland trigger
   opens the menu).
-- **Reads** the files you drop, the engine checkout, and `engine/PIN`.
+- **Reads** the files and folders you drop, the engine checkout, and `engine/PIN`.
 - **Writes** new files next to the files you dropped (or in a `DragShift`
   subfolder beside them, see Settings), and nothing else. This is the one
   departure from rule R8 (stateDir only), and it is the plugin's purpose. It
@@ -127,6 +145,7 @@ Reload with `ryoku wm act config.reload`, check with `hyprctl configerrors`.
 | engineDir | text | `~/.local/share/dragshift/engine` | where the engine checkout lives |
 | output | choice | `next` | `next`: beside the original; `folder`: a `DragShift` subfolder |
 | barIcon | choice | `auto` | `auto`: show ⇄ until Shift+drag has worked once; `on`; `off` |
+| ocrLang | text | `eng` | tesseract languages for Text, joined with `+` (e.g. `eng+vie`). Each needs its `tesseract-data-<code>` package |
 
 ## Updating the engine
 

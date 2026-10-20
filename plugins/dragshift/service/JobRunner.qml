@@ -61,7 +61,7 @@ Item {
     Timer { id: slowTimer; interval: 150; onTriggered: runner.slow() }
     Timer {
         id: watchdog
-        interval: 10 * 60 * 1000
+        interval: 60 * 60 * 1000   // a long video encode is legitimate
         onTriggered: {
             proc.signal(15);
             killTimer.start();

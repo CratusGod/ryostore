@@ -1,9 +1,9 @@
 {
   "id": "dragshift",
   "name": "DragShift",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "CratusGod <nghiabigg652@gmail.com>",
-  "description": "DragShift on Wayland: start dragging a file, press Shift, and drop it on a liquid-glass radial menu to convert or edit it. Results land next to the originals, which are never changed.",
+  "description": "DragShift on Wayland: start dragging files or folders, press Shift, and drop them on a liquid-glass radial menu to convert, compress, zip, unpack, OCR or edit them. Results land next to the originals, which are never changed.",
   "license": "MIT",
   "official": false,
   "hosts": [
@@ -23,6 +23,9 @@
     "bin/dragshift",
     "bin/dragshift_engine.py",
     "bin/dragshift_editor.py",
+    "bin/ds_archive.py",
+    "bin/ds_media.py",
+    "bin/ds_extras.py",
     "content/urls.js",
     "engine/PIN",
     "service/menu.js",
@@ -64,7 +67,10 @@
       "notify-send",
       "dbus-send",
       "stat",
-      "qs"
+      "qs",
+      "ffmpeg",
+      "tesseract",
+      "wl-copy"
     ]
   },
   "metadata": {
@@ -114,6 +120,14 @@
             "label": "Never"
           }
         ]
+      },
+      {
+        "key": "ocrLang",
+        "type": "text",
+        "label": "Text recognition languages (e.g. eng+vie)",
+        "group": "DragShift",
+        "default": "eng",
+        "placeholder": "eng"
       }
     ]
   },
@@ -123,7 +137,11 @@
     "images",
     "pdf",
     "compress",
-    "dragshift"
+    "dragshift",
+    "folders",
+    "zip",
+    "video",
+    "ocr"
   ],
   "commands": [
     "bin/dragshift"

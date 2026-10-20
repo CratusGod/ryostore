@@ -28,6 +28,7 @@ Item {
     }
     readonly property string engineDir: _text("engineDir", "~/.local/share/dragshift/engine")
     readonly property string outputMode: _text("output", "next") === "folder" ? "folder" : "next"
+    readonly property string ocrLang: _text("ocrLang", "eng").trim() || "eng"
 
     // ---- is the Shift+drag trigger set up? -----------------------------------
     // Only the compositor can see Shift mid-drag, so the trigger is a block the
@@ -58,6 +59,7 @@ Item {
     property string doctorFix: ""
 
     property var files: []          // absolute paths the actions apply to
+    property var allPaths: []       // every dropped path: what Archive and Copy path take
     property var skipped: []        // dropped items of another kind, or not files
     property string category: ""
     property var convertActions: [] // [{id, label, hint}]
@@ -78,7 +80,7 @@ Item {
         return (pluginApi && pluginApi.pluginDir) ? pluginApi.pluginDir + "/bin/dragshift" : "";
     }
     function baseArgs() {
-        return [binPath(), "--engine", svc.engineDir, "--output", svc.outputMode];
+        return [binPath(), "--engine", svc.engineDir, "--output", svc.outputMode, "--ocr-lang", svc.ocrLang];
     }
     function _ready() {
         return binPath() !== "";
@@ -109,6 +111,7 @@ Item {
         svc.notice = "";
         svc.filesError = "";
         svc.files = paths;
+        svc.allPaths = paths;
         svc.skipped = [];
         svc.category = "";
         svc.convertActions = [];
@@ -133,6 +136,7 @@ Item {
         }
         svc._pendingFiles = null;
         svc.files = [];
+        svc.allPaths = [];
         svc.skipped = [];
         svc.category = "";
         svc.convertActions = [];
@@ -147,8 +151,8 @@ Item {
         _start(["convert", "--to", target], "Converting to " + (label || target) + "…", false);
     }
 
-    function runTool(id, label) {
-        _start(["tool", id], (label || id) + "…", false);
+    function runTool(id, label, all) {
+        _start(["tool", id], (label || id) + "…", false, all === true);
     }
 
     function openEditor(id, label) {
@@ -199,7 +203,7 @@ Item {
         actionsProc.running = true;
     }
 
-    function _start(args, label, isUndo) {
+    function _start(args, label, isUndo, all) {
         if (!_ready() || svc._jobActive)
             return;
         if (!isUndo && svc.files.length === 0)
@@ -211,7 +215,7 @@ Item {
         svc.notice = "";
         if (!isUndo)
             svc.result = null;
-        job.command = baseArgs().concat(args).concat(isUndo ? [] : svc.files);
+        job.command = baseArgs().concat(args).concat(isUndo ? [] : all ? svc.allPaths : svc.files);
         watchdog.restart();
         job.running = true;
     }
@@ -318,6 +322,7 @@ Item {
                 return;
             }
             svc.files = d.files || [];
+            svc.allPaths = d.all || svc.files;
             svc.skipped = d.skipped || [];
             svc.category = d.category || "";
             svc.convertActions = d.convert || [];
@@ -358,7 +363,7 @@ Item {
     // A job running past ten minutes is stuck, not slow.
     Timer {
         id: watchdog
-        interval: 10 * 60 * 1000
+        interval: 60 * 60 * 1000   // a long video encode is legitimate
         onTriggered: svc._stop("Stopped after 10 minutes with no answer")
     }
 
@@ -392,7 +397,11 @@ Item {
 
     // radial.py's working labels (app.run_item)
     readonly property var _toolVerbs: ({ compress: "Compressing…", split: "Splitting…", rotate: "Rotating…",
-                                         extract: "Extracting images…", merge: "Merging…" })
+                                         extract: "Extracting…", merge: "Merging…", zip: "Zipping…",
+                                         "tar-gz": "Archiving…", "tar-xz": "Archiving…", ocr: "Reading text…",
+                                         copy: "Copying…", "copy-path": "Copying…",
+                                         "batch-webp": "Converting images…", "batch-jpg": "Converting images…",
+                                         "batch-compress": "Compressing images…" })
 
     function runFromMenu(item, files) {
         if (!_ready() || !files || files.length === 0)

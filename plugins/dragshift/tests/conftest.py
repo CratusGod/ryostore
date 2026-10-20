@@ -108,3 +108,24 @@ def txt(tmp_path) -> Path:
     p = tmp_path / "notes.md"
     p.write_text("# Notes\n\nSome *markdown* text.\n", encoding="utf-8")
     return p
+
+
+@pytest.fixture(autouse=True)
+def _private_state(tmp_path_factory, monkeypatch):
+    """The created-folders ledger must never touch the real ~/.local/state."""
+    monkeypatch.setenv("XDG_STATE_HOME", str(tmp_path_factory.mktemp("state")))
+
+
+@pytest.fixture
+def photos(tmp_path) -> Path:
+    """A folder with nested images, a non-image, a hidden folder and a link."""
+    d = tmp_path / "My Photos ảnh"
+    (d / "trip" / "day 1").mkdir(parents=True)
+    (d / ".thumbnails").mkdir()
+    _draw((300, 200)).save(d / "a.png")
+    _draw((300, 200)).save(d / "trip" / "b.jpg", quality=95)
+    _draw((300, 200)).save(d / "trip" / "day 1" / "c #1.png")
+    _draw((64, 64)).save(d / ".thumbnails" / "hidden.png")
+    (d / "notes.txt").write_text("not an image\n")
+    (d / "link.png").symlink_to(d / "a.png")
+    return d

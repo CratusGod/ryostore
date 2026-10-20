@@ -1870,12 +1870,12 @@
     {
       "id": "dragshift",
       "name": "DragShift",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "path": "plugins/dragshift",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/dragshift",
       "author": "CratusGod <nghiabigg652@gmail.com>",
-      "summary": "DragShift on Wayland: start dragging a file, press Shift, and drop it on a liquid-glass radial menu to convert or edit it.",
-      "description": "DragShift on Wayland: start dragging a file, press Shift, and drop it on a liquid-glass radial menu to convert or edit it. Results land next to the originals, which are never changed.",
+      "summary": "DragShift on Wayland: start dragging files or folders, press Shift, and drop them on a liquid-glass radial menu to convert, compress, zip...",
+      "description": "DragShift on Wayland: start dragging files or folders, press Shift, and drop them on a liquid-glass radial menu to convert, compress, zip, unpack, OCR or edit them. Results land next to the originals, which are never changed.",
       "tags": [
         "files",
         "convert",
@@ -1883,6 +1883,10 @@
         "pdf",
         "compress",
         "dragshift",
+        "folders",
+        "zip",
+        "video",
+        "ocr",
         "bar-widget"
       ],
       "accent": "#8f8378",
@@ -1892,9 +1896,9 @@
         "assets/preview-widget.png"
       ],
       "manifest": "product-manifest.json",
-      "manifestSha256": "7c5e4b00d21ad03f04dd1c3a901f32b292b563b962eab3a6abacd4b29c93fcce",
+      "manifestSha256": "32ca7df5bad572014f3762f90f6f816c7f490906394733cd98965ee2d6e909c1",
       "official": false,
-      "tagline": "DragShift on Wayland: start dragging a file, press Shift, and drop it on a liquid-glass radial menu to convert or edit it.",
+      "tagline": "DragShift on Wayland: start dragging files or folders, press Shift, and drop them on a liquid-glass radial menu to convert, compress, zip...",
       "icon": "swap_horiz",
       "hosts": [
         "topbarGlyph"
