@@ -23,6 +23,12 @@ another integration later with:
 /usr/share/ryoku/palette-bridge/install-integrations.sh --all
 ```
 
+On Fedora and Void, Vesktop and Zen usually come from Flathub, whose sandbox
+keeps each app's settings in its own `~/.var/app` folder. When the app is not
+installed natively, the bridge sets it up there, so the Flathub builds follow
+the wallpaper too. Spotify goes through Spicetify, which has its own steps for
+a Flathub Spotify.
+
 Check the service and published palette at any time:
 
 ```bash

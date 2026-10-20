@@ -4,7 +4,7 @@
     {
       "id": "ryoku-discord",
       "name": "Ryoku Discord",
-      "version": "1.22.2",
+      "version": "1.22.3",
       "path": "vesktop-themes/ryoku-discord",
       "author": "Ron (original), Sipper1236 (adaptation)",
       "upstream": "https://github.com/Sipper1236/ryoku-discord",
@@ -16,9 +16,9 @@
       "preview": "assets/preview.png",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "40dd75a99af567e63659588b84d2acb8446057bc36dd9855fadabcd46ed3ddbe",
+      "manifestSha256": "a54f382a12107bce7b5d661a9f26cfe2992df9351004da7341a0c763363522e1",
       "official": false,
-      "lastUpdated": "2026-09-29"
+      "lastUpdated": "2026-10-20"
     }
   ]
 }

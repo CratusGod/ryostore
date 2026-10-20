@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "spiceflow",
   "category": "bundles",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "destination": "ryoku/bundles/spiceflow",
   "name": "Ryoku Palette Bridge",
   "description": "Wallpaper colours for Spotify and Vesktop, with optional Zen live theming through a separately installed signed extension. Turns on the palette bridge Ryoku ships and connects it to your apps.",
@@ -38,8 +38,8 @@
       "source": "README.md",
       "destination": "README.md",
       "mode": "0644",
-      "size": 2625,
-      "sha256": "febd0274b6bf0fc2f8afdf0c94e11538e760a5aa20455df1d7a9321c17bbaa28",
+      "size": 2957,
+      "sha256": "3599aae0586d9e39d271d93959d1c919c793e3479606dd60d3a09bda5f355d93",
       "install": false
     },
     {
