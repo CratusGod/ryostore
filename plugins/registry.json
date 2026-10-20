@@ -32,7 +32,7 @@
     {
       "id": "bluetooth-profiles",
       "name": "Bluetooth Profiles",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "plugins/bluetooth-profiles",
       "author": "itsKontra <derntl@gmx.net>",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/bluetooth-profiles",
@@ -48,14 +48,14 @@
         "assets/preview-widget.png"
       ],
       "manifest": "product-manifest.json",
-      "manifestSha256": "92159a6ecc76ddb10a60be1beb6b44b7c0a9fcf6a4abcd76dccfa63db10ce56a",
+      "manifestSha256": "7e48f038729faab18aa76dd2ea6002fe8fc3913d4e9525b55ae387597a55997c",
       "official": false,
       "tagline": "Quickly view and switch Bluetooth audio profiles and codecs of connected devices.",
       "icon": "bluetooth",
       "hosts": [
         "topbarGlyph"
       ],
-      "lastUpdated": "2026-09-07"
+      "lastUpdated": "2026-10-19"
     },
     {
       "id": "coffee",

@@ -1,7 +1,7 @@
 {
   "id": "bluetooth-profiles",
   "name": "Bluetooth Profiles",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "itsKontra <derntl@gmx.net>",
   "description": "Quickly view and switch Bluetooth audio profiles and codecs of connected devices.",
   "license": "MIT",
@@ -33,7 +33,8 @@
   "dependencies": {
     "commands": [
       "pactl",
-      "ryoku-shell"
+      "ryoku-shell",
+      "setpriv"
     ]
   },
   "metadata": {

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "bluetooth-profiles",
   "category": "plugins",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "ryoku/plugins/bluetooth-profiles",
   "files": [
     {
@@ -48,17 +48,17 @@
     {
       "source": "manifest.json",
       "destination": "manifest.json",
-      "sha256": "50488d469ccb62a22074a89ce5a392283e0630b51a3b237e1be44446f66a7f29",
+      "sha256": "6e5e16b4a35e3180338e244c24f0317e94777373f66d06a9bc9a67c77b3fcf9d",
       "mode": "0644",
-      "size": 1498,
+      "size": 1515,
       "install": true
     },
     {
       "source": "service/Main.qml",
       "destination": "service/Main.qml",
-      "sha256": "817c667bf21c89c386c135b18d57f5ab0fd12215c4f9d5ec9994de7f6403665b",
+      "sha256": "a24ff84854a2f84171d0035f020f5f0b58e476b45737e2f97e9d8cb1ea88d54f",
       "mode": "0644",
-      "size": 10084,
+      "size": 10535,
       "install": true
     }
   ]
