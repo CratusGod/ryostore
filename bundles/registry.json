@@ -737,7 +737,7 @@
     {
       "id": "spiceflow",
       "name": "Ryoku Palette Bridge",
-      "version": "3.0.0",
+      "version": "3.0.1",
       "path": "bundles/spiceflow",
       "author": "Rayyan",
       "upstream": "https://github.com/Sipper1236/ryoku-palette-bridge",
@@ -759,7 +759,7 @@
         "assets/preview.png"
       ],
       "manifest": "bundle.json",
-      "manifestSha256": "1f2bbcbdb96961a4c595b6431efa33e55b8059a6b867af5b4db2e4450ffd3a7d",
+      "manifestSha256": "373810fcbba49fcd44f7470d1ad6b81fcd5f33e6c78f620bfc5340b91d6b07aa",
       "components": [
         {
           "type": "package",
@@ -782,7 +782,7 @@
       "sources": "Ryoku / MIT",
       "icon": "palette",
       "official": false,
-      "lastUpdated": "2026-09-13"
+      "lastUpdated": "2026-10-20"
     },
     {
       "id": "cachyos-layer",
