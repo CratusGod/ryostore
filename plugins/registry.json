@@ -1866,6 +1866,44 @@
         "topbarGlyph"
       ],
       "lastUpdated": "2026-10-08"
+    },
+    {
+      "id": "dragshift",
+      "name": "DragShift",
+      "version": "0.3.0",
+      "path": "plugins/dragshift",
+      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/dragshift",
+      "author": "CratusGod <nghiabigg652@gmail.com>",
+      "summary": "DragShift on Wayland: start dragging files or folders, press Shift, and drop them on a liquid-glass radial menu to convert, compress, zip...",
+      "description": "DragShift on Wayland: start dragging files or folders, press Shift, and drop them on a liquid-glass radial menu to convert, compress, zip, unpack, OCR or edit them. Results land next to the originals, which are never changed.",
+      "tags": [
+        "files",
+        "convert",
+        "images",
+        "pdf",
+        "compress",
+        "dragshift",
+        "folders",
+        "zip",
+        "video",
+        "ocr",
+        "bar-widget"
+      ],
+      "accent": "#8f8378",
+      "surface": "#101010",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "32ca7df5bad572014f3762f90f6f816c7f490906394733cd98965ee2d6e909c1",
+      "official": false,
+      "tagline": "DragShift on Wayland: start dragging files or folders, press Shift, and drop them on a liquid-glass radial menu to convert, compress, zip...",
+      "icon": "swap_horiz",
+      "hosts": [
+        "topbarGlyph"
+      ],
+      "lastUpdated": "2026-10-20"
     }
   ]
 }
