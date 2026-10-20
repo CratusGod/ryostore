@@ -179,6 +179,34 @@
       "lastUpdated": "2026-10-02",
       "official": false,
       "license": "GPL-3.0-only"
+    },
+    {
+      "id": "tansu",
+      "name": "Tansu",
+      "version": "1.4.0",
+      "path": "barstyles/tansu",
+      "author": "dodo986",
+      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/barstyles/tansu",
+      "summary": "Bar and phone",
+      "description": "A colorful shell with a cool phone, along with its own design and settings, and much more.",
+      "tags": [
+        "top",
+        "phone",
+        "quickpanel",
+        "media",
+        "wallpapers",
+        "matugen",
+        "customizable"
+      ],
+      "accent": "#a2c9fd",
+      "surface": "#111418",
+      "preview": "assets/preview.png",
+      "screenshots": [],
+      "manifest": "manifest.json",
+      "manifestSha256": "716fe0d248ab74027252044e1c5e7c1770282237b1fd79d7e855c4adb424c8d1",
+      "lastUpdated": "2026-10-20",
+      "official": false,
+      "license": "GPL-3.0-only"
     }
   ]
 }
