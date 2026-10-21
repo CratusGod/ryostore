@@ -1937,6 +1937,8 @@
         "topbarGlyph"
       ],
       "lastUpdated": "2026-10-21",
+      "windowManager": "hyprland",
+      "windowManagerReason": "Uses Hyprland's device API to assign layouts per keyboard.",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/kbd-layouts"
     }
   ]
