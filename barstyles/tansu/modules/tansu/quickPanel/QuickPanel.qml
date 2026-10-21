@@ -691,7 +691,6 @@ Scope {
     }
 
     readonly property bool phoneKeysWanted: open && !settingsShown
-        && (faceScreen === "apps" || SettingsService.flag("panel.typeToSearch"))
 
     Timer {
         id: focusTimer
@@ -1611,8 +1610,9 @@ Scope {
         FocusScope {
             id: keys
             anchors.fill: parent
-            focus: root.settingsOpen
+            focus: root.open || root.settingsOpen
 
+            Keys.onPressed: event => root.quickKeyPressed(event)
         }
 
         Item {
@@ -2009,8 +2009,10 @@ Scope {
 
                         onAppActivated: app => {
                             root.close()
-                            if (root.appSource)
+                            if (root.appSource && typeof root.appSource.launch === "function")
                                 root.appSource.launch(app)
+                            else if (app && typeof app.execute === "function")
+                                app.execute()
                         }
                         onCloseRequested: root.back()
                         onJumpRequested: n => root.jump(n)
