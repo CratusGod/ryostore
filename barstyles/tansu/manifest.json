@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "tansu",
   "category": "barstyles",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "destination": "ryoku/barstyles/tansu",
   "files": [
     {
@@ -33,8 +33,8 @@
       "source": "Scene.qml",
       "destination": "Scene.qml",
       "mode": "0644",
-      "size": 3231,
-      "sha256": "443b0dc9d56966070d6446ef5bd9040914cdb8f3a9a08938cb390d7225fbf674",
+      "size": 3159,
+      "sha256": "513aba21dadfd0d791108120a307a23beae8f1897deb9b92c5215ef5b833e1c1",
       "install": true
     },
     {
@@ -42,7 +42,7 @@
       "destination": "VERSION",
       "mode": "0644",
       "size": 6,
-      "sha256": "7d072b48526b023950e4c48db01e8c273554a6401119f5691e7589ba9bc65d9d",
+      "sha256": "b99b4c7cdf236f59bc9f65d963deaecae3b16a7dad87939cacb9057f7664daee",
       "install": true
     },
     {
@@ -6073,8 +6073,8 @@
       "source": "modules/tansu/bar/BarTip.qml",
       "destination": "modules/tansu/bar/BarTip.qml",
       "mode": "0644",
-      "size": 4204,
-      "sha256": "b0348d2ae07452b9c143b74a0dcc648d50e21108f3b8c4b01ef8d96c1c464524",
+      "size": 4202,
+      "sha256": "a0554bffc9e45a0fac25bf36d80a0722902e3b21e184101c369c5a79f87f73c9",
       "install": true
     },
     {
@@ -6217,8 +6217,8 @@
       "source": "modules/tansu/bar/ScrollHint.qml",
       "destination": "modules/tansu/bar/ScrollHint.qml",
       "mode": "0644",
-      "size": 1954,
-      "sha256": "80a4cca3852d205853b05a5b3ed88336110a1deab67f38ecd7eec75f20df6b52",
+      "size": 1952,
+      "sha256": "c39a2ab118afc3b2ce66b3212a9185a3ca4abd250a04c55eb6cad6b2616f4625",
       "install": true
     },
     {

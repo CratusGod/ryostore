@@ -46,7 +46,7 @@ Item {
         id: dot
         anchors.fill: parent
         radius: width / 2
-        color: Theme.colBorder
+        color: Theme.surface
         border.width: 2
         border.color: Theme.ringWhite
         antialiasing: true

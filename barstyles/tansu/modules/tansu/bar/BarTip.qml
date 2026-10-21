@@ -87,7 +87,7 @@ Item {
                 width: label.implicitWidth + 16
                 height: label.implicitHeight + 10
                 radius: 8
-                color: Theme.colBorder
+                color: Theme.surface
 
                 Text {
                     id: label
