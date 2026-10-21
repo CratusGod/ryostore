@@ -1904,6 +1904,40 @@
         "topbarGlyph"
       ],
       "lastUpdated": "2026-10-20"
+    },
+    {
+      "id": "kbd-layouts",
+      "name": "Keyboard Layouts",
+      "version": "0.1.0",
+      "path": "plugins/kbd-layouts",
+      "author": "Madhav Khosla <madhav.khoslaa@gmail.com>",
+      "summary": "A layout per keyboard: pick each USB keyboard's layout, and the laptop's, from the bar.",
+      "description": "A layout per keyboard: lists your USB keyboards and the laptop keyboard on the bar and lets you pick each one's layout (US on the external board, UK on the laptop), remembered across replugs and reloads.",
+      "tags": [
+        "keyboard",
+        "layout",
+        "input",
+        "xkb",
+        "bar-widget"
+      ],
+      "accent": "#8f8378",
+      "surface": "#101010",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-panel.png",
+        "assets/preview-panel-layouts.png",
+        "assets/preview-widget.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "93fcd959f8bf034efbbe552940b52ea356c51212c5a8d8c93817934ad37b30a3",
+      "official": false,
+      "tagline": "A layout per keyboard: pick each USB keyboard's layout, and the laptop's, from the bar.",
+      "icon": "keyboard",
+      "hosts": [
+        "topbarGlyph"
+      ],
+      "lastUpdated": "2026-10-21",
+      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/kbd-layouts"
     }
   ]
 }
