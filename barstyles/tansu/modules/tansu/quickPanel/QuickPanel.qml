@@ -2009,8 +2009,10 @@ Scope {
 
                         onAppActivated: app => {
                             root.close()
-                            if (root.appSource)
+                            if (root.appSource && typeof root.appSource.launch === "function")
                                 root.appSource.launch(app)
+                            else if (app && typeof app.execute === "function")
+                                app.execute()
                         }
                         onCloseRequested: root.back()
                         onJumpRequested: n => root.jump(n)
