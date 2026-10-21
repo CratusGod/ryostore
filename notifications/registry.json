@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "notifications": [
+    {
+      "id": "tegami",
+      "name": "Tegami",
+      "version": "1.0.0",
+      "path": "notifications/tegami",
+      "author": "Ryoku Team",
+      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/notifications/tegami",
+      "discord": "https://discord.gg/8KjBmUEyKA",
+      "summary": "Letter-shaped notification card",
+      "description": "Each notification arrives as a small letter: sender and time above an editorial headline, the app seal beside the message, a quiet row of actions, a vermilion edge for urgent ones and a hairline that drains while it waits.",
+      "tags": [
+        "paper",
+        "letter",
+        "seal"
+      ],
+      "accent": "#e1ded0",
+      "surface": "#191111",
+      "preview": "assets/preview.webp",
+      "screenshots": [],
+      "manifest": "manifest.json",
+      "manifestSha256": "50bd98b80fa21a00d878c72a4a8d678943102779efcf9fe962bbcfe6be76b971",
+      "license": "GPL-3.0-or-later",
+      "lastUpdated": "2026-10-21",
+      "official": true
+    }
+  ]
+}

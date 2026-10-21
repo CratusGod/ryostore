@@ -18,6 +18,9 @@ index. An item is invisible to the desktop until it is listed in that registry.
 | `barstyles/` | Bar skins | Settings -> Bar |
 | `docks/` | Docks: the app strip on a screen edge, shared by every bar style, built by the community | Edit desktop -> Dock |
 | `launchers/` | App launchers: what Super+Space opens, built by the community | Settings -> App Launcher |
+| `osds/` | On-screen display designs for volume, brightness and keyboard pop-ups | Settings -> Overlays |
+| `notifications/` | Notification card designs | Settings -> Overlays |
+| `sidebars/` | Designs for the Super+Esc sidebar | Settings -> Overlays |
 | `fastfetch/` | Fastfetch presets | Settings -> Fastfetch |
 | `launcher-images/` | Launcher hero images | Settings -> Appearance |
 | `livewalls/` | Live (video) wallpapers | ryowalls -> Ryoku source |
@@ -50,8 +53,9 @@ install. An item may also carry an optional `discord` invite, shown as a Discord
 icon for reaching its author.
 
 **Users remain responsible for reviewing the code they install and its updates.**
-Plugins, bar styles, docks and launchers run inside your desktop with your user permissions; being
-listed is not sandboxing, an endorsement, or a promise of safety. Review external
+Plugins, bar styles, docks, launchers, OSD designs, notification designs and
+sidebar designs run inside your desktop with your user permissions; being listed
+is not sandboxing, an endorsement, or a promise of safety. Review external
 commands, network access, file access, and any permission prompts before enabling
 an item. Do not install code you do not trust.
 
@@ -75,6 +79,7 @@ Two guides, one job each:
 
 Deep, per-catalogue authoring references live beside each catalogue
 (`plugins/AUTHORING.md`, `docks/AUTHORING.md`, `launchers/AUTHORING.md`,
+`osds/AUTHORING.md`, `notifications/AUTHORING.md`, `sidebars/AUTHORING.md`,
 `rices/AUTHORING.md`, `colorschemes/AUTHORING.md`, `fastfetch/AUTHORING.md`,
 `ryotunes-skins/AUTHORING.md`, `nautilus/AUTHORING.md`, `bundles/README.md`,
 `installers/README.md`, `livewalls/README.md`).

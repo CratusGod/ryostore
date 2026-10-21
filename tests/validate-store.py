@@ -13,8 +13,9 @@ from typing import Iterable
 
 
 CATEGORIES = (
-    "rices", "lockscreens", "barstyles", "launchers", "docks", "fastfetch", "plugins", "bundles",
-    "decors", "launcher-images", "fastfetch-emblems", "ryotunes-skins", "vesktop-themes",
+    "rices", "lockscreens", "barstyles", "launchers", "docks", "osds", "notifications",
+    "sidebars", "fastfetch", "plugins", "bundles", "decors", "launcher-images",
+    "fastfetch-emblems", "ryotunes-skins", "vesktop-themes",
 )
 
 
@@ -35,6 +36,9 @@ FOLDER_PRODUCTS = {
                                {"main", "hero", "okshell", "kairos", "spotlight", "python"}),
     # The shell's services/Dock.qml builtinDesigns.
     "docks": FolderProduct("dock", "Dock.qml", None, {"ryoku", "python", "shima", "ii", "none"}),
+    "osds": FolderProduct("OSD design", "Osd.qml", None, {"ryoku"}),
+    "notifications": FolderProduct("notification design", "Card.qml", None, {"ryoku"}),
+    "sidebars": FolderProduct("sidebar design", "Sidebar.qml", None, {"ryoku"}),
 }
 REQUIRED_ENTRY_FIELDS = (
     "id", "name", "version", "path", "author", "summary", "description",

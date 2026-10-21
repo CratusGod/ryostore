@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "sidebars": [
+    {
+      "id": "byobu",
+      "name": "Byobu",
+      "version": "1.0.0",
+      "path": "sidebars/byobu",
+      "author": "Ryoku Team",
+      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/sidebars/byobu",
+      "discord": "https://discord.gg/8KjBmUEyKA",
+      "summary": "Full-height folding-screen panel",
+      "description": "Super+Esc opens a tall paper screen against the right edge: the time in large type at the head, then your Controls sections in your own order, each behind a labelled fold, with the session buttons pinned to the foot and Wi-Fi, Bluetooth and extensions sliding over it.",
+      "tags": [
+        "full-height",
+        "right edge",
+        "folds"
+      ],
+      "accent": "#e1ded0",
+      "surface": "#191111",
+      "preview": "assets/preview.webp",
+      "screenshots": [],
+      "manifest": "manifest.json",
+      "manifestSha256": "ebdb9a1c399f503d51ee0ae36ccabf31133e3352ade8174555eb32a424b6576a",
+      "license": "GPL-3.0-or-later",
+      "lastUpdated": "2026-10-21",
+      "official": true
+    }
+  ]
+}

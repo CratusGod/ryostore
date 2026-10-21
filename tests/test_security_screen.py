@@ -264,6 +264,57 @@ class TestDockImports(Base):
         self.assertEqual(sev(env, "dock.import_escape"), "blocking")
 
 
+class TestOsdImports(Base):
+    def test_shell_imports_and_in_folder_imports_are_clean(self):
+        write(self.root, "osds/demo/Osd.qml",
+              'import QtQuick\nimport shell.services\nimport Ryoku.Ui.Singletons\n'
+              'import "parts"\nItem{}\n')
+        write(self.root, "osds/demo/parts/Meter.qml", "import QtQuick\nItem{}\n")
+        env = self.run_screen()
+        self.assertFalse(has(env, "osd.import_escape"))
+        self.assertFalse(has(env, "plugin.forbidden_import"))
+
+    def test_relative_import_outside_the_osd_blocks(self):
+        write(self.root, "osds/demo/Osd.qml",
+              'import QtQuick\nimport "../other/parts"\nItem{}\n')
+        env = self.run_screen()
+        self.assertEqual(sev(env, "osd.import_escape"), "blocking")
+
+
+class TestNotificationImports(Base):
+    def test_shell_imports_and_in_folder_imports_are_clean(self):
+        write(self.root, "notifications/demo/Card.qml",
+              'import QtQuick\nimport shell.services\nimport Ryoku.Ui.Singletons\n'
+              'import "parts"\nItem{}\n')
+        write(self.root, "notifications/demo/parts/Body.qml", "import QtQuick\nItem{}\n")
+        env = self.run_screen()
+        self.assertFalse(has(env, "notification.import_escape"))
+        self.assertFalse(has(env, "plugin.forbidden_import"))
+
+    def test_relative_import_outside_the_notification_blocks(self):
+        write(self.root, "notifications/demo/Card.qml",
+              'import QtQuick\nimport "../other/parts"\nItem{}\n')
+        env = self.run_screen()
+        self.assertEqual(sev(env, "notification.import_escape"), "blocking")
+
+
+class TestSidebarImports(Base):
+    def test_shell_imports_and_in_folder_imports_are_clean(self):
+        write(self.root, "sidebars/demo/Sidebar.qml",
+              'import QtQuick\nimport shell.services\nimport Ryoku.Ui.Singletons\n'
+              'import shell.modules.sidebar\nimport "parts"\nItem{}\n')
+        write(self.root, "sidebars/demo/parts/Rail.qml", "import QtQuick\nItem{}\n")
+        env = self.run_screen()
+        self.assertFalse(has(env, "sidebar.import_escape"))
+        self.assertFalse(has(env, "plugin.forbidden_import"))
+
+    def test_relative_import_outside_the_sidebar_blocks(self):
+        write(self.root, "sidebars/demo/Sidebar.qml",
+              'import QtQuick\nimport "../other/parts"\nItem{}\n')
+        env = self.run_screen()
+        self.assertEqual(sev(env, "sidebar.import_escape"), "blocking")
+
+
 class TestDynamicExecution(Base):
     def test_python_dynamic_exec(self):
         src = (

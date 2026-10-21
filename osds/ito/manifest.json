@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "id": "ito",
+  "category": "osds",
+  "version": "1.0.0",
+  "destination": "ryoku/osds/ito",
+  "files": [
+    {
+      "source": "LICENSE",
+      "destination": "LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "mode": "0644",
+      "size": 35149,
+      "install": true
+    },
+    {
+      "source": "Osd.qml",
+      "destination": "Osd.qml",
+      "sha256": "520733c93cba299d581bc6a42f2a3c8e705e325f340ea9d8f16bb9c1378ca5d1",
+      "mode": "0644",
+      "size": 8362,
+      "install": true
+    },
+    {
+      "source": "README.md",
+      "destination": "README.md",
+      "sha256": "832e9533f5d8c351628619198736f23d000bc71cf08e4fb5fee325488ca96506",
+      "mode": "0644",
+      "size": 344,
+      "install": true
+    },
+    {
+      "source": "assets/preview.webp",
+      "destination": "assets/preview.webp",
+      "sha256": "988d741caf680c2b8b0b285e788374e493317a98f9a9c2860fbd057e1ee49b86",
+      "mode": "0644",
+      "size": 36908,
+      "install": false
+    }
+  ],
+  "license": "GPL-3.0-or-later"
+}

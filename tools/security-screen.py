@@ -136,6 +136,9 @@ RULES: dict[str, tuple[str, str]] = {
     "plugin.import_escape": (SEV_BLOCK, "Plugin relative import escapes the plugin folder"),
     "launcher.import_escape": (SEV_BLOCK, "Launcher relative import escapes the launcher folder"),
     "dock.import_escape": (SEV_BLOCK, "Dock relative import escapes the dock folder"),
+    "osd.import_escape": (SEV_BLOCK, "OSD relative import escapes the OSD folder"),
+    "notification.import_escape": (SEV_BLOCK, "Notification relative import escapes the notification folder"),
+    "sidebar.import_escape": (SEV_BLOCK, "Sidebar relative import escapes the sidebar folder"),
     "plugin.unknown_import": (SEV_WARN, "Plugin imports a module outside the allowlist"),
     # dynamic execution
     "exec.eval_exec": (SEV_BLOCK, "Python eval/exec/compile of code"),
@@ -942,7 +945,13 @@ def scan_js_qml(coll: Collector, path: str, text: str, plugin_root: Optional[str
 # Products that install as one folder, <category>/<id>, and run from a copy of
 # it, so a relative import may reach nothing outside that folder. Each maps to
 # the kind its import rule is named after.
-FOLDER_PRODUCTS = {"launchers": "launcher", "docks": "dock"}
+FOLDER_PRODUCTS = {
+    "launchers": "launcher",
+    "docks": "dock",
+    "osds": "osd",
+    "notifications": "notification",
+    "sidebars": "sidebar",
+}
 
 
 def folder_product_root_for(path: str) -> Optional[tuple[str, str]]:

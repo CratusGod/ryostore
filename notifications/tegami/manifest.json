@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "id": "tegami",
+  "category": "notifications",
+  "version": "1.0.0",
+  "destination": "ryoku/notifications/tegami",
+  "files": [
+    {
+      "source": "Card.qml",
+      "destination": "Card.qml",
+      "sha256": "c14deffb7bfe6abde6eabbd041d4b035cc2f14cc45bffb89499faed417c7bd1e",
+      "mode": "0644",
+      "size": 13543,
+      "install": true
+    },
+    {
+      "source": "LICENSE",
+      "destination": "LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "mode": "0644",
+      "size": 35149,
+      "install": true
+    },
+    {
+      "source": "README.md",
+      "destination": "README.md",
+      "sha256": "6a3e494957271b5e7b0159c647749bcbc9289d4ff1315ca905009b8a5cb95b45",
+      "mode": "0644",
+      "size": 512,
+      "install": true
+    },
+    {
+      "source": "assets/preview.webp",
+      "destination": "assets/preview.webp",
+      "sha256": "ef1c7eda3a8acc47127fc2356e9c2df60c872b10cf571c7c03c6ab8cfa6e705c",
+      "mode": "0644",
+      "size": 51794,
+      "install": false
+    }
+  ],
+  "license": "GPL-3.0-or-later"
+}
