@@ -691,7 +691,6 @@ Scope {
     }
 
     readonly property bool phoneKeysWanted: open && !settingsShown
-        && (faceScreen === "apps" || SettingsService.flag("panel.typeToSearch"))
 
     Timer {
         id: focusTimer
@@ -1611,8 +1610,9 @@ Scope {
         FocusScope {
             id: keys
             anchors.fill: parent
-            focus: root.settingsOpen
+            focus: root.open || root.settingsOpen
 
+            Keys.onPressed: event => root.quickKeyPressed(event)
         }
 
         Item {

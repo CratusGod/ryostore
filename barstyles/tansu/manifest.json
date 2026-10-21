@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "tansu",
   "category": "barstyles",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "destination": "ryoku/barstyles/tansu",
   "files": [
     {
@@ -42,7 +42,7 @@
       "destination": "VERSION",
       "mode": "0644",
       "size": 6,
-      "sha256": "bd31e8d9cf8d14a1e9e3fdf3b9f6a524819aed0d1b14627523c6765767c7d8f1",
+      "sha256": "d03d8b268b4171328ac2458ce8ca82d69a1fde38469d4e4faae4f8fa8d8a5e35",
       "install": true
     },
     {
@@ -6529,8 +6529,8 @@
       "source": "modules/tansu/quickPanel/QuickPanel.qml",
       "destination": "modules/tansu/quickPanel/QuickPanel.qml",
       "mode": "0644",
-      "size": 88675,
-      "sha256": "4d6af9fc38c4aafb7fbb440ba9a27901757894c1993db06703f37db15be17b35",
+      "size": 88672,
+      "sha256": "fabf334545fca16830d913361f15abc35644db61e4c54ad01120eb80906c9a82",
       "install": true
     },
     {
