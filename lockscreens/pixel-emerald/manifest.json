@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "pixel-emerald",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/pixel-emerald",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 22702,
-      "sha256": "3a612d7544a2ea810d07658d43805a93b91516640ccf631dbb0ebed07dee9eb7",
+      "size": 22759,
+      "sha256": "fec0e2152cb280885821da5e86fd9bc05af4a16e5105c3baac4bcdc4ddcd35fa",
       "install": true
     },
     {

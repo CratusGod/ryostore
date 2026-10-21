@@ -15,6 +15,7 @@ Item {
         z: -1
     }
     id: root
+    property date now: new Date()
     width: 1920; height: 1080
     readonly property real s: width / 1920
     
@@ -162,10 +163,10 @@ Item {
             Text {
                 id: clockText; text: Qt.formatTime(new Date(), "HH:mm")
                 font.family: mainFont.name; font.pixelSize: 90 * s; font.weight: Font.Medium; color: "white"; font.letterSpacing: -2 * s; opacity: 0.95; anchors.horizontalCenter: parent.horizontalCenter
-                Timer { interval: 1000; running: true; repeat: true; onTriggered: clockText.text = Qt.formatTime(new Date(), "HH:mm") }
+                Timer { interval: 1000; running: true; repeat: true; onTriggered: { root.now = new Date(); clockText.text = Qt.formatTime(root.now, "HH:mm") } }
             }
             Text {
-                text: Qt.formatDate(new Date(), "dddd, MMMM d").toUpperCase(); font.family: mainFont.name; font.pixelSize: 15 * s; color: root.accentColor
+                text: Qt.formatDate(root.now, "dddd, MMMM d").toUpperCase(); font.family: mainFont.name; font.pixelSize: 15 * s; color: root.accentColor
                 font.letterSpacing: 4 * s; horizontalAlignment: Text.AlignHCenter; opacity: 0.7; anchors.horizontalCenter: parent.horizontalCenter
             }
         }

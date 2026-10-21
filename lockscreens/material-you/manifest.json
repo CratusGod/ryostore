@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "material-you",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/material-you",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 33495,
-      "sha256": "93dc8aa7b43bc7b0c2cffe794d67a1aca23c9e680729e3de1ecacbefc0fc4561",
+      "size": 33474,
+      "sha256": "8803773a3e374b638c1d306b519775711ff3d67f2f3e986d3588b8f8bc7bb6aa",
       "install": true
     },
     {

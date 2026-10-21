@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "pixel-skyscrapers",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/pixel-skyscrapers",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 10551,
-      "sha256": "e724ae7e0f146fbcf0aea62952dcdb2d9ccafd1717ecc4a29a150a0845c4bee4",
+      "size": 10608,
+      "sha256": "798a5db031717564ee8e68284adfb831f333907c022e81781a4bc68826f5c885",
       "install": true
     },
     {

@@ -44,7 +44,7 @@ Rectangle {
     property int   sessionIndex: (typeof sessionModel !== "undefined" && sessionModel.lastIndex >= 0)
                                  ? sessionModel.lastIndex : 0
     property string currentTime: Qt.formatTime(new Date(), "hh:mm")
-    property string currentDate: Qt.formatDate(new Date(), "yyyy.MM.dd")
+    property date now: new Date()
 
     TextConstants { id: textConstants }
     
@@ -66,8 +66,8 @@ Rectangle {
     Timer {
         interval: 1000; running: true; repeat: true
         onTriggered: {
-            root.currentTime = Qt.formatTime(new Date(), "hh:mm")
-            root.currentDate = Qt.formatDate(new Date(), "yyyy.MM.dd")
+            root.now = new Date()
+            root.currentTime = Qt.formatTime(root.now, "hh:mm")
         }
     }
 
@@ -968,7 +968,7 @@ Rectangle {
                 }
                 Text {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: root.currentDate
+                    text: Qt.formatDate(root.now, "yyyy.MM.dd")
                     font.family: root.fontName; font.pixelSize: 11 * s
                     font.letterSpacing: 4; color: root.nierTextMid
                     opacity: 0.7 * root.brandReveal

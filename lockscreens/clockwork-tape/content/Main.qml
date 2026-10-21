@@ -12,6 +12,7 @@ Rectangle {
         z: -1
     }
     id: root
+    property date now: new Date()
     readonly property real s: Screen.height / 768
     width: Screen.width
     height: Screen.height
@@ -47,7 +48,7 @@ Rectangle {
 
     Timer {
         interval: 16; running: true; repeat: true
-        onTriggered: { var d = new Date(); root.curH = d.getHours(); root.curM = d.getMinutes(); root.curS = d.getSeconds(); root.curMS = d.getMilliseconds() }
+        onTriggered: { var d = new Date(); root.now = d; root.curH = d.getHours(); root.curM = d.getMinutes(); root.curS = d.getSeconds(); root.curMS = d.getMilliseconds() }
     }
 
     Component.onCompleted: { fadeIn.start(); keyboard.numLock = true }
@@ -178,7 +179,7 @@ Rectangle {
                 TapeReel { tickCount: 60; scrollFrac: root.fracSec; unitLabel: "SEC" }
             }
 
-            Text { anchors.top: tapeRow.bottom; anchors.topMargin: 20 * s; anchors.horizontalCenter: tapeRow.horizontalCenter; text: Qt.formatDate(new Date(), "dddd  ·  dd MMM yyyy").toUpperCase(); font.family: mainFont.name; font.pixelSize: 11*s; font.letterSpacing: 4*s; color: root.dimText }
+            Text { anchors.top: tapeRow.bottom; anchors.topMargin: 20 * s; anchors.horizontalCenter: tapeRow.horizontalCenter; text: Qt.formatDate(root.now, "dddd  ·  dd MMM yyyy").toUpperCase(); font.family: mainFont.name; font.pixelSize: 11*s; font.letterSpacing: 4*s; color: root.dimText }
             Text { anchors.bottom: tapeRow.top; anchors.bottomMargin: 18 * s; anchors.horizontalCenter: tapeRow.horizontalCenter; text: String(curH).padStart(2,'0') + "  :  " + String(curM).padStart(2,'0') + "  :  " + String(curS).padStart(2,'0'); font.family: mainFont.name; font.pixelSize: 28*s; font.letterSpacing: 6*s; font.weight: Font.Black; color: root.mainText }
         }
 

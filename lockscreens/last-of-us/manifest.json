@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "last-of-us",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/last-of-us",
   "files": [
     {
@@ -33,8 +33,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 24164,
-      "sha256": "8a7774592f5323948a3848024ca36f7e6dfd77de27fac44c3e8316466928296f",
+      "size": 24220,
+      "sha256": "da704868cd3d5a6aba2ed4087c293012139b8069ec00300c0f2e093f6cc83192",
       "install": true
     },
     {

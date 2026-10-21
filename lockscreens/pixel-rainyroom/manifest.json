@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "pixel-rainyroom",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/pixel-rainyroom",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 11247,
-      "sha256": "2631d752ffcc3d1aca2fc8490c0635f6bd15defb06b188e9aec4a3575805b190",
+      "size": 11304,
+      "sha256": "d2b318cb5694b070576abe9d0bbbf238f5da6505ea7271ee20512e2d0303e4ba",
       "install": true
     },
     {

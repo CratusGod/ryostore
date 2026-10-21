@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "pixel-coffee",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/pixel-coffee",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 9883,
-      "sha256": "5ec7cee4cc61f8b9d02da6447b0f8b31d5ee243d9f2b854e1810bba2c1d0690c",
+      "size": 9940,
+      "sha256": "e8d4dfc367312ad243733380f8cc8faa4ce4902004797c4a07f6da474559fd0d",
       "install": true
     },
     {

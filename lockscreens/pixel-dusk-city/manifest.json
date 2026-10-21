@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "pixel-dusk-city",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/pixel-dusk-city",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 18317,
-      "sha256": "9af89b15651904c0cb5776340d57da7cfab244a642615bc968a9f5e170c29d03",
+      "size": 18374,
+      "sha256": "435e8dc2b3b8fec098d3142b35b4a109967d868f4e44677c7ab1e97c0777cbc5",
       "install": true
     },
     {

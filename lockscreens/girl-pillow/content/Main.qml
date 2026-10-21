@@ -13,6 +13,7 @@ Rectangle {
         z: -1
     }
     id: root
+    property date now: new Date()
     width: Screen.width; height: Screen.height
     readonly property real s: height / 768
     color: "#ccd4da"
@@ -68,10 +69,10 @@ Rectangle {
                 id: clockText; text: Qt.formatTime(new Date(), "HH:mm")
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: root.cText; font.family: mainFont.name; font.pixelSize: 96 * s
-                Timer { interval: 1000; running: true; repeat: true; onTriggered: clockText.text = Qt.formatTime(new Date(), "HH:mm") }
+                Timer { interval: 1000; running: true; repeat: true; onTriggered: { root.now = new Date(); clockText.text = Qt.formatTime(root.now, "HH:mm") } }
             }
             Text {
-                text: Qt.formatDate(new Date(), "dddd, MMMM d").toLowerCase()
+                text: Qt.formatDate(root.now, "dddd, MMMM d").toLowerCase()
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: root.cSub; font.family: mainFont.name; font.pixelSize: 22 * s; font.letterSpacing: 1 * s
             }

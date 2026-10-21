@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "material-you-dark",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/material-you-dark",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 33515,
-      "sha256": "ecb8adf97466a3247b72398be80e84229f244db99f62dd0e2076de45fa74b850",
+      "size": 33494,
+      "sha256": "48b3946bfeac8ab1fa8e7ad56a368bd846a0ef5998795db3f79ac3669dfde70b",
       "install": true
     },
     {

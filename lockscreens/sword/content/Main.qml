@@ -12,6 +12,7 @@ Rectangle {
         z: -1
     }
     id: root
+    property date now: new Date()
     width: Screen.width; height: Screen.height
     color: "#050810"
     readonly property real s: height / 768
@@ -83,12 +84,12 @@ Rectangle {
         anchors.left: parent.left; anchors.top: parent.top; anchors.leftMargin: 70 * s; anchors.topMargin: 60 * s; spacing: 8 * s; opacity: root.ui
         Text {
             id: clockText; text: Qt.formatTime(new Date(), "HH:mm"); color: "white"; font.family: shurikenFont.name; font.pixelSize: 88 * s; font.weight: Font.Thin
-            Timer { interval: 1000; running: true; repeat: true; onTriggered: clockText.text = Qt.formatTime(new Date(), "HH:mm") }
+            Timer { interval: 1000; running: true; repeat: true; onTriggered: { root.now = new Date(); clockText.text = Qt.formatTime(root.now, "HH:mm") } }
         }
         Row {
             spacing: 10 * s
             Rectangle { width: 22 * s; height: 1 * s; color: "#6090b8"; anchors.verticalCenter: parent.verticalCenter }
-            Text { text: Qt.formatDate(new Date(), "dddd · MMMM d").toUpperCase(); color: "#6090b8"; font.family: shurikenFont.name; font.pixelSize: 13 * s; font.letterSpacing: 3 * s }
+            Text { text: Qt.formatDate(root.now, "dddd · MMMM d").toUpperCase(); color: "#6090b8"; font.family: shurikenFont.name; font.pixelSize: 13 * s; font.letterSpacing: 3 * s }
         }
     }
 

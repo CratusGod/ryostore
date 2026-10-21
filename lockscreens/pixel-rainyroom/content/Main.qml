@@ -14,6 +14,7 @@ Rectangle {
     }
     readonly property real s: Screen.height / 768
     id: root; width: Screen.width; height: Screen.height; color: "#01060c"
+    property date now: new Date()
     property bool isQuickshell: typeof sddm === "undefined" || sddm.hostName === undefined
     property int sessionIndex: (typeof sessionModel !== "undefined" && sessionModel.lastIndex >= 0) ? sessionModel.lastIndex : 0
     property int userIndex: userModel.lastIndex >= 0 ? userModel.lastIndex : 0
@@ -91,12 +92,12 @@ Rectangle {
                 id: clockText
                 text: Qt.formatTime(new Date(), "HH:mm")
                 color: "white"; font.family: pf.name; font.pixelSize: 84 * s
-                Timer { interval: 1000; running: true; repeat: true; onTriggered: clockText.text = Qt.formatTime(new Date(), "HH:mm") }
+                Timer { interval: 1000; running: true; repeat: true; onTriggered: { root.now = new Date(); clockText.text = Qt.formatTime(root.now, "HH:mm") } }
             }
             Row {
                 spacing: 8 * s
                 Rectangle { width: 12 * s; height: 1 * s; color: root.rainBlue; anchors.verticalCenter: parent.verticalCenter }
-                Text { text: Qt.formatDate(new Date(), "dddd, MMMM d").toUpperCase(); color: root.lamp; font.family: pf.name; font.pixelSize: 12 * s; font.letterSpacing: 3 * s; anchors.verticalCenter: parent.verticalCenter }
+                Text { text: Qt.formatDate(root.now, "dddd, MMMM d").toUpperCase(); color: root.lamp; font.family: pf.name; font.pixelSize: 12 * s; font.letterSpacing: 3 * s; anchors.verticalCenter: parent.verticalCenter }
             }
         }
 

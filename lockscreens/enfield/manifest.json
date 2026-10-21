@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "enfield",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/enfield",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 23045,
-      "sha256": "b834e4c141af89a128aac3e6103daa3ce59a27ad7910b537f02b4d94edc5e634",
+      "size": 23102,
+      "sha256": "fc931421dcd5b5577cc05eff0063193fc290f9f0247772048b1a4c43124bab41",
       "install": true
     },
     {

@@ -13,6 +13,7 @@ Rectangle {
     }
     readonly property real s: Screen.height / 768
     id: root; width: Screen.width; height: Screen.height; color: "#14101a"
+    property date now: new Date()
     
     property bool isQuickshell: typeof sddm === "undefined" || sddm.hostName === undefined
     property int sessionIndex: (typeof sessionModel !== "undefined" && sessionModel.lastIndex >= 0) ? sessionModel.lastIndex : 0
@@ -51,11 +52,11 @@ Rectangle {
         Text {
             id: clk; text: Qt.formatTime(new Date(), "HH:mm")
             color: root.sunCream; font.family: pf.name; font.pixelSize: 84 * s; font.letterSpacing: -2 * s
-            Timer { interval: 1000; running: true; repeat: true; onTriggered: clk.text = Qt.formatTime(new Date(), "HH:mm") }
+            Timer { interval: 1000; running: true; repeat: true; onTriggered: { root.now = new Date(); clk.text = Qt.formatTime(root.now, "HH:mm") } }
             layer.enabled: true; layer.effect: DropShadow { color: "#aa000000"; radius: 6; samples: 8; horizontalOffset: 2 * s; verticalOffset: 2 * s }
         }
         Text {
-            text: Qt.formatDate(new Date(), "dddd, MMMM d").toUpperCase()
+            text: Qt.formatDate(root.now, "dddd, MMMM d").toUpperCase()
             color: root.roseUI; font.family: pf.name; font.pixelSize: 12 * s; font.letterSpacing: 4 * s
         }
     }

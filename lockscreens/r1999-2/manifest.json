@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "r1999-2",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/r1999-2",
   "files": [
     {
@@ -33,8 +33,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 17577,
-      "sha256": "c64596f55ec2335954524fedc22f8ac285f4d15cf94261e80c529f199daa6d5d",
+      "size": 17628,
+      "sha256": "2642626f06119a06a598ae80d5602e9791a9a32cf212dfa1ae5c89ca4cecbbe7",
       "install": true
     },
     {

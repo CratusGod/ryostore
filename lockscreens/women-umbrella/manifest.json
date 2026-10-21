@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "women-umbrella",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/women-umbrella",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 8667,
-      "sha256": "9275ecac88f131a49be6b2023c12c8ecf55194244bc84c4051632d44eb611ccf",
+      "size": 8724,
+      "sha256": "0ad6f624c80065ff8a3076bdadf28595a0718b71b2218e1c9174702f1a9f5b68",
       "install": true
     },
     {
