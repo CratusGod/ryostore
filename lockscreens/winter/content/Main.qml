@@ -12,6 +12,7 @@ Item {
         z: -1
     }
     id: root
+    property date now: new Date()
     width: 1920; height: 1080
     readonly property real s: width / 1920
     
@@ -95,12 +96,12 @@ Item {
                 style: Text.Normal
                 layer.enabled: true
                 layer.effect: DropShadow { color: "#50000000"; radius: 25 * s; samples: 31; verticalOffset: 6 * s; transparentBorder: true }
-                Timer { interval: 1000; running: true; repeat: true; onTriggered: clockText.text = Qt.formatTime(new Date(), "HH:mm") }
+                Timer { interval: 1000; running: true; repeat: true; onTriggered: { root.now = new Date(); clockText.text = Qt.formatTime(root.now, "HH:mm") } }
             }
 
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: Qt.formatDate(new Date(), "dddd, MMMM d").toUpperCase()
+                text: Qt.formatDate(root.now, "dddd, MMMM d").toUpperCase()
                 font.family: mainFont.name; font.pixelSize: 18 * s
                 font.letterSpacing: 12 * s
                 font.weight: Font.DemiBold

@@ -12,6 +12,7 @@ Rectangle {
         z: -1
     }
     id: root
+    property date now: new Date()
     readonly property real s: Screen.height / 768
     width: Screen.width
     height: Screen.height
@@ -205,7 +206,7 @@ Rectangle {
             style: Text.Normal
             Timer {
                 interval: 1000; running: true; repeat: true
-                onTriggered: clockText.text = Qt.formatTime(new Date(), "HH:mm")
+                onTriggered: { root.now = new Date(); clockText.text = Qt.formatTime(root.now, "HH:mm") }
             }
         }
 
@@ -222,7 +223,7 @@ Rectangle {
                 }
             }
             Text {
-                text: Qt.formatDate(new Date(), "dddd, MMMM d").toUpperCase()
+                text: Qt.formatDate(root.now, "dddd, MMMM d").toUpperCase()
                 color: root.sakuraPink
                 font.family: orbitron.name
                 font.pixelSize: 12 * s

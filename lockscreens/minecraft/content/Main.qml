@@ -12,6 +12,7 @@ Rectangle {
         z: -1
     }
     id: root
+    property date now: new Date()
     readonly property real s: Screen.height / 768
     width: Screen.width; height: Screen.height
     color: "#1e1e1e"
@@ -282,12 +283,12 @@ Rectangle {
             anchors.bottom: parent.bottom; anchors.left: parent.left; anchors.margins: 6 * s
             id: versionText; label: "Current Time: " + Qt.formatTime(new Date(), "HH:mm")
             pixelSize: 14 * s; textColor: root.mcTextWhite
-            Timer { interval: 1000; running: true; repeat: true; onTriggered: versionText.label = "Current Time: " + Qt.formatTime(new Date(), "HH:mm") }
+            Timer { interval: 1000; running: true; repeat: true; onTriggered: { root.now = new Date(); versionText.label = "Current Time: " + Qt.formatTime(root.now, "HH:mm") } }
         }
 
         McText {
             anchors.bottom: parent.bottom; anchors.right: parent.right; anchors.margins: 6 * s
-            label: Qt.formatDate(new Date(), "dddd, MMMM d")
+            label: Qt.formatDate(root.now, "dddd, MMMM d")
             pixelSize: 14 * s; textColor: root.mcTextWhite
         }
     }

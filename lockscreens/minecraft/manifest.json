@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "minecraft",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/minecraft",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 16907,
-      "sha256": "02923fa3f7e449c7ecd1f213e5cc74d739cf9813975010a29ce49f69780461b4",
+      "size": 16964,
+      "sha256": "696ba084378f35a54b1a10de7bc9cf32537511ecc7efa022af077c33f4cbe62e",
       "install": true
     },
     {

@@ -1,0 +1,81 @@
+{
+  "id": "kbd-layouts",
+  "name": "Keyboard Layouts",
+  "version": "0.1.0",
+  "author": "Madhav Khosla <madhav.khoslaa@gmail.com>",
+  "description": "A layout per keyboard: lists your USB keyboards and the laptop keyboard on the bar and lets you pick each one's layout (US on the external board, UK on the laptop), remembered across replugs and reloads.",
+  "license": "MIT",
+  "official": false,
+  "hosts": [
+    "topbarGlyph"
+  ],
+  "entryPoints": {
+    "main": "service/Main.qml",
+    "content": "content/Widget.qml",
+    "panel": "content/Panel.qml"
+  },
+  "panel": {
+    "width": 340
+  },
+  "files": [
+    "content/KeyboardIcon.qml",
+    "assets/preview-widget.png",
+    "assets/preview-panel.png",
+    "assets/preview-panel-layouts.png"
+  ],
+  "capabilities": {
+    "densities": [
+      "glyph",
+      "compact"
+    ]
+  },
+  "defaults": {
+    "host": "topbarGlyph",
+    "bar": {
+      "section": "right"
+    },
+    "label": "Keyboard Layouts"
+  },
+  "dependencies": {
+    "commands": [
+      "hyprctl",
+      "cat",
+      "mkdir"
+    ]
+  },
+  "metadata": {
+    "settings": [
+      {
+        "key": "pinned",
+        "type": "text",
+        "label": "Quick layouts (comma-separated xkb codes)",
+        "group": "Keyboard Layouts",
+        "default": "us,gb",
+        "placeholder": "us,gb,de"
+      },
+      {
+        "key": "includeBluetooth",
+        "type": "toggle",
+        "label": "Also list Bluetooth keyboards",
+        "group": "Keyboard Layouts",
+        "default": false
+      },
+      {
+        "key": "includeBuiltin",
+        "type": "toggle",
+        "label": "List the laptop (built-in) keyboard",
+        "group": "Keyboard Layouts",
+        "default": true
+      },
+      {
+        "key": "poll",
+        "type": "int",
+        "label": "Check for keyboards every (seconds)",
+        "group": "Keyboard Layouts",
+        "default": 3,
+        "min": 1,
+        "max": 60
+      }
+    ]
+  }
+}

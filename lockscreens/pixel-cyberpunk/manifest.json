@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "pixel-cyberpunk",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/pixel-cyberpunk",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 16607,
-      "sha256": "fef5eba714b74b8bfc18c0780b19eaded3dbab60aaa2a4899294d62967255941",
+      "size": 16664,
+      "sha256": "0a024981b74f23ef485fdc8766563ab9ba2e138096980a15992914ce9b8349fa",
       "install": true
     },
     {

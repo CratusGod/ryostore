@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "pixel-hollowknight",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/pixel-hollowknight",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 10446,
-      "sha256": "54c3edc7ac1d33d91d563da9fa46e772df706951d9361080663a1dd6ab1d4e11",
+      "size": 10503,
+      "sha256": "e23bc176c5fa6daa0e01428f6431a4e31cddb0f0abeed00e7205dfcd473ad604",
       "install": true
     },
     {

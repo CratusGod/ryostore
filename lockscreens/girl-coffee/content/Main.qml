@@ -13,6 +13,7 @@ Rectangle {
         z: -1
     }
     id: root
+    property date now: new Date()
 
     readonly property real s: Screen.height / 768
     property bool isQuickshell: typeof sddm === "undefined" || sddm.hostName === undefined
@@ -219,7 +220,7 @@ Rectangle {
                     interval: 1000
                     running: true
                     repeat: true
-                    onTriggered: clockText.text = Qt.formatTime(new Date(), "HH:mm")
+                    onTriggered: { root.now = new Date(); clockText.text = Qt.formatTime(root.now, "HH:mm") }
                 }
 
             }
@@ -227,7 +228,7 @@ Rectangle {
             // Date
             Text {
                 anchors.left: parent.left
-                text: Qt.formatDate(new Date(), "dddd, MMMM d").toLowerCase()
+                text: Qt.formatDate(root.now, "dddd, MMMM d").toLowerCase()
                 color: root.cMuted
                 font.family: pf.name
                 font.pixelSize: 13 * s

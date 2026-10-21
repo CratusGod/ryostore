@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "girl-coffee",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/girl-coffee",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 23825,
-      "sha256": "9e9bf225515a35fec34a451f886960ba81d7acab681ad45c8705f17ffb6aaab4",
+      "size": 23882,
+      "sha256": "50fadc868402d74f29fbbeee39c3947ac39ce886e75edc1d40e1e66fa3ffbb5b",
       "install": true
     },
     {

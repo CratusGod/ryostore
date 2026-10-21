@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "forest",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/forest",
   "files": [
     {
@@ -33,8 +33,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 23026,
-      "sha256": "2126062d181384b63bc76ceb05e4cb624dd3aeaaff78a49efefad452a74e7146",
+      "size": 23083,
+      "sha256": "28c7529b6d345931d91edd0f74e9b72b80d4cd711962c1d9d134651775baf291",
       "install": true
     },
     {

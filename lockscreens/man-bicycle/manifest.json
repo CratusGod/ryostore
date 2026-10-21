@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "man-bicycle",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/man-bicycle",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 9391,
-      "sha256": "d60826bd97d36f65f36fa96a1ab452f5f55f53734ef90d05c9d64cb572cd4ff4",
+      "size": 9448,
+      "sha256": "a488a63315c7390ddbca471f7dce52c3cf97b233b2b944a0ea27caa83d25caa7",
       "install": true
     },
     {

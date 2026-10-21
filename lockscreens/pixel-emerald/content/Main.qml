@@ -10,6 +10,7 @@ Rectangle {
 
     readonly property real s: Screen.height / 768
     id: root; width: Screen.width; height: Screen.height; color: "#2ab8b8"
+    property date now: new Date()
 
     property bool isQuickshell: typeof sddm === "undefined" || sddm.hostName === undefined
     property int sessionIndex: (typeof sessionModel !== "undefined" && sessionModel.lastIndex >= 0) ? sessionModel.lastIndex : 0
@@ -95,12 +96,12 @@ Rectangle {
                 anchors.top: clockHeader.bottom; anchors.topMargin: 6 * s
                 text: Qt.formatTime(new Date(), "HH:mm")
                 color: root.inkDark; font.family: pf.name; font.pixelSize: 40 * s
-                Timer { interval: 1000; running: true; repeat: true; onTriggered: ct.text = Qt.formatTime(new Date(), "HH:mm") }
+                Timer { interval: 1000; running: true; repeat: true; onTriggered: { root.now = new Date(); ct.text = Qt.formatTime(root.now, "HH:mm") } }
             }
 
             Rectangle { anchors.left: parent.left; anchors.leftMargin: 12 * s; anchors.right: parent.right; anchors.rightMargin: 12 * s; anchors.bottom: parent.bottom; anchors.bottomMargin: 17 * s; height: 1 * s; color: root.emerald; opacity: 0.5 }
 
-            Text { anchors.left: parent.left; anchors.leftMargin: 13 * s; anchors.bottom: parent.bottom; anchors.bottomMargin: 7 * s; text: Qt.formatDate(new Date(), "dddd, MMMM d").toUpperCase(); color: root.inkMid; font.family: pf.name; font.pixelSize: 8 * s; font.letterSpacing: 1.5 * s }
+            Text { anchors.left: parent.left; anchors.leftMargin: 13 * s; anchors.bottom: parent.bottom; anchors.bottomMargin: 7 * s; text: Qt.formatDate(root.now, "dddd, MMMM d").toUpperCase(); color: root.inkMid; font.family: pf.name; font.pixelSize: 8 * s; font.letterSpacing: 1.5 * s }
 
             Row {
                 anchors.right: parent.right; anchors.rightMargin: 10 * s

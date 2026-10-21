@@ -29,7 +29,7 @@ Rectangle {
     // State
     property int sessionIndex: (typeof sessionModel !== "undefined" && sessionModel.lastIndex >= 0) ? sessionModel.lastIndex : 0
     property string currentTime: Qt.formatTime(new Date(), "hh:mm")
-    property string currentDate: Qt.formatDate(new Date(), "yyyy.MM.dd")
+    property date now: new Date()
     property int currentMenu: 0
     property int currentUserIndex: 0
 
@@ -50,8 +50,8 @@ Rectangle {
     Timer {
         interval: 1000; running: true; repeat: true
         onTriggered: {
-            root.currentTime = Qt.formatTime(new Date(), "hh:mm")
-            root.currentDate = Qt.formatDate(new Date(), "yyyy.MM.dd")
+            root.now = new Date()
+            root.currentTime = Qt.formatTime(root.now, "hh:mm")
         }
     }
 
@@ -163,7 +163,7 @@ Rectangle {
                         font.letterSpacing: 2
                     }
                     Text {
-                        text: root.currentDate
+                        text: Qt.formatDate(root.now, "yyyy.MM.dd")
                         color: root.cRed
                         font.family: root.fn
                         font.pixelSize: 12 * s

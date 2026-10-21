@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "winter",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/winter",
   "files": [
     {
@@ -33,8 +33,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 16603,
-      "sha256": "1c82fe0505c3391df12dc4ec3f871c49ff07487222599afdaae0817fdc4ca8c4",
+      "size": 16660,
+      "sha256": "9daf4667ec8084e2f1fbcbfd049b7318fcba2fe0bb1af4a6b84826462fa8dbaa",
       "install": true
     },
     {

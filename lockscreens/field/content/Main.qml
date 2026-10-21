@@ -12,6 +12,7 @@ Rectangle {
         z: -1
     }
     id: root
+    property date now: new Date()
     width: Screen.width; height: Screen.height
     readonly property real s: height / 768
     color: "#3a6370"
@@ -59,11 +60,11 @@ Rectangle {
             font.weight: Font.Light; font.letterSpacing: -1 * s
             layer.enabled: true
             layer.effect: Gfx.DropShadow { color: "#30000000"; radius: 16; samples: 25 }
-            Timer { interval: 1000; running: true; repeat: true; onTriggered: clockText.text = Qt.formatTime(new Date(), "HH:mm") }
+            Timer { interval: 1000; running: true; repeat: true; onTriggered: { root.now = new Date(); clockText.text = Qt.formatTime(root.now, "HH:mm") } }
         }
 
         Text {
-            text: Qt.formatDate(new Date(), "dddd · MMMM d").toUpperCase()
+            text: Qt.formatDate(root.now, "dddd · MMMM d").toUpperCase()
             color: cSteel
             font.family: mainFont.name; font.pixelSize: 12 * s
             font.letterSpacing: 3 * s; font.weight: Font.Light

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "pixel-night-city",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/pixel-night-city",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 11756,
-      "sha256": "7500fbb68ab82322bf785fbd8d9eef87b6a49b82d162cdc55f1465682fe7d366",
+      "size": 11813,
+      "sha256": "ee277bf3a6c4a1400cb5f9ad446e2bc385172181efd4f985006168f9a56f5529",
       "install": true
     },
     {

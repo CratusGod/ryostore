@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "field",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/field",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 9540,
-      "sha256": "55e45cef0c5ddc36c59dbac2f1c308e3e8370b4bb3575844bd78a9d4923ad939",
+      "size": 9597,
+      "sha256": "a40a2cdaf67d6a67e75deee903fe7c0f4cd0341f0963966a7621092fb766f96c",
       "install": true
     },
     {

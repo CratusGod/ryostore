@@ -12,6 +12,7 @@ Item {
         z: -1
     }
     id: root
+    property date now: new Date()
     width: 1920
     height: 1080
     readonly property real s: Screen.height / 1080
@@ -186,13 +187,13 @@ Item {
                     interval: 60000
                     running: true
                     repeat: true
-                    onTriggered: clockText.text = Qt.formatTime(new Date(), "HH:mm")
+                    onTriggered: { root.now = new Date(); clockText.text = Qt.formatTime(root.now, "HH:mm") }
                 }
             }
             Text {
                 anchors.top: clockText.bottom
                 anchors.topMargin: -5 * s
-                text: Qt.formatDate(new Date(), "dddd // MMMM d").toUpperCase()
+                text: Qt.formatDate(root.now, "dddd // MMMM d").toUpperCase()
                 font {
                     family: mainFont.name
                     pixelSize: 15 * s

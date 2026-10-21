@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "sword",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/sword",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 13180,
-      "sha256": "47a063baaa6ce3f19e3bdd95fbe6cd94bc4f7d6c6f67f23be984cb7d4124f6a7",
+      "size": 13237,
+      "sha256": "f683c284dce1c4a817b30cd48b6d051978e95a2ed07a88caf7faa2b365574be0",
       "install": true
     },
     {

@@ -9,6 +9,7 @@ import Qt.labs.settings 1.0
 
 Rectangle {
     id: root
+    property date now: new Date()
 
     // Wayland Fix
     MouseArea { anchors.fill: parent; cursorShape: Qt.ArrowCursor; z: -1 }
@@ -357,11 +358,11 @@ Rectangle {
                         anchors.verticalCenter:parent.verticalCenter; spacing:-2*s
                         Text {
                             property string timeStr: Qt.formatTime(new Date(),"HH:mm")
-                            Timer { interval:1000; running:true; repeat:true; onTriggered: parent.timeStr=Qt.formatTime(new Date(),"HH:mm") }
+                            Timer { interval:1000; running:true; repeat:true; onTriggered: { root.now = new Date(); parent.timeStr=Qt.formatTime(root.now,"HH:mm") } }
                             text:timeStr; color:"white"; font.family:mainFont.name; font.pixelSize:28*s; font.weight:Font.Black
                         }
                         Text {
-                            text:Qt.formatDate(new Date(), "ddd, MMM d").toUpperCase()
+                            text:Qt.formatDate(root.now, "ddd, MMM d").toUpperCase()
                             color:root.accentColor; font.family:mainFont.name; font.pixelSize:10*s; font.weight:Font.Black; font.letterSpacing:1.5*s
                         }
                     }

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "pixel-sakura",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/pixel-sakura",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 15458,
-      "sha256": "e3e68135e00b27bba86d0a46104e2e992b1da7aa00744ba1db7fd22cbe68d51e",
+      "size": 15515,
+      "sha256": "7304713144c6724febc22f1caeb7ea72192f74402b8571727dc83aa5b787af67",
       "install": true
     },
     {

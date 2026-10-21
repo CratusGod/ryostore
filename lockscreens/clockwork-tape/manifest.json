@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "clockwork-tape",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/clockwork-tape",
   "files": [
     {
@@ -33,8 +33,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 24355,
-      "sha256": "106fee628bb634e2b7ee87a4851532a42cbe635ae745d385fc5296e9098dc015",
+      "size": 24401,
+      "sha256": "f1e6b296d7376b1cf5e836949d24e5337495c6291add7218a7200a28347abb90",
       "install": true
     },
     {

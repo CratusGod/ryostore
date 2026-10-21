@@ -7,6 +7,7 @@ import SddmComponents 2.0
 
 Rectangle {
     id: root
+    property date now: new Date()
     width: Screen.width; height: Screen.height
     color: "transparent"
     readonly property real s: height / 1080
@@ -124,15 +125,15 @@ Rectangle {
 
         Column {
             anchors.right: parent.right; anchors.top: timeLabels.bottom; anchors.topMargin: 0; spacing: 5 * s; z: 100 
-            Text { text: Qt.formatDate(new Date(), "dddd").toUpperCase(); font.family: serifFont.name; font.pixelSize: 16 * s; font.letterSpacing: 8 * s; color: root.gold; opacity: 0.8; anchors.right: parent.right }
+            Text { text: Qt.formatDate(root.now, "dddd").toUpperCase(); font.family: serifFont.name; font.pixelSize: 16 * s; font.letterSpacing: 8 * s; color: root.gold; opacity: 0.8; anchors.right: parent.right }
             Row {
                 anchors.right: parent.right; spacing: 12 * s
                 Rectangle { width: 40 * s; height: 1; color: root.gold; opacity: 0.3; anchors.verticalCenter: parent.verticalCenter }
-                Text { text: Qt.formatDate(new Date(), "MMM dd yyyy").toUpperCase(); font.family: serifFont.name; font.pixelSize: 12 * s; font.letterSpacing: 4 * s; color: root.fg; opacity: 0.6 }
+                Text { text: Qt.formatDate(root.now, "MMM dd yyyy").toUpperCase(); font.family: serifFont.name; font.pixelSize: 12 * s; font.letterSpacing: 4 * s; color: root.fg; opacity: 0.6 }
             }
         }
 
-        Timer { interval: 1000; running: true; repeat: true; onTriggered: { hhLab.text = Qt.formatTime(new Date(), "HH"); mmLab.text = Qt.formatTime(new Date(), "mm") } }
+        Timer { interval: 1000; running: true; repeat: true; onTriggered: { root.now = new Date(); hhLab.text = Qt.formatTime(root.now, "HH"); mmLab.text = Qt.formatTime(root.now, "mm") } }
     }
 
     // Identity

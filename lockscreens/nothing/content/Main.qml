@@ -6,6 +6,7 @@ import SddmComponents 2.0
 
 Rectangle {
     id: root
+    property date now: new Date()
     width: Screen.width
     height: Screen.height
     Rectangle {
@@ -146,10 +147,9 @@ Rectangle {
                 repeat: true
                 onTriggered: {
                     let d = new Date();
+                    root.now = d;
                     hourText.text = Qt.formatTime(d, "hh");
                     minText.text = Qt.formatTime(d, "mm");
-                    dayText.text = Qt.formatDate(d, "dddd").toUpperCase();
-                    dateText.text = Qt.formatDate(d, "MMM d").toUpperCase();
                 }
             }
             
@@ -190,7 +190,7 @@ Rectangle {
                 
                 Text {
                     id: dayText
-                    text: Qt.formatDate(new Date(), "dddd").toUpperCase()
+                    text: Qt.formatDate(root.now, "dddd").toUpperCase()
                     font.family: root.sansFont
                     font.pixelSize: 11 * s
                     font.letterSpacing: 1.5 * s
@@ -199,7 +199,7 @@ Rectangle {
                 }
                 Text {
                     id: dateText
-                    text: Qt.formatDate(new Date(), "MMM d").toUpperCase()
+                    text: Qt.formatDate(root.now, "MMM d").toUpperCase()
                     font.family: root.sansFont
                     font.pixelSize: 11 * s
                     font.letterSpacing: 1.5 * s
