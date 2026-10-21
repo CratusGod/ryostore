@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "byobu",
+  "category": "sidebars",
+  "version": "1.0.0",
+  "destination": "ryoku/sidebars/byobu",
+  "files": [
+    {
+      "source": "ByobuFold.qml",
+      "destination": "ByobuFold.qml",
+      "sha256": "c974ee9fd90e2a457d3e94924a36239d7827591f044616ce6abae187cef0a7ec",
+      "mode": "0644",
+      "size": 1710,
+      "install": true
+    },
+    {
+      "source": "LICENSE",
+      "destination": "LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "mode": "0644",
+      "size": 35149,
+      "install": true
+    },
+    {
+      "source": "README.md",
+      "destination": "README.md",
+      "sha256": "eef9c1fa6a867d0ae455aa3d0346e95a4d29ed649713b4055a45185c71e9459b",
+      "mode": "0644",
+      "size": 500,
+      "install": true
+    },
+    {
+      "source": "Sidebar.qml",
+      "destination": "Sidebar.qml",
+      "sha256": "fd8d1f9bf173bd7c2b50404ed78b93a1b598fc1f7ef3553fefa46afa7d4c8e3d",
+      "mode": "0644",
+      "size": 12734,
+      "install": true
+    },
+    {
+      "source": "assets/preview.webp",
+      "destination": "assets/preview.webp",
+      "sha256": "94ee18077a8e8214c2da1342c726bb037e8c63d60aefc8b696967fa378350070",
+      "mode": "0644",
+      "size": 72722,
+      "install": false
+    }
+  ],
+  "license": "GPL-3.0-or-later"
+}
