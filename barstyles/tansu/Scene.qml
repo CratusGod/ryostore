@@ -3,7 +3,6 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 import Ryoku.Ui.Singletons
-import shell.services as Ryoku
 import "services"
 import "modules/tansu/bar"
 import "modules/tansu/quickPanel"
@@ -14,14 +13,13 @@ Scope {
     property var modelData: null
 
     readonly property var screen: root.modelData
+    // The phone is one window: it lives on the first screen that has a bar.
     readonly property bool isPrimary: {
         if (!root.screen)
             return false
-        for (const screen of Quickshell.screens) {
-            if (screen && screen.name
-                    && Tokens.barEnabledFor(screen.name)
-                    && Ryoku.Config.barStyleFor(screen.name) === "tansu")
-                return screen.name === root.screen.name
+        for (const s of Quickshell.screens) {
+            if (s && s.name && Tokens.barEnabledFor(s.name))
+                return s.name === root.screen.name
         }
         return false
     }
