@@ -40,6 +40,9 @@ manifest fields:
 | A shell plugin (desktop, popout, or QS Bar widget) | `plugins/template/` | [`plugins/AUTHORING.md`](plugins/AUTHORING.md) |
 | An app launcher (what Super+Space opens) | `launchers/template/` | [`launchers/AUTHORING.md`](launchers/AUTHORING.md) |
 | A dock (the app strip every bar style shares) | `docks/template/` | [`docks/AUTHORING.md`](docks/AUTHORING.md) |
+| An on-screen display design | `osds/template/` | [`osds/AUTHORING.md`](osds/AUTHORING.md) |
+| A notification design | `notifications/template/` | [`notifications/AUTHORING.md`](notifications/AUTHORING.md) |
+| A Super+Esc sidebar design | `sidebars/template/` | [`sidebars/AUTHORING.md`](sidebars/AUTHORING.md) |
 | A rice (whole-desktop look) | Save current setup in Settings | [`rices/AUTHORING.md`](rices/AUTHORING.md) |
 | A colour scheme | `colorschemes/template/` | [`colorschemes/AUTHORING.md`](colorschemes/AUTHORING.md) |
 | A bundle (tool set) | `bundles/the-ricer/` | [`bundles/README.md`](bundles/README.md) |

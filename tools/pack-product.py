@@ -1,21 +1,18 @@
 #!/usr/bin/env python3
-"""Build a plugin product-manifest.json and refresh its registry hash.
+"""Build a product manifest and refresh its registry hash.
 
 Usage:
     tools/pack-product.py <category>/<id> [--touch]
     e.g. tools/pack-product.py plugins/vpn --touch
 
-Two categories ship a per-file manifest (schema 1, with ``destination`` and a
-``files`` array) that this tool reproduces: ``plugins`` (manifest
-``product-manifest.json``, destination ``ryoku/plugins/<id>``) and
-``ryotunes-skins`` (manifest ``manifest.json``, destination
-``ryoku/ryotunes-skins/<id>``). Both name their manifest file in the registry
-entry's ``manifest`` field. ``barstyles``, ``launchers`` and ``docks`` ship
-``manifest.json`` the same way (destination ``ryoku/<category>/<id>``), with one
-difference this tool honours: a bar style, a launcher or a dock installs its
-README/LICENSE beside its QML, while a plugin and a skin hold documentation back. Every other category
-installs differently and has no such manifest to reproduce, so generalising
-further would be guesswork.
+Plugins and Ryotunes skins ship a per-file manifest (schema 1, with
+``destination`` and a ``files`` array) that this tool reproduces. Plugins use
+``product-manifest.json``; skins use ``manifest.json``. Bar styles, launchers,
+docks, OSDs, notifications and sidebars ship ``manifest.json`` the same way
+(destination ``ryoku/<category>/<id>``). Bar styles and the shell-loaded QML
+folder products install README/LICENSE beside their QML, while plugins and skins
+hold documentation back. Every other category installs differently and has no
+such manifest to reproduce, so generalising further would be guesswork.
 
 The manifest is derived to match the convention already in the tree, verified by
 repacking the existing plugins, skins and bar styles byte for byte:
@@ -49,23 +46,31 @@ import sys
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-SUPPORTED_CATEGORIES = ("plugins", "barstyles", "launchers", "docks", "ryotunes-skins")
+SUPPORTED_CATEGORIES = (
+    "plugins", "barstyles", "launchers", "docks", "osds", "notifications",
+    "sidebars", "ryotunes-skins",
+)
 
 # Categories whose products install their documentation alongside their payload.
-# A bar style, a launcher or a dock is a folder of QML that installs whole, so its
-# README and LICENSE land next to it; a plugin and a skin hold documentation back.
-DOCS_SHIPPED_CATEGORIES = {"barstyles", "launchers", "docks"}
+# These products are folders of QML that install whole, so their README and
+# LICENSE land next to them; plugins and skins hold documentation back.
+DOCS_SHIPPED_CATEGORIES = {
+    "barstyles", "launchers", "docks", "osds", "notifications", "sidebars",
+}
 
 # The file-row field order each category already ships. It is per category
-# because a regenerated row must be byte-identical to the row it replaces: the
-# plugins, skins, launchers and docks were written by this tool (digest before
-# mode), the categories authored by hand put mode and size first. Emitting the
-# other order would rewrite every row of a manifest whose content did not change.
+# because a regenerated row must be byte-identical to the row it replaces.
+# Tool-authored products put digest before mode; the hand-authored bar styles
+# put mode and size first. Emitting the other order would rewrite every row of
+# a manifest whose content did not change.
 ROW_ORDER = {
     "plugins": ("source", "destination", "sha256", "mode", "size", "install"),
     "ryotunes-skins": ("source", "destination", "sha256", "mode", "size", "install"),
     "launchers": ("source", "destination", "sha256", "mode", "size", "install"),
     "docks": ("source", "destination", "sha256", "mode", "size", "install"),
+    "osds": ("source", "destination", "sha256", "mode", "size", "install"),
+    "notifications": ("source", "destination", "sha256", "mode", "size", "install"),
+    "sidebars": ("source", "destination", "sha256", "mode", "size", "install"),
     "barstyles": ("source", "destination", "mode", "size", "sha256", "install"),
 }
 

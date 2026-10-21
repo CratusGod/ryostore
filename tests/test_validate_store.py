@@ -194,7 +194,7 @@ def build_tree(root: Path) -> dict[str, tuple[Path, dict]]:
         product, entry = build_product(root, category)
         write_json(root / category / "registry.json", {"schema": 1, category: [entry]})
         products[category] = (product, entry)
-    # Launchers and docks install as folders the shell loads; the pack tool
+    # Folder products install as QML trees the shell loads; the pack tool
     # writes their manifests.
     for category in validate_store.FOLDER_PRODUCTS:
         build_folder_product(root, category)
@@ -604,7 +604,10 @@ class ValidateStoreTest(unittest.TestCase):
 class MigratedCatalogueTest(unittest.TestCase):
     def test_migrated_categories_satisfy_store_contract(self) -> None:
         root = MODULE_PATH.parent.parent
-        for category in ("rices", "plugins", "bundles", "barstyles", "launchers", "docks", "fastfetch"):
+        for category in (
+            "rices", "plugins", "bundles", "barstyles", "launchers", "docks",
+            "osds", "notifications", "sidebars", "fastfetch",
+        ):
             with self.subTest(category=category):
                 self.assertEqual(
                     validate_store.validate_tree(root, (category,)),
@@ -850,7 +853,7 @@ def build_plugin_source(root: Path, product_id: str = "demo") -> dict:
     return entry
 
 def build_folder_product(root: Path, category: str, product_id: str = "demo") -> None:
-    """A launcher or dock folder plus its registry row, packed by the real pack tool."""
+    """A shell-loaded QML folder plus its registry row, packed by the real pack tool."""
     spec = validate_store.FOLDER_PRODUCTS[category]
     product = root / category / product_id
     (product / "assets").mkdir(parents=True, exist_ok=True)
@@ -884,7 +887,7 @@ def build_folder_product(root: Path, category: str, product_id: str = "demo") ->
 
 
 class FolderProductsTest(unittest.TestCase):
-    """Launchers and docks: QML folders the shell runs in place."""
+    """QML folders the shell runs in place."""
 
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
@@ -899,6 +902,16 @@ class FolderProductsTest(unittest.TestCase):
     def manifest(self, category: str, product_id: str = "demo") -> dict:
         path = self.root / category / product_id / "manifest.json"
         return json.loads(path.read_text(encoding="utf-8"))
+
+    def test_unlisted_templates_are_not_products(self) -> None:
+        for category, spec in validate_store.FOLDER_PRODUCTS.items():
+            with self.subTest(category=category):
+                template = self.root / category / "template"
+                template.mkdir(parents=True)
+                (template / spec.entry).write_text("import QtQuick\nItem {}\n", encoding="utf-8")
+                write_json(self.root / category / "registry.json",
+                           {"schema": 1, category: []})
+                self.assertEqual(self.errors(category), [])
 
     def test_packed_product_installs_whole_and_validates(self) -> None:
         for category, spec in validate_store.FOLDER_PRODUCTS.items():
