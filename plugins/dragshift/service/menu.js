@@ -33,7 +33,8 @@ const MEDIA_HINTS = {
 const GLYPHS = {
     Compress: "⇲", Metadata: "ⓘ", Redact: "▮", Crop: "⌗", Edit: "☼", Annotate: "✎",
     "Add BG": "▣", Resize: "⤢", Split: "✂", Rotate: "⟳", Merge: "⧉", Protect: "⚿", Extract: "⧈",
-    Copy: "❐", Text: "¶", "Copy path": "⎘", Unpack: "⤓", "→ WEBP": "▦", "→ JPG": "▦", "Shrink all": "⇲"
+    Copy: "❐", Text: "¶", "Copy path": "⎘", Numbers: "#", Gray: "◐", Flatten: "▭", Halves: "½",
+    Chapters: "§", Searchable: "⌕", Organize: "▦", Watermark: "≋", Unlock: "⚷", Unpack: "⤓", "→ WEBP": "▦", "→ JPG": "▦", "Shrink all": "⇲"
 };
 
 const HINTS = {
@@ -42,7 +43,10 @@ const HINTS = {
     "Add BG": "Gradient backdrop", Resize: "Change dimensions", Split: "One PDF per page",
     Rotate: "Turn pages 90°", Merge: "Join into one PDF", Protect: "Add a password",
     Extract: "Save embedded images", Copy: "Paste it anywhere", Text: "Read text · copy it",
-    "Copy path": "Full path to clipboard", Unpack: "Into a new folder", "→ WEBP": "Every image inside",
+    "Copy path": "Full path to clipboard", Numbers: "Add page numbers", Gray: "Black & white copy",
+    Flatten: "Bake in forms · notes", Halves: "Split into two", Chapters: "One PDF per bookmark",
+    Searchable: "OCR scanned pages", Organize: "Reorder · delete · cut · merge", Watermark: "Text or image stamp",
+    Unlock: "Remove the password", Unpack: "Into a new folder", "→ WEBP": "Every image inside",
     "→ JPG": "Every image inside", "Shrink all": "Compress every image"
 };
 
@@ -55,7 +59,13 @@ const IMAGE_TOOLS = [
 ];
 const PDF_TOOLS = [
     ["Compress", "tool", "compress"], ["Split", "tool", "split"], ["Rotate", "tool", "rotate"],
-    ["Protect", "editor", "protect"], ["Extract", "tool", "extract"], ["Metadata", "editor", "metadata"]
+    ["Extract", "tool", "extract"], ["Numbers", "tool", "numbers"], ["Gray", "tool", "gray"],
+    ["Flatten", "tool", "flatten"]
+];
+const PDF_PAGES = [
+    ["Organize", "editor", "organize"], ["Watermark", "editor", "watermark"], ["Protect", "editor", "protect"],
+    ["Unlock", "editor", "unlock"], ["Metadata", "editor", "metadata"], ["Halves", "tool", "halves"],
+    ["Chapters", "tool", "chapters"], ["Searchable", "tool", "searchable"]
 ];
 
 const ARCHIVE_ITEMS = [["ZIP", "zip", "Opens anywhere"], ["TAR.GZ", "tar-gz", "Linux standard"],
@@ -153,6 +163,8 @@ function build(paths, heif, kinds) {
         tools.splice(3, 0, ["Merge", "tool", "merge"]);
     if (tools.length > 0)
         rings.push({ name: "Tools", items: tools.map(tool) });
+    if (cat === "pdf")
+        rings.push({ name: "Pages", items: PDF_PAGES.map(tool) });
     rings.push(archiveRing());
     return { category: cat, files: files, rings: rings };
 }

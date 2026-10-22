@@ -1,9 +1,9 @@
 {
   "id": "dragshift",
   "name": "DragShift",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": "CratusGod <nghiabigg652@gmail.com>",
-  "description": "DragShift on Wayland: start dragging files or folders, press Shift, and drop them on a liquid-glass radial menu to convert, compress, zip, unpack, OCR or edit them. Results land next to the originals, which are never changed.",
+  "description": "DragShift on Wayland: start dragging files or folders, press Shift, and drop them on a liquid-glass radial menu to convert, compress, zip, unpack, OCR or edit them, with a PDF24-style PDF toolkit (organize, merge, cut, watermark, unlock, searchable). Results land next to the originals, which are never changed.",
   "license": "MIT",
   "official": false,
   "hosts": [
@@ -26,6 +26,8 @@
     "bin/ds_archive.py",
     "bin/ds_media.py",
     "bin/ds_extras.py",
+    "bin/ds_pdf.py",
+    "bin/ds_pdfwin.py",
     "content/urls.js",
     "engine/PIN",
     "service/menu.js",
@@ -70,7 +72,8 @@
       "qs",
       "ffmpeg",
       "tesseract",
-      "wl-copy"
+      "wl-copy",
+      "fc-match"
     ]
   },
   "metadata": {
@@ -141,7 +144,8 @@
     "folders",
     "zip",
     "video",
-    "ocr"
+    "ocr",
+    "pdf-tools"
   ],
   "commands": [
     "bin/dragshift"

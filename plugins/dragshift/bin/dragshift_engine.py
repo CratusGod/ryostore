@@ -38,6 +38,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))  # -I leaves our own di
 import ds_archive  # noqa: E402
 import ds_extras  # noqa: E402
 import ds_media  # noqa: E402
+import ds_pdf  # noqa: E402
 
 PLUGIN_DIR = Path(__file__).resolve().parent.parent
 PIN_FILE = PLUGIN_DIR / "engine" / "PIN"
@@ -45,7 +46,7 @@ DEFAULT_ENGINE = "~/.local/share/dragshift/engine"
 MAX_FILES = 500
 LEDGER_KEEP = 100
 OPTIONS = {"output": "next", "ocr_lang": "eng"}
-USER_ERRORS = (ds_archive.ArchiveError, ds_media.MediaError, ds_extras.ExtrasError)
+USER_ERRORS = (ds_archive.ArchiveError, ds_media.MediaError, ds_extras.ExtrasError, ds_pdf.PdfError)
 
 # Filled by load_engine(): the DragShift modules this bridge drives.
 convert = imaging = util = report = None
@@ -73,6 +74,7 @@ def load_engine(path: Path) -> None:
     imaging = importlib.import_module("dragshift.imaging")
     util = importlib.import_module("dragshift.util")
     report = importlib.import_module("dragshift.report")
+    ds_pdf.use(convert.open_pdf, util.sibling)
     _loaded_from = path
 
 
@@ -154,6 +156,11 @@ PDF_TOOLS = {
     "rotate": ("Rotate 90°", "Rotate", lambda p: [imaging.rotate_pdf(p)]),
     "extract": ("Extract images", "Extract", lambda p: imaging.extract_pdf_images(p)),
     "strip-all": ("Remove metadata", "Metadata", lambda p: [imaging.strip_pdf_metadata(p)]),
+    "numbers": ("Page numbers", "Page numbers added", lambda p: [ds_pdf.number_pages(p)]),
+    "gray": ("Grayscale", "Converted to grayscale", lambda p: [ds_pdf.grayscale(p)]),
+    "flatten": ("Flatten", "Flattened", lambda p: [ds_pdf.flatten(p)]),
+    "halves": ("Split in half", "Split", lambda p: ds_pdf.split_halves(p)),
+    "chapters": ("Split by bookmarks", "Split", lambda p: ds_pdf.split_chapters(p)),
 }
 
 VIDEO_TOOLS = {
@@ -170,6 +177,7 @@ def tools_for(cat: str) -> dict:
 # ANY_TOOLS work on every drop and take every dropped path, whatever its kind.
 def job_tools_for(cat: str) -> dict:
     return {"image": {"copy": ("Copy", _t_copy_image), "ocr": ("Text", _t_ocr)},
+            "pdf": {"searchable": ("Searchable", _t_searchable)},
             "archive": {"extract": ("Extract", _t_extract)},
             "folder": {"batch-webp": ("Images → WEBP", _t_batch("WEBP")),
                        "batch-jpg": ("Images → JPG", _t_batch("JPG")),
@@ -198,8 +206,12 @@ IMAGE_EDITORS = {
     "add-bg": ("Add BG", "AddBgWindow", False), "compress-custom": ("Compress…", "CompressWindow", True),
     "resize-custom": ("Resize…", "ResizeWindow", True), "metadata": ("Metadata", "MetadataWindow", False),
 }
+# A 5th field names the module that owns the window class (default: upstream tools).
 PDF_EDITORS = {
+    "organize": ("Organize…", "OrganizeWindow", True, {}, "ds_pdfwin"),
+    "watermark": ("Watermark…", "WatermarkWindow", False, {}, "ds_pdfwin"),
     "protect": ("Protect", "ProtectWindow", False),
+    "unlock": ("Unlock…", "UnlockWindow", False, {}, "ds_pdfwin"),
     "metadata": ("Metadata", "MetadataWindow", False, {"is_pdf": True}),
 }
 
@@ -334,6 +346,23 @@ def _t_ocr(files: list[Path], everything: list[Path]) -> dict:
     out, text = ds_extras.ocr(files[0], OPTIONS["ocr_lang"], convert.open_image, util.sibling)
     words = len(text.split())
     return reply("Text copied", f"{out.name} · {words} word{'s' if words != 1 else ''}", [out])
+
+
+def _t_searchable(files: list[Path], everything: list[Path]) -> dict:
+    lang = OPTIONS["ocr_lang"]
+    if not ds_extras.LANG_RE.match(lang):
+        raise Refusal(f"'{lang}' isn't a valid OCR language (use codes like eng or eng+vie)")
+    missing = [c for c in lang.split("+") if c not in ds_extras.ocr_langs()]
+    if missing:
+        raise Refusal(f"OCR language '{missing[0]}' isn't installed. "
+                      f"Install the 'tesseract-data-{missing[0]}' package.")
+    outs, done = [], 0
+    for f in files:
+        out, n = ds_pdf.make_searchable(f, lang)
+        outs.append(out)
+        done += n
+    return reply("Searchable PDF" if len(outs) == 1 else f"{len(outs)} searchable PDFs",
+                 f"{outs[0].name} · {done} page{'s' if done != 1 else ''} recognised", outs)
 
 
 def _t_extract(files: list[Path], everything: list[Path]) -> dict:

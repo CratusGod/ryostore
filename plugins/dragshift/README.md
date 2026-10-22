@@ -30,7 +30,7 @@ game, so fire + Shift in a game is safe.
 | Dropped | Convert to | Tools (one click) | Editors (own window) |
 |---|---|---|---|
 | Images (JPG PNG WEBP HEIC AVIF TIFF BMP GIF ICO) | any of those, or PDF; several images → one PDF | Compress, Under 500 KB, Half size, 1920 px, 1280 px, Remove location, Remove all metadata | Crop, Edit, Annotate, Redact, Add BG, Compress…, Resize…, Metadata |
-| PDF | JPG, PNG (one per page), DOCX, TXT | Compress, Split pages, Rotate 90°, Extract images, Remove metadata; Merge when you drop two or more | Protect (password), Metadata |
+| PDF | JPG, PNG (one per page), DOCX, TXT | Tools ring: Compress, Split pages, Rotate 90°, Extract images, Numbers, Gray, Flatten; Merge when you drop two or more. Pages ring: Halves, Chapters (one PDF per bookmark), Searchable (OCR for scanned pages) | Organize… (reorder, rotate, delete, duplicate, blank pages, extract a selection, cut into parts, merge several PDFs in your order), Watermark… (text or image stamp, live preview; text is drawn as a faded image so every viewer, LibreOffice included, shows the opacity, and it isn't selectable), Protect, Unlock…, Metadata |
 | Word `.docx` | PDF, TXT | | |
 | Text `.txt .md .csv …` | PDF, DOCX | | |
 | Video `.mp4 .mov .mkv .webm .avi` | MP4, WEBM, GIF (first 15 s), MP3 (audio only) | Compress (≤1080p H.264) | |
@@ -74,7 +74,7 @@ when you save.
 - **Loud failures.** On load the plugin runs `bin/dragshift doctor`. If the
   engine is missing, broken or on the wrong commit, a red card names the one
   command that fixes it.
-- **Tests.** `tests/` has 198 tests: every command, every format, filenames with
+- **Tests.** `tests/` has 263 tests: every command, every format, filenames with
   spaces, unicode, `#` and `%20`, mixed and broken drops, honest Undo, cancel
   (SIGTERM) cleanup, signal forwarding to the engine, a real Crop save through DragShift's own window, the
   drop-URL decoding, and menu parity (every slice is something the engine can do). `engine/update.sh` rollback was tested on failure and on
@@ -120,7 +120,9 @@ Reload with `ryoku wm act config.reload`, check with `hyprctl configerrors`.
   (Open), `dbus-send` to `org.freedesktop.FileManager1` (Show in folder) and
   `notify-send` (fallback when the shell is down), `stat` (the hub's file size),
   and, only when you pick those slices, `ffmpeg` (video/audio), `tesseract`
-  (Text) and `wl-copy` (Copy, Copy path). A missing one is reported with the
+  (Text) and `wl-copy` (Copy, Copy path); `fc-match` (fontconfig) finds a font
+  for non-Latin watermark text, which falls back to built-in fonts without it.
+  A missing one is reported with the
   package that provides it; everything else keeps working
   and `qs ... ipc call dragshift` (editors report results; the Hyprland trigger
   opens the menu).
