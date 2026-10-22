@@ -1,0 +1,66 @@
+{
+  "id": "window-stash",
+  "name": "Windows",
+  "version": "1.1.0",
+  "author": "root-sec <root-secyrity@users.noreply.github.com>",
+  "description": "Lists the open windows and parks any of them out of sight, brings it back to its own workspace, or closes it.",
+  "license": "MIT",
+  "official": false,
+  "hosts": [
+    "topbarGlyph"
+  ],
+  "entryPoints": {
+    "main": "service/Main.qml",
+    "content": "content/Widget.qml",
+    "panel": "content/Panel.qml"
+  },
+  "panel": {
+    "width": 380
+  },
+  "files": [
+    "bin/stash.sh",
+    "bin/restore.sh",
+    "assets/preview-widget.png",
+    "assets/demo.gif"
+  ],
+  "capabilities": {
+    "densities": [
+      "glyph",
+      "compact"
+    ]
+  },
+  "defaults": {
+    "host": "topbarGlyph",
+    "label": "Windows"
+  },
+  "dependencies": {
+    "commands": [
+      "ryoku",
+      "bash",
+      "hyprctl",
+      "jq",
+      "sed",
+      "grep"
+    ]
+  },
+  "metadata": {
+    "settings": [
+      {
+        "key": "showLabel",
+        "type": "toggle",
+        "label": "Show the text label",
+        "group": "Windows",
+        "default": true
+      },
+      {
+        "key": "poll",
+        "type": "int",
+        "label": "Check every (seconds)",
+        "group": "Windows",
+        "min": 2,
+        "max": 30,
+        "default": 3
+      }
+    ]
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "id": "window-stash",
+  "category": "plugins",
+  "version": "1.1.0",
+  "destination": "ryoku/plugins/window-stash",
+  "files": [
+    {
+      "source": "LICENSE",
+      "destination": "LICENSE",
+      "sha256": "3981bb536c5f1d87326947bc15b80446a5c9d36b7e16e3226826e23d24efb11e",
+      "mode": "0644",
+      "size": 1074,
+      "install": false
+    },
+    {
+      "source": "README.md",
+      "destination": "README.md",
+      "sha256": "c63fc13a031c3596871892737c6c2cced8ffed89fe7655e8317e242c0ac69ce9",
+      "mode": "0644",
+      "size": 6179,
+      "install": false
+    },
+    {
+      "source": "assets/demo.gif",
+      "destination": "assets/demo.gif",
+      "sha256": "d185026fc1ce53d449fff26da5410feb612c3745f4dbc634573d685f7826e1f8",
+      "mode": "0644",
+      "size": 1328159,
+      "install": false
+    },
+    {
+      "source": "assets/preview-widget.png",
+      "destination": "assets/preview-widget.png",
+      "sha256": "7abad0e5ef9711e1f855b02f1b5e137591994772cb5985d25870f92c644096ff",
+      "mode": "0644",
+      "size": 23155,
+      "install": false
+    },
+    {
+      "source": "bin/restore.sh",
+      "destination": "bin/restore.sh",
+      "sha256": "5b9266247fc5ed0ad6eef79af71b9cdb2355371e01e9e3b43fd9552066b46ca1",
+      "mode": "0755",
+      "size": 1481,
+      "install": true
+    },
+    {
+      "source": "bin/stash.sh",
+      "destination": "bin/stash.sh",
+      "sha256": "572c6cd9087a732b502c46a7ca253bcf0e80ddd529f4793d0e323a7c521f0dc1",
+      "mode": "0755",
+      "size": 2739,
+      "install": true
+    },
+    {
+      "source": "content/Panel.qml",
+      "destination": "content/Panel.qml",
+      "sha256": "cfe7a08bdf92a39ccc6bedf8aa1aa570e466fb474f5caccea73a3c584fa350b8",
+      "mode": "0644",
+      "size": 10582,
+      "install": true
+    },
+    {
+      "source": "content/Widget.qml",
+      "destination": "content/Widget.qml",
+      "sha256": "e93a6e4eb210028b3dbe7a128530417457abb55a6cf80e4b1af49b80cd924b81",
+      "mode": "0644",
+      "size": 1881,
+      "install": true
+    },
+    {
+      "source": "manifest.json",
+      "destination": "manifest.json",
+      "sha256": "43ac8c6d0a5ca09ccfc7d8265a9796fd144708051ac5d4bec3bd52ae65c057c5",
+      "mode": "0644",
+      "size": 1301,
+      "install": true
+    },
+    {
+      "source": "service/Main.qml",
+      "destination": "service/Main.qml",
+      "sha256": "d3c1ad3b7464a28a633893718a674cdba7444c083a07de3a092209b004d378e6",
+      "mode": "0644",
+      "size": 8218,
+      "install": true
+    }
+  ]
+}
