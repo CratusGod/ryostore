@@ -10,6 +10,8 @@ import shutil
 import subprocess
 from pathlib import Path
 
+from ds_archive import temp_part
+
 VIDEO_EXTS = {".mp4", ".mov", ".mkv", ".webm", ".avi", ".m4v"}
 AUDIO_EXTS = {".mp3", ".m4a", ".wav", ".flac", ".ogg", ".opus"}
 VIDEO_TARGETS = ["MP4", "WEBM", "GIF", "MP3"]
@@ -57,7 +59,7 @@ def available() -> bool:
 def _ffmpeg(src: Path, out: Path, args: list[str]) -> Path:
     if not available():
         raise MediaError("ffmpeg isn't installed. Install the 'ffmpeg' package.")
-    part = out.with_name(f".{out.stem}.part{out.suffix}")
+    part = temp_part(out.parent, f".part{out.suffix}")
     cmd = ["ffmpeg", "-nostdin", "-hide_banner", "-loglevel", "error", "-y", "-i", str(src), *args, str(part)]
     try:
         r = subprocess.run(cmd, stdin=subprocess.DEVNULL, capture_output=True, text=True)

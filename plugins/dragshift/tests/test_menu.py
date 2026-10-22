@@ -82,7 +82,7 @@ def test_every_ring_item_is_something_the_engine_accepts():
 
 
 def test_rings_fit_the_shader():
-    for paths in (["/a/p.png"], ["/a/d.pdf", "/a/e.pdf"], ["/a/v.mov"], ["/a/Photos"]):
+    for paths in (["/a/p.png"], ["/a/d.pdf"], ["/a/d.pdf", "/a/e.pdf"], ["/a/v.mov"], ["/a/Photos"]):
         for ring in js(f"build({json.dumps(paths)}, true)")["rings"]:
             assert 2 <= len(ring["items"]) <= 12, (paths, ring["name"])
 
@@ -103,8 +103,11 @@ def test_rings_follow_dragshift_order():
     assert [i["label"] for i in img["rings"][1]["items"]] == \
         ["Compress", "Resize", "Crop", "Edit", "Annotate", "Redact", "Add BG", "Metadata", "Copy", "Text"]
     pdfs = js('build(["/a/d.pdf", "/a/e.pdf"], true)')
+    assert [r["name"] for r in pdfs["rings"]] == ["Convert", "Tools", "Pages", "Archive"]
     assert [i["label"] for i in pdfs["rings"][1]["items"]] == \
-        ["Compress", "Split", "Rotate", "Merge", "Protect", "Extract", "Metadata"]
+        ["Compress", "Split", "Rotate", "Merge", "Extract", "Numbers", "Gray", "Flatten"]
+    assert [i["label"] for i in pdfs["rings"][2]["items"]] == \
+        ["Organize", "Watermark", "Protect", "Unlock", "Metadata", "Halves", "Chapters", "Searchable"]
     assert [r["name"] for r in js('build(["/a/w.docx"], true)')["rings"]] == ["Convert", "Archive"]
 
 
@@ -118,3 +121,16 @@ def test_mixed_drop_keeps_the_first_supported_kind():
 @pytest.mark.parametrize("n", [0, 5, 1023, 1024, 1536, 10 * 1024 ** 2, 3 * 1024 ** 3])
 def test_human_size_matches_upstream(n):
     assert js(f"humanSize({n})") == eng.util.human_size(n)
+
+
+def test_every_one_click_tool_has_a_working_label():
+    """Main.qml's _toolVerbs names the job on its card; a missing id falls back silently."""
+    import re
+    qml = (PLUGIN / "service" / "Main.qml").read_text()
+    table = qml[qml.index("_toolVerbs"):qml.index("})", qml.index("_toolVerbs"))]
+    verbs = set(re.findall(r'"?([\w-]+)"?\s*:\s*"', table))
+    drops = (["/a/p.png"], ["/a/p.png", "/a/q.png"], ["/a/d.pdf"], ["/a/d.pdf", "/a/e.pdf"],
+             ["/a/v.mov"], ["/a/s.wav"], ["/a/Photos"], ["/a/x.zip"])
+    ids = {i["id"] for paths in drops for r in js(f"build({json.dumps(paths)}, true)")["rings"]
+           for i in r["items"] if i.get("kind") == "tool"}
+    assert ids and not ids - verbs, sorted(ids - verbs)

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "dragshift",
   "category": "plugins",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "destination": "ryoku/plugins/dragshift",
   "files": [
     {
@@ -48,9 +48,9 @@
     {
       "source": "README.md",
       "destination": "README.md",
-      "sha256": "8e4be1d3cf8995b720690ef553298789a4ca83c73ee2e6de55b303e18ee37284",
+      "sha256": "c49086b740176e8bfc4c5adaf4d40d6176a9c8f7f36cc3ad9f380c1e04ae9681",
       "mode": "0644",
-      "size": 9962,
+      "size": 10486,
       "install": false
     },
     {
@@ -72,25 +72,25 @@
     {
       "source": "bin/dragshift_editor.py",
       "destination": "bin/dragshift_editor.py",
-      "sha256": "96680356ee88b369b8327761bc0faa859bc7ffdff6f81d093ebdb6b7ee455af7",
+      "sha256": "7bb7f6eed733440ded72e9efa15fa3fce9f99628b6f0abe38afed84d3347191b",
       "mode": "0755",
-      "size": 4106,
+      "size": 5234,
       "install": true
     },
     {
       "source": "bin/dragshift_engine.py",
       "destination": "bin/dragshift_engine.py",
-      "sha256": "9fa796e63fef6caeb5c8cb604eea9a4d31650fcaa37697944cf891c1cfd2d498",
+      "sha256": "4ed60599b671ffa79749e41c5b68b0870b1d8bf445d664c0cceac440c81ab25d",
       "mode": "0755",
-      "size": 25791,
+      "size": 27463,
       "install": true
     },
     {
       "source": "bin/ds_archive.py",
       "destination": "bin/ds_archive.py",
-      "sha256": "b230441f5977a0206b8f8fbe4a6194b223ec76ecda29b784654d42c4826072fb",
+      "sha256": "92662010452aac6ed204e9b8fa38e5aecdd539ed08692ba5f9afb2b1b9b835bc",
       "mode": "0644",
-      "size": 7005,
+      "size": 7509,
       "install": true
     },
     {
@@ -104,9 +104,25 @@
     {
       "source": "bin/ds_media.py",
       "destination": "bin/ds_media.py",
-      "sha256": "efb244f7df8e6bffc9c4456abb215a5abd3d33e086388b49e2fa3ba3eb48c5bb",
+      "sha256": "d03658932f3f5ca0444e5e2fd1ac26577123ed3afb4138b12caabfcb65976a34",
       "mode": "0644",
-      "size": 3669,
+      "size": 3700,
+      "install": true
+    },
+    {
+      "source": "bin/ds_pdf.py",
+      "destination": "bin/ds_pdf.py",
+      "sha256": "8c1b18fc978d062eadea8451216a34b67999761c20900e140f03a6922ad9f971",
+      "mode": "0644",
+      "size": 17880,
+      "install": true
+    },
+    {
+      "source": "bin/ds_pdfwin.py",
+      "destination": "bin/ds_pdfwin.py",
+      "sha256": "115ac54c87bc7ca8fb13afd61f4dc2c3ffa44040fa9f67bfdc76ceeb4fd3e92a",
+      "mode": "0644",
+      "size": 20791,
       "install": true
     },
     {
@@ -184,9 +200,9 @@
     {
       "source": "manifest.json",
       "destination": "manifest.json",
-      "sha256": "5da12a18399e472a5e8008d93deb2b296679771adb5d73e498df7118bb6f0296",
+      "sha256": "9ea5f87c9b2935e207e75c6a5604d350093ff85cdd23c2aa9415ac8a784d476f",
       "mode": "0644",
-      "size": 3326,
+      "size": 3492,
       "install": true
     },
     {
@@ -208,17 +224,17 @@
     {
       "source": "service/Main.qml",
       "destination": "service/Main.qml",
-      "sha256": "e6453746aff388f14e977b759551b0d03b63b5deb69c8386c25ee0c279ae5614",
+      "sha256": "1822d537fbb3549e066064580e1702a47d6664807ecd79a8a893db726e8ffabc",
       "mode": "0644",
-      "size": 18375,
+      "size": 18689,
       "install": true
     },
     {
       "source": "service/MenuView.qml",
       "destination": "service/MenuView.qml",
-      "sha256": "a7509e7604f7dd3ba6c3dd3d41e2f4282cfbaa72b40075d7eebf9e5f4b126bfa",
+      "sha256": "7755cbc36653fbf198b18d99723bf8e9b1aa11eb83212e79ca64b370b5ed12d2",
       "mode": "0644",
-      "size": 8941,
+      "size": 9050,
       "install": true
     },
     {
@@ -240,9 +256,9 @@
     {
       "source": "service/menu.js",
       "destination": "service/menu.js",
-      "sha256": "8900222091597e6f6cd580fe49269362598f68bec8ae3922751875d37476974e",
+      "sha256": "51696f5f1012cdb096f7049634728a5b425c7b60970298d5900a627a5d51e9ce",
       "mode": "0644",
-      "size": 8199,
+      "size": 9080,
       "install": true
     },
     {
@@ -352,9 +368,25 @@
     {
       "source": "tests/test_menu.py",
       "destination": "tests/test_menu.py",
-      "sha256": "7bce7028b2e5cf03930c8c090bf09b2b899d8b92c660d9f7e8699c01bedc65a8",
+      "sha256": "ad9041d08890a4d60478495ea7eca13cf2f991ff89cf0be527e76da1691655e5",
       "mode": "0644",
-      "size": 5456,
+      "size": 6468,
+      "install": true
+    },
+    {
+      "source": "tests/test_pdf.py",
+      "destination": "tests/test_pdf.py",
+      "sha256": "30d4daae9a617cecff9176a940fb62996cae9bec547dc70f9433fea5317a46b2",
+      "mode": "0644",
+      "size": 13726,
+      "install": true
+    },
+    {
+      "source": "tests/test_pdfwin.py",
+      "destination": "tests/test_pdfwin.py",
+      "sha256": "b65f2d4063547fbe791dd373e19b4248bedaad310c856b8fd9625e738b91004c",
+      "mode": "0644",
+      "size": 7687,
       "install": true
     },
     {

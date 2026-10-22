@@ -10,6 +10,7 @@ over the shell's IPC; if the shell can't be reached, to a desktop notification.
 from __future__ import annotations
 
 import json
+import importlib
 import os
 import subprocess
 from pathlib import Path
@@ -50,6 +51,11 @@ def _app():
     from PySide6.QtWidgets import QApplication
     app = QApplication.instance()
     if app is None:
+        if os.environ.get("QT_QPA_PLATFORM") != "offscreen":
+            # The engine's bundled Qt can't load the desktop's qt6ct theme. Through the
+            # portal, file pickers are the desktop's own (GTK, Dolphin...); with no portal
+            # running Qt falls back to its built-in dialog.
+            os.environ["QT_QPA_PLATFORMTHEME"] = "xdgdesktopportal"
         app = QApplication([APP_ID])
         app.setApplicationName("DragShift")
         app.setDesktopFileName(APP_ID)
@@ -77,7 +83,9 @@ def saver(eng, label: str, sink: dict):
 def open_editor(eng, spec: tuple, files: list[Path], dry: bool = False) -> dict:
     """eng = the running dragshift_engine module (passed in: under `python -I` it is
     __main__, and a fresh import would be a second, unloaded copy).
-    spec = (label, tools.py class name, takes_list[, kwargs]). Blocks until the window closes."""
+    spec = (label, class name, takes_list[, kwargs[, module]]); the class comes from
+    upstream's tools.py unless a plugin module (bin/ds_pdfwin.py) is named. Blocks until
+    the window closes."""
     if dry and not os.environ.get("WAYLAND_DISPLAY") and not os.environ.get("DISPLAY"):
         os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
     app = _app()
@@ -91,7 +99,19 @@ def open_editor(eng, spec: tuple, files: list[Path], dry: bool = False) -> dict:
         save(action, srcs, lambda: outs, extra=extra)
 
     arg = [str(f) for f in files] if takes_list else str(files[0])
-    w = getattr(tools, cls_name)(arg, notify, **kwargs)
+    owner = importlib.import_module(spec[4]) if len(spec) > 4 else tools  # plugin-owned windows
+    try:
+        w = getattr(owner, cls_name)(arg, notify, **kwargs)
+    except Exception as e:  # noqa: BLE001 - detached: stdout goes nowhere, so always say why
+        if dry:
+            raise
+        known = isinstance(e, (*eng.USER_ERRORS, eng.util.UserError))  # e.g. "has no password"
+        if not known:
+            import traceback
+            traceback.print_exc()
+        result.update(ok=False, error=str(e) if known else f"Couldn't open {label}: {type(e).__name__}: {e}")
+        _announce(label, result)  # detached: stdout goes nowhere, the card is the answer
+        return result
     w.submit = save
     if dry:
         title = w.windowTitle()

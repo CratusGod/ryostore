@@ -155,8 +155,10 @@ Item {
         anchors.fill: parent
         readonly property var hov: (view.hover >= 0 && view.hover < view.items.length) ? view.items[view.hover] : null
         readonly property string topText: hov ? (hov.glyph ? titled(hov.label) : hov.label) : view.hubText
+        // Only the ring you are on, and where it sits: "PAGES · 3/4".
         readonly property string subText: hov ? (hov.hint || "")
-            : view.ringNames.length > 1 ? "⇧ " + String(view.ringNames[(view.ringIdx + 1) % view.ringNames.length]).toUpperCase()
+            : view.ringNames.length > 1 ? String(view.ringNames[view.ringIdx]).toUpperCase()
+                + " · " + (view.ringIdx + 1) + "/" + view.ringNames.length
             : view.ringNames.length === 1 ? String(view.ringNames[0]).toUpperCase() : ""
 
         function titled(s) {

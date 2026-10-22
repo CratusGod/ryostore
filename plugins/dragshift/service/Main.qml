@@ -401,7 +401,10 @@ Item {
                                          "tar-gz": "Archiving…", "tar-xz": "Archiving…", ocr: "Reading text…",
                                          copy: "Copying…", "copy-path": "Copying…",
                                          "batch-webp": "Converting images…", "batch-jpg": "Converting images…",
-                                         "batch-compress": "Compressing images…" })
+                                         "batch-compress": "Compressing images…", numbers: "Numbering pages…",
+                                         gray: "Converting to grayscale…", flatten: "Flattening…",
+                                         halves: "Splitting…", chapters: "Splitting by bookmarks…",
+                                         searchable: "Recognising text…" })
 
     function runFromMenu(item, files) {
         if (!_ready() || !files || files.length === 0)

@@ -26,6 +26,18 @@ MAX_MEMBERS = 200_000
 SPARE_BYTES = 256 * 1024 ** 2  # leave this much disk free after extracting
 
 
+def temp_part(folder: Path, suffix: str) -> Path:
+    """A new, empty, hidden ".dragshift-XXXX<suffix>" in `folder`, with the mode a normal
+    new file gets. Short on purpose: ".<long name>.part" can pass NAME_MAX (255 bytes)
+    when the real output name doesn't."""
+    fd, name = tempfile.mkstemp(prefix=".dragshift-", suffix=suffix, dir=folder)
+    os.close(fd)
+    umask = os.umask(0)
+    os.umask(umask)
+    os.chmod(name, 0o666 & ~umask)  # mkstemp's 0600 would make every result private
+    return Path(name)
+
+
 class ArchiveError(Exception):
     """A message that is fine to show the user as-is."""
 
@@ -84,7 +96,7 @@ def pack(paths: list[Path], fmt: str, out_dir, unique_path) -> tuple[Path, int, 
         skipped += s
     if not entries:
         raise ArchiveError("Nothing to archive (only links or special files)")
-    part = dest.with_name(f".{dest.name}.part")
+    part = temp_part(dest.parent, ".part")
     try:
         if mode is None:
             with zipfile.ZipFile(part, "w", zipfile.ZIP_DEFLATED, compresslevel=6,
@@ -132,7 +144,7 @@ def unpack(src: Path, out_dir, unique_path) -> tuple[Path, int]:
     """Extract `src` into a new folder beside it. An archive that holds exactly one
     top-level folder is not wrapped in a second one. Returns (folder, entries)."""
     where = out_dir(src)
-    tmp = Path(tempfile.mkdtemp(prefix=f".{archive_stem(src)}.", suffix=".part", dir=where))
+    tmp = Path(tempfile.mkdtemp(prefix=".dragshift-", suffix=".part", dir=where))
     umask = os.umask(0)
     os.umask(umask)
     tmp.chmod(0o777 & ~umask)  # mkdtemp's 0700 would otherwise become the folder's mode
