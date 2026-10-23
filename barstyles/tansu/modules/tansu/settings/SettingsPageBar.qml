@@ -51,6 +51,15 @@ SettingsPage {
             onToggled: SettingsService.toggle("bar.visible")
         }
 
+        SettingToggle {
+            icon: "visibility_off"
+            label: "Auto-hide"
+            detail: SettingsService.flag("bar.autohide")
+                ? "Slides away · hover the edge" : "Always on screen"
+            checked: SettingsService.flag("bar.autohide")
+            onToggled: SettingsService.toggle("bar.autohide")
+        }
+
         SettingChoice {
             label: "Style"
             sublabel: "How the bar is drawn"
@@ -62,6 +71,17 @@ SettingsPage {
                 { id: "capsule", label: "Capsule", edge: "top", variant: "capsule" }
             ]
             onPicked: id => BarStyleService.setStyle(id)
+        }
+
+        SettingSlider {
+            icon: "rounded_corner"
+            label: "Corner radius"
+            from: 0
+            to: 100
+            step: 1
+            suffix: "%"
+            value: SettingsService.get("bar.roundness", 100)
+            onMoved: v => SettingsService.set("bar.roundness", Math.round(v))
         }
 
         SettingChoice {

@@ -106,6 +106,14 @@ Item {
         draft.cursorPosition = draft.text.length
     }
 
+    // The picture is prepared as soon as the phone exists, not when Rashin is
+    // first pulled in: ffmpeg needs a moment, and the swipe should land on it.
+    Component.onCompleted: {
+        ensureStill()
+        if (wallSource !== "")
+            shownWall = wallSource
+    }
+
     onActiveChanged: {
         if (active) {
             ensureStill()
@@ -136,6 +144,7 @@ Item {
     Connections {
         target: Ryoku.Session
         function onWallpaperChanged() { face.ensureStill() }
+        function onWallIsVideoChanged() { face.ensureStill() }
     }
 
     // The picture and its scrim. The phone cuts them to its screen shape, so
@@ -154,6 +163,11 @@ Item {
             width: face.width
             height: face.height
             source: face.shownWall
+            // Wallpapers are often far bigger than the phone (this one is
+            // 5000x6243): decode at the size it is drawn, or the first swipe
+            // waits on tens of megapixels.
+            sourceSize: Qt.size(Math.ceil(face.width * face.renderScale * 2),
+                                Math.ceil(face.height * face.renderScale * 2))
             fillMode: Image.PreserveAspectCrop
             asynchronous: true
             cache: true

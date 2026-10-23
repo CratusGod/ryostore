@@ -8,10 +8,11 @@ theme as the rest of the shell.
 
 - **The bar** — workspaces, active window, media, weather, clock and date, tray,
   system status, resource gauges, battery, package updates, notifications,
-  privacy (mic / screen-share), keyboard layout, and the utility keys.
+  privacy (mic / screen-share), keyboard layout, and the utility keys. It can
+  auto-hide, sliding away until the pointer reaches its edge.
 - **The phone** — the Quick Panel as a phone: quick tiles and sliders,
-  a now-playing card while something is playing, notifications, dialogs, and
-  the power menu.
+  a now-playing card while something is playing (tap it for the lyrics, and pin
+  the phone into the corner), notifications, dialogs, and the power menu.
 - **Built-in Apps** — browse, search and launch desktop applications within
   the same phone, without installing a separate launcher.
 - **Rashin** — swipe left on the phone for Ryoku's AI agent: a transcript over
@@ -37,7 +38,7 @@ The pages are **Quick**, **General**, **Bar**, and **About**. They are stored in
 |------|---------------|
 | Quick | The phone's look (including the now-playing card), and the shell switches (notifications, Night Light, Keep Awake, the bar) |
 | General | 24-hour time, the phone's alert, the Quick Panel's hot edge and behaviour, shell reload and reset |
-| Bar | Which modules the bar carries (every pill and key), the workspace count, the bar's size, the update badge, media/tray/scroll behaviour, and the utility keys |
+| Bar | Which modules the bar carries (every pill and key), auto-hide, the corner radius, the workspace count, the bar's size, the update badge, media/tray/scroll behaviour, and the utility keys |
 | About | What this barstyle is, and its credits |
 
 ## Sizes
