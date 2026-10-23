@@ -1,10 +1,13 @@
 import QtQuick
+import Quickshell
+import Quickshell.Io
 import shell.services as Ryoku
 import "../../../modules/common"
 import "../../../modules/common/widgets"
 
 // Rashin as a phone screen: the transcript Needle keeps for the shell's Agent
-// surfaces, in a message thread with the phone's own composer under it.
+// surfaces, in a message thread over Ryoku's wallpaper, with the phone's own
+// composer under it.
 Item {
     id: face
 
@@ -30,6 +33,61 @@ Item {
         return Ryoku.Needle.currentModel !== "" ? Ryoku.Needle.currentModel : "ready"
     }
 
+    // The screen sits on the wallpaper, so its own ink is light whatever the
+    // theme is doing; the palette only decides the two bubble colours.
+    readonly property color wallInk: "#f8f5fa"
+    readonly property color wallSub: Qt.rgba(1, 1, 1, 0.68)
+    readonly property color glass: Qt.rgba(0.04, 0.03, 0.06, 0.46)
+    readonly property color glassLine: Qt.rgba(1, 1, 1, 0.20)
+    readonly property color agentFill: Qt.rgba(Theme.accentMint.r, Theme.accentMint.g,
+                                               Theme.accentMint.b, 0.30)
+    readonly property color agentLine: Qt.rgba(Theme.accentMint.r, Theme.accentMint.g,
+                                               Theme.accentMint.b, 0.62)
+
+    // A still of the wallpaper for the thread to sit on. Ryoku publishes one
+    // for a video (Session.livePoster), but a daemon restart can leave it
+    // missing, so the phone keeps its own copy beside the cache.
+    property int stillRev: 0
+    property string stillFor: ""
+    property string stillWant: ""
+    readonly property string stillPath: (Quickshell.env("XDG_CACHE_HOME")
+        || (Quickshell.env("HOME") + "/.cache")) + "/tansu-rashin-wall.png"
+    readonly property url wallSource: {
+        if (Ryoku.Session.wallpaper === "")
+            return ""
+        if (!Ryoku.Session.wallIsVideo)
+            return "file://" + Ryoku.Session.wallpaper
+        return stillFor === Ryoku.Session.wallpaper
+            ? "file://" + stillPath + "?v=" + stillRev : ""
+    }
+
+    // Keep the last picture up while a new one is being extracted, so changing
+    // the wallpaper never blanks the thread.
+    property url shownWall: ""
+    onWallSourceChanged: if (wallSource !== "") shownWall = wallSource
+
+    function ensureStill() {
+        if (!Ryoku.Session.wallIsVideo || Ryoku.Session.wallpaper === "")
+            return
+        if (stillFor === Ryoku.Session.wallpaper || stillWant !== "")
+            return
+        stillWant = Ryoku.Session.wallpaper
+        stillProc.running = true
+    }
+
+    Process {
+        id: stillProc
+        command: ["ffmpeg", "-y", "-loglevel", "error", "-ss", "1",
+                  "-i", face.stillWant,
+                  "-frames:v", "1", "-update", "1", face.stillPath]
+        onExited: {
+            if (exitCode === 0)
+                face.stillFor = face.stillWant
+            face.stillWant = ""
+            face.stillRev++
+        }
+    }
+
     function sendDraft() {
         const text = draft.text.trim()
         if (text.length === 0 || Ryoku.Needle.busy || blocked)
@@ -49,6 +107,7 @@ Item {
 
     onActiveChanged: {
         if (active) {
+            ensureStill()
             if (!registered) {
                 Ryoku.Needle.agentSurfaceOpened()
                 registered = true
@@ -73,227 +132,269 @@ Item {
         function onTouched() { chat.positionViewAtEnd() }
     }
 
+    Connections {
+        target: Ryoku.Session
+        function onWallpaperChanged() { face.ensureStill() }
+    }
+
+    Image {
+        anchors.fill: parent
+        source: face.shownWall
+        fillMode: Image.PreserveAspectCrop
+        asynchronous: true
+        cache: true
+        smooth: true
+        visible: status === Image.Ready
+    }
+
+    // Dark glass over the wallpaper: heavy at the header and under the
+    // composer, light where the thread is so the picture still reads.
+    Rectangle {
+        anchors.fill: parent
+        gradient: Gradient {
+            GradientStop { position: 0.00; color: Qt.rgba(0, 0, 0, 0.60) }
+            GradientStop { position: 0.14; color: Qt.rgba(0, 0, 0, 0.38) }
+            GradientStop { position: 0.70; color: Qt.rgba(0, 0, 0, 0.48) }
+            GradientStop { position: 1.00; color: Qt.rgba(0, 0, 0, 0.72) }
+        }
+    }
+
     Text {
         x: 68
         y: 44
         text: "Rashin"
-        color: Theme.pInk
+        color: face.wallInk
         font.family: Theme.fontFamily
-        font.pixelSize: 24
+        font.pixelSize: 26
         font.weight: Font.ExtraBold
         font.styleName: Theme.fontStyleBold
     }
 
     Text {
         x: 68
-        y: 78
-        width: 420
+        y: 80
+        width: 440
         elide: Text.ElideRight
         text: face.statusText
-        color: Theme.pInkSub
+        color: face.wallSub
         font.family: Theme.fontFamily
-        font.pixelSize: 18
-    }
-
-    SettingRoundButton {
-        x: 512
-        y: 34
-        size: 44
-        icon: "add-circle"
-        onClicked: Ryoku.Needle.newChat()
+        font.pixelSize: 17
     }
 
     Rectangle {
-        id: card
+        id: newChat
 
-        x: 36
-        y: 122
-        width: 582
-        height: 800
-        radius: 32
-        color: Theme.pSurface
-        border.width: 3
-        border.color: Theme.pLine
+        x: 518
+        y: 38
+        width: 52
+        height: 52
+        radius: 26
+        color: newChatArea.pressed ? Qt.rgba(1, 1, 1, 0.28) : face.glass
+        border.width: 2
+        border.color: face.glassLine
 
-        ListView {
-            id: chat
+        MaterialIcon {
+            anchors.centerIn: parent
+            name: "add-circle"
+            size: 26
+            color: face.wallInk
+        }
 
+        MouseArea {
+            id: newChatArea
             anchors.fill: parent
-            anchors.margins: 18
-            clip: true
-            spacing: 10
-            boundsBehavior: Flickable.StopAtBounds
-            model: Ryoku.Needle.convo
+            cursorShape: Qt.PointingHandCursor
+            onClicked: Ryoku.Needle.newChat()
+        }
+    }
 
-            onCountChanged: Qt.callLater(chat.positionViewAtEnd)
-            onContentHeightChanged: if (chat.atYEnd || chat.contentHeight < chat.height)
-                Qt.callLater(chat.positionViewAtEnd)
+    ListView {
+        id: chat
 
-            delegate: Column {
-                id: row
+        x: 34
+        y: 128
+        width: 586
+        height: 750
+        clip: true
+        spacing: 12
+        boundsBehavior: Flickable.StopAtBounds
+        model: Ryoku.Needle.convo
 
-                required property string kind
-                required property string role
-                required property string body
-                required property string title
-                required property string status
+        onCountChanged: Qt.callLater(chat.positionViewAtEnd)
+        onContentHeightChanged: if (chat.atYEnd || chat.contentHeight < chat.height)
+            Qt.callLater(chat.positionViewAtEnd)
 
-                width: chat.width
-                spacing: 5
+        delegate: Column {
+            id: row
 
-                Row {
-                    visible: row.kind !== "msg"
-                    spacing: 8
+            required property string kind
+            required property string role
+            required property string body
+            required property string title
+            required property string status
 
-                    MaterialIcon {
-                        anchors.verticalCenter: parent.verticalCenter
-                        name: row.kind === "handoff" ? "transfer-horizontal" : "sledgehammer"
-                        size: 20
-                        color: Theme.pInkSub
-                    }
+            width: chat.width
+            spacing: 6
 
-                    Text {
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: row.kind === "handoff" ? "handed to chat"
-                            : row.title + (row.status !== "" ? " · " + row.status : "")
-                        color: Theme.pInkSub
-                        font.family: Theme.fontFamily
-                        font.pixelSize: 16
-                    }
+            Row {
+                visible: row.kind !== "msg"
+                spacing: 8
+
+                MaterialIcon {
+                    anchors.verticalCenter: parent.verticalCenter
+                    name: row.kind === "handoff" ? "transfer-horizontal" : "sledgehammer"
+                    size: 20
+                    color: face.agentLine
                 }
 
                 Text {
-                    visible: row.kind === "msg" && row.role !== "user"
-                    x: 17
-                    text: "Rashin"
-                    color: Theme.pInkSub
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: row.kind === "handoff" ? "handed to chat"
+                        : row.title + (row.status !== "" ? " · " + row.status : "")
+                    color: face.wallSub
                     font.family: Theme.fontFamily
-                    font.pixelSize: 14
-                    font.weight: Font.DemiBold
-                }
-
-                Rectangle {
-                    id: bubble
-
-                    visible: row.kind === "msg"
-                    x: row.role === "user" ? row.width - width : 0
-                    width: Math.min(bodyText.implicitWidth, row.width * 0.78) + 34
-                    height: bodyText.implicitHeight + 26
-                    radius: 22
-                    color: row.role === "user" ? Theme.surfaceTint : Theme.pSurfaceHover
-                    border.width: 2
-                    border.color: row.role === "user" ? Theme.accentCyan : Theme.pLine
-                    antialiasing: true
-
-                    Text {
-                        id: bodyText
-
-                        x: 17
-                        y: 13
-                        width: Math.min(implicitWidth, row.width * 0.78)
-                        text: row.body
-                        wrapMode: Text.Wrap
-                        color: Theme.pInk
-                        font.family: Theme.fontFamily
-                        font.pixelSize: 19
-                        lineHeight: 25
-                        lineHeightMode: Text.FixedHeight
-                    }
+                    font.pixelSize: 15
                 }
             }
-        }
-
-        Column {
-            anchors.centerIn: parent
-            width: parent.width - 90
-            spacing: 14
-            visible: chat.count === 0
 
             Text {
-                width: parent.width
-                horizontalAlignment: Text.AlignHCenter
-                wrapMode: Text.WordWrap
-                text: face.blocked ? face.statusText
-                    : Ryoku.Needle.busy ? face.statusText : "Ask Rashin anything"
-                color: Theme.pInkSub
+                visible: row.kind === "msg" && row.role !== "user"
+                x: 18
+                text: "Rashin"
+                color: Qt.lighter(Theme.accentMint, 1.25)
                 font.family: Theme.fontFamily
-                font.pixelSize: 19
+                font.pixelSize: 14
+                font.weight: Font.DemiBold
             }
 
-            Flow {
-                width: parent.width
-                visible: !face.blocked && !Ryoku.Needle.busy
-                spacing: 8
+            Rectangle {
+                id: bubble
 
-                Repeater {
-                    model: ["Summarise this desktop", "What is running?", "Tidy my downloads"]
+                visible: row.kind === "msg"
+                x: row.role === "user" ? row.width - width : 0
+                width: Math.min(bodyText.implicitWidth, row.width * 0.76) + 36
+                height: bodyText.implicitHeight + 26
+                radius: 24
+                color: row.role === "user" ? Theme.accentCyan : face.agentFill
+                border.width: 2
+                border.color: row.role === "user" ? Qt.rgba(1, 1, 1, 0.22) : face.agentLine
+                antialiasing: true
 
-                    delegate: Rectangle {
-                        required property string modelData
+                Text {
+                    id: bodyText
 
-                        width: chipText.implicitWidth + 30
-                        height: 40
-                        radius: 20
-                        color: Theme.pSurfaceHover
-                        border.width: 2
-                        border.color: Theme.pLine
+                    x: 18
+                    y: 13
+                    width: Math.min(implicitWidth, row.width * 0.76)
+                    text: row.body
+                    wrapMode: Text.Wrap
+                    color: row.role === "user" ? Theme.inkOnAccent : face.wallInk
+                    font.family: Theme.fontFamily
+                    font.pixelSize: 19
+                    lineHeight: 25
+                    lineHeightMode: Text.FixedHeight
+                }
+            }
+        }
+    }
 
-                        Text {
-                            id: chipText
-                            anchors.centerIn: parent
-                            text: parent.modelData
-                            color: Theme.pInk
-                            font.family: Theme.fontFamily
-                            font.pixelSize: 16
-                        }
+    Column {
+        x: 34
+        y: 128
+        width: 586
+        height: 750
+        spacing: 16
+        visible: chat.count === 0
 
-                        MouseArea {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            onClicked: {
-                                draft.text = parent.modelData
-                                face.focusDraft()
-                            }
+        Item { width: 1; height: 250 }
+
+        Text {
+            width: parent.width
+            horizontalAlignment: Text.AlignHCenter
+            wrapMode: Text.WordWrap
+            text: face.blocked ? face.statusText
+                : Ryoku.Needle.busy ? face.statusText : "Ask Rashin anything"
+            color: face.wallInk
+            font.family: Theme.fontFamily
+            font.pixelSize: 22
+            font.weight: Font.DemiBold
+        }
+
+        Flow {
+            width: parent.width
+            visible: !face.blocked && !Ryoku.Needle.busy
+            spacing: 10
+
+            Repeater {
+                model: ["Summarise this desktop", "What is running?", "Tidy my downloads"]
+
+                delegate: Rectangle {
+                    required property string modelData
+
+                    width: chipText.implicitWidth + 34
+                    height: 44
+                    radius: 22
+                    color: chipArea.pressed ? Qt.rgba(1, 1, 1, 0.26) : face.glass
+                    border.width: 2
+                    border.color: face.glassLine
+
+                    Text {
+                        id: chipText
+                        anchors.centerIn: parent
+                        text: parent.modelData
+                        color: face.wallInk
+                        font.family: Theme.fontFamily
+                        font.pixelSize: 16
+                    }
+
+                    MouseArea {
+                        id: chipArea
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: {
+                            draft.text = parent.modelData
+                            face.focusDraft()
                         }
                     }
                 }
             }
         }
+    }
 
-        // What the agent is doing, under the thread while it works.
-        Text {
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 18
-            visible: chat.count > 0 && Ryoku.Needle.busy
-            text: face.statusText
-            color: Theme.pInkSub
-            font.family: Theme.fontFamily
-            font.pixelSize: 16
-        }
+    // What the agent is doing, under the thread while it works.
+    Text {
+        x: 34
+        y: 886
+        width: 586
+        horizontalAlignment: Text.AlignHCenter
+        visible: chat.count > 0 && Ryoku.Needle.busy
+        text: face.statusText
+        color: face.wallSub
+        font.family: Theme.fontFamily
+        font.pixelSize: 15
     }
 
     Rectangle {
         id: field
 
-        x: 52
-        y: 950
-        width: 550
-        height: 80
-        radius: 40
-        color: Theme.pSurface
-        border.width: 3
-        border.color: draft.activeFocus ? Theme.accentCyan : Theme.pLine
+        x: 34
+        y: 944
+        width: 586
+        height: 88
+        radius: 44
+        color: face.glass
+        border.width: 2
+        border.color: draft.activeFocus ? Theme.accentCyan : face.glassLine
 
         TextInput {
             id: draft
 
-            x: 28
-            width: parent.width - 110
+            x: 30
+            width: parent.width - 118
             anchors.verticalCenter: parent.verticalCenter
-            color: Theme.pInk
+            color: face.wallInk
             selectionColor: Theme.accentCyan
-            selectedTextColor: Theme.pInk
+            selectedTextColor: Theme.inkOnAccent
             font.family: Theme.fontFamily
             font.pixelSize: 21
             clip: true
@@ -313,37 +414,40 @@ Item {
         }
 
         Text {
-            x: 28
+            x: 30
             anchors.verticalCenter: parent.verticalCenter
             visible: draft.text.length === 0
             text: face.blocked ? "Connect a model in Ryoku Hub"
                 : Ryoku.Needle.busy ? "Rashin is working" : "Message Rashin"
-            color: Theme.pInkSub
+            color: face.wallSub
             font.family: Theme.fontFamily
             font.pixelSize: 21
         }
 
-        SettingRoundButton {
-            anchors.right: parent.right
-            anchors.rightMargin: 10
-            anchors.verticalCenter: parent.verticalCenter
-            size: 58
-            icon: Ryoku.Needle.busy ? "stop" : "arrow-up"
-            on: Ryoku.Needle.busy
-            onClicked: Ryoku.Needle.busy ? Ryoku.Needle.cancel() : face.sendDraft()
-        }
-    }
+        Rectangle {
+            id: send
 
-    Text {
-        x: 60
-        y: 1046
-        width: 534
-        horizontalAlignment: Text.AlignHCenter
-        elide: Text.ElideRight
-        visible: face.blocked
-        text: face.statusText
-        color: Theme.pInkSub
-        font.family: Theme.fontFamily
-        font.pixelSize: 16
+            anchors.right: parent.right
+            anchors.rightMargin: 14
+            anchors.verticalCenter: parent.verticalCenter
+            width: 60
+            height: 60
+            radius: 30
+            color: Ryoku.Needle.busy ? Theme.accentMint : Theme.accentCyan
+            opacity: face.blocked ? 0.4 : 1
+
+            MaterialIcon {
+                anchors.centerIn: parent
+                name: Ryoku.Needle.busy ? "stop" : "arrow-up"
+                size: 28
+                color: Theme.inkOnAccent
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: Ryoku.Needle.busy ? Ryoku.Needle.cancel() : face.sendDraft()
+            }
+        }
     }
 }

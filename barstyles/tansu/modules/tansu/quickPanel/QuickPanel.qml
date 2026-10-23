@@ -61,9 +61,10 @@ import "../../../modules/tansu/settings"
 // while it animates stutters.
 //
 // This is also the ONE phone's front door (Concept D, "Phone + Stage"):
-//   - Quick is the first screen. Apps (LauncherFace.qml) is a second screen of the
-//     same body: the grid button on the header, typing a letter, or Super+A bring
-//     it in (a short vertical slide, no new pose). Settings keep their turn.
+//   - Quick is the first screen, with Rashin (AskFace.qml) to its right: a pull
+//     left brings the agent in, a pull right goes back. Apps (LauncherFace.qml)
+//     is a third screen of the same body but not a pull target: typing a letter,
+//     Super+A or a jump brings it in. Settings keep their turn.
 //   - Back undoes the steps you took and never invents one (PhoneRoute.js): Escape
 //     or the Back chip goes back one screen; at the screen the phone was opened on
 //     it closes. Ctrl+1..4 jump (1 Quick, 2 Apps, 3 Wallpapers, 4 Settings).
@@ -103,12 +104,13 @@ Scope {
         }
         return "quick"
     }
-    // Which screen is showing, as a column index: Rashin sits left of Quick,
-    // Apps right of it. slideX is that column's offset in design pixels and
-    // follows the pointer while the phone is dragged; dragBase is where the
-    // strip was when the pointer went down, so grabbing a moving page carries
-    // on from where it is instead of jumping back to its page.
-    readonly property int faceIndex: faceScreen === "ai" ? -1 : (faceScreen === "apps" ? 1 : 0)
+    // Which screen is showing, as a column index: Rashin sits right of Quick,
+    // Apps left of it (out of the pull, see settleSwipe). slideX is that
+    // column's offset in design pixels and follows the pointer while the phone
+    // is dragged; dragBase is where the strip was when the pointer went down,
+    // so grabbing a moving page carries on from where it is instead of jumping
+    // back to its page.
+    readonly property int faceIndex: faceScreen === "ai" ? 1 : (faceScreen === "apps" ? -1 : 0)
     property real slideX: 0
     property real dragBase: 0
     property real dragDx: 0
@@ -535,24 +537,25 @@ Scope {
     // so a swipe can't drop you in the launcher.
     function settleSwipe() {
         const dx = root.dragDx
-        if (dx > 150 && faceScreen === "quick")
+        if (dx < -150 && faceScreen === "quick")
             goAsk()
-        else if (dx < -150 && faceScreen === "ai")
+        else if (dx > 150 && faceScreen === "ai")
             homeNow()
-        else if (dx > 150 && faceScreen === "apps")
+        else if (dx < -150 && faceScreen === "apps")
             homeNow()
         else
             syncFace()
     }
 
-    // Nothing sits left of Quick or right of Rashin, so those pulls only give a
-    // little, the way a page with nothing behind it does.
+    // Nothing sits right of Rashin or left of Apps, and the Apps page is not a
+    // pull target at all: those pulls only give a little, the way a page with
+    // nothing behind it does.
     function swipeResist(dx) {
-        if (faceScreen === "ai" && dx > 0)
+        if (faceScreen === "quick" && dx > 0)
             return 0
-        if (faceScreen === "quick" && dx < 0)
+        if (faceScreen === "ai" && dx < 0)
             return 0
-        if (faceScreen === "apps" && dx < 0)
+        if (faceScreen === "apps" && dx > 0)
             return 0
         return dx
     }
@@ -2049,7 +2052,7 @@ Scope {
                         LauncherFace {
                             id: appsFace
 
-                            x: -phone.screenInset + root.slideX + 654
+                            x: -phone.screenInset + root.slideX - 654
                             y: -phone.screenInset
 
                             enabled: root.faceScreen === "apps" && root.open && !root.dragging
@@ -2084,7 +2087,7 @@ Scope {
                         AskFace {
                             id: askFace
 
-                            x: -phone.screenInset + root.slideX - 654
+                            x: -phone.screenInset + root.slideX + 654
                             y: -phone.screenInset
 
                             enabled: root.faceScreen === "ai" && root.open && !root.dragging

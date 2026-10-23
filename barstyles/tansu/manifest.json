@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "tansu",
   "category": "barstyles",
-  "version": "1.4.12",
+  "version": "1.4.14",
   "destination": "ryoku/barstyles/tansu",
   "files": [
     {
@@ -25,8 +25,8 @@
       "source": "README.md",
       "destination": "README.md",
       "mode": "0644",
-      "size": 4789,
-      "sha256": "8ce3b529dc4741567acf836baf3d1dcec23f31504190aac8c4c6de29f72ee9f7",
+      "size": 4777,
+      "sha256": "06dea8be27bd2f15e879bf7a08a40ba5e1dc04f2ce61a71a366f705e03dd69d0",
       "install": true
     },
     {
@@ -42,7 +42,7 @@
       "destination": "VERSION",
       "mode": "0644",
       "size": 7,
-      "sha256": "5dd084c2f564d65c853f24ba55ed8acfbc208ae3ac9aff835e29df5a0c764f1a",
+      "sha256": "7b217078d0c1471c2ae1850b62e32f9a8e692fabc3c5cb6946addee8bcff43a5",
       "install": true
     },
     {
@@ -6457,8 +6457,8 @@
       "source": "modules/tansu/quickPanel/AskFace.qml",
       "destination": "modules/tansu/quickPanel/AskFace.qml",
       "mode": "0644",
-      "size": 10989,
-      "sha256": "bf4034f22aa12cec8d49b6fb99d7d0f8a87dcd9e90115e136e902d0dc9d8a7cd",
+      "size": 14409,
+      "sha256": "15cc8240d7dde70ee0b74250216351ebaca3aad0e6450e9b8fba8bf4cedfbfc9",
       "install": true
     },
     {
@@ -6537,8 +6537,8 @@
       "source": "modules/tansu/quickPanel/QuickPanel.qml",
       "destination": "modules/tansu/quickPanel/QuickPanel.qml",
       "mode": "0644",
-      "size": 94521,
-      "sha256": "fc46ebdda7b5ccccb4a9d7ab179c9adb4b50475322c648e0db4054afe3916af8",
+      "size": 94678,
+      "sha256": "65dd856b8456a901399d41c869d44371b09df1dcef821ce59a6557fda6f0411f",
       "install": true
     },
     {
