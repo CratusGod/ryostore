@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "tansu",
   "category": "barstyles",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "destination": "ryoku/barstyles/tansu",
   "files": [
     {
@@ -42,7 +42,7 @@
       "destination": "VERSION",
       "mode": "0644",
       "size": 6,
-      "sha256": "563d5c80c54e77e2f8454ecd5c14388f9ab3af77edc73b6f4736ada64527952c",
+      "sha256": "794d9bfd2d064be2041cba080923b3e39ba3bec84c35794780482852b5f4007e",
       "install": true
     },
     {
@@ -6681,8 +6681,8 @@
       "source": "modules/tansu/settings/SettingsPageBar.qml",
       "destination": "modules/tansu/settings/SettingsPageBar.qml",
       "mode": "0644",
-      "size": 10342,
-      "sha256": "1a5bf7f4188ab636faa8b0ea83e5e3a53cad1d56f7e2afcffc13d75fecab5842",
+      "size": 10341,
+      "sha256": "d78a900ce05a3ba5ae69da51ef66b3639a4f52f9aa7bc5a4e8682a8613e98d7a",
       "install": true
     },
     {

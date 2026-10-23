@@ -119,7 +119,7 @@ SettingsPage {
                 icon: modelData.icon
                 label: modelData.label
                 checked: BarLayoutService.isOn(moduleToggle.moduleId, page.screenName)
-                onToggled: BarLayoutService.setOff(moduleToggle.moduleId, !moduleToggle.checked, page.screenName)
+                onToggled: BarLayoutService.setOff(moduleToggle.moduleId, moduleToggle.checked, page.screenName)
             }
         }
 
