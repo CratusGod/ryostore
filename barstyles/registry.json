@@ -254,10 +254,10 @@
       ],
       "accent": "#a6d395",
       "surface": "#11140f",
-      "preview": "screenshots/preview.png",
+      "preview": "screenshots/preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "e16552ce759f088545ad72f250ad14c037b926af6a703697f8431522be819ba7",
+      "manifestSha256": "bd71137b1f913ebac3afbc4e89f3f65c74e4daba2033bba48bd2839e1dcd4b18",
       "lastUpdated": "2026-10-23",
       "official": false,
       "license": "GPL-3.0-only"

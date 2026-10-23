@@ -2310,11 +2310,11 @@
       "install": true
     },
     {
-      "source": "screenshots/preview.png",
-      "destination": "screenshots/preview.png",
+      "source": "screenshots/preview.webp",
+      "destination": "screenshots/preview.webp",
       "mode": "0644",
-      "size": 265406,
-      "sha256": "30baee54e4b761176cf98dd1e2247d1da38c6665c0ece619bf13ea2143f510d4",
+      "size": 94762,
+      "sha256": "ed55f87adbcbef1629dc9a908675a9b92957bab0fa7fbc6fec815b626652ad75",
       "install": false
     },
     {
