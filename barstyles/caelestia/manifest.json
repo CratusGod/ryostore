@@ -62,6 +62,14 @@
       "install": true
     },
     {
+      "source": "assets/preview.webp",
+      "destination": "assets/preview.webp",
+      "mode": "0644",
+      "size": 86738,
+      "sha256": "4f8478b3857d123febd740376cee91c67628433d45428307b2ed8ce6dd3b451c",
+      "install": false
+    },
+    {
       "source": "components/AnchorAnim.qml",
       "destination": "components/AnchorAnim.qml",
       "mode": "0644",
@@ -2308,14 +2316,6 @@
       "size": 1293,
       "sha256": "a01dc3ba171f98d0da91eb2401b7ec526a5bf31782c963fa3c8a851897370672",
       "install": true
-    },
-    {
-      "source": "screenshots/preview.webp",
-      "destination": "screenshots/preview.webp",
-      "mode": "0644",
-      "size": 86738,
-      "sha256": "4f8478b3857d123febd740376cee91c67628433d45428307b2ed8ce6dd3b451c",
-      "install": false
     },
     {
       "source": "services/Audio.qml",
