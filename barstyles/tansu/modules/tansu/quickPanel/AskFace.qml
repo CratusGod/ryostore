@@ -17,12 +17,12 @@ Item {
     property bool active: false
     property bool registered: false
 
-    readonly property bool blocked: !Ryoku.Needle.ready || !Ryoku.Needle.available
+    // ready is the quick-ask lane's readiness; the agent lane answers even when
+    // no quick provider resolves, so only the bridge being down blocks.
+    readonly property bool blocked: !Ryoku.Needle.available
     readonly property int count: Ryoku.Needle.convo.count
 
     readonly property string statusText: {
-        if (!Ryoku.Needle.ready)
-            return "No model connected · Rashin page in Ryoku Hub"
         if (!Ryoku.Needle.available)
             return "Rashin is off · switch it on in Ryoku Hub"
         if (Ryoku.Needle.busy)

@@ -530,31 +530,30 @@ Scope {
     }
 
     // The pointer let go: land on the page it was pulled toward if it went far
-    // enough, otherwise slide back to the screen it was on.
+    // enough, otherwise slide back to the screen it was on. Only Quick and
+    // Rashin page: the Apps screen is opened from the grid key, never by a pull,
+    // so a swipe can't drop you in the launcher.
     function settleSwipe() {
         const dx = root.dragDx
-        if (Math.abs(dx) < 150) {
-            syncFace()
-            return
-        }
-        const next = faceIndex + (dx > 0 ? -1 : 1)
-        if (next === -1)
+        if (dx > 150 && faceScreen === "quick")
             goAsk()
-        else if (next === 1)
-            goApps("")
-        else if (next === 0)
+        else if (dx < -150 && faceScreen === "ai")
+            homeNow()
+        else if (dx > 150 && faceScreen === "apps")
             homeNow()
         else
             syncFace()
     }
 
-    // The ends of the strip only give a little, the way a page with nothing
-    // behind it does.
+    // Nothing sits left of Quick or right of Rashin, so those pulls only give a
+    // little, the way a page with nothing behind it does.
     function swipeResist(dx) {
         if (faceScreen === "ai" && dx > 0)
-            return dx * 0.25
+            return 0
+        if (faceScreen === "quick" && dx < 0)
+            return 0
         if (faceScreen === "apps" && dx < 0)
-            return dx * 0.25
+            return 0
         return dx
     }
     onFaceScreenChanged: syncFace()
