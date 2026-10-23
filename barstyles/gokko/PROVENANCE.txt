@@ -1,0 +1,5 @@
+Ryoku Gokko integration: aethctl
+Based on: https://github.com/0-ss/MacShell
+Pinned starting revision: d4f8500c41577ab7d056470a7931392786ed0300
+Upstream work, shaders and assets retain their original attribution.
+Ryoku core integration is maintained separately from this Store barstyle.
