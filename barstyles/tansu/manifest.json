@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "tansu",
   "category": "barstyles",
-  "version": "1.4.14",
+  "version": "1.4.17",
   "destination": "ryoku/barstyles/tansu",
   "files": [
     {
@@ -42,7 +42,7 @@
       "destination": "VERSION",
       "mode": "0644",
       "size": 7,
-      "sha256": "7b217078d0c1471c2ae1850b62e32f9a8e692fabc3c5cb6946addee8bcff43a5",
+      "sha256": "d84eee9e1d60b833d2535fe0b3fa958bd91dc96d3621d7e46f8e5894d4b7601b",
       "install": true
     },
     {
@@ -6457,8 +6457,8 @@
       "source": "modules/tansu/quickPanel/AskFace.qml",
       "destination": "modules/tansu/quickPanel/AskFace.qml",
       "mode": "0644",
-      "size": 14409,
-      "sha256": "15cc8240d7dde70ee0b74250216351ebaca3aad0e6450e9b8fba8bf4cedfbfc9",
+      "size": 15046,
+      "sha256": "ed7fe2a878c4c73d687c9d5b9cbffd700f349fd7a2a5c9b7e4c039d9a72780ed",
       "install": true
     },
     {
@@ -6497,8 +6497,8 @@
       "source": "modules/tansu/quickPanel/NotificationCard.qml",
       "destination": "modules/tansu/quickPanel/NotificationCard.qml",
       "mode": "0644",
-      "size": 9439,
-      "sha256": "ee653097071bbfaf06ea02ac00148f3595276df1f9b5148b55d77d45cae5c9fd",
+      "size": 9551,
+      "sha256": "8bc32aa7fbc04e4c6d59bedfff25731e61b12d8c7913dae332e4847a877677e7",
       "install": true
     },
     {
@@ -6537,8 +6537,8 @@
       "source": "modules/tansu/quickPanel/QuickPanel.qml",
       "destination": "modules/tansu/quickPanel/QuickPanel.qml",
       "mode": "0644",
-      "size": 94678,
-      "sha256": "65dd856b8456a901399d41c869d44371b09df1dcef821ce59a6557fda6f0411f",
+      "size": 95607,
+      "sha256": "551437454b6e62cfbdf20c0823ef55636c2aad833a460409b5280db4952db54f",
       "install": true
     },
     {

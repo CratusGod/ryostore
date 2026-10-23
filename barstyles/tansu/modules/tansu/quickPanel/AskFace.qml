@@ -17,6 +17,7 @@ Item {
     height: 1214
 
     property real renderScale: 1
+    property real screenInset: 19
     property bool active: false
     property bool registered: false
 
@@ -137,25 +138,42 @@ Item {
         function onWallpaperChanged() { face.ensureStill() }
     }
 
-    Image {
-        anchors.fill: parent
-        source: face.shownWall
-        fillMode: Image.PreserveAspectCrop
-        asynchronous: true
-        cache: true
-        smooth: true
-        visible: status === Image.Ready
-    }
+    // The picture and its scrim. The phone cuts them to its screen shape, so
+    // both run the full face and still stop at the bezel.
+    Item {
+        id: wallArea
 
-    // Dark glass over the wallpaper: heavy at the header and under the
-    // composer, light where the thread is so the picture still reads.
-    Rectangle {
-        anchors.fill: parent
-        gradient: Gradient {
-            GradientStop { position: 0.00; color: Qt.rgba(0, 0, 0, 0.60) }
-            GradientStop { position: 0.14; color: Qt.rgba(0, 0, 0, 0.38) }
-            GradientStop { position: 0.70; color: Qt.rgba(0, 0, 0, 0.48) }
-            GradientStop { position: 1.00; color: Qt.rgba(0, 0, 0, 0.72) }
+        x: face.screenInset
+        y: face.screenInset
+        width: face.width - 2 * face.screenInset
+        height: face.height - 2 * face.screenInset
+
+        Image {
+            x: -face.screenInset
+            y: -face.screenInset
+            width: face.width
+            height: face.height
+            source: face.shownWall
+            fillMode: Image.PreserveAspectCrop
+            asynchronous: true
+            cache: true
+            smooth: true
+            visible: status === Image.Ready
+        }
+
+        // Dark glass over the wallpaper: heavy at the header and under the
+        // composer, light where the thread is so the picture still reads.
+        Rectangle {
+            x: -face.screenInset
+            y: -face.screenInset
+            width: face.width
+            height: face.height
+            gradient: Gradient {
+                GradientStop { position: 0.00; color: Qt.rgba(0, 0, 0, 0.60) }
+                GradientStop { position: 0.14; color: Qt.rgba(0, 0, 0, 0.38) }
+                GradientStop { position: 0.70; color: Qt.rgba(0, 0, 0, 0.48) }
+                GradientStop { position: 1.00; color: Qt.rgba(0, 0, 0, 0.72) }
+            }
         }
     }
 
