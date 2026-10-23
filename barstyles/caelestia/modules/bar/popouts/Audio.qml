@@ -84,15 +84,6 @@ ColumnLayout {
             font.pointSize: Tokens.font.title.small.pointSize * root.fontScale
         }
 
-        IconButton {
-            icon: "settings"
-            font: Tokens.font.icon.medium
-            type: IconButton.Tonal
-            isRound: true
-            inactiveColour: Colours.tPalette.m3surfaceContainerHigh
-            inactiveOnColour: Colours.palette.m3onSurfaceVariant
-            onClicked: root.popouts.detachRequested("audio")
-        }
     }
 
     StyledRect {

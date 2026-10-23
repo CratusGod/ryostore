@@ -51,7 +51,8 @@ Item {
             detachedMode = mode;
             focus = true;
         } else {
-            Hub.open("shellstyle");
+            // network and bluetooth are system settings, so they open the Ryoku Hub
+            Hub.open("connections");
             close();
         }
         setAnims(false);

@@ -977,8 +977,8 @@
       "source": "modules/bar/popouts/Audio.qml",
       "destination": "modules/bar/popouts/Audio.qml",
       "mode": "0644",
-      "size": 18168,
-      "sha256": "c70ed2c5e04f64c78b0afe15ee57b29d937680a6419a060084273c60dce79b21",
+      "size": 17811,
+      "sha256": "d8fbebb653cdbc6c467bce77b70a59eab00e4207681cbb1feab2e10f34f390bd",
       "install": true
     },
     {
@@ -1153,8 +1153,8 @@
       "source": "modules/bar/popouts/Wrapper.qml",
       "destination": "modules/bar/popouts/Wrapper.qml",
       "mode": "0644",
-      "size": 6498,
-      "sha256": "361883955e79f5f71f11719d3ce7a5ed3fc69d17fb66f79d1607e6a94808133c",
+      "size": 6584,
+      "sha256": "7193102d02c60779fc608e58e7f484db6bd05ddeb9233a1fa82d3bcb9b0babed",
       "install": true
     },
     {
