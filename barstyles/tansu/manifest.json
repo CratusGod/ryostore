@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "tansu",
   "category": "barstyles",
-  "version": "1.4.7",
+  "version": "1.4.8",
   "destination": "ryoku/barstyles/tansu",
   "files": [
     {
@@ -25,8 +25,8 @@
       "source": "README.md",
       "destination": "README.md",
       "mode": "0644",
-      "size": 4642,
-      "sha256": "9d11adf54444f9f382134e68cbc6771d932640c795138082a42b9a3db2460ec4",
+      "size": 4756,
+      "sha256": "d321f7ae12e23af9f65a7d0412f19f274a22e8b2df9675206ed4e581caf43e38",
       "install": true
     },
     {
@@ -42,7 +42,7 @@
       "destination": "VERSION",
       "mode": "0644",
       "size": 6,
-      "sha256": "794d9bfd2d064be2041cba080923b3e39ba3bec84c35794780482852b5f4007e",
+      "sha256": "7df3598542760c06a06a832d7cbc12bd20b3fd1beae5c8c0399e9642f7073717",
       "install": true
     },
     {
@@ -6454,6 +6454,14 @@
       "install": true
     },
     {
+      "source": "modules/tansu/quickPanel/AskFace.qml",
+      "destination": "modules/tansu/quickPanel/AskFace.qml",
+      "mode": "0644",
+      "size": 8127,
+      "sha256": "f0c2ac17835bd838c00789b4ab7cd4f3ae63d49477ddab9e4ec2005b8a911071",
+      "install": true
+    },
+    {
       "source": "modules/tansu/quickPanel/BluetoothDialog.qml",
       "destination": "modules/tansu/quickPanel/BluetoothDialog.qml",
       "mode": "0644",
@@ -6505,8 +6513,8 @@
       "source": "modules/tansu/quickPanel/PhoneRoute.js",
       "destination": "modules/tansu/quickPanel/PhoneRoute.js",
       "mode": "0644",
-      "size": 2276,
-      "sha256": "f3859563e0a7452fd8a2af764de6e4ac673cb0b455e8b53f5cb258e0a9d3e895",
+      "size": 2294,
+      "sha256": "cfa9c6950a6e66685d4d7bef518fd97de5ff29513c7cd3d8be29dd99211a25a7",
       "install": true
     },
     {
@@ -6529,8 +6537,8 @@
       "source": "modules/tansu/quickPanel/QuickPanel.qml",
       "destination": "modules/tansu/quickPanel/QuickPanel.qml",
       "mode": "0644",
-      "size": 88672,
-      "sha256": "fabf334545fca16830d913361f15abc35644db61e4c54ad01120eb80906c9a82",
+      "size": 91178,
+      "sha256": "7c8e5289e04e3ed107647b9d94ac9cca052838ea9e197d05c345272b940a1db8",
       "install": true
     },
     {

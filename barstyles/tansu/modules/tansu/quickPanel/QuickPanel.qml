@@ -98,12 +98,13 @@ Scope {
     readonly property string faceScreen: {
         const st = root.phoneRoute.stack
         for (let i = st.length - 1; i >= 0; i--) {
-            if (st[i] === "apps" || st[i] === "quick")
+            if (st[i] === "apps" || st[i] === "quick" || st[i] === "ai")
                 return st[i]
         }
         return "quick"
     }
     property real routeK: 0
+    property real askK: 0
     readonly property bool routing: routePrep.running || routeAnim.running
 
     property var picker: null
@@ -505,7 +506,15 @@ Scope {
     // redrawn on the light settings a couple of frames before anything moves
     // (the same trick the Settings turn uses).
     function syncFace() {
-        const want = faceScreen === "apps" ? 1 : 0
+        const want = faceScreen === "apps" || faceScreen === "ai" ? 1 : 0
+        const wantAsk = faceScreen === "ai" ? 1 : 0
+        askAnim.stop()
+        if (!win.visible)
+            askK = wantAsk
+        else if (askK !== wantAsk) {
+            askAnim.to = wantAsk
+            askAnim.start()
+        }
         routeAnim.stop()
         routePrep.stop()
         if (!win.visible) {
@@ -538,6 +547,24 @@ Scope {
         if (seed)
             appsFace.appendText(seed)
         setRoute(PR.go(phoneRoute, "apps"))
+    }
+
+    function goAsk() {
+        if (!open || settingsShown || faceScreen === "ai")
+            return
+        closeQuickDialogs()
+        setRoute(PR.go(phoneRoute, "ai"))
+    }
+
+    function openAskOn(screen) {
+        if (open && !settingsShown && (!screen || screen === targetScreen)) {
+            goAsk()
+            return
+        }
+        const wasOpen = open
+        openOn(screen, "ai")
+        if (wasOpen)
+            setRoute(PR.open("ai"))
     }
 
     function openAppsOn(screen) {
@@ -619,6 +646,8 @@ Scope {
             openSettings(targetScreen)
         else if (name === "wallpapers")
             openWallpapers(targetScreen)
+        else if (name === "ai")
+            goAsk()
     }
 
     function runBuiltin(id) {
@@ -642,6 +671,8 @@ Scope {
             openSettings(screen)
         } else if (name === "wallpapers") {
             openWallpapers(screen)
+        } else if (name === "ai") {
+            openAskOn(screen)
         }
     }
 
@@ -737,6 +768,14 @@ Scope {
         easing.type: Easing.BezierSpline
         easing.bezierCurve: root.routeCurve
         onFinished: root.focusPhoneKeys()
+    }
+
+    NumberAnimation {
+        id: askAnim
+        target: root
+        property: "askK"
+        duration: 160
+        easing.type: Easing.OutCubic
     }
 
     onOpenChanged: {
@@ -2022,6 +2061,44 @@ Scope {
                             root.openAppsOn(root.focusedScreen())
                             appsFace.setText("color " + hex)
                         }
+                    }
+
+                    AskFace {
+                        id: askFace
+
+                        opacity: root.askK
+                        y: 30 * (1 - root.askK)
+                        visible: opacity > 0.001
+                        enabled: root.faceScreen === "ai" && root.open
+                        active: root.faceScreen === "ai" && root.open
+                        renderScale: phone.renderScale
+                    }
+                }
+
+                // A right swipe on the phone opens Rashin; a left swipe on it
+                // goes back. Horizontal only, and it never takes the grab from a
+                // slider or a list that already has it.
+                DragHandler {
+                    id: phoneSwipe
+
+                    target: null
+                    xAxis.enabled: true
+                    yAxis.enabled: false
+                    dragThreshold: 22
+                    grabPermissions: PointerHandler.ApprovesTakeOverByAnything
+
+                    property real dx: 0
+
+                    onActiveTranslationChanged: if (active) dx = activeTranslation.x
+                    onActiveChanged: {
+                        if (active) {
+                            dx = 0
+                            return
+                        }
+                        if (dx > 70)
+                            root.goAsk()
+                        else if (dx < -70 && root.faceScreen === "ai")
+                            root.back()
                     }
                 }
 

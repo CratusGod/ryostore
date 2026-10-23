@@ -14,6 +14,8 @@ theme as the rest of the shell.
   the power menu.
 - **Built-in Apps** — browse, search and launch desktop applications within
   the same phone, without installing a separate launcher.
+- **Rashin** — swipe right on the phone for Ryoku's AI agent, with its own
+  transcript, composer and stop key.
 - **Wallpapers** — a wallpaper board reached from the phone (Desktop and
   Lockscreen sides), backed by `ryogami`.
 - **Native backends** — window and workspace state from Ryoku's `Wm` facade,
