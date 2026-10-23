@@ -207,6 +207,33 @@
       "lastUpdated": "2026-10-21",
       "official": false,
       "license": "GPL-3.0-only"
+    },
+    {
+      "id": "gokko",
+      "name": "Gokko",
+      "version": "0.1.0",
+      "path": "barstyles/gokko",
+      "author": "aethctl",
+      "upstream": "https://github.com/0-ss/MacShell",
+      "summary": "macOS-inspired Liquid Glass subshell",
+      "description": "A complete macOS-inspired Ryoku shell with an application menu, Spotlight, Liquid Glass Control Center, Dock, settings and desktop widgets. Based on 0-ss/MacShell.",
+      "tags": [
+        "top",
+        "macos",
+        "liquid-glass",
+        "dock",
+        "widgets",
+        "spotlight"
+      ],
+      "accent": "#9db4fd",
+      "surface": "#19171f",
+      "preview": "assets/preview.png",
+      "screenshots": [],
+      "manifest": "manifest.json",
+      "manifestSha256": "7d84b1f8290c8c123c464de561efd9bf047c4e861d9024a587b03ec2b60e891e",
+      "lastUpdated": "2026-10-23",
+      "official": false,
+      "license": "MIT"
     }
   ]
 }
