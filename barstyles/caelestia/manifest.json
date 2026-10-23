@@ -70,6 +70,38 @@
       "install": false
     },
     {
+      "source": "assets/screenshot-bar-bluetooth.webp",
+      "destination": "assets/screenshot-bar-bluetooth.webp",
+      "mode": "0644",
+      "size": 85006,
+      "sha256": "ebb681af18ca41984392b6bba9ab917346ad8529fe5c6ecb29210f6004e750e0",
+      "install": false
+    },
+    {
+      "source": "assets/screenshot-performance.webp",
+      "destination": "assets/screenshot-performance.webp",
+      "mode": "0644",
+      "size": 91596,
+      "sha256": "145d960931bc0fcfdbe14e29a79a3c0eb50454bc086955626c594bbd705f41c4",
+      "install": false
+    },
+    {
+      "source": "assets/screenshot-session.webp",
+      "destination": "assets/screenshot-session.webp",
+      "mode": "0644",
+      "size": 58380,
+      "sha256": "0e62e0104148ddaa6e71fc586078da90303651f892675d501c182c3178c02cf3",
+      "install": false
+    },
+    {
+      "source": "assets/screenshot-settings.webp",
+      "destination": "assets/screenshot-settings.webp",
+      "mode": "0644",
+      "size": 83836,
+      "sha256": "f752c043b69424c0883b85156f48cffd5d472b0b05e94550580a0f77bd5725c5",
+      "install": false
+    },
+    {
       "source": "components/AnchorAnim.qml",
       "destination": "components/AnchorAnim.qml",
       "mode": "0644",

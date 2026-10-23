@@ -255,9 +255,14 @@
       "accent": "#b4befe",
       "surface": "#2c2c3f",
       "preview": "assets/preview.webp",
-      "screenshots": [],
+      "screenshots": [
+        "assets/screenshot-bar-bluetooth.webp",
+        "assets/screenshot-performance.webp",
+        "assets/screenshot-session.webp",
+        "assets/screenshot-settings.webp"
+      ],
       "manifest": "manifest.json",
-      "manifestSha256": "44add9149042f34a5dd0375aec1739a778bc86798479974e7491d82bcb61e7ef",
+      "manifestSha256": "590b0acc49576366669d1de35325e494a3b4a1a2aca242c0827c4d06c31728ea",
       "lastUpdated": "2026-10-23",
       "official": false,
       "license": "GPL-3.0-only"
