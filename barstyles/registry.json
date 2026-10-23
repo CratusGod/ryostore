@@ -207,6 +207,33 @@
       "lastUpdated": "2026-10-21",
       "official": false,
       "license": "GPL-3.0-only"
+    },
+    {
+      "id": "gokko",
+      "name": "Gokko",
+      "version": "0.1.0",
+      "path": "barstyles/gokko",
+      "author": "aethctl",
+      "upstream": "https://github.com/0-ss/MacShell",
+      "summary": "macOS-inspired Liquid Glass subshell",
+      "description": "macOS-inspired Ryoku barstyle with Spotlight, Control Center, Dock and widgets. Requires the separate Ryoku core Gokko integration for the complete experience.",
+      "tags": [
+        "top",
+        "macos",
+        "liquid-glass",
+        "dock",
+        "widgets",
+        "spotlight"
+      ],
+      "accent": "#9db4fd",
+      "surface": "#19171f",
+      "preview": "assets/preview.png",
+      "screenshots": [],
+      "manifest": "manifest.json",
+      "manifestSha256": "be1d81c82a8b6149a736580332713f21e355606eaa412810f9226eaa89c11ec3",
+      "lastUpdated": "2026-10-23",
+      "official": false,
+      "license": "MIT"
     }
   ]
 }
