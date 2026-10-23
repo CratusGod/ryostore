@@ -82,20 +82,28 @@ RowLayout {
         visible: root.row.ctl === "slid"
         spacing: Tokens.spacing.small
 
+        // StyledSlider works in 0..1 positions; the row's range maps onto them
         StyledSlider {
             id: slider
 
+            property real dragValue
+
+            function toValue(v: real): real {
+                return Math.round((root.lo + v * (root.hi - root.lo)) * 100) / 100;
+            }
+
             Layout.preferredWidth: 180
             implicitHeight: 24
-            from: root.lo
-            to: root.hi
-            value: root.value
-            onReleased: v => root.edited(Math.round(v * 100) / 100)
+            value: (root.value - root.lo) / (root.hi - root.lo)
+            onInteraction: v => dragValue = toValue(v)
+            onReleased: v => root.edited(toValue(v))
         }
 
         StyledText {
+            readonly property real shown: slider.dragging ? slider.dragValue : root.value
+
             Layout.minimumWidth: 44
-            text: root.row.pct ? `${Math.round(slider.value * 100)}%` : slider.value.toFixed(2)
+            text: root.row.pct ? `${Math.round(shown * 100)}%` : shown.toFixed(2)
         }
     }
 

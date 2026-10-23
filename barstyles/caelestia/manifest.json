@@ -1609,8 +1609,8 @@
       "source": "modules/settings/SettingRow.qml",
       "destination": "modules/settings/SettingRow.qml",
       "mode": "0644",
-      "size": 3601,
-      "sha256": "7fce323d8f2d39099d199ce5b75aa6805121cb4cd00abe4f5a6aaf45f2d59156",
+      "size": 3964,
+      "sha256": "2226660af35b37e01cb96369eebd04028361c5267f47902e9067977c6bc6afe0",
       "install": true
     },
     {
