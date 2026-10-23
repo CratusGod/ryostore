@@ -8,6 +8,10 @@ Install the bundle from Ryostore Extras. Node.js 22.18 or newer is required; the
 
 In Ryoku, enable **Theme apps** from the wallpaper picker (`Super+W` → **App theming**) so Matugen produces the Zed theme. Select **Ryoku Dynamic Dark** or **Ryoku Dynamic Light** in Zed's theme selector to follow the current appearance. The installed theme is dynamic; the bundled `runtime/themes/ryoku.json` is a static fallback palette.
 
+The top-level `installers/ryoku-zed-theme.sh` is a compatibility copy for
+Ryostore clients that resolve a script item through the catalogue root instead
+of the bundle-local path, like Spiceflow's. Both copies must stay identical.
+
 If Zed is open while its theme JSON changes, reopen the theme selector and reselect the Ryoku Dynamic theme. If the running session still displays old colors, restart Zed; the hook updates the JSON on disk but cannot force an in-process theme reload. This avoids claiming that file synchronization alone repaints an already-running editor.
 
 ## Palette behavior
