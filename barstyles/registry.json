@@ -216,7 +216,7 @@
       "author": "aethctl",
       "upstream": "https://github.com/0-ss/MacShell",
       "summary": "macOS-inspired Liquid Glass subshell",
-      "description": "A complete macOS-inspired Ryoku shell with an application menu, Spotlight, Liquid Glass Control Center, Dock, settings and desktop widgets. Based on 0-ss/MacShell.",
+      "description": "macOS-inspired Ryoku barstyle with Spotlight, Control Center, Dock and widgets. Requires the separate Ryoku core Gokko integration for the complete experience.",
       "tags": [
         "top",
         "macos",
@@ -230,7 +230,7 @@
       "preview": "assets/preview.png",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "7d84b1f8290c8c123c464de561efd9bf047c4e861d9024a587b03ec2b60e891e",
+      "manifestSha256": "e58f8d2f9595e654c6c635bbf88e73e0f4120b626fa7d9b057b0dc107a5a0c07",
       "lastUpdated": "2026-10-23",
       "official": false,
       "license": "MIT"

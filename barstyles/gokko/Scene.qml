@@ -1,6 +1,5 @@
 import QtQuick
 import Quickshell
-import "../../../../services/lib/screens.js" as Screens
 import "upstream" as Mac
 
 Item {
@@ -11,9 +10,12 @@ Item {
     height: 0
 
     readonly property bool isPrimary: {
-        const screens = Screens.uniqueByName(Quickshell.screens)
-        return screens.length > 0 && !!scene.modelData
-            && screens[0].name === scene.modelData.name
+        // The Store installs this Scene in a versioned path, not the shell tree.
+        // Determine the primary physical monitor without importing a relative
+        // shell-internal JavaScript file.
+        const screens = Quickshell.screens;
+        const first = screens.length > 0 ? screens[0] : null;
+        return !!first && !!scene.modelData && first.name === scene.modelData.name
     }
 
     Loader {

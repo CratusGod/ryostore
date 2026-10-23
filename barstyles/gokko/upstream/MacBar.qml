@@ -2582,11 +2582,19 @@ Scope {
         const kelvin = Math.max(2500, Math.min(6000, Math.round(temp)));
         Nightlight.setTemperature(kelvin);
     }
-    property bool keepAwake: false
-    Process {
-        id: awakeProc
-        command: ["systemd-inhibit", "--what=idle:sleep", "--who=macbar", "--why=Keep Awake", "sleep", "infinity"]
-        running: root.keepAwake
+    // Use Ryoku's durable caffeine and compositor idle-inhibit services.
+    // Do not spawn a second init-specific inhibitor from the Store item.
+    property bool keepAwake: Flags.keepAwake
+    onKeepAwakeChanged: {
+        if (Flags.keepAwake !== keepAwake)
+            Flags.keepAwake = keepAwake;
+    }
+    Connections {
+        target: Flags
+        function onKeepAwakeChanged() {
+            if (root.keepAwake !== Flags.keepAwake)
+                root.keepAwake = Flags.keepAwake;
+        }
     }
 
     // ═════════════ MENUS ═════════════
@@ -3092,8 +3100,8 @@ Scope {
             { title: I18n.tr("Sleep"), glyph: "moon", run: function () { root.sleepMachine(); } },
             { title: I18n.tr("System Settings\u2026"), glyph: "gear", run: function () { openSettings(); } },
             { title: I18n.tr("Log Out"), glyph: "logout", confirm: true, run: function () { root.logOut(); } },
-            { title: I18n.tr("Restart"), glyph: "restart", confirm: true, run: function () { sh("systemctl reboot"); } },
-            { title: I18n.tr("Shut Down"), glyph: "power", confirm: true, run: function () { sh("systemctl poweroff"); } }
+            { title: I18n.tr("Restart"), glyph: "restart", confirm: true, run: function () { SessionActions.run("reboot"); } },
+            { title: I18n.tr("Shut Down"), glyph: "power", confirm: true, run: function () { SessionActions.run("shutdown"); } }
         ];
         var s = (q || "").trim().toLowerCase(), out = [];
         for (var i = 0; i < all.length; i++) {
@@ -3164,8 +3172,8 @@ Scope {
             m.push(ico(mi("System Settings\u2026", "", function () { root.openSettings(); }), "gear"));
             m.push(msep());
             m.push(ico(mi("Sleep", "", function () { root.sleepMachine(); }), "moon"));
-            m.push(ico(mc("Restart\u2026", function () { sh("systemctl reboot"); }), "m_restart"));
-            m.push(ico(mc("Shut Down\u2026", function () { sh("systemctl poweroff"); }), "m_power"));
+            m.push(ico(mc("Restart\u2026", function () { SessionActions.run("reboot"); }), "m_restart"));
+            m.push(ico(mc("Shut Down\u2026", function () { SessionActions.run("shutdown"); }), "m_power"));
             m.push(msep());
             m.push(ico(mi("Lock Screen", "", function () { root.lockScreen(); }), "m_lock"));
             m.push(ico(mc("Log Out\u2026", function () { root.logOut(); }), "m_logout"));
@@ -3969,7 +3977,7 @@ Scope {
     }
     // System notifications get the UI sound; apps (Discord, Spotify, browsers…) play their own, so they stay silent here
     readonly property var systemNotifApps: ["", "macbar", "macshell", "settings", "system", "notify-send", "networkmanager", "network",
-        "power", "upower", "battery", "udiskie", "udisks", "disks", "polkit", "systemd", "screenshot", "grim", "hyprland", "bluetooth", "blueman", "updates", "pacman"]
+        "power", "upower", "battery", "udiskie", "udisks", "disks", "polkit", "systemd", "screenshot", "grim", "hyprland", "bluetooth", "blueman", "updates"]
     function isSystemNotif(n) {
         var app = (n.appName || "").toLowerCase();
         try { if (n.hints && (n.hints["sound-file"] || n.hints["sound-name"])) return false; } catch (e) {}

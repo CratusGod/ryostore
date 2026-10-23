@@ -1,6 +1,5 @@
-Gokko Ryoku integration maintained by aethctl.
-Upstream: https://github.com/0-ss/MacShell
-Pinned MacShell revision used in original integration: d4f8500c41577ab7d056470a7931392786ed0300
-The vendor directory contains modified upstream code; inspect upstream/MacShell
-and MacLock copyrights and all bundled asset licences before redistributing.
-Core integration patch in docs/ryoku-core.patch is informational only.
+Ryoku Gokko integration: aethctl
+Based on: https://github.com/0-ss/MacShell
+Pinned starting revision: d4f8500c41577ab7d056470a7931392786ed0300
+Upstream work, shaders and assets retain their original attribution.
+Ryoku core integration is maintained separately from this Store barstyle.

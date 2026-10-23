@@ -304,7 +304,7 @@ Scope {
     MacParts.AboutApp { id: aboutApp; hub: sharedHub }
 
     Component.onCompleted: {
-        Ryoku.BarProducts.macshellWidgets = macWidgets;
+        Ryoku.BarProducts.gokkoWidgets = macWidgets;
         sharedHub.bar = macBar;
         sharedHub.dock = macDock;
         sharedHub.widgets = macWidgets;
@@ -315,8 +315,8 @@ Scope {
     }
 
     Component.onDestruction: {
-        if (Ryoku.BarProducts.macshellWidgets === macWidgets)
-            Ryoku.BarProducts.macshellWidgets = null;
+        if (Ryoku.BarProducts.gokkoWidgets === macWidgets)
+            Ryoku.BarProducts.gokkoWidgets = null;
     }
 
     // reopen settings even when both the Dock and the Menu Bar are disabled:

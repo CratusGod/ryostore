@@ -1,31 +1,34 @@
 # Gokko (ごっこ)
 
-macOS-inspired Liquid Glass subshell for Ryoku with top menu bar, Dock,
-Spotlight, Control Center, settings, and desktop widgets.
+A macOS-inspired Liquid Glass **barstyle/subshell** for Ryoku, with an app
+menu, Spotlight search, Control Center, Dock and desktop widgets.
 
-## Source and attribution
+## Origin and licensing
 
-Based on [0-ss/MacShell](https://github.com/0-ss/MacShell) (MIT licence),
-with Ryoku integration and compositor-neutral adaptations. This product includes
-upstream files under `upstream/`; `maclock/` is included for source completeness
-but is not automatically installed as a separate lockscreen or activated.
-See `LICENSE`, `NOTICE.md` and `PROVENANCE.txt`.
+Adapted from [0-ss/MacShell](https://github.com/0-ss/MacShell), pinned at
+`d4f8500c41577ab7d056470a7931392786ed0300` (MIT). The port retains
+upstream credits and licences. See `LICENSE`, `NOTICE.md`, and `PROVENANCE.txt`.
 
-## Compatibility and integration status
+## Installation and compatibility
 
-Developed on Ryoku's Niri backend; Hyprland is also a target. The local prototype
-modifies Ryoku shell-wide components, notably desktop widget hosting, the
-barstyle registry, and default Dock ownership. Those *core* modifications are
-included for review in `docs/ryoku-core.patch` but are **not automatically
-applied by RyoStore**. Installing the barstyle folder alone does not prove that
-all features work on an unmodified Ryoku release. The required core integration
-must land in the Ryoku shell (or be refactored to public Store APIs) before this
-entry should be merged/released.
+The Store item is `barstyles/gokko`, with `Scene.qml` as its entrypoint.
+**It requires the matching Ryoku shell core integration** for hosted widgets,
+bar-family lifecycle, and universal dock ownership. Until that core work is
+merged and deployed, installing this package alone does not guarantee the
+complete subshell. The core integration is maintained as a **separate Ryoku
+PR**, never as an executable patch installed by RyoStore.
 
-This product does not bundle Int Clay (its licence disallows redistribution of
-modified versions). Do not enable MacLock merely by installing this barstyle.
+The original standalone `Installer.qml`, MacLock shell, and duplicate standalone
+`upstream/shell.qml` are not part of the barstyle. Gokko's existing lockscreen
+settings may refer to MacLock, which requires a separately installed upstream
+component. Those controls are not part of Gokko's guaranteed feature set.
+
+The widget bridge uses the Ryoku shell's own resident wallpaper surface.
+Hyprland and Niri both need final on-machine validation. No Gokko installer
+is permitted to edit compositor config or invoke a distribution package manager.
 
 ## Maintenance
 
-Integration maintained by aethctl. The maintainer is responsible for updating
-upstream dependencies, testing on supported WMs, and handling security reports.
+Integration: aethctl. Users should report failures or security findings to the
+maintainer. The maintainer is responsible for keeping the Store release and
+companion core integration compatible.

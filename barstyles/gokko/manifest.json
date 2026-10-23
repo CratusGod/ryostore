@@ -17,32 +17,32 @@
       "source": "NOTICE.md",
       "destination": "NOTICE.md",
       "mode": "0644",
-      "size": 1081,
-      "sha256": "4473ca9972298ccdec5715fa58820501016e87131ce9025fdb15b85c16c8873a",
+      "size": 647,
+      "sha256": "67ea20b595ab5b92eed84ae1995c3d656e22003ac524ce96684b3b52d8e429a7",
       "install": true
     },
     {
       "source": "PROVENANCE.txt",
       "destination": "PROVENANCE.txt",
       "mode": "0644",
-      "size": 414,
-      "sha256": "d8ec16812569524757b5c782072136374c433dd0cfb6f9ebc9937f9d0f2c3f3a",
+      "size": 286,
+      "sha256": "80da762ca281b2e6e14690217b7c3eed0e72385895fc8bb9bc509b2028833193",
       "install": true
     },
     {
       "source": "README.md",
       "destination": "README.md",
       "mode": "0644",
-      "size": 1496,
-      "sha256": "c5506be0017ee946430afab5d0342117ab111e2f4ef6ffc81501767b9d28dd9c",
+      "size": 1636,
+      "sha256": "fd2897664e1e42da47c7c992301ad6f816d7be293a773058a5bbd7a594df8176",
       "install": true
     },
     {
       "source": "Scene.qml",
       "destination": "Scene.qml",
       "mode": "0644",
-      "size": 818,
-      "sha256": "b5d1c432bf91813af1aba9774a87ee0e0efb3dfb161b4a976f5d76fffd712ee8",
+      "size": 979,
+      "sha256": "d1ee09d47300c71ce8a33e30bfd654266abd194d363231a0cd0118a21428c23a",
       "install": true
     },
     {
@@ -60,222 +60,6 @@
       "size": 3040454,
       "sha256": "36266144d0b23609db2f4ad098c26c8797f8c8485f3d47c8ed418bc6ca246742",
       "install": false
-    },
-    {
-      "source": "docs/ryoku-core.patch",
-      "destination": "docs/ryoku-core.patch",
-      "mode": "0644",
-      "size": 6949,
-      "sha256": "83e36ad3bd25adfc66f909563e9cac6b54228bc47cc91c8d82d120d87c4987fc",
-      "install": true
-    },
-    {
-      "source": "maclock/ClockGlyph.qml",
-      "destination": "maclock/ClockGlyph.qml",
-      "mode": "0644",
-      "size": 3109,
-      "sha256": "c6d5aee900e241a088f94447a8db850d29999548d09f637a31186bcc6655ffad",
-      "install": true
-    },
-    {
-      "source": "maclock/ContourGlow.qml",
-      "destination": "maclock/ContourGlow.qml",
-      "mode": "0644",
-      "size": 1079,
-      "sha256": "cee641011698c21d089d9937457d3e03c2dc698af7b73d586bde624d214c9e87",
-      "install": true
-    },
-    {
-      "source": "maclock/Glass.qml",
-      "destination": "maclock/Glass.qml",
-      "mode": "0644",
-      "size": 2750,
-      "sha256": "ab3df4cb73b2acea141abef259309c59b45c529bc3b2749961c8eb869373671a",
-      "install": true
-    },
-    {
-      "source": "maclock/Glyph.qml",
-      "destination": "maclock/Glyph.qml",
-      "mode": "0644",
-      "size": 14979,
-      "sha256": "e12373fe51ccef66380673fbf6145df8d1275caa925adffeea0f1efec880cfc7",
-      "install": true
-    },
-    {
-      "source": "maclock/I18n.js",
-      "destination": "maclock/I18n.js",
-      "mode": "0644",
-      "size": 1289,
-      "sha256": "86caa100d7a4b6e0680a733aa20eb582465437d75552af58719c9c1a4874419b",
-      "install": true
-    },
-    {
-      "source": "maclock/LockScreen.qml",
-      "destination": "maclock/LockScreen.qml",
-      "mode": "0644",
-      "size": 95509,
-      "sha256": "b7eedef45418996cb36ffe8b58261ca19aa98e1d6b3e6236ca5e1f2791ccb006",
-      "install": true
-    },
-    {
-      "source": "maclock/MorphGlyph.qml",
-      "destination": "maclock/MorphGlyph.qml",
-      "mode": "0644",
-      "size": 1984,
-      "sha256": "e77b8eca1525ef4887c77a5bb29ba18d306cf46d2492d49555147189eec8cde0",
-      "install": true
-    },
-    {
-      "source": "maclock/MorphText.qml",
-      "destination": "maclock/MorphText.qml",
-      "mode": "0644",
-      "size": 7158,
-      "sha256": "97acb9c29bec3dec066c1ded186e18827337436b8c32826b07beb3624fa8f096",
-      "install": true
-    },
-    {
-      "source": "maclock/README.md",
-      "destination": "maclock/README.md",
-      "mode": "0644",
-      "size": 2342,
-      "sha256": "ba763147d98f4e73e6ff5b5f86ff5e85fc80d0aed8ea1f4566bee387d4387734",
-      "install": true
-    },
-    {
-      "source": "maclock/build-shaders.sh",
-      "destination": "maclock/build-shaders.sh",
-      "mode": "0644",
-      "size": 307,
-      "sha256": "c8a11ec8889026d7e9f94e29b6174a6e923f857e89dd814ca35816d17e024378",
-      "install": true
-    },
-    {
-      "source": "maclock/burn.frag",
-      "destination": "maclock/burn.frag",
-      "mode": "0644",
-      "size": 2146,
-      "sha256": "cb398e32c09db79e52e1bd7c08a140762f5b17f5f8b859b79272de0dbab08fe2",
-      "install": true
-    },
-    {
-      "source": "maclock/burn.frag.qsb",
-      "destination": "maclock/burn.frag.qsb",
-      "mode": "0644",
-      "size": 4206,
-      "sha256": "f7057c1e8af670f60070a7b2635d06c84276cf69c13c7d7f9470949833b20a69",
-      "install": true
-    },
-    {
-      "source": "maclock/contourglow.frag",
-      "destination": "maclock/contourglow.frag",
-      "mode": "0644",
-      "size": 1757,
-      "sha256": "4677f7224000a835d0251e491fd8790048de51878bddb0c8d635c7b8b679e579",
-      "install": true
-    },
-    {
-      "source": "maclock/contourglow.frag.qsb",
-      "destination": "maclock/contourglow.frag.qsb",
-      "mode": "0644",
-      "size": 2847,
-      "sha256": "5fd314b9c433fd7890e810129d9d07cd0b9146bb7464cc26122393a44f06f5f8",
-      "install": true
-    },
-    {
-      "source": "maclock/fade.frag",
-      "destination": "maclock/fade.frag",
-      "mode": "0644",
-      "size": 746,
-      "sha256": "c613824a8e60f06b7e1361b8e4ddf56b05cd2e8bf6ec8469f3a9481e46e97ed5",
-      "install": true
-    },
-    {
-      "source": "maclock/fade.frag.qsb",
-      "destination": "maclock/fade.frag.qsb",
-      "mode": "0644",
-      "size": 1513,
-      "sha256": "4750978bad3058392990b3caff9498b54e03d8d72a7ebeb3c476e6294890601a",
-      "install": true
-    },
-    {
-      "source": "maclock/fonts/OpenRunde-Regular.otf",
-      "destination": "maclock/fonts/OpenRunde-Regular.otf",
-      "mode": "0644",
-      "size": 312956,
-      "sha256": "8398c8adfc2b41a21cd1c0e00dbbd81c2ce3877cc5c9843bebd3e0b7b43cfbcc",
-      "install": true
-    },
-    {
-      "source": "maclock/fonts/OpenRunde-Semibold.otf",
-      "destination": "maclock/fonts/OpenRunde-Semibold.otf",
-      "mode": "0644",
-      "size": 315896,
-      "sha256": "39d6c706cfbb9cad2a7ea2bfdbe12c4384185d8625a21208a39cbdfe1ea1790c",
-      "install": true
-    },
-    {
-      "source": "maclock/genius-lyrics.py",
-      "destination": "maclock/genius-lyrics.py",
-      "mode": "0644",
-      "size": 5351,
-      "sha256": "ea5cd6d986920e52b06f579bdceff9f0f26837724e9910411f6dcf8451170501",
-      "install": true
-    },
-    {
-      "source": "maclock/glasstext.frag",
-      "destination": "maclock/glasstext.frag",
-      "mode": "0644",
-      "size": 4782,
-      "sha256": "2f4feef2797fefaef9eae8cf6822ceb060257d6f8f13a26b55a76e0e26fa9dd8",
-      "install": true
-    },
-    {
-      "source": "maclock/glasstext.frag.qsb",
-      "destination": "maclock/glasstext.frag.qsb",
-      "mode": "0644",
-      "size": 6204,
-      "sha256": "e58211227bf1a395a687169b6cdb8f05ae54332de891150a5614c1e3dbdf660e",
-      "install": true
-    },
-    {
-      "source": "maclock/liquidglass.frag",
-      "destination": "maclock/liquidglass.frag",
-      "mode": "0644",
-      "size": 8333,
-      "sha256": "2d271780c560d4eab742b4906f503d524d2a00c7f4f2570d0c1e2b96a7888f35",
-      "install": true
-    },
-    {
-      "source": "maclock/liquidglass.frag.qsb",
-      "destination": "maclock/liquidglass.frag.qsb",
-      "mode": "0644",
-      "size": 11450,
-      "sha256": "d0b03039be856592b1bcbc54f1ff694e2dbb1ea91187e5aadcb4a67f401f6155",
-      "install": true
-    },
-    {
-      "source": "maclock/ripple.frag",
-      "destination": "maclock/ripple.frag",
-      "mode": "0644",
-      "size": 1559,
-      "sha256": "cd0121c3c770a3494538270d1ad485eabfc3d8c5dbc4a98c08c145ccbf912fe6",
-      "install": true
-    },
-    {
-      "source": "maclock/shell.qml",
-      "destination": "maclock/shell.qml",
-      "mode": "0644",
-      "size": 13946,
-      "sha256": "9483a3f0aae4ed553ecd7a78c5926a967a364cc33f163e4225452e102eee1f13",
-      "install": true
-    },
-    {
-      "source": "maclock/spotify-canvas.py",
-      "destination": "maclock/spotify-canvas.py",
-      "mode": "0644",
-      "size": 6225,
-      "sha256": "7c9ba761ddf634187e76ab177239a313236607b1bb3b90c0a8af6cd3528e80d8",
-      "install": true
     },
     {
       "source": "upstream/AboutApp.qml",
@@ -438,14 +222,6 @@
       "install": true
     },
     {
-      "source": "upstream/Installer.qml",
-      "destination": "upstream/Installer.qml",
-      "mode": "0644",
-      "size": 24299,
-      "sha256": "3bd64f128c6cc5305e323700f3c7eaef0b518ed8efef6e26987926147fc4b83f",
-      "install": true
-    },
-    {
       "source": "upstream/LiquidKnob.qml",
       "destination": "upstream/LiquidKnob.qml",
       "mode": "0644",
@@ -489,8 +265,8 @@
       "source": "upstream/MacBar.qml",
       "destination": "upstream/MacBar.qml",
       "mode": "0644",
-      "size": 583303,
-      "sha256": "8cfb320f95f3b01ca81e63957db357f7bd02914f6641b05cf7c89d4b1c41fcce",
+      "size": 583600,
+      "sha256": "2cc822b430532b54f0deaffd9565f7032dbf2528353cea3cf2e60a9444f7978e",
       "install": true
     },
     {
@@ -505,8 +281,8 @@
       "source": "upstream/MacRoot.qml",
       "destination": "upstream/MacRoot.qml",
       "mode": "0644",
-      "size": 21381,
-      "sha256": "93c768692b5328ac289886dcd3e58538b44a4faade888bf8b0394e3a73ccd76b",
+      "size": 21372,
+      "sha256": "2c4eee845c0c6165ca19bedcacbd4fc32a0ad0e8acb02a8b7cda911b73bc8430",
       "install": true
     },
     {
@@ -923,14 +699,6 @@
       "mode": "0644",
       "size": 1829,
       "sha256": "52d018eacbe57d25c7797ff9a3a0e32721368429f44d67e9d53ec7737013eb61",
-      "install": true
-    },
-    {
-      "source": "upstream/shell.qml",
-      "destination": "upstream/shell.qml",
-      "mode": "0644",
-      "size": 22172,
-      "sha256": "3df070f6302a1f8dbd03a56a8f925888a1625b43856e7fa627e2b1fccd60c0d1",
       "install": true
     },
     {
