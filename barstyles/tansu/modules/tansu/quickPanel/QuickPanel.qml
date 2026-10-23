@@ -523,19 +523,24 @@ Scope {
         slideAnim.start()
     }
 
-    // The flick stopped: land on the page it was pulled toward. Only Quick and
-    // Rashin page: the Apps screen slides in on its own, never as a page.
+    // Where the pull was let go: past halfway, or thrown that way, takes the
+    // page; anything else goes back. Only Quick and Rashin page: the Apps screen
+    // slides in on its own, never as a page.
     function settleSwipe() {
-        if (Math.round(pager.contentX / phone.faceWidth) >= 1) {
-            if (faceScreen === "ai")
-                syncFace()
-            else
-                goAsk()
-        } else if (faceScreen === "quick") {
-            syncFace()
-        } else {
+        const w = phone.faceWidth
+        const x = pager.contentX
+        const v = Date.now() - pager.dragT < 90 ? pager.dragVel : 0
+        let page = x > w * 0.5 ? 1 : 0
+        if (v > 900 && x > w * 0.2)
+            page = 1
+        else if (v < -900 && x < w * 0.8)
+            page = 0
+        if (page === 1 && faceScreen !== "ai")
+            goAsk()
+        else if (page === 0 && faceScreen !== "quick")
             homeNow()
-        }
+        else
+            syncFace()
     }
     onFaceScreenChanged: syncFace()
 
@@ -1847,15 +1852,39 @@ Scope {
                             contentWidth: 2 * phone.faceWidth
                             contentHeight: height
                             flickableDirection: Flickable.HorizontalFlick
-                            boundsBehavior: Flickable.DragAndOvershootBounds
-                            maximumFlickVelocity: 3000
-                            flickDeceleration: 4000
+                            boundsBehavior: Flickable.StopAtBounds
+                            // No fling: the page you get is the one you let go
+                            // on, plus the flick's speed (see dragVel). Letting
+                            // Qt carry the momentum means the release is judged
+                            // before the content has gone anywhere.
+                            maximumFlickVelocity: 1
+                            flickDeceleration: 6000
                             interactive: root.open && !root.settingsShown && !stage.flipping
                                        && root.faceScreen !== "apps"
                             clip: true
 
+                            property real dragVel: 0
+                            property real dragX: 0
+                            property real dragT: 0
+
+                            onContentXChanged: {
+                                if (!moving)
+                                    return
+                                const now = Date.now()
+                                const dt = now - dragT
+                                if (dt > 0 && dt < 90)
+                                    dragVel = (contentX - dragX) / dt * 1000
+                                dragX = contentX
+                                dragT = now
+                            }
+
                             Component.onCompleted: contentX = 0
-                            onMovementStarted: slideAnim.stop()
+                            onMovementStarted: {
+                                slideAnim.stop()
+                                dragVel = 0
+                                dragX = contentX
+                                dragT = Date.now()
+                            }
                             onMovementEnded: root.settleSwipe()
 
                             QuickPanelFace {
