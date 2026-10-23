@@ -478,14 +478,6 @@
       "install": true
     },
     {
-      "source": "upstream/assets/credits/0-ss.jpg",
-      "destination": "upstream/assets/credits/0-ss.jpg",
-      "mode": "0644",
-      "size": 9180,
-      "sha256": "cf4e03e99f180faef8fa3369a3fae40ae22e2bf7fdff46c93c4e0cdd99527e6b",
-      "install": true
-    },
-    {
       "source": "upstream/assets/credits/vsoultann.png",
       "destination": "upstream/assets/credits/vsoultann.png",
       "mode": "0644",
