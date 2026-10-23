@@ -1970,7 +1970,8 @@
       "hosts": [
         "topbarGlyph"
       ],
-      "lastUpdated": "2026-10-22"
+      "lastUpdated": "2026-10-22",
+      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/radio-atlas"
     }
   ]
 }
