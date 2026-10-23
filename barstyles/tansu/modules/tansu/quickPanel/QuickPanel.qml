@@ -537,16 +537,23 @@ Scope {
                 homeNow()
             else
                 syncFace()
-        } else if (dx < -150) {
-            if (faceScreen === "ai")
-                homeNow()
-            else if (faceScreen === "quick")
-                goApps("")
-            else
-                syncFace()
+        } else if (dx < -150 && faceScreen === "ai") {
+            homeNow()
         } else {
             syncFace()
         }
+    }
+
+    // Rashin is the page on the right of Quick, so a pull the other way only
+    // gives a little, the way a page with nothing behind it does.
+    function swipeResist(dx) {
+        if (faceScreen === "quick" && dx < 0)
+            return dx * 0.25
+        if (faceScreen === "apps" && dx < 0)
+            return dx * 0.25
+        if (faceScreen === "ai" && dx > 0)
+            return dx * 0.25
+        return dx
     }
     onFaceScreenChanged: syncFace()
 
@@ -737,6 +744,8 @@ Scope {
             keys.forceActiveFocus()
         else if (faceScreen === "apps")
             appsFace.focusSearch()
+        else if (faceScreen === "ai")
+            askFace.focusDraft()
         else
             keys.forceActiveFocus()
     }
@@ -2098,7 +2107,8 @@ Scope {
                     onActiveTranslationChanged: {
                         if (!active)
                             return
-                        root.dragDx = activeTranslation.x / unit
+                        const moved = (centroid.scenePosition.x - centroid.scenePressPosition.x) / unit
+                        root.dragDx = root.swipeResist(moved)
                         root.slideX = -root.faceIndex * 654 + root.dragDx
                     }
                     onActiveChanged: {
