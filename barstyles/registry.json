@@ -252,8 +252,8 @@
         "dock",
         "customizable"
       ],
-      "accent": "#a6d395",
-      "surface": "#11140f",
+      "accent": "#b4befe",
+      "surface": "#2c2c3f",
       "preview": "screenshots/preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
