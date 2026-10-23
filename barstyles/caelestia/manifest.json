@@ -2313,8 +2313,8 @@
       "source": "screenshots/preview.webp",
       "destination": "screenshots/preview.webp",
       "mode": "0644",
-      "size": 94762,
-      "sha256": "ed55f87adbcbef1629dc9a908675a9b92957bab0fa7fbc6fec815b626652ad75",
+      "size": 86738,
+      "sha256": "4f8478b3857d123febd740376cee91c67628433d45428307b2ed8ce6dd3b451c",
       "install": false
     },
     {
