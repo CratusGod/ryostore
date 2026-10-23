@@ -38,7 +38,7 @@ PanelWindow {
         left: win.barPosition !== "right"
         right: win.barPosition !== "left"
     }
-    readonly property real uiScale: ShellScale.forScreen(win.screen)
+    readonly property real uiScale: ShellScale.forScreen(win.screen) * ShellScale.barScale
     readonly property real thickness: BarPositionService.thicknessFor(win.barPosition)
     readonly property real stripSize: Math.round((win.barStyle === 3 ? (win.vertical ? Theme.capStripV : Theme.capStrip)
     : win.thickness) * win.uiScale)

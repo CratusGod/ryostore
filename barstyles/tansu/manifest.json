@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "tansu",
   "category": "barstyles",
-  "version": "1.4.4",
+  "version": "1.4.6",
   "destination": "ryoku/barstyles/tansu",
   "files": [
     {
@@ -25,8 +25,8 @@
       "source": "README.md",
       "destination": "README.md",
       "mode": "0644",
-      "size": 4040,
-      "sha256": "0cb3c671b79e2493f6920cb7465115e5e3bac2cf6dc96974c3eec3a9d185a273",
+      "size": 4642,
+      "sha256": "9d11adf54444f9f382134e68cbc6771d932640c795138082a42b9a3db2460ec4",
       "install": true
     },
     {
@@ -42,7 +42,7 @@
       "destination": "VERSION",
       "mode": "0644",
       "size": 6,
-      "sha256": "d03d8b268b4171328ac2458ce8ca82d69a1fde38469d4e4faae4f8fa8d8a5e35",
+      "sha256": "563d5c80c54e77e2f8454ecd5c14388f9ab3af77edc73b6f4736ada64527952c",
       "install": true
     },
     {
@@ -6065,8 +6065,8 @@
       "source": "modules/tansu/bar/Bar.qml",
       "destination": "modules/tansu/bar/Bar.qml",
       "mode": "0644",
-      "size": 26407,
-      "sha256": "59589a718210871c515d145da854215fe3daff1341ac06fed2ef7ce2d1c5a081",
+      "size": 26429,
+      "sha256": "4ff7ca463f63ca3bde262a83344447e4436a31c76829d747e3a3157b2eb00a44",
       "install": true
     },
     {
@@ -6673,16 +6673,16 @@
       "source": "modules/tansu/settings/SettingsPageAbout.qml",
       "destination": "modules/tansu/settings/SettingsPageAbout.qml",
       "mode": "0644",
-      "size": 4401,
-      "sha256": "9d22708cf54ca3bb4286d74958d784acfb7adffd2aee138ed098e83efecb03b2",
+      "size": 4848,
+      "sha256": "803bddd6ef33c3cda8b5ad5899c49c6ef7aead936f176a4d0cff245d7d35c3e0",
       "install": true
     },
     {
       "source": "modules/tansu/settings/SettingsPageBar.qml",
       "destination": "modules/tansu/settings/SettingsPageBar.qml",
       "mode": "0644",
-      "size": 9848,
-      "sha256": "59bdf5e53f478c1b5b47c8ae7d80dad72316352e74ad14e6af080c223a995e37",
+      "size": 10342,
+      "sha256": "1a5bf7f4188ab636faa8b0ea83e5e3a53cad1d56f7e2afcffc13d75fecab5842",
       "install": true
     },
     {
@@ -7249,16 +7249,16 @@
       "source": "services/SettingsService.qml",
       "destination": "services/SettingsService.qml",
       "mode": "0644",
-      "size": 8085,
-      "sha256": "7b44d1e1282b04fa583537e54d9ca38985a941bc42c38a94496f15fb7c23ce0d",
+      "size": 8109,
+      "sha256": "7eb0759aa7bccd2ac53ae1f48d1b9131d675846e77ed0631d657eaa0cef42011",
       "install": true
     },
     {
       "source": "services/ShellScale.qml",
       "destination": "services/ShellScale.qml",
       "mode": "0644",
-      "size": 1814,
-      "sha256": "117de94ad16416b612e8e70dfb4dad08cabd898f1055d30b16afe09be2019fba",
+      "size": 2183,
+      "sha256": "192642c8d0964581bb17c479104baa7c9f1511c283ed219bf5f218ea1f2b2d70",
       "install": true
     },
     {

@@ -41,6 +41,7 @@ Singleton {
         "bar.compactWindow": false,
         "bar.perMonitor": false,
         "bar.style": "transparent",
+        "bar.scale": 1,
         "bar.position": "top",
         "bar.layout": ({
             left: ["activeWindow", "media", "tray"],
