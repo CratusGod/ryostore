@@ -34,6 +34,10 @@ Item {
         const text = draft.text.trim()
         if (text.length === 0 || Ryoku.Needle.busy || blocked)
             return
+        // The daemon hands a user message to every client but the one that
+        // wrote it, so the phone puts its own line in the thread.
+        if (Ryoku.Needle.available)
+            Ryoku.Needle._frame(JSON.stringify({ type: "user", text: text }))
         Ryoku.Needle.send(text)
         draft.text = ""
     }
@@ -95,7 +99,7 @@ Item {
         x: 512
         y: 34
         size: 44
-        icon: "add_comment"
+        icon: "add-circle"
         onClicked: Ryoku.Needle.newChat()
     }
 
@@ -143,7 +147,7 @@ Item {
 
                     MaterialIcon {
                         anchors.verticalCenter: parent.verticalCenter
-                        name: row.kind === "handoff" ? "swap_horiz" : "build"
+                        name: row.kind === "handoff" ? "transfer-horizontal" : "sledgehammer"
                         size: 20
                         color: Theme.pInkSub
                     }
@@ -294,7 +298,9 @@ Item {
             font.pixelSize: 21
             clip: true
             selectByMouse: true
-            enabled: !Ryoku.Needle.busy && !face.blocked
+            // Stay typable while a turn runs: only a missing model disables it,
+            // and a turn that took the field away lost the focus with it.
+            enabled: !face.blocked
 
             Keys.onPressed: event => {
                 if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
@@ -322,7 +328,7 @@ Item {
             anchors.rightMargin: 10
             anchors.verticalCenter: parent.verticalCenter
             size: 58
-            icon: Ryoku.Needle.busy ? "stop" : "arrow_upward"
+            icon: Ryoku.Needle.busy ? "stop" : "arrow-up"
             on: Ryoku.Needle.busy
             onClicked: Ryoku.Needle.busy ? Ryoku.Needle.cancel() : face.sendDraft()
         }

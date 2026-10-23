@@ -105,9 +105,12 @@ Scope {
     }
     // Which screen is showing, as a column index: Rashin sits left of Quick,
     // Apps right of it. slideX is that column's offset in design pixels and
-    // follows the pointer while the phone is dragged.
+    // follows the pointer while the phone is dragged; dragBase is where the
+    // strip was when the pointer went down, so grabbing a moving page carries
+    // on from where it is instead of jumping back to its page.
     readonly property int faceIndex: faceScreen === "ai" ? -1 : (faceScreen === "apps" ? 1 : 0)
     property real slideX: 0
+    property real dragBase: 0
     property real dragDx: 0
     property bool dragging: false
     readonly property bool routing: slideAnim.running || dragging
@@ -526,32 +529,31 @@ Scope {
         slideAnim.start()
     }
 
-    // The pointer let go: finish the move it started if it went far enough,
-    // otherwise slide back to the screen it was on.
+    // The pointer let go: land on the page it was pulled toward if it went far
+    // enough, otherwise slide back to the screen it was on.
     function settleSwipe() {
-        const dx = slideX + faceIndex * 654
-        if (dx > 150) {
-            if (faceScreen === "quick")
-                goAsk()
-            else if (faceScreen === "apps")
-                homeNow()
-            else
-                syncFace()
-        } else if (dx < -150 && faceScreen === "ai") {
-            homeNow()
-        } else {
+        const dx = root.dragDx
+        if (Math.abs(dx) < 150) {
             syncFace()
+            return
         }
+        const next = faceIndex + (dx > 0 ? -1 : 1)
+        if (next === -1)
+            goAsk()
+        else if (next === 1)
+            goApps("")
+        else if (next === 0)
+            homeNow()
+        else
+            syncFace()
     }
 
-    // Rashin is the page on the right of Quick, so a pull the other way only
-    // gives a little, the way a page with nothing behind it does.
+    // The ends of the strip only give a little, the way a page with nothing
+    // behind it does.
     function swipeResist(dx) {
-        if (faceScreen === "quick" && dx < 0)
+        if (faceScreen === "ai" && dx > 0)
             return dx * 0.25
         if (faceScreen === "apps" && dx < 0)
-            return dx * 0.25
-        if (faceScreen === "ai" && dx > 0)
             return dx * 0.25
         return dx
     }
@@ -778,9 +780,11 @@ Scope {
         id: slideAnim
         target: root
         property: "slideX"
-        duration: 220
+        duration: 240
         easing.type: Easing.OutCubic
-        onFinished: root.focusPhoneKeys()
+        // A turn later, so routing is already false and the keys are not handed
+        // out while the page is still moving.
+        onFinished: Qt.callLater(root.focusPhoneKeys)
     }
 
     onOpenChanged: {
@@ -1809,9 +1813,11 @@ Scope {
 
                     windowShown: win.visible
 
+                    // Not root.routing: a page slide only moves the face inside
+                    // the phone, and switching the body to its moving samples
+                    // reallocates every layer mid-swipe (that was the stutter).
                     moving: enterAnim.running || exitAnim.running
                             || exitDelay.running || !win.visible || stage.flipping || ring.running
-                            || root.routing
                     busy: PanelActivity.busy
 
                     turnRoll: stage.flipping ? -90 : 0
@@ -2091,8 +2097,8 @@ Scope {
 
                 // The phone's pages: Rashin, Quick, Apps. The faces follow the
                 // pointer while this drags and settle on the next one when it is
-                // let go past halfway. Horizontal only, and it never takes the
-                // grab from a slider or a list that already has it.
+                // let go past halfway. Horizontal only, and it leaves the grab
+                // with anything that asked to keep it.
                 DragHandler {
                     id: phoneSwipe
 
@@ -2100,20 +2106,29 @@ Scope {
                     xAxis.enabled: true
                     yAxis.enabled: false
                     dragThreshold: 10
-                    grabPermissions: PointerHandler.ApprovesTakeOverByAnything
+                    // Take the pull away from the card under it (they do not
+                    // prevent stealing), but let anything that does -- the
+                    // sliders -- keep its own grab.
+                    grabPermissions: PointerHandler.CanTakeOverFromItems
+                                     | PointerHandler.ApprovesTakeOverByAnything
 
-                    readonly property real unit: Math.max(0.01, win.fit * stage.quickScale)
+                    // The phone is yawed, so a design pixel of page moves less
+                    // than a screen pixel: scale by cos(yaw) to keep the page
+                    // under the pointer instead of trailing behind it.
+                    readonly property real unit: Math.max(0.01, win.fit * stage.quickScale
+                        * Math.cos(phone.yaw * Math.PI / 180))
 
                     onActiveTranslationChanged: {
                         if (!active)
                             return
                         const moved = (centroid.scenePosition.x - centroid.scenePressPosition.x) / unit
                         root.dragDx = root.swipeResist(moved)
-                        root.slideX = -root.faceIndex * 654 + root.dragDx
+                        root.slideX = root.dragBase + root.dragDx
                     }
                     onActiveChanged: {
                         if (active) {
                             slideAnim.stop()
+                            root.dragBase = root.slideX
                             root.dragging = true
                             root.dragDx = 0
                             return
