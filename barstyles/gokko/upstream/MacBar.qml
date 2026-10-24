@@ -1,7 +1,7 @@
 // macbar — a macOS Tahoe style menu bar for Hyprland, built on Quickshell.
 //
 // Part of the combined macbar + macdock shell (see shell.qml). Keep this file, MacDock.qml, shell.qml,
-// liquidglass.frag and apple-logo-*.svg together in ~/.config/quickshell/macbar/ and run:  qs -c macbar
+// liquidglass.frag and apple-logo-*.svg / nixos-logo-*.svg together in ~/.config/quickshell/macbar/ and run:  qs -c macbar
 //
 // Settings live in ~/.config/macbar/settings.json (Apple menu → System Settings…, or Control Center → Edit Controls).
 // On first run, appearance (dark mode, accent, font, glass tuning, wallpaper) is inherited from macdock's settings.json.
@@ -139,6 +139,8 @@ Scope {
         }
     }
     readonly property string effectiveLogoMode: barLogoMode === "auto" ? "distro" : barLogoMode
+    // NixOS "auto" uses the bundled nixos-logo-*.svg (like the apple logo) instead of the icon-theme snowflake.
+    readonly property bool useNixosLogo: effectiveLogoMode === "distro" && distroId === "nixos"
     readonly property string distroIcon: distroId === "nixos" ? "nix-snowflake"
         : distroId === "fedora" ? "fedora-logo-icon"
         : distroId === "void" ? "void-logo" : distroId === "arch" ? "archlinux-logo" : "distributor-logo"
@@ -5381,7 +5383,7 @@ Scope {
                                     color: bpal.fg
                                 }
                                 Item {
-                                    visible: mt.modelData.id === "apple" && root.effectiveLogoMode === "distro"
+                                    visible: mt.modelData.id === "apple" && root.effectiveLogoMode === "distro" && !root.useNixosLogo
                                     anchors.centerIn: parent
                                     width: 20; height: 20
                                     // Keep the icon's alpha mask, not its coloured pixels.
@@ -5409,6 +5411,16 @@ Scope {
                                         font.pixelSize: 18
                                         font.bold: true
                                     }
+                                }
+                                Image {
+                                    visible: mt.modelData.id === "apple" && root.useNixosLogo
+                                    anchors.centerIn: parent
+                                    width: 18; height: 18
+                                    source: !root.barTextDark ? Qt.resolvedUrl("nixos-logo-white.svg") : Qt.resolvedUrl("nixos-logo-black.svg")
+                                    sourceSize: Qt.size(128, 128)
+                                    fillMode: Image.PreserveAspectFit
+                                    smooth: true
+                                    mipmap: true
                                 }
                                 Image {
                                     visible: mt.modelData.id === "apple" && root.effectiveLogoMode === "apple"
