@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "gokko",
   "category": "barstyles",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "destination": "ryoku/barstyles/gokko",
   "files": [
     {
@@ -265,8 +265,8 @@
       "source": "upstream/MacBar.qml",
       "destination": "upstream/MacBar.qml",
       "mode": "0644",
-      "size": 594530,
-      "sha256": "131df77e9c65bbe686e61af7c913b1223f00c6e41ad390d248e8c45e35c2b882",
+      "size": 595445,
+      "sha256": "3e7f8fd7ca2355c1c1a36ab71741c995742b338596637c96c0affc2180e75585",
       "install": true
     },
     {
@@ -467,6 +467,22 @@
       "mode": "0644",
       "size": 675,
       "sha256": "347bb2985675dafb25e95730503539ba843140fc6ca75004eddb5abbd389cc55",
+      "install": true
+    },
+    {
+      "source": "upstream/nixos-logo-black.svg",
+      "destination": "upstream/nixos-logo-black.svg",
+      "mode": "0644",
+      "size": 778,
+      "sha256": "2ef4b843bfc96423c99360fac06f4e75b25822f89c5f0bc6bf06368a3a574343",
+      "install": true
+    },
+    {
+      "source": "upstream/nixos-logo-white.svg",
+      "destination": "upstream/nixos-logo-white.svg",
+      "mode": "0644",
+      "size": 778,
+      "sha256": "54fe9c3d2b7b7b82e762cd481d2ff8e3c9192a047785b5bde68881506c14834d",
       "install": true
     },
     {
