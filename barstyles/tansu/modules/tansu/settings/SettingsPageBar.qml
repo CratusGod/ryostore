@@ -84,6 +84,19 @@ SettingsPage {
             onMoved: v => SettingsService.set("bar.roundness", Math.round(v))
         }
 
+        SettingSlider {
+            icon: "space_bar"
+            label: "Reserved space"
+            from: 0
+            to: 100
+            step: 5
+            suffix: "%"
+            specialValue: 0
+            specialText: "Off"
+            value: SettingsService.get("bar.reserve", 100)
+            onMoved: v => SettingsService.set("bar.reserve", Math.round(v))
+        }
+
         SettingChoice {
             label: "Position"
             sublabel: "Which edge it sits on"

@@ -38,7 +38,7 @@ The pages are **Quick**, **General**, **Bar**, and **About**. They are stored in
 |------|---------------|
 | Quick | The phone's look (including the now-playing card), and the shell switches (notifications, Night Light, Keep Awake, the bar) |
 | General | 24-hour time, the phone's alert, the Quick Panel's hot edge and behaviour, shell reload and reset |
-| Bar | Which modules the bar carries (every pill and key), auto-hide, the corner radius, the workspace count, the bar's size, the update badge, media/tray/scroll behaviour, and the utility keys |
+| Bar | Which modules the bar carries (every pill and key), auto-hide, the corner radius, the space it reserves, the workspace count, the bar's size, the update badge, media/tray/scroll behaviour, and the utility keys |
 | About | What this barstyle is, and its credits |
 
 ## Sizes
