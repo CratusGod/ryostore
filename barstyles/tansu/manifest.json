@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "tansu",
   "category": "barstyles",
-  "version": "1.4.64",
+  "version": "1.4.66",
   "destination": "ryoku/barstyles/tansu",
   "files": [
     {
@@ -25,8 +25,8 @@
       "source": "README.md",
       "destination": "README.md",
       "mode": "0644",
-      "size": 4935,
-      "sha256": "adcb94438f4be3b289a9a9819aa21ead0f587c16e7dc909a2d35a19d13723bf4",
+      "size": 4958,
+      "sha256": "ba55ba7726c8d24bbfb7cd16cf95edb5b25d178b529eb3b546fa714adbfde945",
       "install": true
     },
     {
@@ -42,7 +42,7 @@
       "destination": "VERSION",
       "mode": "0644",
       "size": 7,
-      "sha256": "9d58cc230c308ffbe089b06330f41dde4f8c52ddce8b5cd9f8418122bf9944c9",
+      "sha256": "4da8c43a9d5691dac616d62f270613a18dfda0fc85ff8cf80c5f932035b8f625",
       "install": true
     },
     {
@@ -6065,8 +6065,8 @@
       "source": "modules/tansu/bar/Bar.qml",
       "destination": "modules/tansu/bar/Bar.qml",
       "mode": "0644",
-      "size": 28707,
-      "sha256": "0822405166e8f0adea7c76b7771d0e0ebedf2ffe0254afd3aef04032bde349fa",
+      "size": 28993,
+      "sha256": "866f7b9983a025d6b2dcd403733dcaa399fb4b209104388f2412d20094abec46",
       "install": true
     },
     {
@@ -6697,8 +6697,8 @@
       "source": "modules/tansu/settings/SettingsPageBar.qml",
       "destination": "modules/tansu/settings/SettingsPageBar.qml",
       "mode": "0644",
-      "size": 11018,
-      "sha256": "e260aaac2c9b2aa23273d91dfb46d00f404e4c316d805e2267a85ea5a4c69e28",
+      "size": 11397,
+      "sha256": "2af5e577f2b2d56f934b1cf922f6fa8947724bcab177cebe05d80011539fac18",
       "install": true
     },
     {
@@ -7265,8 +7265,8 @@
       "source": "services/SettingsService.qml",
       "destination": "services/SettingsService.qml",
       "mode": "0644",
-      "size": 8259,
-      "sha256": "1064a3910da9848e63b1b85615011a8c6ff131659e79d7b049629c6cec23356d",
+      "size": 8287,
+      "sha256": "ca2a2a9720e30469506c46673951ed7983a1d1b0183f91e42f3c95c05ece304b",
       "install": true
     },
     {

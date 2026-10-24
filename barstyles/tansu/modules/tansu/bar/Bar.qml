@@ -96,7 +96,11 @@ PanelWindow {
     readonly property real transparentTrim: win.barStyle === 2
         ? Math.min(Math.round(win.transparentExtraGap * win.uiScale), Math.round(win.stripSize * 0.6))
         : 0
-    exclusiveZone: win.autoHide ? 0 : win.stripSize - win.transparentTrim
+    // Settings > Bar > Reserved space: the share of it the windows keep clear,
+    // down to 0 for a bar that floats over them.
+    readonly property real reserveShare: Math.max(0, Math.min(100,
+        SettingsService.get("bar.reserve", 100))) / 100
+    exclusiveZone: win.autoHide ? 0 : Math.round((win.stripSize - win.transparentTrim) * win.reserveShare)
     color: "transparent"
 
     readonly property bool gameMode: false
