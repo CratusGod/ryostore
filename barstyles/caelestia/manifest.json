@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "caelestia",
   "category": "barstyles",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "ryoku/barstyles/caelestia",
   "files": [
     {
@@ -161,8 +161,8 @@
       "source": "components/StateLayer.qml",
       "destination": "components/StateLayer.qml",
       "mode": "0644",
-      "size": 6083,
-      "sha256": "b391ade80dadb38054399c641726a1988464db15032c6f9004964104d55e6b1d",
+      "size": 6312,
+      "sha256": "6df44855379120c9eca5fb296e836f22625126e28b51034a5395b397097d5563",
       "install": true
     },
     {
@@ -1241,8 +1241,8 @@
       "source": "modules/dashboard/Content.qml",
       "destination": "modules/dashboard/Content.qml",
       "mode": "0644",
-      "size": 8471,
-      "sha256": "fe9cf914f6470ea9e59578b165a1c91068165d4e117ec5a2f5ca3d338351348b",
+      "size": 8852,
+      "sha256": "5d840614a434c28597298258703e60b31bec66ebe8dc70eb0209e8fd8ef42fea",
       "install": true
     },
     {

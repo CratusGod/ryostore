@@ -172,21 +172,31 @@ Item {
 
                         required property int index
                         required property var modelData
+                        property bool visited: false
 
                         Layout.alignment: Qt.AlignTop
 
                         sourceComponent: modelData.component
 
-                        Component.onCompleted: active = Qt.binding(() => {
-                            if (!root.visibilities.dashboard)
-                                return false;
-                            if (active) return true;
-                            if (index === view.currentIndex)
-                                return true;
-                            const vx = Math.floor(view.visibleArea.xPosition * view.contentWidth);
-                            const vex = Math.floor(vx + view.visibleArea.widthRatio * view.contentWidth);
-                            return (vx >= x && vx <= x + implicitWidth) || (vex >= x && vex <= x + implicitWidth);
-                        })
+                        // Preload neighbours for swiping without depending on
+                        // geometry that changes when the Loader becomes active.
+                        active: root.visibilities.dashboard
+                            && (visited || Math.abs(index - view.currentIndex) <= 1)
+
+                        // Keep a loaded tab until close without reading our own
+                        // active binding. Defer the latch until loading settles.
+                        function rememberLoaded(): void {
+                            if (active) visited = true;
+                        }
+                        onLoaded: Qt.callLater(rememberLoaded)
+
+                        Connections {
+                            target: root.visibilities
+                            function onDashboardChanged(): void {
+                                if (!root.visibilities.dashboard)
+                                    paneLoader.visited = false;
+                            }
+                        }
                     }
                 }
             }
