@@ -13,7 +13,7 @@ Item {
     required property bool sidebarOrSessionVisible
     property bool hovered
     readonly property Brightness.Monitor monitor: Brightness.getMonitorForScreen(root.screen)
-    readonly property bool shouldBeActive: visibilities.osd && Config.osd.enabled && !(visibilities.utilities && Config.utilities.enabled) && !visibilities.overview
+    readonly property bool shouldBeActive: visibilities.osd && Config.osd.enabled && !(visibilities.utilities && Config.utilities.enabled)
     // what the Controls page leaves of its Levels: no slider, and no pop-up for it
     readonly property bool volumeOn: HostState.section("levels") && HostState.element("volume")
     readonly property bool brightnessOn: HostState.section("levels") && HostState.element("brightness")

@@ -134,12 +134,17 @@ MouseArea {
                     color: Qt.alpha(base.color, 1)
                 }
                 GradientStop {
-                    position: CUtils.clamp(1 - 0.2 * root.endRadius / root.circleRadius, 0.01, 0.99)
+                    // Layout and a fresh press can both have a zero radius.
+                    position: root.circleRadius > 0
+                        ? CUtils.clamp(1 - 0.2 * root.endRadius / root.circleRadius, 0.01, 0.99)
+                        : 0.01
                     color: Qt.alpha(base.color, 1)
                 }
                 GradientStop {
                     position: 1
-                    color: Qt.alpha(base.color, CUtils.clamp((root.circleRadius / root.endRadius - 0.9) / 0.1, 0, 1))
+                    color: Qt.alpha(base.color, root.endRadius > 0
+                        ? CUtils.clamp((root.circleRadius / root.endRadius - 0.9) / 0.1, 0, 1)
+                        : 0)
                 }
             }
 
