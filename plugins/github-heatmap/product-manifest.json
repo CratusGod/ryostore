@@ -80,9 +80,9 @@
     {
       "source": "manifest.json",
       "destination": "manifest.json",
-      "sha256": "f890a5492092b5358ffc2e3d14d90abc2c32d58df9b05c11d32851b42cdc9cea",
+      "sha256": "3f7a60ce1c3ef93d9670632ce4ffe425f778eab93e9b30cea7e49646ef227fc1",
       "mode": "0644",
-      "size": 2419,
+      "size": 2396,
       "install": true
     },
     {
