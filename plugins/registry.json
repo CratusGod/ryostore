@@ -1325,6 +1325,7 @@
       "name": "GitHub Heatmap",
       "version": "0.8.0",
       "path": "plugins/github-heatmap",
+      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/github-heatmap",
       "author": "safloresmo <safloresmo@gmail.com>",
       "summary": "Your GitHub contribution calendar on the wallpaper: four designs, palettes that follow your theme, streaks and a glass card.",
       "description": "Your GitHub contribution calendar on the wallpaper: four designs, palettes that follow your theme, streaks and a glass card.",
