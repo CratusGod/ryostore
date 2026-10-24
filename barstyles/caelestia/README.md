@@ -24,5 +24,5 @@ The file only holds what you changed; delete a key to get its default back.
 
 ## Not included
 
-The upstream launcher, overview, lyrics panel and plugin system are left out; Ryoku's own
-launcher opens from the bar logo.
+The upstream launcher, overview, lyrics panel and plugin system are left out. Ryoku's
+launcher opens from the bar logo, and Caelestia's overview controls open Ryoku's overview.

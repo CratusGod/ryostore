@@ -295,11 +295,12 @@ Scope {
             if (list().split("\n").includes(drawer)) {
                 if (root.hasFullscreen && ["launcher", "session", "dashboard"].includes(drawer))
                     return;
-                const visibilities = Visibilities.getForActive();
-                if (drawer === "overview")
-                    Visibilities.setOverview(!visibilities.overview);
-                else
+                if (drawer === "overview") {
+                    Visibilities.toggleOverview();
+                } else {
+                    const visibilities = Visibilities.getForActive();
                     visibilities[drawer] = !visibilities[drawer];
+                }
                 Logger.mark(`drawer=${drawer} toggled`);
             } else {
                 console.warn(lc, `Drawer "${drawer}" does not exist`);
@@ -315,18 +316,19 @@ Scope {
                     visibilities.sidebar = true;
                     return;
                 }
-                const visibilities = Visibilities.getForActive();
-                if (drawer === "overview")
-                    Visibilities.setOverview(!visibilities.overview);
-                else
+                if (drawer === "overview") {
+                    Visibilities.toggleOverview();
+                } else {
+                    const visibilities = Visibilities.getForActive();
                     visibilities[drawer] = !visibilities[drawer];
+                }
             } else {
                 console.warn(lc, `Drawer "${drawer}" does not exist`);
             }
         }
         function list(): string {
             const visibilities = Visibilities.getForActive();
-            return Object.keys(visibilities).filter(k => typeof visibilities[k] === "boolean").join("\n");
+            return ["overview", ...Object.keys(visibilities).filter(k => typeof visibilities[k] === "boolean")].join("\n");
         }
 
         target: "drawers"
