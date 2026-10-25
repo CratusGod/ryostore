@@ -1,4 +1,31 @@
 {
   "schema": 1,
-  "vesktop-themes": []
+  "vesktop-themes": [
+    {
+      "id": "ryoku-discord-optimized",
+      "name": "Ryoku Discord Optimized",
+      "version": "3.0.1",
+      "path": "vesktop-themes/ryoku-discord-optimized",
+      "author": "Ron (original), Sipper1236 (performance adaptation)",
+      "upstream": "https://github.com/Sipper1236/ryoku-discord",
+      "summary": "Ryoku paper-and-ink theme with lighter list animations",
+      "description": "A performance-focused adaptation of Ron’s Ryoku Discord v3 theme. List hover movement uses translate; friends and requests use one fade per surface instead of per-row staggered entrances. Enable Ryoku Optimized in Vesktop Settings → Vencord → Themes after installation.",
+      "tags": [
+        "vesktop",
+        "discord",
+        "theme",
+        "paper",
+        "performance"
+      ],
+      "accent": "#e2342a",
+      "surface": "#0a0a0a",
+      "preview": "assets/preview.png",
+      "screenshots": [],
+      "manifest": "manifest.json",
+      "manifestSha256": "7ac95a137840c14eaa2aa6dbfd0326d7e05c8ecfc98989f6aafab792a88570de",
+      "official": false,
+      "license": "MIT",
+      "lastUpdated": "2026-10-25"
+    }
+  ]
 }
