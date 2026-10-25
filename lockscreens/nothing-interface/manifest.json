@@ -57,8 +57,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 13871,
-      "sha256": "fc83716fe816a1937814e806b96e39ab89d1db9d4e828fbdbcacdcaf45a317f6",
+      "size": 13329,
+      "sha256": "b023aa5f8bfbac784aa813642f3c5dcd76beed40c16bf002f0300f82ed2413b2",
       "install": true
     },
     {
@@ -73,8 +73,8 @@
       "source": "content/bin/media.py",
       "destination": "bin/media.py",
       "mode": "0755",
-      "size": 1605,
-      "sha256": "c865ef19921d1e432a0f75931277c36121a8f42d6d008fa95fb869808cbd6b38",
+      "size": 1880,
+      "sha256": "512e8dd55b7c0a2e2e0dacd4e064f8dcfaa9c23085a4828b4d3ff9ba24ebd702",
       "install": true
     },
     {
@@ -89,8 +89,8 @@
       "source": "content/i18n/I18n.qml",
       "destination": "i18n/I18n.qml",
       "mode": "0644",
-      "size": 2509,
-      "sha256": "80b3727d444692e1a22f0cdb1679f93f1636322926c788406392cbd320d35bf1",
+      "size": 1926,
+      "sha256": "7e5728925ff9505288b4a1856938d393b0a6bf77dcd012b32b028dd1ba915750",
       "install": true
     },
     {

@@ -26,10 +26,6 @@ Rectangle {
         ? userModel.lastUser : ""
     readonly property real uiScale: Math.min(width / 1280, height / 720)
 
-    // The shipped Ryoku translation catalogue at /usr/share/ryoku/i18n is the
-    // single language table for this lockscreen. The theme ships no per-language
-    // copy; every visible string goes through I18n.tr() and falls back to the
-    // English key on a miss.
     function duration(seconds) {
         const value = Math.max(0, Math.floor(Number(seconds || 0)))
         return Math.floor(value / 3600) + ":" + String(Math.floor(value % 3600 / 60)).padStart(2, "0")
@@ -56,7 +52,6 @@ Rectangle {
             password.forceActiveFocus()
         }
     }
-    // Input Focus — defer to ensure the greeter has settled before stealing focus
     Timer {
         id: focusTimer
         interval: 300
@@ -65,13 +60,6 @@ Rectangle {
             if (typeof password !== "undefined")
                 password.forceActiveFocus()
         }
-    }
-
-    Component.onCompleted: {
-        if (typeof password !== "undefined")
-            password.forceActiveFocus()
-        else
-            Qt.callLater(() => password.forceActiveFocus())
     }
 
     Image {
@@ -105,7 +93,7 @@ Rectangle {
 
         Text {
             x: 0; y: -43
-            text: Qt.formatDate(root.now, "dddd, d MMMM")
+            text: Qt.locale().toString(root.now, "dddd, d MMMM")
             font.family: "Noto Sans"; font.pixelSize: 20
             color: "#F5F5F5"
         }

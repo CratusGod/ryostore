@@ -932,7 +932,7 @@
         "assets/preview.png"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "c517eb7eedfca53d090bf8a3c93c24fea108d1576cd6766b6c64840df6605643",
+      "manifestSha256": "3d68e4934b6f4acffa8580a96705fd34fa76b20336326db5ff7585d4a3db8a59",
       "official": false,
       "license": "MIT",
       "lastUpdated": "2026-10-25"
