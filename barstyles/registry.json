@@ -190,6 +190,7 @@
       "summary": "Bar and phone",
       "description": "A colorful shell with a cool phone, along with its own design and settings, and much more.",
       "tags": [
+        "subshell",
         "top",
         "phone",
         "quickpanel",
@@ -218,6 +219,7 @@
       "summary": "macOS-inspired Liquid Glass subshell",
       "description": "macOS-inspired Ryoku barstyle with Spotlight, Control Center, Dock and widgets. Requires the separate Ryoku core Gokko integration for the complete experience.",
       "tags": [
+        "subshell",
         "top",
         "macos",
         "liquid-glass",
@@ -245,6 +247,7 @@
       "summary": "Framed Material 3 shell",
       "description": "The Caelestia shell's framed bar, dock, dashboard, session menu, sidebar and OSD, in plain QML, with its own settings panel.",
       "tags": [
+        "subshell",
         "left",
         "framed",
         "material3",
