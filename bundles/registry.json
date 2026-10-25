@@ -1717,6 +1717,54 @@
       "icon": "widgets",
       "official": false,
       "lastUpdated": "2026-09-24"
+    },
+    {
+      "id": "ms-fonts",
+      "name": "Microsoft Fonts Pack",
+      "version": "1.0.0",
+      "path": "bundles/ms-fonts",
+      "author": "Ryoku Team",
+      "upstream": "https://aur.archlinux.org/packages/ttf-ms-fonts",
+      "summary": "Arial · Times New Roman · Calibri · Cambria · more",
+      "description": "Installs the redistributable Core Fonts for the Web: Andale Mono, Arial, Arial Black, Comic Sans MS, Courier New, Georgia, Impact, Times New Roman, Trebuchet MS, Verdana, and Webdings. It also installs the ClearType families Calibri, Cambria, Cambria Math, Candara, Consolas, Constantia, Corbel, and Meiryo only when a licensed copy of Windows Vista or Microsoft Office 2007 or later is installed on this computer. Lucida Sans, Lucida Console, Microsoft Sans Serif, and Tahoma are not included.",
+      "packageManagers": [
+        "pacman"
+      ],
+      "packageManagersReason": "These font packages are maintained in the AUR, so this bundle is only available on Arch and CachyOS.",
+      "tags": [
+        "office compatibility",
+        "Microsoft fonts",
+        "typography"
+      ],
+      "accent": "#5e81ac",
+      "surface": "#101010",
+      "preview": "assets/preview.svg",
+      "screenshots": [],
+      "manifest": "bundle.json",
+      "manifestSha256": "6a6a8987019a80919c26b9da7e6f7c92e58c6fd937788bbe39bdf0926d5ce2fe",
+      "components": [
+        {
+          "type": "package",
+          "name": "ttf-ms-fonts",
+          "detect": "ttf-ms-fonts",
+          "tier": "core",
+          "interactive": false,
+          "summary": "Andale Mono, Arial, Arial Black, Comic Sans MS, Courier New, Georgia, Impact, Times New Roman, Trebuchet MS, Verdana, and Webdings."
+        },
+        {
+          "type": "package",
+          "name": "ttf-vista-fonts",
+          "detect": "ttf-vista-fonts",
+          "tier": "core",
+          "interactive": false,
+          "summary": "Calibri, Cambria, Cambria Math, Candara, Consolas, Constantia, Corbel, and Meiryo; requires a licensed Windows Vista or Microsoft Office 2007 or later installation."
+        }
+      ],
+      "tagline": "familiar typefaces for documents and design",
+      "sources": "AUR / Microsoft downloads",
+      "icon": "font_download",
+      "official": true,
+      "lastUpdated": "2026-10-25"
     }
   ]
 }
