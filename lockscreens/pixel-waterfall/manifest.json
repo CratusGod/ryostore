@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "pixel-waterfall",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/pixel-waterfall",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 12926,
-      "sha256": "c6951fa666502dfbbe47e04821dd3ae7c4c05550cfb309f7b485fa6b7db2fc01",
+      "size": 12983,
+      "sha256": "d20020efd787b0b9bb0600e75df73630eba24294c598bd4823e5594fb47600c7",
       "install": true
     },
     {

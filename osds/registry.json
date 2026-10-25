@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "osds": [
+    {
+      "id": "ito",
+      "name": "Ito",
+      "version": "1.0.0",
+      "path": "osds/ito",
+      "author": "Ryoku Team",
+      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/osds/ito",
+      "discord": "https://discord.gg/8KjBmUEyKA",
+      "summary": "A thread on the screen edge",
+      "description": "Volume, microphone and brightness rise as one slim thread against the right edge, the glyph above and the number below; past full volume the thread turns vermilion, and a keyboard layout change shows as a small tag at the top.",
+      "tags": [
+        "thread",
+        "edge",
+        "vertical"
+      ],
+      "accent": "#e1ded0",
+      "surface": "#191111",
+      "preview": "assets/preview.webp",
+      "screenshots": [],
+      "manifest": "manifest.json",
+      "manifestSha256": "596d632c0df05a09edc6d5a5440a43d32dae6f88b02323ce7a7ffa31274c06e4",
+      "license": "GPL-3.0-or-later",
+      "lastUpdated": "2026-10-21",
+      "official": true
+    }
+  ]
+}

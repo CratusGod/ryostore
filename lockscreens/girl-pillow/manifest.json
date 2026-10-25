@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "girl-pillow",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/girl-pillow",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 9237,
-      "sha256": "706d1c739de886b1935fd1a0415051f250fd94eea7f91bdc6c0bf777414cb23d",
+      "size": 9294,
+      "sha256": "2c21e88d0a7945b10db1aed4e0a3c851f05a5767fb13de45584c9058c766869e",
       "install": true
     },
     {

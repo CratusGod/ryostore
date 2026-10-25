@@ -32,7 +32,7 @@
     {
       "id": "bluetooth-profiles",
       "name": "Bluetooth Profiles",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "plugins/bluetooth-profiles",
       "author": "itsKontra <derntl@gmx.net>",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/bluetooth-profiles",
@@ -48,14 +48,14 @@
         "assets/preview-widget.png"
       ],
       "manifest": "product-manifest.json",
-      "manifestSha256": "92159a6ecc76ddb10a60be1beb6b44b7c0a9fcf6a4abcd76dccfa63db10ce56a",
+      "manifestSha256": "7e48f038729faab18aa76dd2ea6002fe8fc3913d4e9525b55ae387597a55997c",
       "official": false,
       "tagline": "Quickly view and switch Bluetooth audio profiles and codecs of connected devices.",
       "icon": "bluetooth",
       "hosts": [
         "topbarGlyph"
       ],
-      "lastUpdated": "2026-09-07"
+      "lastUpdated": "2026-10-19"
     },
     {
       "id": "coffee",
@@ -1866,6 +1866,111 @@
         "topbarGlyph"
       ],
       "lastUpdated": "2026-10-08"
+    },
+    {
+      "id": "dragshift",
+      "name": "DragShift",
+      "version": "0.4.0",
+      "path": "plugins/dragshift",
+      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/dragshift",
+      "author": "CratusGod <nghiabigg652@gmail.com>",
+      "summary": "DragShift on Wayland: start dragging files or folders, press Shift, and drop them on a liquid-glass radial menu to convert, compress, zip...",
+      "description": "DragShift on Wayland: start dragging files or folders, press Shift, and drop them on a liquid-glass radial menu to convert, compress, zip, unpack, OCR or edit them, with a PDF24-style PDF toolkit (organize, merge, cut, watermark, unlock, searchable). Results land next to the originals, which are never changed.",
+      "tags": [
+        "files",
+        "convert",
+        "images",
+        "pdf",
+        "compress",
+        "dragshift",
+        "folders",
+        "zip",
+        "video",
+        "ocr",
+        "pdf-tools",
+        "bar-widget"
+      ],
+      "accent": "#8f8378",
+      "surface": "#101010",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "d8f46ef6e1be18fd6ba7b2d58c5091143e48423bc8e0b19b84dc721cb176bb97",
+      "official": false,
+      "tagline": "DragShift on Wayland: start dragging files or folders, press Shift, and drop them on a liquid-glass radial menu to convert, compress, zip...",
+      "icon": "swap_horiz",
+      "hosts": [
+        "topbarGlyph"
+      ],
+      "lastUpdated": "2026-10-22"
+    },
+    {
+      "id": "kbd-layouts",
+      "name": "Keyboard Layouts",
+      "version": "0.1.0",
+      "path": "plugins/kbd-layouts",
+      "author": "Madhav Khosla <madhav.khoslaa@gmail.com>",
+      "summary": "A layout per keyboard: pick each USB keyboard's layout, and the laptop's, from the bar.",
+      "description": "A layout per keyboard: lists your USB keyboards and the laptop keyboard on the bar and lets you pick each one's layout (US on the external board, UK on the laptop), remembered across replugs and reloads.",
+      "tags": [
+        "keyboard",
+        "layout",
+        "input",
+        "xkb",
+        "bar-widget"
+      ],
+      "accent": "#8f8378",
+      "surface": "#101010",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-panel.png",
+        "assets/preview-panel-layouts.png",
+        "assets/preview-widget.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "93fcd959f8bf034efbbe552940b52ea356c51212c5a8d8c93817934ad37b30a3",
+      "official": false,
+      "tagline": "A layout per keyboard: pick each USB keyboard's layout, and the laptop's, from the bar.",
+      "icon": "keyboard",
+      "hosts": [
+        "topbarGlyph"
+      ],
+      "lastUpdated": "2026-10-21",
+      "windowManager": "hyprland",
+      "windowManagerReason": "Uses Hyprland's device API to assign layouts per keyboard.",
+      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/kbd-layouts"
+    },
+    {
+      "id": "window-stash",
+      "name": "Windows",
+      "version": "1.1.0",
+      "path": "plugins/window-stash",
+      "author": "root-sec <root-secyrity@users.noreply.github.com>",
+      "summary": "Lists the open windows and parks any of them out of sight, brings it back to its own workspace, or closes it.",
+      "description": "Lists the open windows and parks any of them out of sight, brings it back to its own workspace, or closes it.",
+      "tags": [
+        "bar-widget"
+      ],
+      "accent": "#8f8378",
+      "surface": "#101010",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png",
+        "assets/demo.gif"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "98d2c7a2c5d616062a61b89f1f9f65a66a5e56676470345ac824512c053eab5a",
+      "official": false,
+      "tagline": "Lists the open windows and parks any of them out of sight, brings it back to its own workspace, or closes it.",
+      "icon": "",
+      "hosts": [
+        "topbarGlyph"
+      ],
+      "lastUpdated": "2026-10-22",
+      "license": "MIT",
+      "upstream": "https://github.com/root-secyrity/window-stash"
     }
   ]
 }

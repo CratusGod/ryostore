@@ -6,6 +6,7 @@ import SddmComponents 2.0
 
 Rectangle {
     id: root
+    property date now: new Date()
     width: Screen.width
     height: Screen.height
     color: "#0a0c14"
@@ -398,7 +399,7 @@ Rectangle {
                     interval: 1000
                     running: true
                     repeat: true
-                    onTriggered: clockText.text = Qt.formatTime(new Date(), "HH:mm")
+                    onTriggered: { root.now = new Date(); clockText.text = Qt.formatTime(root.now, "HH:mm") }
                 }
             }
         }
@@ -421,7 +422,7 @@ Rectangle {
             Text {
                 id: dateText
                 anchors.centerIn: parent
-                text: Qt.formatDate(new Date(), "dddd, MMMM d").toUpperCase()
+                text: Qt.formatDate(root.now, "dddd, MMMM d").toUpperCase()
                 color: root.electricBlue
                 font.family: pf.name
                 font.pixelSize: 10 * s

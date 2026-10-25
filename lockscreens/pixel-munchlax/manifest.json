@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "pixel-munchlax",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/pixel-munchlax",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 10497,
-      "sha256": "c23dc64dfc530664e43f1671f7707b92a18b6619a6677d8f1e8305aea096d404",
+      "size": 10554,
+      "sha256": "329e1606ddd67797d719cec28220de72f8ce723aed087de1cd861d5d7d30ca2b",
       "install": true
     },
     {

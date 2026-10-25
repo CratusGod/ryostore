@@ -13,6 +13,7 @@ Item {
         z: -1
     }
     id: root
+    property date now: new Date()
     width: Screen.width; height: Screen.height
     readonly property real s: height / 1080
 
@@ -89,13 +90,13 @@ Item {
             Rectangle { width: 1.2 * s; height: 40 * s; color: root.gold; opacity: 0.8; anchors.verticalCenter: parent.verticalCenter }
             Column {
                 anchors.verticalCenter: parent.verticalCenter; spacing: 1 * s
-                Text { text: Qt.formatDate(new Date(), "dddd").toUpperCase(); font.family: titleFont.name; font.pixelSize: 14 * s; font.letterSpacing: 4 * s; color: root.gold }
-                Text { text: Qt.formatDate(new Date(), "MMM dd").toUpperCase(); font.family: titleFont.name; font.pixelSize: 10 * s; font.letterSpacing: 3 * s; color: root.fg; opacity: 0.6 }
+                Text { text: Qt.formatDate(root.now, "dddd").toUpperCase(); font.family: titleFont.name; font.pixelSize: 14 * s; font.letterSpacing: 4 * s; color: root.gold }
+                Text { text: Qt.formatDate(root.now, "MMM dd").toUpperCase(); font.family: titleFont.name; font.pixelSize: 10 * s; font.letterSpacing: 3 * s; color: root.fg; opacity: 0.6 }
             }
         }
         Timer { 
             interval: 1000; running: true; repeat: true
-            onTriggered: { hhLab.text = Qt.formatTime(new Date(), "HH:mm") }
+            onTriggered: { root.now = new Date(); hhLab.text = Qt.formatTime(root.now, "HH:mm") }
         }
     }
 

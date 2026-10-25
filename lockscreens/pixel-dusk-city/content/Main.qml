@@ -12,6 +12,7 @@ Rectangle {
     }
     readonly property real s: Screen.height / 768
     id: root
+    property date now: new Date()
     width: Screen.width
     height: Screen.height
     color: "#0c0a08"
@@ -118,7 +119,7 @@ Rectangle {
             text: Qt.formatTime(new Date(), "HH:mm")
             color: root.textWhite
             font.family: pfBold.name; font.pixelSize: 78 * s
-            Timer { interval: 1000; running: true; repeat: true; onTriggered: clockText.text = Qt.formatTime(new Date(), "HH:mm") }
+            Timer { interval: 1000; running: true; repeat: true; onTriggered: { root.now = new Date(); clockText.text = Qt.formatTime(root.now, "HH:mm") } }
         }
         Row {
             spacing: 8 * s
@@ -131,7 +132,7 @@ Rectangle {
                 }
             }
             Text {
-                text: Qt.formatDate(new Date(), "ddd, MMM d").toUpperCase()
+                text: Qt.formatDate(root.now, "ddd, MMM d").toUpperCase()
                 color: root.amberSoft; font.family: pfMed.name
                 font.pixelSize: 11 * s; font.letterSpacing: 3 * s
                 anchors.verticalCenter: parent.verticalCenter

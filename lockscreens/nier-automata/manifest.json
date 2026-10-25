@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "nier-automata",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/nier-automata",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 55726,
-      "sha256": "68459f04f2b5cfea7e5fc7a03a16ca3c96074d7718a654c2e7de6034491253db",
+      "size": 55669,
+      "sha256": "be1b9ad0db480dee51997f1cd4a9996edc94aca7417021b046589167c5457be0",
       "install": true
     },
     {

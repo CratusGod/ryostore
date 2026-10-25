@@ -4,7 +4,7 @@
     {
       "id": "clockwork-tape",
       "name": "Tape",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/clockwork-tape",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -20,12 +20,12 @@
       "preview": "assets/preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "98939c7ed9146e914d464964122ed3e84a7b881c493a56145248de654ef5dca6"
+      "manifestSha256": "11a60cd3d278410f5190ccb0f2c32aea4c8a25e52a0b734b87f4434dd0bcdec8"
     },
     {
       "id": "dog-samurai",
       "name": "Dog Samurai",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/dog-samurai",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -43,12 +43,12 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "42637d5f31ab35a2fe99a70b09eb140f914e1549f5972073f643be79bb28a5da"
+      "manifestSha256": "ba957bc1ae884d5df67ab39ba9ab21850af5bfc9faec50014c06a4aefe571470"
     },
     {
       "id": "enfield",
       "name": "Enfield",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/enfield",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -66,12 +66,12 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "105ee442ff878c54c1ccf42de8aa7c3e98795c61d6ff4eec42ca265ecf3b79d1"
+      "manifestSha256": "42d2cd29b6cdd2d356ff2c25217be87268b68958a260a7e3d5a670fc717d1287"
     },
     {
       "id": "field",
       "name": "Field",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/field",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -90,12 +90,12 @@
         "assets/shot-1.png"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "8ad65c07fa626aca871001c8d31948ad5afdf829e33a4771099e6d15005e1571"
+      "manifestSha256": "05b8731d4e438f9ba1246ecada52d87f01bb3efca5ff24063db2bba91a1e1bad"
     },
     {
       "id": "forest",
       "name": "Forest",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/forest",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -113,7 +113,7 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "9085a9997f3392de45de7af7bbd3366a1940e3aff57feb0410674c060bf83b82"
+      "manifestSha256": "d57a82bfb8b3b27df93e93e9ae0b90bcffebb1eebb5be83705dbe7a14ddc8b03"
     },
     {
       "id": "genshin",
@@ -141,7 +141,7 @@
     {
       "id": "girl-coffee",
       "name": "Coffee Break",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/girl-coffee",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -160,12 +160,12 @@
         "assets/shot-1.png"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "ebbfd920bc39f03a617c23ed8256dd122a9ca24b56d9f3e3e2a59fdaa2abea8c"
+      "manifestSha256": "f55205b272b11cccf29bc9840f18bfdd81268d72ea1bcfca6d78e2ed6b925660"
     },
     {
       "id": "girl-pillow",
       "name": "Lazy Sunday",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/girl-pillow",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -184,12 +184,12 @@
         "assets/shot-1.png"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "4891672453083058eddd46d78050e69bea1de6bc5bc47b68ed200e46ba034a34"
+      "manifestSha256": "1b0a2f1f99ad1bf0f0a0135b2e5363212017f27543ba30a3cbce83956abfc402"
     },
     {
       "id": "last-of-us",
       "name": "The Last of Us",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/last-of-us",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -207,12 +207,12 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "c7fd598a136eb645002b43e3fc6827f870e44cd56344aaae1e88d1cb3272aec3"
+      "manifestSha256": "cb8e5fd420c113f5407144f3d2304b5541978105da25fd05ae91c484651ad242"
     },
     {
       "id": "man-bicycle",
       "name": "Evening Ride",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/man-bicycle",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -231,12 +231,12 @@
         "assets/shot-1.png"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "b2d51d79ccc58dc869b5479d11e52e781fb4e142110cdfa353ae3ed472b9886f"
+      "manifestSha256": "08fe1c4fc9c646904ea57778974025266f3b7d5eccd5e723953956b727549ed8"
     },
     {
       "id": "material-you",
       "name": "Material You",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/material-you",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -255,12 +255,12 @@
         "assets/shot-1.png"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "4b07160bea63c9fc4fff381146d7135c99537329d4f9490cbfc5f29bdd22c3ff"
+      "manifestSha256": "c0356b4a2419a42a9f7752551ed97991aca578576486598ba798dc219d0c09fc"
     },
     {
       "id": "material-you-dark",
       "name": "Material You Dark",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/material-you-dark",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -279,12 +279,12 @@
         "assets/shot-1.png"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "47b6830eb35aaed876b89cc419f09591a5132ea50cd893e41e41342f72120c4e"
+      "manifestSha256": "d881d8b36b6c7a2236a61d4eec4f5928fa1771bba623e3500c119525b017f710"
     },
     {
       "id": "minecraft",
       "name": "Minecraft Menu",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/minecraft",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -303,12 +303,12 @@
         "assets/shot-1.png"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "c836d3168d2f70fe0e6c96b91b29ccffd302ccfee87e43ffe1e7b8b39816262e"
+      "manifestSha256": "7e2e756ca2b48688892e93b41b9e51678a0013e0d55caff909a9eff5e6993472"
     },
     {
       "id": "nier-automata",
       "name": "NieR: Automata",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/nier-automata",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -327,12 +327,12 @@
         "assets/shot-1.png"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "d8b4363cd83cc9c3c1032977a1afad19523122626ee5a69308053248480861cb"
+      "manifestSha256": "08045d52f8dad638f1e6fe16264d0b7d6777345bab42b03086e88450d9dfb56e"
     },
     {
       "id": "ninja-gaiden",
       "name": "Ninja Gaiden",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/ninja-gaiden",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -351,12 +351,12 @@
         "assets/shot-1.png"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "9b454f35b5965baeedaedf333120a9df57009d87c28b4acc3bafef8267323e8c"
+      "manifestSha256": "ffd96cc2705ca8f549d6ab5a39a9b0e688f5e7ce431babd3cbe3a2b17177c7e7"
     },
     {
       "id": "nothing",
       "name": "Nothing OS",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/nothing",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -374,7 +374,7 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "4a6a8df6cab5dc7ed2ecfb1802991a560d7c90b8c81a0cf26037c11860a0a6c6"
+      "manifestSha256": "c59741f9666945fa068283813b76705b21280d2f5d74c302f79731653fcfb7c0"
     },
     {
       "id": "osu",
@@ -402,7 +402,7 @@
     {
       "id": "osumania",
       "name": "osu!mania",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/osumania",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -420,12 +420,12 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "282612b64e07ac4e8a8cae2ec037d171899be4fdda879f2e041c9d88780fe892"
+      "manifestSha256": "58e08d256426ff0722cf5f3a565c3e6ab5544accf46c11635b1e50b599312807"
     },
     {
       "id": "pixel-coffee",
       "name": "Pixel Coffee",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/pixel-coffee",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -443,12 +443,12 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "571263df0ac05bb6ed253bee0e74619323a86f725c0b723eafba60e4f31bdcc2"
+      "manifestSha256": "10ac931fe1f74386399c80f94048b835974372fadc81194f97aed3919caef16a"
     },
     {
       "id": "pixel-cyberpunk",
       "name": "Pixel Cyberpunk",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/pixel-cyberpunk",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -466,12 +466,12 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "57f8689f9fbfcf21ab32b0efb6690a8fd350e2f65fc3b805933d92aa2d70a868"
+      "manifestSha256": "eff36e820cb59fa9c40bb55b77760c66c5c8c688f0ec652997405510e1760c42"
     },
     {
       "id": "pixel-dusk-city",
       "name": "Pixel Dusk City",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/pixel-dusk-city",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -489,12 +489,12 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "880bd9981e887ba941e8b18a9515ee68064e3909e1f14243c2f55aab53b40458"
+      "manifestSha256": "cc9aec4398157c0f6dcce6f4daa97e8affe424167c8072505794cde7e92e8f8e"
     },
     {
       "id": "pixel-emerald",
       "name": "Pixel Emerald",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/pixel-emerald",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -512,12 +512,12 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "9c429e8468b99026ef8512f8680a47c02109b3ac26eb4eaa34ae7c784955237d"
+      "manifestSha256": "b3c2d5c919994db4d111aa05e76ea715f65f081ba3f7390ad9ac634af2d978c6"
     },
     {
       "id": "pixel-hollowknight",
       "name": "Pixel Hollow Knight",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/pixel-hollowknight",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -535,12 +535,12 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "74332121ff653b9f94c6ba155af9bf868c4f75b20bb307166a722a4e888d6248"
+      "manifestSha256": "c6efbe7d6137eba34d0ee9e0ae53829ee7d6200088add32ea5d2bcac9b827af6"
     },
     {
       "id": "pixel-munchlax",
       "name": "Pixel Munchlax",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/pixel-munchlax",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -558,12 +558,12 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "dc04c9cc0c2000c0e27afecc162be2d82c3f6bd892d808417cada4bd704858ca"
+      "manifestSha256": "805c22b85dd622b8d040e820274d75bdb4b3bdd892813f5663f4e7736ec201fc"
     },
     {
       "id": "pixel-night-city",
       "name": "Pixel Night City",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/pixel-night-city",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -581,12 +581,12 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "c5c981db2fb84a9d92d535ca254980264dcb2ecba44eaa3521782e6c975a2a44"
+      "manifestSha256": "fb0c0c9fcf0e541ca7bdc8f3231fe041113cbcf0b853ff563f7b4d8cccda728a"
     },
     {
       "id": "pixel-rainyroom",
       "name": "Pixel Rainy Room",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/pixel-rainyroom",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -604,12 +604,12 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "b30602a2baf63a178a99a709f33f83cf966e3d26580d4e02dbbea3e055cdcc8e"
+      "manifestSha256": "796f5b8abf82a53166cac4f89162d356938ceea20b64b5db3aaf6dd32fcab268"
     },
     {
       "id": "pixel-sakura",
       "name": "Pixel Sakura",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/pixel-sakura",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -627,12 +627,12 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "b25a6e336bac2a728ddcad56eca8ad750dc6a10082ed774dae2df89bafd27550"
+      "manifestSha256": "efcb1260e4e98ef97fddd97024de504e66da6c27401932476276afc1da36e1c7"
     },
     {
       "id": "pixel-skyscrapers",
       "name": "Pixel Skyscrapers",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/pixel-skyscrapers",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -650,12 +650,12 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "f5a9d500741283a2647bf17f1a23d25def198499cee4108b09da608e762ff22c"
+      "manifestSha256": "4e0b5bc1eafb4c62ff0bcc002d8271ad2248d819a308c3a5815652b759bf3985"
     },
     {
       "id": "pixel-waterfall",
       "name": "Pixel Waterfall",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/pixel-waterfall",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -673,12 +673,12 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "b76cc5f8938072a53ac597c7f01d26bb4f8bee2e70db8446bd45d575b086e336"
+      "manifestSha256": "56892aed6ec940d42f650fa922cf03e791b1dde6a329c898373dbc1e0022d72f"
     },
     {
       "id": "r1999-1",
       "name": "Reverse: 1999",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/r1999-1",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -696,12 +696,12 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "15a9a03b8f364f2b803f5abf9660aa0572e1c5557c7a830fc05802402b387522"
+      "manifestSha256": "4475b01a6aff68d111a37facbff83e78410c36fcb666b37712f46ba5df916620"
     },
     {
       "id": "r1999-2",
       "name": "Reverse: 1999",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/r1999-2",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -719,7 +719,7 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "1d3fd7035680ec0f3adccc4f88c318a114af0fbcb0678f641a8a50b0ed72b97f"
+      "manifestSha256": "c14cf827cae63e5a7d6aa6ad69bcdadefe14ddd3b63ceba0e2e0a36e0c59b7a8"
     },
     {
       "id": "star-rail",
@@ -747,7 +747,7 @@
     {
       "id": "sword",
       "name": "Sword",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/sword",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -765,7 +765,7 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "e17837b1f5633b5b31b989fa62782c65cd269ae584dc169873d5e549d563a662"
+      "manifestSha256": "2df8248c4f52e49ed6e1ee4b4084771963d0777f03ee364d5acf65c56239eae5"
     },
     {
       "id": "terraria",
@@ -817,7 +817,7 @@
     {
       "id": "winter",
       "name": "Winter",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/winter",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -835,12 +835,12 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "664b5c643022c53bb826872d1581b19dcbb8f02be13372a1b8a81c007d8df77f"
+      "manifestSha256": "81814180afe714ef766c1f83b377fb50990b424ff5006afc49f09fc7148b53b7"
     },
     {
       "id": "women-umbrella",
       "name": "Rainy Walk",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "lockscreens/women-umbrella",
       "author": "Darkkal44",
       "upstream": "https://github.com/Darkkal44/qylock",
@@ -859,12 +859,12 @@
         "assets/shot-1.png"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "74a856e540af412b71269d41aef21a2d0fc29dcda6658c60f3c195a680215de3"
+      "manifestSha256": "65e313d43f563d9adefd93a35270527e1ef63bc041885680d8482a464a83e43d"
     },
     {
       "id": "world-machine",
       "name": "World Machine",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "path": "lockscreens/world-machine",
       "author": "CratusGod",
       "upstream": "https://github.com/CratusGod/Oneshot-themed-Ryoku",
@@ -883,9 +883,9 @@
         "assets/preview.gif"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "bcb8397c0c71400fada6957b75d6d66ac03aaeb4aaf41d30e88bb9cf5acdb5c4",
+      "manifestSha256": "9b8f74183de4546b61c8b3dcf0726757494ba39bc00bb42b49a197cbfc0f7fb9",
       "official": false,
-      "lastUpdated": "2026-09-22"
+      "lastUpdated": "2026-10-21"
     },
     {
       "id": "wuwa",

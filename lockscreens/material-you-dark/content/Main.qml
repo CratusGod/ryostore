@@ -5,6 +5,7 @@ import SddmComponents 2.0
 
 Rectangle {
     id: root
+    property date now: new Date()
     width: Screen.width
     height: Screen.height
     color: "#131218"
@@ -134,9 +135,9 @@ Rectangle {
                 repeat: true
                 onTriggered: {
                     let d = new Date();
+                    root.now = d;
                     hText.text = Qt.formatTime(d, "hh");
                     mText.text = Qt.formatTime(d, "mm");
-                    dateChipText.text = Qt.formatDate(d, "dddd, MMM d").toUpperCase();
                 }
             }
 
@@ -173,7 +174,7 @@ Rectangle {
                 Text {
                     id: dateChipText
                     anchors.centerIn: parent
-                    text: Qt.formatDate(new Date(), "dddd, MMM d").toUpperCase()
+                    text: Qt.formatDate(root.now, "dddd, MMM d").toUpperCase()
                     font.family: root.sansFont
                     font.pixelSize: 11 * s
                     font.bold: true

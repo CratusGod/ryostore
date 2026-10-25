@@ -230,10 +230,13 @@ Item {
         }
     }
 
+    // pactl subscribe never exits on its own, so a shell that is killed hard
+    // would orphan it; the parent-death signal ends it with the shell.
     Process {
         id: subscribeProc
-        command: ["pactl", "subscribe"]
+        command: ["setpriv", "--pdeathsig", "TERM", "--", "pactl", "subscribe"]
         running: true
+        onExited: resubscribeTimer.restart()
         stdout: SplitParser {
             onRead: function(line) {
                 var l = String(line || "");
@@ -242,6 +245,14 @@ Item {
                 }
             }
         }
+    }
+
+    // pactl exits when the PulseAudio server restarts; subscribe again.
+    Timer {
+        id: resubscribeTimer
+        interval: 2000
+        repeat: false
+        onTriggered: subscribeProc.running = true
     }
 
     Timer {

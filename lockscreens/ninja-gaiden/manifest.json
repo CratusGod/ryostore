@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "ninja-gaiden",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/ninja-gaiden",
   "files": [
     {
@@ -41,8 +41,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 24750,
-      "sha256": "68489bb2847011d01c7c301ffc6ccf629d41b5a67cd37e9933c67a89cb7665e1",
+      "size": 24693,
+      "sha256": "2d5cd1170ef29d00b9c52a3b5121f29707fbdb6655892f6a3c816c322eb4e5d0",
       "install": true
     },
     {

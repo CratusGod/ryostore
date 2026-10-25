@@ -1,0 +1,7 @@
+module tansu.services
+AppSource 1.0 AppSource.qml
+ExtrasSource 1.0 ExtrasSource.qml
+singleton SettingsService 1.0 SettingsService.qml
+singleton ShellScale 1.0 ShellScale.qml
+singleton ThemeService 1.0 ThemeService.qml
+singleton WallpaperService 1.0 WallpaperService.qml

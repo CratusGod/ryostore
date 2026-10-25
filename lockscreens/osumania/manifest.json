@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "osumania",
   "category": "lockscreens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "qylock/themes/osumania",
   "files": [
     {
@@ -33,8 +33,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 64660,
-      "sha256": "32fffbbf9cffc6246643c211f4353841c3e17914741991e4a4d50e2025d5bb58",
+      "size": 64717,
+      "sha256": "a7be0db853429f8fe0a5c06e4fd372cfc0981cffd9ab787a7b90d1d93ee7245d",
       "install": true
     },
     {
