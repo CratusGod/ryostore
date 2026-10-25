@@ -70,11 +70,27 @@
       "install": true
     },
     {
+      "source": "assets/favorites.webp",
+      "destination": "assets/favorites.webp",
+      "sha256": "fc97a328c4e27a9bedb760b9517cc4ee5ffe17e0077452d2ea4033a8e45cbcfc",
+      "mode": "0644",
+      "size": 60872,
+      "install": false
+    },
+    {
       "source": "assets/preview.webp",
       "destination": "assets/preview.webp",
       "sha256": "f0d801fa8ac91e6afb33c5ae9fe326f4fc15b33bbddeab5ce1e85c67267da23f",
       "mode": "0644",
       "size": 79746,
+      "install": false
+    },
+    {
+      "source": "assets/search.webp",
+      "destination": "assets/search.webp",
+      "sha256": "1ea68e443f13fbb605ab39c2423c027a3670630a721096a0a90817fa3d50b8f0",
+      "mode": "0644",
+      "size": 32852,
       "install": false
     },
     {

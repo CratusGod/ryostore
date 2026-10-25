@@ -20,10 +20,12 @@
       "surface": "#191111",
       "preview": "assets/preview.webp",
       "screenshots": [
-        "assets/sections.webp"
+        "assets/sections.webp",
+        "assets/favorites.webp",
+        "assets/search.webp"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "c33be91335efea745578e705c8edb67af56e44d1a47575946a16bdb536c48d75",
+      "manifestSha256": "f81f57a49a42febedc19f1910b7361c9948a3a9088f8393791c5446a7572b493",
       "lastUpdated": "2026-10-25",
       "official": true,
       "license": "GPL-3.0-or-later"
