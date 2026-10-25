@@ -279,3 +279,8 @@ keeping of past lines, and the strip that ghosted them) and
 the Lucid pills row. The Lucid portal remains — it is how
 suggestions are picked; the pills were a second, lesser
 mouth for the same feed.
+
+RYOSTORE REVIEW: The compass window now uses Ryoku's real
+Rashin Ask session instead of the v2.2.0 resting replies.
+Launcher subprocesses also use Ryoku's clean spawn environment,
+and the compass is built only when opened.

@@ -39,20 +39,20 @@ QtObject {
         // takesArg:false segments stand alone.
         // ── SUN — doing: the bench of making and work ───────────
         { id: "open",     house: "sun", icon: "◈",  label: "open",  color: TW.SiMOrchestrator.styleAccents["sun"], action: "open",  cmd: "@open",    desc: "open an app by name",            terminal: true },
-        { id: "edit",     house: "sun", icon: "✎",  label: "edit",  color: TW.SiMOrchestrator.styleAccents["sun"], cmd: "xdg-open {arg}", desc: "open a file or folder",     terminal: true },
-        { id: "term",     house: "sun", icon: "❯",  label: "term",  color: TW.SiMOrchestrator.styleAccents["sun"], cmd: "ghostty", takesArg: false, desc: "a fresh terminal",  terminal: true },
+        { id: "edit",     house: "sun", icon: "✎",  label: "edit",  color: TW.SiMOrchestrator.styleAccents["sun"], cmd: "@edit", desc: "open a file or folder",     terminal: true },
+        { id: "term",     house: "sun", icon: "❯",  label: "term",  color: TW.SiMOrchestrator.styleAccents["sun"], cmd: "ryoku-app terminal", takesArg: false, desc: "a fresh terminal", terminal: true },
         { id: "find",     house: "sun", icon: "⊕",  label: "find",  color: TW.SiMOrchestrator.styleAccents["sun"], action: "files", cmd: "@files",   desc: "search the filesystem",        terminal: true },
         // ── MOON — living: the daily round, the house's levers ──
         { id: "ask",      house: "moon", icon: "羅", label: "ask",   color: TW.SiMOrchestrator.styleAccents["moon"], action: "rashin", cmd: "@rashin", desc: "ask Rashin — the line rides to the compass", terminal: true },
-        { id: "note",     house: "moon", icon: "✐",  label: "note",  color: TW.SiMOrchestrator.styleAccents["moon"], cmd: 'mkdir -p ~/Notes && printf "[%s] %s\n" "$(date +%FT%T)" "{arg}" >> ~/Notes/inbox.md', desc: "keep a note in ~/Notes/inbox.md", terminal: true },
-        { id: "timer",    house: "moon", icon: "◷",  label: "timer", color: TW.SiMOrchestrator.styleAccents["moon"], cmd: 'sleep {arg} && notify-send Mandara "time — your timer is done"', desc: "timer <25m> — she calls when it ends", terminal: true },
-        { id: "clip",     house: "moon", icon: "⧉",  label: "clip",  color: TW.SiMOrchestrator.styleAccents["moon"], cmd: 'printf %s "{arg}" | wl-copy', desc: "copy the line to the clipboard", terminal: true },
+        { id: "note",     house: "moon", icon: "✐",  label: "note",  color: TW.SiMOrchestrator.styleAccents["moon"], cmd: "@note", desc: "keep a note in ~/Notes/inbox.md", terminal: true },
+        { id: "timer",    house: "moon", icon: "◷",  label: "timer", color: TW.SiMOrchestrator.styleAccents["moon"], cmd: "@timer", desc: "timer <25m> — she calls when it ends", terminal: true },
+        { id: "clip",     house: "moon", icon: "⧉",  label: "clip",  color: TW.SiMOrchestrator.styleAccents["moon"], cmd: "@clip", desc: "copy the line to the clipboard", terminal: true },
         { id: "lock",     house: "moon", icon: "◐",  label: "lock",  color: TW.SiMOrchestrator.styleAccents["moon"], cmd: "@session:lock", takesArg: false, desc: "lock the session", terminal: true },
         { id: "sleep",    house: "moon", icon: "◌",  label: "sleep", color: TW.SiMOrchestrator.styleAccents["moon"], cmd: "@session:suspend", takesArg: false, desc: "suspend the machine", terminal: true },
-        { id: "vol",      house: "moon", icon: "♪",  label: "vol",   color: TW.SiMOrchestrator.styleAccents["moon"], cmd: "wpctl set-volume @DEFAULT_AUDIO_SINK@ {arg}%", desc: "volume <0-100>", terminal: true },
+        { id: "vol",      house: "moon", icon: "♪",  label: "vol",   color: TW.SiMOrchestrator.styleAccents["moon"], cmd: "@volume", desc: "volume <0-100>", terminal: true },
         { id: "mute",     house: "moon", icon: "∅",  label: "mute",  color: TW.SiMOrchestrator.styleAccents["moon"], cmd: "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle", takesArg: false, desc: "mute / unmute", terminal: true },
-        { id: "wifi",     house: "moon", icon: "≋",  label: "wifi",  color: TW.SiMOrchestrator.styleAccents["moon"], cmd: "ghostty -e nmtui", takesArg: false, desc: "the network console", terminal: true },
-        { id: "bright",   house: "moon", icon: "☼",  label: "bright", color: TW.SiMOrchestrator.styleAccents["moon"], cmd: "brightnessctl set {arg}%", desc: "brightness <0-100>", terminal: true },
+        { id: "wifi",     house: "moon", icon: "≋",  label: "wifi",  color: TW.SiMOrchestrator.styleAccents["moon"], cmd: "ryoku-app terminal -- nmtui", takesArg: false, desc: "the network console", terminal: true },
+        { id: "bright",   house: "moon", icon: "☼",  label: "bright", color: TW.SiMOrchestrator.styleAccents["moon"], cmd: "@brightness", desc: "brightness <0-100>", terminal: true },
         // ── CELESTIAL — playing: delight and capture ────────────
         { id: "play",     house: "celestial", icon: "▶",  label: "play",  color: TW.SiMOrchestrator.styleAccents["celestial"], cmd: "playerctl play",     takesArg: false, desc: "play the media",        terminal: true },
         { id: "pause",    house: "celestial", icon: "‖",  label: "pause", color: TW.SiMOrchestrator.styleAccents["celestial"], cmd: "playerctl pause",    takesArg: false, desc: "pause the media",       terminal: true },

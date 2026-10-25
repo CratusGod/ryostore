@@ -3,6 +3,7 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import Ryoku.Ui.Singletons
 
 // SiMOrchestrator — the name the face already speaks to, at rest.
 //
@@ -100,7 +101,7 @@ Singleton {
     Timer {
         interval: 600
         repeat: true
-        running: true
+        running: root.apmHeat > 0
         onTriggered: root.apmHeat = Math.max(0, root.apmHeat - 3)
     }
 
@@ -173,6 +174,6 @@ Singleton {
     function runNativeCommand(cmd) {
         if (!cmd)
             return
-        Quickshell.execDetached(["sh", "-c", cmd])
+        Spawn.run(["sh", "-c", cmd])
     }
 }

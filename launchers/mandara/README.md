@@ -41,10 +41,10 @@ placeholder, and persists between summons.
 - **FILESYSTEM** — a path-shaped query (`/…`, or `files …`)
   finds under your home. Enter opens. Under Sun, any line
   searches files beside apps.
-- **RASHIN** — a line that is natural language is not a
-  command, and she knows it: it becomes *Ask Rashin*, and
-  Enter opens Rashin, her compass window — or open the
-  door directly with `ask …` / `rashin …`.
+- **RASHIN** — a line that is natural language becomes
+  *Ask Rashin*. Enter opens the compass window and asks
+  Ryoku's real Rashin service, using its configured route
+  and shared Ask history.
 - **COMMAND** — a line nothing answers to becomes a command
   row. Enter runs it in the shell. Type `abyss` and she
   becomes a shell passthrough until you say it again.
@@ -59,10 +59,10 @@ she raises her badge and stops the execute until the line
 is fixed. A target in the line raises the holo ring, and
 TAB on it blooms the radial diamond.
 
-No core, no account, no network — she resolves locally, in
-the open. Her memory lives in her own state files
-(`~/.local/state/ryoku/mandara-usage.json` for usage,
-`mandara-drive.json` for the breath she sleeps in).
+Application, file, and command resolution stays local.
+Questions use Ryoku's configured Rashin service. Mandara's
+own memory lives in `~/.local/state/ryoku/mandara-usage.json`
+and `mandara-drive.json`.
 
 Install (RyoStore): the `mandara` app launcher, then pick
 her in Settings -> App Launcher. Super+Space summons her

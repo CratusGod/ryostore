@@ -432,6 +432,7 @@ FocusScope {
         translatedIntent: root.translatedIntent
         apmHeat:    TW.SiMOrchestrator.apmHeat
         ghostSource: _ctrl.ghostCompletion
+        radialAvailable: root.detectedIp !== ""
         
         onCloseRequested: root.closeRequested()
 

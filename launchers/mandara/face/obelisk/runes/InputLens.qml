@@ -45,6 +45,7 @@ Rectangle {
     property color  morphColor:       "#00B4D8"
     property real   morphGlow:        0.18
     property string portalHint:       ""   // "/" or "@" for single-character portal hints
+    property bool radialAvailable: false
     property string obeliskMode:      "cognitive"
     property string modeBadge:        "[COGNITIVE]"
     property string thinkingPhase:    "recall" // "recall"|"reason"|"respond"
@@ -834,6 +835,10 @@ Rectangle {
                     }
                     if (event.key === Qt.Key_Tab) {
                         event.accepted = true
+                        if (root.radialAvailable) {
+                            root.tabPressed()
+                            return
+                        }
                         if (root.hasPendingRune) {
                             root.lockPendingRune()
                             return

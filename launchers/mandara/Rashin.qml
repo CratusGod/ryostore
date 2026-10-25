@@ -1,21 +1,11 @@
-/* Rashin.qml — 羅針, the compass window.
- *
- * The local mind's main window (his word, 2026-10-25): what
- * Insei was to the shell, Rashin is to the Ryoku house — a
- * window of her own, not a layer in someone else's. Mandara
- * recognizes natural language, redirects it here by signal,
- * and retires; this window receives the line as its seed.
- *
- * The mind behind the window is still being seated — she
- * answers with presence, honestly labelled resting, and
- * every word is kept in the house's own state file. Nothing
- * leaves the machine.
- */
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
+import Ryoku.Ui.Singletons
 import "face/components" as Components
 import "face/tw" as TW
 
@@ -27,77 +17,91 @@ FloatingWindow {
     implicitHeight: 560
     color: "transparent"
 
-    property var messages: []
-    property bool _loaded: false
-    property int _replyCount: 0
-
-    readonly property var _restingReplies: [
-        "Heard. This window is my seat now — the local mind behind it is still being seated, so today I answer with presence: your words are kept here, in this house, and nowhere else.",
-        "Kept. When the mind wakes in this window, this thread is the first thing it will read.",
-        "I am listening. Rashin is the compass — bring me what is not a command, and I will hold it with you."
-    ]
-
-    FileView {
-        id: store
-        path: (Quickshell.env("XDG_STATE_HOME") || (Quickshell.env("HOME") + "/.local/state")) + "/ryoku/rashin-chat.json"
-        blockLoading: true
-        atomicWrites: true
-        printErrors: false
+    property bool _opened: false
+    signal dismissed()
+    onVisibleChanged: if (!visible && _opened) {
+        _opened = false
+        if (win.busy)
+            Spawn.run(["ryoku-rashin", "ask", "--cancel"])
+        dismissed()
     }
 
-    Component.onCompleted: {
-        try {
-            var raw = store.text()
-            var parsed = raw && raw.length ? JSON.parse(raw) : []
-            win.messages = (parsed instanceof Array) ? parsed : []
-        } catch (e) {
-            win.messages = []
+    property string askedQuestion: ""
+    property string working: ""
+    property string answerText: ""
+    property string errorText: ""
+    property bool busy: false
+
+    readonly property var messages: {
+        var rows = []
+        if (win.askedQuestion !== "")
+            rows.push({ "who": "user", "text": win.askedQuestion })
+        if (win.busy)
+            rows.push({ "who": "rashin", "text": win.working || "Thinking…" })
+        else if (win.errorText !== "")
+            rows.push({ "who": "rashin", "text": win.errorText })
+        else if (win.answerText !== "")
+            rows.push({ "who": "rashin", "text": win.answerText })
+        return rows
+    }
+
+    function ask(value) {
+        var next = String(value || "").trim()
+        if (next === "" || win.busy) return
+        win.askedQuestion = next
+        win.working = "Waking the needle"
+        win.answerText = ""
+        win.errorText = ""
+        win.busy = true
+        askProc.command = ["sh", "-c", "exec ryoku-rashin ask \"$1\"", "sh", next]
+        askProc.running = true
+    }
+
+    Process {
+        id: askProc
+        environment: Spawn.env
+        stdout: SplitParser {
+            onRead: line => {
+                var marker = String(line)
+                if (marker.indexOf("@working ") === 0) {
+                    win.working = marker.slice(9)
+                } else if (marker.indexOf("@answer ") === 0) {
+                    try {
+                        const answer = JSON.parse(marker.slice(8))
+                        win.answerText = String(answer.text || "")
+                        win.busy = false
+                        Qt.callLater(function() { _thread.positionViewAtEnd() })
+                    } catch (error) {
+                        win.errorText = "Unreadable answer"
+                        win.busy = false
+                    }
+                } else if (marker.indexOf("@error ") === 0) {
+                    win.errorText = marker.slice(7)
+                    win.busy = false
+                }
+            }
         }
-        win._loaded = true
-    }
-
-    function _persist() {
-        if (!win._loaded) return
-        store.setText(JSON.stringify(win.messages.slice(-100)))
-    }
-
-    function _say(who, text) {
-        if (!text) return
-        win.messages = win.messages.concat([{ "who": who, "text": text }])
-        win._persist()
-        Qt.callLater(function() { _thread.positionViewAtEnd() })
-    }
-
-    function _replySoon() { _replyTimer.restart() }
-
-    Timer {
-        id: _replyTimer
-        interval: 700
-        repeat: false
-        onTriggered: {
-            win._say("rashin", win._restingReplies[win._replyCount % win._restingReplies.length])
-            win._replyCount++
+        onExited: code => {
+            if (!win.busy) return
+            win.errorText = code === 127
+                ? "Rashin is off. Switch it on in Ryoku Hub."
+                : code === 0 ? "No answer" : "Ask failed"
+            win.busy = false
         }
     }
 
-    // The redirect lands here: Mandara retires, Rashin opens,
-    // the line arrives as the first word spoken.
     function receive(seed) {
+        win._opened = true
         win.visible = true
         Qt.callLater(function() { _input.forceActiveFocus() })
-        var s = (seed || "").trim()
-        if (s.length > 0) {
-            win._say("user", s)
-            win._replySoon()
-        }
+        win.ask(seed)
     }
 
     function _send() {
         var t = _input.text.trim()
-        if (t.length === 0) return
+        if (t.length === 0 || win.busy) return
         _input.text = ""
-        win._say("user", t)
-        win._replySoon()
+        win.ask(t)
     }
 
     Rectangle {
@@ -137,7 +141,7 @@ FloatingWindow {
                         color: Qt.rgba(0.93, 0.95, 1.0, 0.95)
                     }
                     Text {
-                        text: "羅針 · THE COMPASS — INSEI'S WINDOW"
+                        text: "羅針 · THE COMPASS — RYOKU ASK"
                         font.pixelSize: 9
                         font.letterSpacing: 2
                         color: Qt.rgba(1, 1, 1, 0.38)
@@ -146,16 +150,20 @@ FloatingWindow {
                 Item { Layout.fillWidth: true }
                 Rectangle {
                     width: 6; height: 6; radius: 3
-                    color: "#FFB300"
+                    color: win.busy ? "#FFB300"
+                        : win.errorText !== "" ? "#f43f5e" : "#10b981"
                     anchors.verticalCenter: parent.verticalCenter
                     SequentialAnimation on opacity {
                         loops: Animation.Infinite
-                        NumberAnimation { from: 1.0; to: 0.35; duration: 1400 }
-                        NumberAnimation { from: 0.35; to: 1.0; duration: 1400 }
+                        running: win.busy
+                        NumberAnimation { from: 1.0; to: 0.35; duration: 700 }
+                        NumberAnimation { from: 0.35; to: 1.0; duration: 700 }
                     }
                 }
                 Text {
-                    text: "LOCAL MIND · RESTING"
+                    text: win.busy ? "RASHIN ASK · WORKING"
+                        : win.errorText !== "" ? "RASHIN ASK · OFFLINE"
+                        : "RASHIN ASK · READY"
                     font.pixelSize: 9
                     font.letterSpacing: 1.5
                     color: Qt.rgba(1, 1, 1, 0.38)
@@ -191,7 +199,7 @@ FloatingWindow {
                     width: parent.width - 80
                     horizontalAlignment: Text.AlignHCenter
                     wrapMode: Text.WordWrap
-                    text: "The compass is open.\nCommands belong to Mandara — questions belong here."
+                    text: "Ask a question, or press Escape to return."
                     font.family: "Fira Code"
                     font.pixelSize: 13
                     font.italic: true
@@ -223,6 +231,7 @@ FloatingWindow {
                             width: parent.width - 28
                             wrapMode: Text.WordWrap
                             text: modelData.text
+                            textFormat: Text.PlainText
                             font.family: "Fira Code"
                             font.pixelSize: 14
                             lineHeight: 1.25

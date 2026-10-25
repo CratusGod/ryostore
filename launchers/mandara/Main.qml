@@ -1,6 +1,9 @@
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import Quickshell
 import Quickshell.Wayland
+import Ryoku.Ui.Singletons
 import "face/obelisk" as ObeliskMod
 import "face/tw" as TW
 
@@ -12,10 +15,6 @@ import "face/tw" as TW
 // wearing the one contract the shell's launcher host drives
 // (shown / show(monitor) / hide() / toggle / stateDump), the
 // same contract every Ryoku launcher keeps. Her face inside
-// is the Obelisk herself, ported whole; what she answers is
-// resolved locally by her own controller. No core, no court —
-// the keystroke and the thing running, with her standing
-// between them as she always did.
 Scope {
     id: root
 
@@ -23,6 +22,8 @@ Scope {
     property bool openRequested: false
     readonly property bool shown: root.openRequested
     property string monitor: ""
+    property bool rashinOpen: false
+    property string pendingRashin: ""
 
     function show(mon) {
         root.monitor = mon || "";
@@ -48,20 +49,25 @@ Scope {
         return screens.length > 0 ? screens[0] : null;
     }
 
-    // ── Rashin — the compass window (his word, 2026-10-25) ──
-    // Natural language recognized by her lens is redirected
-    // here: Mandara retires, Rashin opens with the line as
-    // its seed. The window is the local mind's main window —
-    // it outlives her summons, as a window should.
-    Rashin {
-        id: rashinWin
+    LazyLoader {
+        id: rashinLoader
+        active: root.rashinOpen
+        onItemChanged: if (item) {
+            item.receive(root.pendingRashin)
+            root.pendingRashin = ""
+        }
+
+        Rashin {
+            onDismissed: root.rashinOpen = false
+        }
     }
 
     Connections {
         target: TW.SiMOrchestrator
         function onRashinRequested(seed) {
-            root.hide();
-            rashinWin.receive(seed);
+            root.hide()
+            root.pendingRashin = seed || ""
+            root.rashinOpen = true
         }
     }
 

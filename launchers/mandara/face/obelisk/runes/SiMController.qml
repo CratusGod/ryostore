@@ -28,6 +28,7 @@ import Quickshell.Io
 import "../../tw" as TW
 import "." as Runes
 import shell.services
+import Ryoku.Ui.Singletons
 
 Item {
     id: root
@@ -84,6 +85,7 @@ Item {
     Process {
         id: fileSearch
         running: false
+        environment: Spawn.env
         stdout: StdioCollector {
             onStreamFinished: {
                 var q = root._pendingQuery;
@@ -193,7 +195,8 @@ Item {
             var fullCmd = rune.cmd || "";
             if (fullCmd.indexOf("{arg}") >= 0)
                 fullCmd = fullCmd.split("{arg}").join(rest);
-            else if (rest.length > 0 && rune.takesArg !== false)
+            else if (rest.length > 0 && rune.takesArg !== false
+                    && !fullCmd.startsWith("@"))
                 fullCmd = (fullCmd + " " + rest).trim();
             allItems.push({
                 id: "intent:" + rune.id,
@@ -315,6 +318,12 @@ Item {
             data: file,
             score: 0
         };
+    }
+
+    function localFileUrl(path) {
+        return "file://" + String(path).split("/").map(function(part) {
+            return encodeURIComponent(part)
+        }).join("/")
     }
 
     function scoreItems(items, query) {
@@ -475,6 +484,36 @@ Item {
                                 && oe.name.toLowerCase().indexOf(arg.toLowerCase()) >= 0) { hit = oe; break; }
                     }
                     if (hit) { AppLaunch.run(hit, null); itemExecuted(item); }
+                } else if (cmd === "@edit") {
+                    if (arg.length > 0) {
+                        Spawn.run(["xdg-open", arg]);
+                        itemExecuted(item);
+                    }
+                } else if (cmd === "@note") {
+                    if (arg.length > 0) {
+                        Spawn.run(["sh", "-c", 'mkdir -p "$HOME/Notes" && printf "[%s] %s\\n" "$(date +%FT%T)" "$1" >> "$HOME/Notes/inbox.md"', "sh", arg]);
+                        itemExecuted(item);
+                    }
+                } else if (cmd === "@timer") {
+                    if (/^\d+(?:\.\d+)?(?:s|m|h|d)?$/.test(arg)) {
+                        Spawn.run(["sh", "-c", 'sleep "$1" && notify-send Mandara "time: your timer is done"', "sh", arg]);
+                        itemExecuted(item);
+                    }
+                } else if (cmd === "@clip") {
+                    if (arg.length > 0) {
+                        Spawn.run(["sh", "-c", 'printf %s "$1" | wl-copy', "sh", arg]);
+                        itemExecuted(item);
+                    }
+                } else if (cmd === "@volume") {
+                    if (/^\d{1,3}$/.test(arg) && Number(arg) <= 100) {
+                        Spawn.run(["wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", arg + "%"]);
+                        itemExecuted(item);
+                    }
+                } else if (cmd === "@brightness") {
+                    if (/^\d{1,3}$/.test(arg) && Number(arg) <= 100) {
+                        Spawn.run(["brightnessctl", "set", arg + "%"]);
+                        itemExecuted(item);
+                    }
                 } else if (cmd === "@files") {
                     // The typed road for find: she stays open
                     // and the filesystem answers in her rack.
@@ -486,7 +525,7 @@ Item {
                     itemExecuted(item);
                 }
             } else if (item.category === "files") {
-                Qt.openUrlExternally("file://" + item.data.path);
+                Qt.openUrlExternally(localFileUrl(item.data.path));
                 itemExecuted(item);
             }
         }

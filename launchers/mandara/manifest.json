@@ -16,33 +16,33 @@
     {
       "source": "Main.qml",
       "destination": "Main.qml",
-      "sha256": "2b2d2e03ba2d8cfe34a46d861670b928914c742323ae2eb81a65aa5c4692f4ed",
+      "sha256": "3573be666971526428981297faed77095b47af21030bb0aab2aa3c37a622bab6",
       "mode": "0644",
-      "size": 4095,
+      "size": 3982,
       "install": true
     },
     {
       "source": "PROVENANCE.txt",
       "destination": "PROVENANCE.txt",
-      "sha256": "588236a749196238f6b9bce0bdce85c34aa449930cf5d379a6dc884be9d064bc",
+      "sha256": "127b011cc76f73994c8d750c11df3870d2d6e77ea14d8498d49f2ca3e1133f35",
       "mode": "0644",
-      "size": 14451,
+      "size": 14675,
       "install": true
     },
     {
       "source": "README.md",
       "destination": "README.md",
-      "sha256": "543e795b06180c69062a5b54a730fbb828d249ddb9126edd71b5cce77c8e78b2",
+      "sha256": "b988dcc09989443e6cdd7f186daead012474ce86cb8933631747887605cbaf35",
       "mode": "0644",
-      "size": 3143,
+      "size": 3105,
       "install": true
     },
     {
       "source": "Rashin.qml",
       "destination": "Rashin.qml",
-      "sha256": "7f69cbe8167b342cff27aca2b0e10770bc524141aed00d2897db69f549bf8d47",
+      "sha256": "ed0a33f8e0d7990654d397769c8a7de7ee9b747299f5cd596a2b10cc6a24205d",
       "mode": "0644",
-      "size": 10374,
+      "size": 10714,
       "install": true
     },
     {
@@ -88,9 +88,9 @@
     {
       "source": "face/obelisk/Obelisk.qml",
       "destination": "face/obelisk/Obelisk.qml",
-      "sha256": "c500560deef8262a5a96216246708a0cc34ccd488c29b6a9b8b25e3d009c3d1f",
+      "sha256": "98821c80a129f10ef983c1027dd6705732c1c8a31bbbe2d35454e329cb42cba3",
       "mode": "0644",
-      "size": 27071,
+      "size": 27119,
       "install": true
     },
     {
@@ -184,9 +184,9 @@
     {
       "source": "face/obelisk/runes/InputLens.qml",
       "destination": "face/obelisk/runes/InputLens.qml",
-      "sha256": "b88691bdb6fc3f142601e2996aa302015e0bb7f99dc7e171ed4423242932fee3",
+      "sha256": "06e562811b782f2bb7c2029caa83e687a02aaffbc0b33dc7cd6bbebc90de3d90",
       "mode": "0644",
-      "size": 44442,
+      "size": 44642,
       "install": true
     },
     {
@@ -208,17 +208,17 @@
     {
       "source": "face/obelisk/runes/RuneRegistry.qml",
       "destination": "face/obelisk/runes/RuneRegistry.qml",
-      "sha256": "54d12dee7aba7e3607cd2e66a39726fed1037a719d3152bb46601de1d21d8293",
+      "sha256": "f74b4950635b44d0b105302c0bc463fed58eb4f96e23d90e488f8728708707f4",
       "mode": "0644",
-      "size": 11793,
+      "size": 11597,
       "install": true
     },
     {
       "source": "face/obelisk/runes/SiMController.qml",
       "destination": "face/obelisk/runes/SiMController.qml",
-      "sha256": "5a7fde7f60d0b330ba3b73e7f749f51dd62cef86f9913cdc4b3d5330248aa2e7",
+      "sha256": "6f3c90afe63fbe5de0f77231a98b400d482c709a79bd5d0c9ffc9677000950cf",
       "mode": "0644",
-      "size": 23268,
+      "size": 25160,
       "install": true
     },
     {
@@ -280,9 +280,9 @@
     {
       "source": "face/tw/SiMOrchestrator.qml",
       "destination": "face/tw/SiMOrchestrator.qml",
-      "sha256": "878c19cd2e008c06bf2a665ed43ee8f5346094c98e680918b5fca445b827f285",
+      "sha256": "43fcef42641d9e5444011d94c3cfc1ca3c146b66d5c27edfab48b485177f5ba5",
       "mode": "0644",
-      "size": 7210,
+      "size": 7235,
       "install": true
     },
     {
