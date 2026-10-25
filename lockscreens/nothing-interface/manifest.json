@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "nothing-interface",
   "category": "lockscreens",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "destination": "qylock/themes/nothing-interface",
   "files": [
     {
@@ -25,8 +25,8 @@
       "source": "README.md",
       "destination": "README.md",
       "mode": "0644",
-      "size": 1012,
-      "sha256": "136d38f513f00e1322883860b83d176078867ab5c208eee5478c76eacea2a84a",
+      "size": 1295,
+      "sha256": "3bf3b41d5a6307a34c43b5c5a9c8edf2031e885488d4de606b8291589aaccfca",
       "install": true
     },
     {
@@ -57,8 +57,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 13300,
-      "sha256": "98bfbd666ebbd996f8915e204613caafae1e4d2f9102c54f8383ad010adb58a5",
+      "size": 13871,
+      "sha256": "fc83716fe816a1937814e806b96e39ab89d1db9d4e828fbdbcacdcaf45a317f6",
       "install": true
     },
     {
@@ -73,8 +73,8 @@
       "source": "content/bin/media.py",
       "destination": "bin/media.py",
       "mode": "0755",
-      "size": 1151,
-      "sha256": "cacb43232dbfeb5951315de0a8ab612fd3f3a043eeef12e2515c7b53b82d3a0c",
+      "size": 1605,
+      "sha256": "c865ef19921d1e432a0f75931277c36121a8f42d6d008fa95fb869808cbd6b38",
       "install": true
     },
     {
@@ -86,11 +86,27 @@
       "install": true
     },
     {
+      "source": "content/i18n/I18n.qml",
+      "destination": "i18n/I18n.qml",
+      "mode": "0644",
+      "size": 2509,
+      "sha256": "80b3727d444692e1a22f0cdb1679f93f1636322926c788406392cbd320d35bf1",
+      "install": true
+    },
+    {
+      "source": "content/i18n/qmldir",
+      "destination": "i18n/qmldir",
+      "mode": "0644",
+      "size": 24,
+      "sha256": "25878fb892518053bdbfebd8892a6e6cb0dad0d3d280467ef7b34589519306ef",
+      "install": true
+    },
+    {
       "source": "content/metadata.desktop",
       "destination": "metadata.desktop",
       "mode": "0644",
       "size": 204,
-      "sha256": "c107b2489d2720f367365a1f869dc207bc354101e22b28f18c58f126a48f569d",
+      "sha256": "05240f0633ac4ca256405960ea330f3e1c21e528b882a9eb8669503b836482b3",
       "install": true
     },
     {
