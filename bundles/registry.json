@@ -1724,7 +1724,7 @@
       "version": "1.0.0",
       "path": "bundles/yatagarasu",
       "author": "0xSrcAura",
-      "upstream": "https://github.com/SourceAura/yatagarasu",
+      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/bundles/yatagarasu",
       "summary": "the crow and her voice — scroll design + the roost",
       "description": "The whole Yatagarasu kit: the Kasugai dispatch-scroll notification design (Notifications) and the Roost crow on the desktop (Plugins), her eye wearing the freshest word. One creature in two listings, presented here as the single kit it is.",
       "tags": [
@@ -1740,7 +1740,7 @@
         "assets/preview.png"
       ],
       "manifest": "bundle.json",
-      "manifestSha256": "7c06f95f931e9956c92fd2ff49173e4ce56f82796ee8407993962d1ec83a6ce3",
+      "manifestSha256": "f851f83b362fc3d359b7bae83e9a01d3cbac2e6358f99a3da1b20293e8b9b590",
       "components": [
         {
           "type": "plugin",

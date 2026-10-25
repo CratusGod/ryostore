@@ -8,9 +8,9 @@
     {
       "source": "Card.qml",
       "destination": "Card.qml",
-      "sha256": "4a525ca643a47f41d9f140ae669c9749131bf1cdb3cc501951526853909ba760",
+      "sha256": "5488b95577d85fe3b57342ff6d0655643bcdab1f0312c638559811dd637cad46",
       "mode": "0644",
-      "size": 18155,
+      "size": 18150,
       "install": true
     },
     {

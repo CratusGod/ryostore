@@ -32,5 +32,5 @@ over her head, as her voice and thoughts, because they
 are. The design itself honours every column the host
 offers, patched or not.
 
-Source: https://github.com/SourceAura/yatagarasu
+Source: https://github.com/ryoku-dev/ryostore/tree/main/bundles/yatagarasu
 Licence: GPL-3.0-or-later. Author: 0xSrcAura.
