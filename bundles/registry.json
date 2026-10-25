@@ -689,7 +689,7 @@
     {
       "id": "ryoku-zed-theme",
       "name": "Ryoku for Zed",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "path": "bundles/ryoku-zed-theme",
       "author": "Ryoku Team",
       "upstream": "https://github.com/Ryoku-dev/ryostore/tree/main/bundles/ryoku-zed-theme",
@@ -712,7 +712,7 @@
         "assets/ryoku-blue.png"
       ],
       "manifest": "bundle.json",
-      "manifestSha256": "ec2e2b49fac3199025b77414d58af8c5b3eba554edfde43b0c46009bafebda8c",
+      "manifestSha256": "1c78bdd582669d295ad3353e85a20b4690ca89b81973ed40d99c12952c823e5f",
       "components": [
         {
           "type": "package",

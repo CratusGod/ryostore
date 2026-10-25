@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "ryoku-zed-theme",
   "category": "bundles",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "destination": "ryoku/bundles/ryoku-zed-theme",
   "name": "Ryoku for Zed",
   "description": "Keep Zed's UI and syntax colors in step with Ryoku's wallpaper palette, including monochrome wallpapers.",
@@ -40,8 +40,8 @@
       "source": "README.md",
       "destination": "README.md",
       "mode": "0644",
-      "size": 2789,
-      "sha256": "33b5ad01bf94cfff520b53545c502b5a0f93883ab5cc66730060fc6315ce0836",
+      "size": 3307,
+      "sha256": "f945af922d61b77ff9e4ae5ce7883b1d51435e3968d3c2946efe116816fd25d0",
       "install": false
     },
     {
@@ -72,8 +72,8 @@
       "source": "installers/ryoku-zed-theme.sh",
       "destination": "installers/ryoku-zed-theme.sh",
       "mode": "0755",
-      "size": 27032,
-      "sha256": "9c9790c71dd95eec741492e013e4acd719dbedfabba3952422206eb95c43fc90",
+      "size": 38737,
+      "sha256": "fb1e6fdb8cc03d386f5e90c829ddadc892b29d42a66827484bf8a754a6035c0e",
       "install": false
     },
     {
@@ -96,8 +96,8 @@
       "source": "runtime/scripts/install-sync.ts",
       "destination": "runtime/scripts/install-sync.ts",
       "mode": "0644",
-      "size": 3802,
-      "sha256": "41454760063bdae2f1e66f8ca340c6202bf43b6023b4ec45e57ca279adf1d636",
+      "size": 15507,
+      "sha256": "25e5e33e633f08204af0a5a8073bbe2ed2d65eacc977c98492075c32cde04dea",
       "install": false
     },
     {
