@@ -1,0 +1,86 @@
+{
+  "id": "docker-ctl",
+  "name": "Docker",
+  "version": "0.2.1",
+  "author": "Madhav Khosla <madhav.khoslaa@gmail.com>",
+  "description": "Docker on the bar: start, stop and set the daemon to run at boot, see every container, start/stop/restart it, and edit its published ports and mounts (applied by recreating the container).",
+  "license": "MIT",
+  "official": false,
+  "hosts": [
+    "topbarGlyph"
+  ],
+  "entryPoints": {
+    "main": "service/Main.qml",
+    "content": "content/Widget.qml",
+    "panel": "content/Panel.qml"
+  },
+  "panel": {
+    "width": 440
+  },
+  "files": [
+    "bin/dockerctl",
+    "bin/docker-ctl-setup",
+    "assets/preview-widget.png"
+  ],
+  "capabilities": {
+    "densities": [
+      "glyph"
+    ],
+    "privileged": [
+      "pkexec bin/docker-ctl-setup install",
+      "pkexec bin/docker-ctl-setup uninstall",
+      "pkexec /usr/local/libexec/docker-ctl-daemon start",
+      "pkexec /usr/local/libexec/docker-ctl-daemon stop",
+      "pkexec /usr/local/libexec/docker-ctl-daemon enable",
+      "pkexec /usr/local/libexec/docker-ctl-daemon disable"
+    ]
+  },
+  "defaults": {
+    "host": "topbarGlyph",
+    "bar": {
+      "section": "right"
+    },
+    "icon": "docker",
+    "label": "Docker"
+  },
+  "dependencies": {
+    "commands": [
+      "python3",
+      "ryoku-host",
+      "pkexec",
+      "install",
+      "mktemp"
+    ]
+  },
+  "metadata": {
+    "settings": [
+      {
+        "key": "showCount",
+        "type": "toggle",
+        "label": "Show the running count on the bar",
+        "group": "Docker",
+        "default": true
+      },
+      {
+        "key": "showStopped",
+        "type": "toggle",
+        "label": "List stopped containers",
+        "group": "Docker",
+        "default": true
+      },
+      {
+        "key": "poll",
+        "type": "int",
+        "label": "Refresh every (seconds)",
+        "group": "Docker",
+        "default": 5,
+        "min": 2,
+        "max": 120
+      }
+    ]
+  },
+  "commands": [
+    "bin/dockerctl",
+    "bin/docker-ctl-setup"
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "schema": 1,
+  "id": "docker-ctl",
+  "category": "plugins",
+  "version": "0.2.1",
+  "destination": "ryoku/plugins/docker-ctl",
+  "files": [
+    {
+      "source": ".gitignore",
+      "destination": ".gitignore",
+      "sha256": "379dfa9273952c08fa44042de676ed4addc26a7c4d4c90235d6ff2c73dffb810",
+      "mode": "0644",
+      "size": 22,
+      "install": true
+    },
+    {
+      "source": "AGENTS.md",
+      "destination": "AGENTS.md",
+      "sha256": "4ed61406753a599b3d4345b4760610d03dea0b66e56414cc6c7739c6f07f3b41",
+      "mode": "0644",
+      "size": 4629,
+      "install": true
+    },
+    {
+      "source": "CLAUDE.md",
+      "destination": "CLAUDE.md",
+      "sha256": "09ffb8ebdb8adf50bf4bde26dfe2109b4af3a4a8cc3f30cc536be42bb912c033",
+      "mode": "0644",
+      "size": 152,
+      "install": true
+    },
+    {
+      "source": "LICENSE",
+      "destination": "LICENSE",
+      "sha256": "0d6c7a8c225bb1695e88a59f07dcbadbf8a0ea4088752ac718290f3628d1cf05",
+      "mode": "0644",
+      "size": 1070,
+      "install": false
+    },
+    {
+      "source": "README.md",
+      "destination": "README.md",
+      "sha256": "b8b7af325d5f5932dcaac982273f8661a2093ccc57e284ff0177242aa7ef969d",
+      "mode": "0644",
+      "size": 4169,
+      "install": false
+    },
+    {
+      "source": "assets/preview-widget.png",
+      "destination": "assets/preview-widget.png",
+      "sha256": "d004e68fdd275ea639f46be4fc0dc53f928bd0d82d1821be5a632ed58fcdd3c3",
+      "mode": "0644",
+      "size": 80439,
+      "install": false
+    },
+    {
+      "source": "bin/docker-ctl-setup",
+      "destination": "bin/docker-ctl-setup",
+      "sha256": "1b16f0e06220959a7cdd0954f90f5d0bb0b0c9cebd5b2368f3d5643cf7dbf94f",
+      "mode": "0755",
+      "size": 2695,
+      "install": true
+    },
+    {
+      "source": "bin/dockerctl",
+      "destination": "bin/dockerctl",
+      "sha256": "94e734cbf65f29edd323e6d29f7fbf932c23d1619d45a264301b72fddf5f2a4b",
+      "mode": "0755",
+      "size": 12555,
+      "install": true
+    },
+    {
+      "source": "content/Panel.qml",
+      "destination": "content/Panel.qml",
+      "sha256": "5ffa9ce8ad2eb679048f4a57081822099b4623d6eb62dea2238816348aa006bf",
+      "mode": "0644",
+      "size": 23491,
+      "install": true
+    },
+    {
+      "source": "content/Widget.qml",
+      "destination": "content/Widget.qml",
+      "sha256": "07588b308a180b86665b6057b64a919eb67b1969f0be2c9182949b3d3bcb0229",
+      "mode": "0644",
+      "size": 2002,
+      "install": true
+    },
+    {
+      "source": "manifest.json",
+      "destination": "manifest.json",
+      "sha256": "3c6940aa1604f5c5602949bd4a2f120e3ed6d8edb41f59fdd25896dc8fbce401",
+      "mode": "0644",
+      "size": 2009,
+      "install": true
+    },
+    {
+      "source": "service/Main.qml",
+      "destination": "service/Main.qml",
+      "sha256": "b3f1740a83fd58c66e6a32bbf57cf9ac31aa293a6b8ca64c1f6b1a2c230f60a0",
+      "mode": "0644",
+      "size": 4561,
+      "install": true
+    }
+  ]
+}

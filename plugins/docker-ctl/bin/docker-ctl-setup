@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+# docker-ctl-setup: the one-time step that lets the Docker plugin start, stop,
+# enable and disable the daemon without a password. Run as root through pkexec
+# (the panel does this on first use; that is the only password prompt).
+#
+#   install    write a root-owned helper and a polkit action that lets the
+#              active local session run it without a password
+#   uninstall  remove both; daemon buttons then ask for a password again
+#
+# The helper accepts exactly four verbs and runs fixed ryoku-host svc argv, so the
+# password-free permission covers Docker's units and nothing else. It lives
+# outside the plugin folder because the plugin folder is user-writable: a
+# password-free root path must not run anything the user could edit.
+set -euo pipefail
+
+HELPER=/usr/local/libexec/docker-ctl-daemon
+POLICY=/usr/share/polkit-1/actions/dev.ryoku.docker-ctl.policy
+
+if [[ $EUID -ne 0 ]]; then
+	echo "docker-ctl-setup must run as root" >&2
+	exit 1
+fi
+
+case "${1:-}" in
+install)
+	install -d -o root -g root -m 755 /usr/local/libexec
+	tmp=$(mktemp)
+	printf '%s\n' \
+		'#!/bin/sh' \
+		'# docker-ctl-daemon v2: installed by the Ryoku docker-ctl plugin' \
+		"# (docker-ctl-setup). Fixed verbs only, through Ryoku's init-neutral seam." \
+		'case "$1" in' \
+		'start)   exec /usr/bin/ryoku-host svc --system start docker.service ;;' \
+		'stop)    exec /usr/bin/ryoku-host svc --system stop docker.socket docker.service ;;' \
+		'enable)  exec /usr/bin/ryoku-host svc --system enable docker.service ;;' \
+		'disable) exec /usr/bin/ryoku-host svc --system disable docker.service docker.socket ;;' \
+		'*)       echo "usage: docker-ctl-daemon start|stop|enable|disable" >&2; exit 2 ;;' \
+		'esac' >"$tmp"
+	install -o root -g root -m 755 "$tmp" "$HELPER"
+	printf '%s\n' \
+		'<?xml version="1.0" encoding="UTF-8"?>' \
+		'<!-- Installed by the Ryoku docker-ctl plugin (docker-ctl-setup). -->' \
+		'<policyconfig>' \
+		'  <action id="dev.ryoku.docker-ctl.daemon">' \
+		'    <description>Start, stop, enable or disable the Docker daemon</description>' \
+		'    <message>Control the Docker daemon</message>' \
+		'    <defaults>' \
+		'      <allow_any>auth_admin</allow_any>' \
+		'      <allow_inactive>auth_admin</allow_inactive>' \
+		'      <allow_active>yes</allow_active>' \
+		'    </defaults>' \
+		"    <annotate key=\"org.freedesktop.policykit.exec.path\">$HELPER</annotate>" \
+		'  </action>' \
+		'</policyconfig>' >"$tmp"
+	install -o root -g root -m 644 "$tmp" "$POLICY"
+	rm -f "$tmp"
+	echo "installed $HELPER and $POLICY"
+	;;
+uninstall)
+	rm -f "$HELPER" "$POLICY"
+	echo "removed $HELPER and $POLICY"
+	;;
+*)
+	echo "usage: docker-ctl-setup install|uninstall" >&2
+	exit 2
+	;;
+esac

@@ -1,0 +1,358 @@
+#!/usr/bin/env python3
+# dockerctl: the Docker plugin's one helper. Talks to the Engine API over the
+# local unix socket (no docker CLI needed) and to systemd for the daemon itself.
+#
+#   status                      JSON: daemon state + every container
+#   start|stop|restart <id>     container lifecycle
+#   inspect <id>                JSON: the container's editable ports and mounts
+#   recreate <id> <spec-json>   rebuild the container with new ports/mounts
+#   daemon start|stop|enable|disable
+#                               via the root-owned helper docker-ctl-setup
+#                               installs (first use asks the password once)
+#   setup install|uninstall     run docker-ctl-setup through pkexec
+#
+# Every reply is one JSON object on stdout; failures exit 1 with the reason on
+# stderr.
+import http.client
+import json
+import os
+import socket
+import subprocess
+import sys
+import time
+import urllib.parse
+
+SOCK = "/var/run/docker.sock"
+HELPER = "/usr/local/libexec/docker-ctl-daemon"
+POLICY = "/usr/share/polkit-1/actions/dev.ryoku.docker-ctl.policy"
+SETUP = os.path.join(os.path.dirname(os.path.realpath(__file__)), "docker-ctl-setup")
+
+
+class UnixHTTP(http.client.HTTPConnection):
+    def __init__(self, path, timeout=30):
+        super().__init__("localhost", timeout=timeout)
+        self.path = path
+
+    def connect(self):
+        s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        s.settimeout(self.timeout)
+        s.connect(self.path)
+        self.sock = s
+
+
+class ApiError(Exception):
+    pass
+
+
+def api(method, path, body=None, query=None, timeout=30):
+    if query:
+        path += "?" + urllib.parse.urlencode(query)
+    conn = UnixHTTP(SOCK, timeout)
+    headers = {}
+    data = None
+    if body is not None:
+        data = json.dumps(body).encode()
+        headers["Content-Type"] = "application/json"
+    try:
+        conn.request(method, path, body=data, headers=headers)
+        resp = conn.getresponse()
+        raw = resp.read()
+    except OSError as e:
+        raise ApiError("cannot reach the Docker daemon (%s)" % e)
+    finally:
+        conn.close()
+    if resp.status >= 400:
+        try:
+            msg = json.loads(raw).get("message", raw.decode())
+        except ValueError:
+            msg = raw.decode(errors="replace")
+        raise ApiError(msg.strip() or "HTTP %d" % resp.status)
+    if not raw:
+        return None
+    try:
+        return json.loads(raw)
+    except ValueError:
+        return raw.decode(errors="replace")
+
+
+def svc_ok(verb, unit):
+    # ryoku-host is Ryoku's init-neutral seam (systemd, runit, ...): exit 0
+    # means yes for is-active / is-enabled.
+    r = subprocess.run(["ryoku-host", "svc", "--system", verb, unit], capture_output=True)
+    return r.returncode == 0
+
+
+def out(obj):
+    sys.stdout.write(json.dumps(obj))
+    sys.stdout.write("\n")
+
+
+def fail(msg):
+    sys.stderr.write(str(msg).strip() + "\n")
+    sys.exit(1)
+
+
+# ---------------------------------------------------------------- status
+
+def cmd_status():
+    active = "active" if svc_ok("is-active", "docker.service") else "inactive"
+    enabled_svc = svc_ok("is-enabled", "docker.service")
+    enabled_sock = svc_ok("is-enabled", "docker.socket")
+    containers = []
+    reachable = False
+    if os.path.exists(SOCK) and active == "active":
+        try:
+            rows = api("GET", "/containers/json", query={"all": "1"}, timeout=5) or []
+            reachable = True
+        except ApiError:
+            rows = []
+        for c in rows:
+            ports = []
+            seen = set()
+            for p in c.get("Ports") or []:
+                if not p.get("PublicPort"):
+                    continue
+                key = (p.get("PublicPort"), p.get("PrivatePort"), p.get("Type"))
+                if key in seen:  # one row per port, not per IPv4/IPv6
+                    continue
+                seen.add(key)
+                ports.append("%s→%s/%s" % key)
+            labels = c.get("Labels") or {}
+            containers.append({
+                "id": c["Id"][:12],
+                "name": (c.get("Names") or ["/" + c["Id"][:12]])[0].lstrip("/"),
+                "image": c.get("Image", ""),
+                "state": c.get("State", ""),
+                "status": c.get("Status", ""),
+                "ports": ports,
+                "project": labels.get("com.docker.compose.project", ""),
+            })
+    containers.sort(key=lambda c: (c["state"] != "running", c["project"], c["name"]))
+    out({
+        "daemon": active or "unknown",
+        "reachable": reachable,
+        "enabled": enabled_svc,
+        "socket": enabled_sock,
+        "passwordless": passwordless(),
+        "containers": containers,
+    })
+
+
+# ---------------------------------------------------------------- lifecycle
+
+def cmd_lifecycle(action, cid):
+    q = {"t": "10"} if action in ("stop", "restart") else None
+    api("POST", "/containers/%s/%s" % (cid, action), query=q, timeout=60)
+    out({"ok": True})
+
+
+HELPER_VERSION = "docker-ctl-daemon v2"
+
+
+def passwordless():
+    # An older helper counts as not set up, so the next daemon click upgrades it.
+    try:
+        with open(HELPER) as f:
+            current = HELPER_VERSION in f.read()
+    except OSError:
+        return False
+    return current and os.path.exists(POLICY)
+
+
+def pkexec(argv):
+    r = subprocess.run(["pkexec", *argv], capture_output=True, text=True)
+    if r.returncode in (126, 127):
+        fail("authorization cancelled")
+    if r.returncode != 0:
+        fail(r.stderr or "pkexec exited %d" % r.returncode)
+
+
+def cmd_setup(action):
+    # The one password prompt: docker-ctl-setup installs a root-owned helper
+    # plus a polkit action, after which the daemon verbs need no password.
+    pkexec([SETUP, action])
+    out({"ok": True, "passwordless": passwordless()})
+
+
+def cmd_daemon(action):
+    if action not in ("start", "stop", "enable", "disable"):
+        fail("unknown daemon action: " + action)
+    if not passwordless():
+        pkexec([SETUP, "install"])
+    pkexec([HELPER, action])
+    out({"ok": True})
+
+
+# ---------------------------------------------------------------- inspect / recreate
+
+def editable(info):
+    ports = []
+    for cport, binds in sorted((info["HostConfig"].get("PortBindings") or {}).items()):
+        for b in binds or [{}]:
+            ports.append({
+                "container": cport,
+                "hostIp": b.get("HostIp", ""),
+                "hostPort": b.get("HostPort", ""),
+            })
+    mounts = []
+    for m in info.get("Mounts") or []:
+        if m.get("Type") not in ("bind", "volume"):
+            continue
+        mounts.append({
+            "type": m["Type"],
+            "source": m.get("Name") if m["Type"] == "volume" else m.get("Source", ""),
+            "target": m.get("Destination", ""),
+            "readOnly": not m.get("RW", True),
+        })
+    labels = info["Config"].get("Labels") or {}
+    return {
+        "id": info["Id"][:12],
+        "name": info["Name"].lstrip("/"),
+        "image": info["Config"].get("Image", ""),
+        "running": info["State"].get("Running", False),
+        "compose": labels.get("com.docker.compose.project", ""),
+        "ports": ports,
+        "mounts": mounts,
+    }
+
+
+def cmd_inspect(cid):
+    out(editable(api("GET", "/containers/%s/json" % cid)))
+
+
+def build_create_body(info, spec):
+    cfg = dict(info["Config"])
+    host = dict(info["HostConfig"])
+
+    # Same image layer the old container ran, even if the tag moved since.
+    cfg["Image"] = info["Image"]
+    if cfg.get("Hostname") == info["Id"][:12]:
+        cfg.pop("Hostname", None)
+
+    # Ports: rebuild bindings from the spec; keep image-exposed ports exposed.
+    bindings = {}
+    exposed = dict(cfg.get("ExposedPorts") or {})
+    for p in spec.get("ports", []):
+        cport = str(p.get("container", "")).strip()
+        hport = str(p.get("hostPort", "")).strip()
+        if not cport:
+            continue
+        if "/" not in cport:
+            cport += "/tcp"
+        num, proto = cport.split("/", 1)
+        if not num.isdigit() or proto not in ("tcp", "udp", "sctp"):
+            raise ApiError("bad container port: " + cport)
+        if hport and not hport.isdigit():
+            raise ApiError("bad host port: " + hport)
+        bindings.setdefault(cport, []).append({
+            "HostIp": str(p.get("hostIp", "")).strip(),
+            "HostPort": hport,
+        })
+        exposed[cport] = {}
+    host["PortBindings"] = bindings
+    cfg["ExposedPorts"] = exposed
+
+    # Mounts: binds and volumes come from the spec as structured mounts; any
+    # other mount type (tmpfs, npipe) the container had is carried over as-is.
+    keep = [m for m in (host.get("Mounts") or []) if m.get("Type") not in ("bind", "volume")]
+    new = []
+    for m in spec.get("mounts", []):
+        src = str(m.get("source", "")).strip()
+        dst = str(m.get("target", "")).strip()
+        if not dst:
+            continue
+        if not dst.startswith("/"):
+            raise ApiError("mount target must be an absolute path: " + dst)
+        kind = "bind" if src.startswith(("/", "~")) else "volume"
+        if kind == "bind":
+            src = os.path.expanduser(src)
+            if not os.path.exists(src):
+                raise ApiError("bind source does not exist: " + src)
+        mount = {"Type": kind, "Target": dst, "ReadOnly": bool(m.get("readOnly"))}
+        if src:
+            mount["Source"] = src
+        new.append(mount)
+    host["Binds"] = None
+    host["Mounts"] = keep + new
+    # Image VOLUME targets now covered by an explicit mount must not double up.
+    cfg["Volumes"] = {k: v for k, v in (cfg.get("Volumes") or {}).items()
+                      if k not in {m["Target"] for m in new}} or None
+
+    endpoints = {}
+    for net, ep in (info["NetworkSettings"].get("Networks") or {}).items():
+        aliases = [a for a in (ep.get("Aliases") or []) if a != info["Id"][:12]]
+        endpoints[net] = {
+            "IPAMConfig": ep.get("IPAMConfig"),
+            "Links": ep.get("Links"),
+            "Aliases": aliases or None,
+            "DriverOpts": ep.get("DriverOpts"),
+        }
+    body = cfg
+    body["HostConfig"] = host
+    body["NetworkingConfig"] = {"EndpointsConfig": endpoints}
+    return body
+
+
+def cmd_recreate(cid, spec_json):
+    try:
+        spec = json.loads(spec_json)
+    except ValueError as e:
+        fail("bad spec: %s" % e)
+    info = api("GET", "/containers/%s/json" % cid)
+    name = info["Name"].lstrip("/")
+    was_running = info["State"].get("Running", False)
+    body = build_create_body(info, spec)  # validate before touching anything
+    backup = "%s-old-%d" % (name, int(time.time()))
+
+    if was_running:
+        api("POST", "/containers/%s/stop" % info["Id"], query={"t": "10"}, timeout=60)
+    api("POST", "/containers/%s/rename" % info["Id"], query={"name": backup})
+
+    new_id = None
+    try:
+        created = api("POST", "/containers/create", body=body, query={"name": name})
+        new_id = created["Id"]
+        if was_running:
+            api("POST", "/containers/%s/start" % new_id, timeout=60)
+    except ApiError as e:
+        # Roll back: drop the half-made container, put the old one back.
+        if new_id:
+            try:
+                api("DELETE", "/containers/%s" % new_id, query={"force": "1"})
+            except ApiError:
+                pass
+        api("POST", "/containers/%s/rename" % info["Id"], query={"name": name})
+        if was_running:
+            api("POST", "/containers/%s/start" % info["Id"], timeout=60)
+        fail("recreate failed, old container restored: %s" % e)
+
+    # Success: the old container goes; its volumes stay (no v=1).
+    api("DELETE", "/containers/%s" % info["Id"])
+    out({"ok": True, "id": new_id[:12]})
+
+
+def main(argv):
+    if not argv:
+        fail("usage: dockerctl status|start|stop|restart|inspect|recreate|daemon ...")
+    cmd, rest = argv[0], argv[1:]
+    try:
+        if cmd == "status":
+            cmd_status()
+        elif cmd in ("start", "stop", "restart") and len(rest) == 1:
+            cmd_lifecycle(cmd, rest[0])
+        elif cmd == "inspect" and len(rest) == 1:
+            cmd_inspect(rest[0])
+        elif cmd == "recreate" and len(rest) == 2:
+            cmd_recreate(rest[0], rest[1])
+        elif cmd == "daemon" and len(rest) == 1:
+            cmd_daemon(rest[0])
+        elif cmd == "setup" and rest in (["install"], ["uninstall"]):
+            cmd_setup(rest[0])
+        else:
+            fail("bad arguments: " + " ".join(argv))
+    except ApiError as e:
+        fail(e)
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

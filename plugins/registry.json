@@ -1971,6 +1971,33 @@
       "lastUpdated": "2026-10-22",
       "license": "MIT",
       "upstream": "https://github.com/root-secyrity/window-stash"
+    },
+    {
+      "id": "docker-ctl",
+      "name": "Docker",
+      "version": "0.2.1",
+      "path": "plugins/docker-ctl",
+      "author": "Madhav Khosla <madhav.khoslaa@gmail.com>",
+      "summary": "Docker on the bar: start, stop and set the daemon to run at boot, see every container, start/stop/restart it, and edit its published port...",
+      "description": "Docker on the bar: start, stop and set the daemon to run at boot, see every container, start/stop/restart it, and edit its published ports and mounts (applied by recreating the container).",
+      "tags": [
+        "bar-widget"
+      ],
+      "accent": "#8f8378",
+      "surface": "#101010",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "2c786ade3a61363b1b3842406493c3b84e088c62a74d898cdd24c274fa4a0bea",
+      "official": false,
+      "tagline": "Docker on the bar: start, stop and set the daemon to run at boot, see every container, start/stop/restart it, and edit its published port...",
+      "icon": "docker",
+      "hosts": [
+        "topbarGlyph"
+      ],
+      "lastUpdated": "2026-10-25"
     }
   ]
 }
