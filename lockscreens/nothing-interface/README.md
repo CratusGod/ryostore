@@ -12,6 +12,11 @@ state and Ryoku's screen-time state. They write no files, make no outbound
 network requests, and require no privileged commands. The image URL provided by
 a local media player may be fetched by Qt when the lockscreen shows album art.
 
+Every label follows the system language through Ryoku's shipped catalogue at
+`/usr/share/ryoku/i18n`: the theme uses English source keys, so all the
+languages the desktop ships apply without per-theme translation files. A key
+the catalogue does not carry yet falls back to English.
+
 The catalogue preview is not installed. No Nothing artwork or font is bundled.
 See [PROVENANCE.txt](PROVENANCE.txt) and the
 [upstream project](https://github.com/venchik111/ryoku-nothing-interface).

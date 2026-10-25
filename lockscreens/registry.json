@@ -913,7 +913,7 @@
     {
       "id": "nothing-interface",
       "name": "Nothing Interface",
-      "version": "0.1.0",
+      "version": "0.1.2",
       "path": "lockscreens/nothing-interface",
       "author": "Ivan <254410104+venchik111@users.noreply.github.com>",
       "upstream": "https://github.com/venchik111/ryoku-nothing-interface",
@@ -932,10 +932,10 @@
         "assets/preview.png"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "158f1f5ad37b51c589f511366eb23724bf10261c9c0d96f9782ae8640ca772d4",
+      "manifestSha256": "3d68e4934b6f4acffa8580a96705fd34fa76b20336326db5ff7585d4a3db8a59",
       "official": false,
       "license": "MIT",
-      "lastUpdated": "2026-10-01"
+      "lastUpdated": "2026-10-25"
     }
   ]
 }
