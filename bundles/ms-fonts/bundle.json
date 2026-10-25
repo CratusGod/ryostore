@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "id": "ms-fonts",
+  "category": "bundles",
+  "version": "1.0.0",
+  "destination": "ryoku/bundles/ms-fonts",
+  "name": "Microsoft Fonts Pack",
+  "description": "Installs the redistributable Core Fonts for the Web: Andale Mono, Arial, Arial Black, Comic Sans MS, Courier New, Georgia, Impact, Times New Roman, Trebuchet MS, Verdana, and Webdings. It also installs the ClearType families Calibri, Cambria, Cambria Math, Candara, Consolas, Constantia, Corbel, and Meiryo only when a licensed copy of Windows Vista or Microsoft Office 2007 or later is installed on this computer. Lucida Sans, Lucida Console, Microsoft Sans Serif, and Tahoma are not included.",
+  "items": [
+    {
+      "type": "package",
+      "name": "ttf-ms-fonts",
+      "summary": "Andale Mono, Arial, Arial Black, Comic Sans MS, Courier New, Georgia, Impact, Times New Roman, Trebuchet MS, Verdana, and Webdings.",
+      "source": "aur",
+      "upstream": "https://aur.archlinux.org/packages/ttf-ms-fonts"
+    },
+    {
+      "type": "package",
+      "name": "ttf-vista-fonts",
+      "summary": "Calibri, Cambria, Cambria Math, Candara, Consolas, Constantia, Corbel, and Meiryo; requires a licensed Windows Vista or Microsoft Office 2007 or later installation.",
+      "source": "aur",
+      "upstream": "https://aur.archlinux.org/packages/ttf-vista-fonts"
+    }
+  ],
+  "files": [
+    {
+      "source": "assets/preview.svg",
+      "destination": "assets/preview.svg",
+      "mode": "0644",
+      "size": 1589,
+      "sha256": "7e11044bc121470cf0aaad1d3fea7f65026bbae6a5b58bfb9ad4f19b5986d513",
+      "install": false
+    }
+  ]
+}

@@ -9,7 +9,7 @@
       "author": "Ryoku Team",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/bundles/gaming",
       "discord": "https://discord.gg/8KjBmUEyKA",
-      "summary": "proton \u00b7 overlays \u00b7 emulators",
+      "summary": "proton · overlays · emulators",
       "description": "The native Linux gaming stack: launchers, Wine and Proton, performance overlays, controller support, and console emulators for every system with a proven package. Ryoku installs the matching 32-bit GPU drivers for full hardware capacity.",
       "tags": [
         "proton",
@@ -368,7 +368,7 @@
           "summary": "Configure Steam Controller, DualShock, and other gamepads with custom profiles."
         }
       ],
-      "tagline": "proton \u00b7 overlays \u00b7 emulators",
+      "tagline": "proton · overlays · emulators",
       "sources": "System packages",
       "icon": "sports_esports"
     },
@@ -380,7 +380,7 @@
       "author": "Ryoku Team",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/bundles/the-influencer",
       "discord": "https://discord.gg/8KjBmUEyKA",
-      "summary": "stream \u00b7 record \u00b7 edit \u00b7 publish",
+      "summary": "stream · record · edit · publish",
       "description": "A complete stream, record, edit, reformat, and publish kit: recorders, editors, audio and thumbnail tools, plus a right-click video toolkit in the file manager.",
       "tags": [
         "stream",
@@ -682,7 +682,7 @@
           "summary": "Offline speech-to-text (whisper-cli) for the Generate captions right-click action."
         }
       ],
-      "tagline": "stream \u00b7 record \u00b7 edit \u00b7 publish",
+      "tagline": "stream · record · edit · publish",
       "sources": "System packages / Go / npm / Ryoku",
       "icon": "movie"
     },
@@ -693,7 +693,7 @@
       "path": "bundles/ryoku-zed-theme",
       "author": "Ryoku Team",
       "upstream": "https://github.com/Ryoku-dev/ryostore/tree/main/bundles/ryoku-zed-theme",
-      "summary": "Zed \u00b7 Matugen \u00b7 syntax colors",
+      "summary": "Zed · Matugen · syntax colors",
       "description": "Follow Ryoku's wallpaper palette in Zed with readable UI and distinct syntax colors, including monochrome palettes.",
       "tags": [
         "zed",
@@ -741,7 +741,7 @@
       "path": "bundles/spiceflow",
       "author": "Rayyan",
       "upstream": "https://github.com/Sipper1236/ryoku-palette-bridge",
-      "summary": "wallpaper \u00b7 Zen \u00b7 Spotify \u00b7 Discord",
+      "summary": "wallpaper · Zen · Spotify · Discord",
       "description": "Wallpaper colours for Spotify and Vesktop, with optional Zen live theming through a separately installed signed extension. Turns on the palette bridge Ryoku ships and connects it to your apps.",
       "tags": [
         "zen browser",
@@ -778,7 +778,7 @@
           "summary": "Apply your wallpaper colours to Zen, Spotify, and Discord."
         }
       ],
-      "tagline": "wallpaper colours \u00b7 optional app integrations",
+      "tagline": "wallpaper colours · optional app integrations",
       "sources": "Ryoku / MIT",
       "icon": "palette",
       "official": false,
@@ -870,7 +870,7 @@
       "author": "Ryoku Team",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/bundles/developer-essentials",
       "discord": "https://discord.gg/8KjBmUEyKA",
-      "summary": "build \u00b7 debug \u00b7 runtimes \u00b7 containers",
+      "summary": "build · debug · runtimes · containers",
       "description": "A practical workstation bootstrap for developers: build basics, Git and GitHub CLI, fast shell search tools, terminal workflow helpers, C/C++ build and debug tools, major language runtimes, Docker, and Visual Studio Code.",
       "tags": [
         "developer tools",
@@ -1121,7 +1121,7 @@
           "summary": "Microsoft Visual Studio Code editor with the official marketplace build."
         }
       ],
-      "tagline": "build \u00b7 debug \u00b7 runtimes \u00b7 containers",
+      "tagline": "build · debug · runtimes · containers",
       "sources": "System packages",
       "icon": "code"
     },
@@ -1133,7 +1133,7 @@
       "author": "Ryoku Team",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/bundles/web-browsers",
       "discord": "https://discord.gg/8KjBmUEyKA",
-      "summary": "firefox \u00b7 chromium \u00b7 privacy browsers",
+      "summary": "firefox · chromium · privacy browsers",
       "description": "A browser shelf for daily use, web development, privacy testing, and Chromium/Firefox compatibility checks: Firefox, Firefox Developer Edition, Chromium, Brave, LibreWolf, and Zen Browser.",
       "tags": [
         "browsers",
@@ -1204,7 +1204,7 @@
           "summary": "Zen Browser, a Firefox-based browser focused on a calmer, more customizable UI."
         }
       ],
-      "tagline": "firefox \u00b7 chromium \u00b7 privacy browsers",
+      "tagline": "firefox · chromium · privacy browsers",
       "sources": "System packages",
       "icon": "travel_explore"
     },
@@ -1216,7 +1216,7 @@
       "author": "Ryoku Team",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/bundles/vpn-networking",
       "discord": "https://discord.gg/8KjBmUEyKA",
-      "summary": "wireguard \u00b7 openvpn \u00b7 vpn clients",
+      "summary": "wireguard · openvpn · vpn clients",
       "description": "VPN basics and desktop clients for WireGuard, OpenVPN, IPsec/IKEv2, Proton VPN, Mullvad VPN, and Cloudflare WARP.",
       "tags": [
         "vpn",
@@ -1296,7 +1296,7 @@
           "summary": "Cloudflare WARP client and CLI for 1.1.1.1/WARP networking."
         }
       ],
-      "tagline": "wireguard \u00b7 openvpn \u00b7 vpn clients",
+      "tagline": "wireguard · openvpn · vpn clients",
       "sources": "System packages",
       "icon": "vpn_lock"
     },
@@ -1308,7 +1308,7 @@
       "author": "Ryoku Team",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/bundles/rice-showcase",
       "discord": "https://discord.gg/8KjBmUEyKA",
-      "summary": "cmatrix \u00b7 bonsai \u00b7 visualizers",
+      "summary": "cmatrix · bonsai · visualizers",
       "description": "Terminal toys and visual tools for showing off a desktop rice: Matrix rain, bonsai, audio visualizers, system readouts, ASCII banners, and classic terminal animations.",
       "tags": [
         "ricing",
@@ -1442,7 +1442,7 @@
           "summary": "Animated ASCII aquarium for whimsical terminal showcases."
         }
       ],
-      "tagline": "cmatrix \u00b7 bonsai \u00b7 visualizers",
+      "tagline": "cmatrix · bonsai · visualizers",
       "sources": "System packages",
       "icon": "auto_awesome"
     },
@@ -1453,7 +1453,7 @@
       "path": "bundles/ryotunes",
       "author": "ashmitvoid",
       "upstream": "https://github.com/ryoku-dev/ryotunes",
-      "summary": "Native music \u00b7 live Ryoku colours \u00b7 MPRIS",
+      "summary": "Native music · live Ryoku colours · MPRIS",
       "description": "The Ryoku-native music player, originally contributed by ashmitvoid. Installs the current distribution package, with native playback, MPRIS and live desktop theming.",
       "tags": [
         "music",
@@ -1479,7 +1479,7 @@
           "summary": "Ryoku-native music player with libmpv playback, MPRIS and live desktop theming."
         }
       ],
-      "tagline": "Native music \u00b7 live Ryoku colours \u00b7 MPRIS",
+      "tagline": "Native music · live Ryoku colours · MPRIS",
       "sources": "Ryoku package repository",
       "icon": "music_note",
       "official": false,
@@ -1533,7 +1533,7 @@
           "detect": "mjw-image",
           "tier": "core",
           "interactive": false,
-          "summary": "Your photo in any of 34 Material shapes, drop-replaceable and resizeable \u2014 the illogical-impulse image tile."
+          "summary": "Your photo in any of 34 Material shapes, drop-replaceable and resizeable — the illogical-impulse image tile."
         },
         {
           "type": "plugin",
@@ -1549,7 +1549,7 @@
           "detect": "mjw-media",
           "tier": "core",
           "interactive": false,
-          "summary": "MPRIS player tile with cover art, waveform seekbar, controls and synced lyrics from lrclib \u2014 the illogical-impulse media widget."
+          "summary": "MPRIS player tile with cover art, waveform seekbar, controls and synced lyrics from lrclib — the illogical-impulse media widget."
         },
         {
           "type": "plugin",
@@ -1557,7 +1557,7 @@
           "detect": "mjw-notes",
           "tier": "core",
           "interactive": false,
-          "summary": "Flip card with a scrollable note pad and inline editing, autosaved to the plugin's own state \u2014 the illogical-impulse notes."
+          "summary": "Flip card with a scrollable note pad and inline editing, autosaved to the plugin's own state — the illogical-impulse notes."
         },
         {
           "type": "plugin",
@@ -1565,7 +1565,7 @@
           "detect": "mjw-resources",
           "tier": "core",
           "interactive": false,
-          "summary": "CPU, memory, disk and battery gauges read live from /proc, /sys and UPower \u2014 the illogical-impulse resources card."
+          "summary": "CPU, memory, disk and battery gauges read live from /proc, /sys and UPower — the illogical-impulse resources card."
         },
         {
           "type": "plugin",
@@ -1573,7 +1573,7 @@
           "detect": "mjw-sticker",
           "tier": "core",
           "interactive": false,
-          "summary": "Rotatable sticker tile with outline colour, drop-replaceable \u2014 the illogical-impulse sticker."
+          "summary": "Rotatable sticker tile with outline colour, drop-replaceable — the illogical-impulse sticker."
         },
         {
           "type": "plugin",
@@ -1581,7 +1581,7 @@
           "detect": "mjw-text",
           "tier": "core",
           "interactive": false,
-          "summary": "Floating desktop text in eight bundled handwriting fonts with inline editing \u2014 the illogical-impulse custom text."
+          "summary": "Floating desktop text in eight bundled handwriting fonts with inline editing — the illogical-impulse custom text."
         },
         {
           "type": "plugin",
@@ -1589,7 +1589,7 @@
           "detect": "mjw-timer",
           "tier": "core",
           "interactive": false,
-          "summary": "Pomodoro, stopwatch and countdown on one tile with ring progress and desktop alerts \u2014 the illogical-impulse timers."
+          "summary": "Pomodoro, stopwatch and countdown on one tile with ring progress and desktop alerts — the illogical-impulse timers."
         },
         {
           "type": "plugin",
@@ -1597,7 +1597,7 @@
           "detect": "mjw-todo",
           "tier": "core",
           "interactive": false,
-          "summary": "Flip card with a checkable task list, progress ring and inline add \u2014 the illogical-impulse todo."
+          "summary": "Flip card with a checkable task list, progress ring and inline add — the illogical-impulse todo."
         },
         {
           "type": "plugin",
@@ -1605,7 +1605,7 @@
           "detect": "mjw-usercard",
           "tier": "core",
           "interactive": false,
-          "summary": "Greeting card with your name, host, uptime and weather quip plus lock, settings and session buttons \u2014 the illogical-impulse user card."
+          "summary": "Greeting card with your name, host, uptime and weather quip plus lock, settings and session buttons — the illogical-impulse user card."
         },
         {
           "type": "plugin",
@@ -1613,7 +1613,7 @@
           "detect": "mjw-visualizer",
           "tier": "core",
           "interactive": false,
-          "summary": "Live audio spectrum with five styles \u2014 bars, mirror, aurora, ring and dots \u2014 driven by your own playback stream."
+          "summary": "Live audio spectrum with five styles — bars, mirror, aurora, ring and dots — driven by your own playback stream."
         },
         {
           "type": "plugin",
@@ -1629,7 +1629,7 @@
           "detect": "mjw-worldclock",
           "tier": "core",
           "interactive": false,
-          "summary": "Up to four analog clocks for timezones you pick, with live UTC offsets \u2014 the illogical-impulse world clock."
+          "summary": "Up to four analog clocks for timezones you pick, with live UTC offsets — the illogical-impulse world clock."
         },
         {
           "type": "plugin",
@@ -1751,6 +1751,54 @@
           "summary": "The Kasugai crow roosting on the desktop, her eye wearing the last notification's priority colour — install from the Plugins tab; the kit's other half, the scroll design, lives in Notifications."
         }
       ]
+    },
+    {
+      "id": "ms-fonts",
+      "name": "Microsoft Fonts Pack",
+      "version": "1.0.0",
+      "path": "bundles/ms-fonts",
+      "author": "Ryoku Team",
+      "upstream": "https://aur.archlinux.org/packages/ttf-ms-fonts",
+      "summary": "Arial · Times New Roman · Calibri · Cambria · more",
+      "description": "Installs the redistributable Core Fonts for the Web: Andale Mono, Arial, Arial Black, Comic Sans MS, Courier New, Georgia, Impact, Times New Roman, Trebuchet MS, Verdana, and Webdings. It also installs the ClearType families Calibri, Cambria, Cambria Math, Candara, Consolas, Constantia, Corbel, and Meiryo only when a licensed copy of Windows Vista or Microsoft Office 2007 or later is installed on this computer. Lucida Sans, Lucida Console, Microsoft Sans Serif, and Tahoma are not included.",
+      "packageManagers": [
+        "pacman"
+      ],
+      "packageManagersReason": "These font packages are maintained in the AUR, so this bundle is only available on Arch and CachyOS.",
+      "tags": [
+        "office compatibility",
+        "Microsoft fonts",
+        "typography"
+      ],
+      "accent": "#5e81ac",
+      "surface": "#101010",
+      "preview": "assets/preview.svg",
+      "screenshots": [],
+      "manifest": "bundle.json",
+      "manifestSha256": "6a6a8987019a80919c26b9da7e6f7c92e58c6fd937788bbe39bdf0926d5ce2fe",
+      "components": [
+        {
+          "type": "package",
+          "name": "ttf-ms-fonts",
+          "detect": "ttf-ms-fonts",
+          "tier": "core",
+          "interactive": false,
+          "summary": "Andale Mono, Arial, Arial Black, Comic Sans MS, Courier New, Georgia, Impact, Times New Roman, Trebuchet MS, Verdana, and Webdings."
+        },
+        {
+          "type": "package",
+          "name": "ttf-vista-fonts",
+          "detect": "ttf-vista-fonts",
+          "tier": "core",
+          "interactive": false,
+          "summary": "Calibri, Cambria, Cambria Math, Candara, Consolas, Constantia, Corbel, and Meiryo; requires a licensed Windows Vista or Microsoft Office 2007 or later installation."
+        }
+      ],
+      "tagline": "familiar typefaces for documents and design",
+      "sources": "AUR / Microsoft downloads",
+      "icon": "font_download",
+      "official": true,
+      "lastUpdated": "2026-10-25"
     }
   ]
 }
