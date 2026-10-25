@@ -46,5 +46,13 @@ jobs:
       - name: Verify palette bridge installer recovery
         run: bash tests/ryoku-palette-bridge-installer.test.sh
 
+      - name: Set up Node.js for the Zed theme test
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22.18.0'
+
+      - name: Verify ryoku-zed-theme installer regression
+        run: bash tests/ryoku-zed-theme-installer.test.sh
+
       - name: Validate product catalogue (python)
         run: python3 tests/validate-store.py
