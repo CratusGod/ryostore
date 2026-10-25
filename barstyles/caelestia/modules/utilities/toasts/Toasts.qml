@@ -23,7 +23,6 @@ Item {
         return false;
     }
 
-    visible: !visibilities.overview
     implicitWidth: Tokens.sizes.utilities.toastWidth - Tokens.padding.medium * 2
     implicitHeight: {
         let h = -spacing;

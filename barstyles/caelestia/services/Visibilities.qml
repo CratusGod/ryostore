@@ -18,7 +18,6 @@ Singleton {
     // sidebar.width, where 0 means the default width.
     property int sidebarWidth
     property bool sidebarResizing: false
-    property string preOverviewActiveWindowAddress: ""
     property string dragAddress: ""
     property string dragOriginScreen: ""
     property real dragX: 0
@@ -27,7 +26,6 @@ Singleton {
     property real dragHeight: 0
     property string streamClaim: ""
 
-    signal cycleOverview(bool backwards)
 
     function sidebarWidthFor(defaultWidth: real): real {
         return sidebarPinned && sidebarWidth > 0 ? sidebarWidth : defaultWidth;
@@ -56,10 +54,6 @@ Singleton {
                 if (other !== visibilities)
                     other.launcher = false;
             }
-        });
-        visibilities.overviewChanged.connect(() => {
-            if (visibilities.overview)
-                Kwin.clearHighlight();
         });
         visibilities.sessionChanged.connect(() => {
             if (visibilities.session)
@@ -98,9 +92,9 @@ Singleton {
         dragOriginScreen = "";
     }
 
-    function setOverview(visible: bool): void {
-        for (const visibilities of screens.values())
-            visibilities.overview = visible;
+    function toggleOverview(): void {
+        Kwin.clearHighlight();
+        Quickshell.execDetached(["ryoku-shell", "overview"]);
     }
 
     Binding on sidebarWidth {

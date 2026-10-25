@@ -14,7 +14,7 @@ Item {
     // Set while a popout pushes the sidebar; its height is already animated.
     property bool followsPopout: false
     readonly property Props props: Props {}
-    readonly property bool shouldBeActive: visibilities.sidebar && Config.sidebar.enabled && !visibilities.overview
+    readonly property bool shouldBeActive: visibilities.sidebar && Config.sidebar.enabled
     property bool keepLoaded: false
     property real offsetScale: shouldBeActive ? 0 : 1
     // The sidebar sits against the right edge unless the bar is there.

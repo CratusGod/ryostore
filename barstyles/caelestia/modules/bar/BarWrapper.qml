@@ -53,7 +53,7 @@ Item {
     readonly property bool keptOpen: Config.bar.persistent && !dodging
     readonly property int exclusiveZone: !disabled && !dodgeEnabled && (Config.bar.persistent || visibilities.bar) ? contentWidth : Config.border.thickness
     readonly property int visualThickness: !disabled && (Config.bar.persistent || visibilities.bar) ? contentWidth : Config.border.thickness
-    readonly property bool shouldBeVisible: !fullscreen && !disabled && !visibilities.overview && (keptOpen || visibilities.bar || isHovered)
+    readonly property bool shouldBeVisible: !fullscreen && !disabled && (keptOpen || visibilities.bar || isHovered)
     property bool isHovered
     readonly property bool isHorizontal: root.position === "top" || root.position === "bottom"
     readonly property int clampedThickness: Math.max(Config.border.minThickness, isHorizontal ? implicitHeight : implicitWidth)
