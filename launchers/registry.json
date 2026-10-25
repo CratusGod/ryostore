@@ -23,8 +23,8 @@
         "assets/sections.webp"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "3c233c71b5768eef70774fca91e9198341cbb894672fe9db986aa093fdb4f7b3",
-      "lastUpdated": "2026-10-23",
+      "manifestSha256": "c33be91335efea745578e705c8edb67af56e44d1a47575946a16bdb536c48d75",
+      "lastUpdated": "2026-10-25",
       "official": true,
       "license": "GPL-3.0-or-later"
     },

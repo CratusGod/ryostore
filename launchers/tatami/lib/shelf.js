@@ -99,8 +99,10 @@ function rank(item, query) {
     return extra.indexOf(query) >= 0 ? 3 : -1;
 }
 
-// filter narrows the shelf to one section and the query, best match first. A
-// query searches every section, so typing never hides an app behind a tab.
+// filter narrows the shelf to one section and the query. A query searches every
+// section, so typing never hides an app behind a tab. Favorites come first in
+// the section and in a search; within them (and within the rest) the best match
+// leads, then the shelf's alphabetical order.
 function filter(shelf, section, query) {
     var q = String(query || "").trim().toLowerCase();
     var hits = [];
@@ -113,7 +115,7 @@ function filter(shelf, section, query) {
             hits.push({ item: item, score: score, order: i });
     }
     hits.sort(function (a, b) {
-        return a.score - b.score || (b.item.pinned ? 1 : 0) - (a.item.pinned ? 1 : 0) || a.order - b.order;
+        return (b.item.pinned ? 1 : 0) - (a.item.pinned ? 1 : 0) || a.score - b.score || a.order - b.order;
     });
     return hits.map(function (hit) { return hit.item; });
 }

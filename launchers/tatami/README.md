@@ -19,7 +19,9 @@ service, so terminal apps open in your chosen terminal.
 
 Settings -> App Launcher shows these for Tatami (`settings.json` lists them):
 
-- **Backdrop frost** blurs the desktop behind the sheet; 0 leaves it sharp.
+- **Backdrop frost** blurs the desktop behind the sheet; 0 leaves it sharp. It
+  needs a compositor that lets the shell capture a whole screen safely (not
+  niri yet), and the sheet stays unblurred where it cannot.
 - **Overlay opacity** sets how opaque the wash behind the sheet is.
 - **Hidden apps** drops the apps you never open from the shelf.
 - **Grid** sets the columns and the width of each mat. The sheet is columns
@@ -28,6 +30,10 @@ Settings -> App Launcher shows these for Tatami (`settings.json` lists them):
   hidden section still shows its apps under All and in search.
 - **Favorites** pins apps first in every section and in search, marked with a
   star.
+
+Tatami checks every value it reads from `launcher.json`: a missing or odd value
+(text where a number belongs, a list that is not a list) falls back to the
+default, and numbers are held to the range Settings offers.
 
 Install it from RyoStore -> App launchers, then pick it in
 Settings -> App Launcher.

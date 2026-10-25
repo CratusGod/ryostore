@@ -24,9 +24,9 @@
     {
       "source": "Main.qml",
       "destination": "Main.qml",
-      "sha256": "1359b4b46a0aeb9535229ef526e43c4c3d12fc8022db4bc55617fc69c15f26a7",
+      "sha256": "60f055569098371122a7481eaacb9803fa3119cb2e2063e425b88b85883622c4",
       "mode": "0644",
-      "size": 4700,
+      "size": 5258,
       "install": true
     },
     {
@@ -48,17 +48,17 @@
     {
       "source": "README.md",
       "destination": "README.md",
-      "sha256": "c97b4bb3ba9a8a691831204eea0d14feb2fef39116ba74fd80178d9df28419a7",
+      "sha256": "d97c99a7eb06979ebfa0a7c82823e090b0392203af9dd5896118bbcd3ea48474",
       "mode": "0644",
-      "size": 1542,
+      "size": 1897,
       "install": true
     },
     {
       "source": "Sheet.qml",
       "destination": "Sheet.qml",
-      "sha256": "736b1e61cb748c48b7d97a05a7c914d981561053482d58382089f512dcc4d46a",
+      "sha256": "10341bdb6cd69b565cc0fcd153f3f4bf9d171fd5a000045a88891fdd076250e8",
       "mode": "0644",
-      "size": 15895,
+      "size": 17001,
       "install": true
     },
     {
@@ -86,11 +86,19 @@
       "install": false
     },
     {
+      "source": "lib/config.js",
+      "destination": "lib/config.js",
+      "sha256": "484a5b1bea277e9560f6a41ff08e27d6d3b15f51e854015f8841bcafffce93e9",
+      "mode": "0644",
+      "size": 2289,
+      "install": true
+    },
+    {
       "source": "lib/shelf.js",
       "destination": "lib/shelf.js",
-      "sha256": "e30c190033d14167ba60b12b2a22a09ec2b4e8f58f99997ae68eddd634662514",
+      "sha256": "0c945ed99547105b620cea34e1a682ef004d484be61ee0df730e6bfe0f7404e4",
       "mode": "0644",
-      "size": 5838,
+      "size": 5972,
       "install": true
     },
     {

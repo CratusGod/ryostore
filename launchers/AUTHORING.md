@@ -115,10 +115,17 @@ are ignored, and a missing or malformed file offers nothing.
 
 Read the keys yourself, live, and fall back to a sensible default when one is
 absent (`FileView` with `watchChanges` and a `JsonAdapter`, see Tatami's
-`Main.qml`). Never write `launcher.json`: Settings owns it, and a write from
-your launcher would drop every key you did not declare. If you blur the
-backdrop yourself, use the namespace `"launcher-noblur"` so the compositor's
-fixed blur does not stack on yours.
+`Main.qml`). The file is plain JSON that anyone can edit, so check each value
+before you use it: a list that is not a list, text where a number belongs, a
+number out of range. Tatami does this in one pure script, `lib/config.js`, with
+a Node test in `tests/tatami-launcher.test.mjs`. Never write `launcher.json`:
+Settings owns it, and a write from your launcher would drop every key you did
+not declare. If you blur the backdrop yourself, use the namespace
+`"launcher-noblur"` so the compositor's fixed blur does not stack on yours, and
+capture the screen only when `Wm.caps.persistentScreenCapture === true`: on niri
+any whole-screen capture can crash the shell, so skip the blur there. Release the
+capture as soon as the frame is in your texture rather than holding it until the
+sheet is destroyed (Tatami's `Sheet.qml` shows how).
 
 ## Traps that blank a launcher
 

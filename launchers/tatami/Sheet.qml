@@ -41,13 +41,16 @@ PanelWindow {
         running: true
         onTriggered: sheet.opening = false
     }
-    Component.onCompleted: sheet.reveal = Qt.binding(() => sheet.tatami.openRequested ? 1 : 0)
+    Component.onCompleted: {
+        sheet.frostWanted = sheet.blurPx > 0 && Wm.caps.persistentScreenCapture === true;
+        sheet.reveal = Qt.binding(() => sheet.tatami.openRequested ? 1 : 0);
+    }
 
     // The grid is columns x mat width and the sheet follows from that. On a
     // screen too narrow for it, columns drop and the mats keep their size.
-    readonly property int matPx: Tokens.px(Math.max(90, sheet.cfg.matWidth))
+    readonly property int matPx: Tokens.px(sheet.cfg.matWidth)
     readonly property int availW: sheet.width - Tokens.s7 * 2
-    readonly property int cols: Math.max(1, Math.min(Math.max(1, sheet.cfg.columns), Math.floor(sheet.availW / sheet.matPx)))
+    readonly property int cols: Math.max(1, Math.min(sheet.cfg.columns, Math.floor(sheet.availW / sheet.matPx)))
 
     readonly property int rows: Math.max(1, Math.floor(shelf.height / shelf.cellHeight))
 
@@ -101,14 +104,39 @@ PanelWindow {
 
     // The desktop as it was when the sheet opened, blurred behind the wash
     // (Settings -> App Launcher -> Backdrop frost). Off at 0.
+    //
+    // The still is one capture, taken as the sheet is built and let go a moment
+    // after its frame arrives, so no screen copy is alive when the sheet closes
+    // and is destroyed. And it is only asked for where the shell can capture a
+    // whole output safely (Wm.caps.persistentScreenCapture): on niri that
+    // capture can take the whole shell down, so the wash stays unblurred there.
     readonly property var cfg: sheet.tatami.settings
-    readonly property int blurPx: Math.max(0, Math.min(64, sheet.cfg.bgBlur | 0))
+    readonly property int blurPx: sheet.cfg.bgBlur
+    // decided once at build, while the sheet is still clear, so it never copies itself
+    property bool frostWanted: false
+    // the frame has arrived and frozenTex holds it
+    property bool frostArrived: false
+    // the capture has been let go; frozenTex keeps the still
+    property bool frostTaken: false
     ScreencopyView {
         id: frozen
         anchors.fill: parent
-        captureSource: sheet.blurPx > 0 ? sheet.screen : null
+        captureSource: (sheet.frostWanted && !sheet.frostTaken) ? sheet.screen : null
         live: false
-        onHasContentChanged: if (hasContent) frozenTex.scheduleUpdate()
+        paintCursor: false
+        onHasContentChanged: {
+            if (!hasContent)
+                return;
+            frozenTex.scheduleUpdate();
+            sheet.frostArrived = true;
+            letGo.restart();
+        }
+    }
+    // long enough for frozenTex to have drawn the frame while the sheet fades in
+    Timer {
+        id: letGo
+        interval: 250
+        onTriggered: sheet.frostTaken = true
     }
     ShaderEffectSource {
         id: frozenTex
@@ -121,7 +149,7 @@ PanelWindow {
     MultiEffect {
         anchors.fill: parent
         source: frozenTex
-        visible: sheet.blurPx > 0 && frozen.hasContent
+        visible: sheet.frostArrived && sheet.blurPx > 0
         blurEnabled: true
         blurMax: 64
         blur: Math.min(1, sheet.blurPx / 30)
@@ -131,7 +159,7 @@ PanelWindow {
     Rectangle {
         anchors.fill: parent
         color: Tokens.paper
-        opacity: Math.max(0.3, Math.min(1, sheet.cfg.overlayOpacity)) * sheet.reveal
+        opacity: sheet.cfg.overlayOpacity * sheet.reveal
     }
 
     MouseArea {
