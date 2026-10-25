@@ -6,8 +6,6 @@ A Ryoku bar plugin (`docker-ctl`) for the local Docker engine.
   number of running containers. A click opens the panel; the glyph itself
   never changes anything.
 - **Panel:**
-  - **START / STOP** the Docker daemon, and **BOOT: ON / OFF** to set whether
-    it starts at boot. These ask for a password once, then never again.
   - Every container, with its image, status and published ports, plus
     **START / STOP** and **RESTART**.
   - Click a container's name to edit its **published ports** and **mounts**
@@ -40,51 +38,35 @@ change the compose file too.
 
 ## What it runs
 
-- `bin/dockerctl` (Python 3, standard library only). It talks to the Docker
-  Engine API over `/var/run/docker.sock`, so you need permission to use that
-  socket (membership in the `docker` group).
-- `ryoku-host svc --system is-active` / `is-enabled` for `docker.service` and
-  `docker.socket` (reads only; Ryoku's init-neutral service seam).
+`bin/dockerctl` uses Python's standard library to talk directly to the local
+Docker Engine API. It never invokes the Docker command-line client, a shell,
+`sudo`, `pkexec`, or a passwordless helper. It uses `DOCKER_HOST` when that
+names a local `unix://` socket and otherwise uses `/var/run/docker.sock`.
 
-### Privileged commands (one password, once)
+The current user must already have permission to use that socket. On a regular
+Docker installation this is commonly provided by membership in the `docker`
+group; rootless Docker normally exports its own `DOCKER_HOST`. The plugin does
+not install, start, stop, enable, or configure the Docker daemon.
 
-Starting, stopping, enabling and disabling Docker needs root. The plugin asks
-for your password **once**: when you click **ALLOW** on the panel's setup
-banner, or the first time you use a daemon button. That runs:
+The helper issues only these local Engine API requests:
 
-| When | Command |
-| --- | --- |
-| First use / ALLOW | `pkexec bin/docker-ctl-setup install` |
+- `GET /containers/json?all=1` to list containers;
+- `POST /containers/<id>/start`, `/stop?t=10`, or `/restart?t=10` after a
+  matching button click;
+- `GET /containers/<id>/json` after a container name is clicked;
+- a recreate sequence after **APPLY**: inspect, stop if running, rename, create,
+  start if previously running, then remove the old container. A failed create
+  removes the partial replacement and restores the old container.
 
-`docker-ctl-setup install` writes two root-owned files:
-
-- `/usr/local/libexec/docker-ctl-daemon`: a 10-line helper that accepts exactly
-  `start`, `stop`, `enable` and `disable`, and runs fixed
-  `ryoku-host svc --system` commands for `docker.service` and `docker.socket`.
-- `/usr/share/polkit-1/actions/dev.ryoku.docker-ctl.policy`: a polkit action
-  that lets the active local session run that helper without a password.
-  Inactive and remote sessions still need the admin password.
-
-After that, the daemon buttons run these without asking:
-
-| Button | Command |
-| --- | --- |
-| START | `pkexec /usr/local/libexec/docker-ctl-daemon start` |
-| STOP | `pkexec /usr/local/libexec/docker-ctl-daemon stop` (also stops `docker.socket`) |
-| BOOT: OFF → ON | `pkexec /usr/local/libexec/docker-ctl-daemon enable` |
-| BOOT: ON → OFF | `pkexec /usr/local/libexec/docker-ctl-daemon disable` (also disables `docker.socket`) |
-
-The helper is a root-owned copy, not a file in the plugin folder. A
-password-free root command must not run anything the user can edit.
-
-To undo it (the buttons go back to asking every time):
-`pkexec ~/.local/share/ryoku/plugins/docker-ctl/bin/docker-ctl-setup uninstall`.
-`ryoku plugin remove docker-ctl` does not remove these two files, so run the
-uninstall first.
+Container IDs come from Docker and must be 12 to 64 lowercase hexadecimal
+characters. The editor accepts structured JSON only. Ports must be in the
+1-65535 range, protocols are limited to TCP, UDP and SCTP, host addresses must
+be IP literals, mount targets must be absolute container paths, bind sources
+must already exist, and named volumes use Docker's name character set.
 
 ## What it reads and writes
 
-- Reads: the Docker Engine API, and systemd unit state.
-- Writes: no files in your home. One-time setup writes the two root-owned files above.
-  Docker state (containers, daemon) changes only when you click a button.
-- Network: none. The only connection is the local unix socket.
+- Reads: local Docker container state through the unix socket.
+- Writes: Docker container state only after a lifecycle button or **APPLY**.
+- Files: none.
+- Network: none. The only connection is the selected local unix socket.

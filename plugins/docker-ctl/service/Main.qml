@@ -3,9 +3,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell.Io
 
-// service/Main.qml holds the Docker plugin's state. bin/dockerctl does every
-// real call (Engine API over the unix socket, a pkexec helper over ryoku-host svc for the daemon);
-// this polls its status and runs one action at a time.
+// Polls the local Engine API and runs one container action at a time.
 Item {
     id: svc
 
@@ -21,12 +19,8 @@ Item {
     readonly property bool showStopped: setting("showStopped", true)
     readonly property string script: pluginApi ? pluginApi.pluginDir + "/bin/dockerctl" : ""
 
-    // Live state from `dockerctl status`.
     property string daemon: "unknown"
     property bool reachable: false
-    property bool bootEnabled: false
-    // True once docker-ctl-setup has run: daemon buttons need no password.
-    property bool passwordless: true
     property var containers: []
     readonly property int runningCount: containers.filter(c => c.state === "running").length
     readonly property var shown: showStopped ? containers : containers.filter(c => c.state === "running")
@@ -37,7 +31,6 @@ Item {
 
     property bool busy: false
     property string busyId: ""
-    // What is running: "stop", "restart", "recreate", "daemon-start", ...
     property string busyAction: ""
     property string error: ""
     property string notice: ""
@@ -52,7 +45,7 @@ Item {
         if (!script || busy) return;
         busy = true;
         busyId = id || "";
-        busyAction = argv[0] === "daemon" ? "daemon-" + argv[1] : argv[0];
+        busyAction = argv[0];
         error = "";
         notice = "";
         actionProc.after = after || null;
@@ -62,10 +55,6 @@ Item {
 
     function containerAction(action, id) { run([action, id], id); }
 
-    function daemonStart() { run(["daemon", "start"], "daemon"); }
-    function daemonStop() { run(["daemon", "stop"], "daemon"); }
-    function setBoot(on) { run(["daemon", on ? "enable" : "disable"], "daemon"); }
-    function setupPasswordless() { run(["setup", "install"], "daemon"); }
 
     function edit(id) {
         if (editingId === id) { closeEdit(); return; }
@@ -100,8 +89,6 @@ Item {
                     const st = JSON.parse(this.text);
                     svc.daemon = st.daemon;
                     svc.reachable = st.reachable;
-                    svc.bootEnabled = st.enabled || st.socket;
-                    svc.passwordless = st.passwordless;
                     svc.containers = st.containers;
                 } catch (e) {}
             }

@@ -2,9 +2,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Ryoku.PluginKit.Singletons
 
-// The panel: the daemon (start/stop, start at boot) on top, then every
-// container with start/stop and restart. Click a container's name to edit its
-// published ports and mounts; APPLY recreates it with them.
+// Lists local containers and exposes lifecycle and recreation controls.
 Item {
     id: root
 
@@ -173,10 +171,9 @@ Item {
         width: root.width - 24 * root.s
         spacing: 10 * root.s
 
-        // Header: the daemon.
         Item {
             width: parent.width
-            height: Math.max(head.implicitHeight, daemonBtns.height)
+            height: head.implicitHeight
 
             Row {
                 id: head
@@ -199,29 +196,8 @@ Item {
                     }
                     Caption {
                         text: !root.service ? ""
-                            : (root.up ? root.service.runningCount + " running" : "Daemon " + root.service.daemon)
-                              + " · " + (root.service.bootEnabled ? "starts at boot" : "off at boot")
+                            : root.up ? root.service.runningCount + " running" : "Daemon unavailable"
                     }
-                }
-            }
-
-            Row {
-                id: daemonBtns
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-                spacing: 6 * root.s
-                Btn {
-                    label: root.service && root.service.bootEnabled ? "BOOT: ON" : "BOOT: OFF"
-                    enabledState: !root.busy
-                    onClicked: root.service.setBoot(!root.service.bootEnabled)
-                }
-                Btn {
-                    label: root.up ? "STOP" : "START"
-                    loading: root.busy && root.service.busyAction === "daemon-" + (root.up ? "stop" : "start")
-                    primary: !root.up
-                    danger: root.up
-                    enabledState: !root.busy
-                    onClicked: root.up ? root.service.daemonStop() : root.service.daemonStart()
                 }
             }
         }
@@ -236,42 +212,6 @@ Item {
             font.pixelSize: 11 * root.s
         }
 
-        // One-time setup: after this the daemon buttons never ask again.
-        Rectangle {
-            visible: root.service && !root.service.passwordless
-            width: parent.width
-            height: setupRow.implicitHeight + 12 * root.s
-            radius: Theme.radius
-            color: Theme.threadBg
-            border.color: Theme.border
-            border.width: 1
-            Item {
-                id: setupRow
-                x: 8 * root.s
-                y: 6 * root.s
-                width: parent.width - 16 * root.s
-                implicitHeight: Math.max(setupText.implicitHeight, setupBtn.height)
-                Caption {
-                    id: setupText
-                    anchors.left: parent.left
-                    anchors.right: setupBtn.left
-                    anchors.rightMargin: 8 * root.s
-                    anchors.verticalCenter: parent.verticalCenter
-                    wrapMode: Text.WordWrap
-                    text: "Starting and stopping Docker asks for your password. Allow it once and it never asks again."
-                }
-                Btn {
-                    id: setupBtn
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    label: "ALLOW"
-                    primary: true
-                    enabledState: !root.busy
-                    loading: root.busy && root.service.busyAction === "setup"
-                    onClicked: root.service.setupPasswordless()
-                }
-            }
-        }
 
         Rectangle { width: parent.width; height: 1; color: Theme.hair }
 

@@ -40,9 +40,9 @@
     {
       "source": "README.md",
       "destination": "README.md",
-      "sha256": "b8b7af325d5f5932dcaac982273f8661a2093ccc57e284ff0177242aa7ef969d",
+      "sha256": "4361e04779752e6bd9c0ca4c80a4fe8acb2f4d5814cea37d4cce2b0cccd3ff30",
       "mode": "0644",
-      "size": 4169,
+      "size": 3456,
       "install": false
     },
     {
@@ -54,27 +54,19 @@
       "install": false
     },
     {
-      "source": "bin/docker-ctl-setup",
-      "destination": "bin/docker-ctl-setup",
-      "sha256": "1b16f0e06220959a7cdd0954f90f5d0bb0b0c9cebd5b2368f3d5643cf7dbf94f",
-      "mode": "0755",
-      "size": 2695,
-      "install": true
-    },
-    {
       "source": "bin/dockerctl",
       "destination": "bin/dockerctl",
-      "sha256": "94e734cbf65f29edd323e6d29f7fbf932c23d1619d45a264301b72fddf5f2a4b",
+      "sha256": "856c7d975583f02ae8c17dbc822ce34f3611885a0dc83da4f8b24714e03f45a3",
       "mode": "0755",
-      "size": 12555,
+      "size": 11541,
       "install": true
     },
     {
       "source": "content/Panel.qml",
       "destination": "content/Panel.qml",
-      "sha256": "5ffa9ce8ad2eb679048f4a57081822099b4623d6eb62dea2238816348aa006bf",
+      "sha256": "761983d7f50820c10f6cc27483cfddee3a2a93cbe2c0b830d7ab18a0b8ace29c",
       "mode": "0644",
-      "size": 23491,
+      "size": 20745,
       "install": true
     },
     {
@@ -88,17 +80,17 @@
     {
       "source": "manifest.json",
       "destination": "manifest.json",
-      "sha256": "3c6940aa1604f5c5602949bd4a2f120e3ed6d8edb41f59fdd25896dc8fbce401",
+      "sha256": "1599345767d852363dea551fe331fec3344a5a53325bd8b6ba53b96f2f7704de",
       "mode": "0644",
-      "size": 2009,
+      "size": 1470,
       "install": true
     },
     {
       "source": "service/Main.qml",
       "destination": "service/Main.qml",
-      "sha256": "b3f1740a83fd58c66e6a32bbf57cf9ac31aa293a6b8ca64c1f6b1a2c230f60a0",
+      "sha256": "e2f46eaedbb7d2325f470ddd2647bcb6b57ef60e6d82c52851ad89482e9f18e0",
       "mode": "0644",
-      "size": 4561,
+      "size": 3677,
       "install": true
     }
   ]

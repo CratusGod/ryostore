@@ -3,7 +3,7 @@
   "name": "Docker",
   "version": "0.2.1",
   "author": "Madhav Khosla <madhav.khoslaa@gmail.com>",
-  "description": "Docker on the bar: start, stop and set the daemon to run at boot, see every container, start/stop/restart it, and edit its published ports and mounts (applied by recreating the container).",
+  "description": "Docker on the bar: see every local container, start, stop or restart it, and edit its published ports and mounts by recreating it.",
   "license": "MIT",
   "official": false,
   "hosts": [
@@ -19,20 +19,11 @@
   },
   "files": [
     "bin/dockerctl",
-    "bin/docker-ctl-setup",
     "assets/preview-widget.png"
   ],
   "capabilities": {
     "densities": [
       "glyph"
-    ],
-    "privileged": [
-      "pkexec bin/docker-ctl-setup install",
-      "pkexec bin/docker-ctl-setup uninstall",
-      "pkexec /usr/local/libexec/docker-ctl-daemon start",
-      "pkexec /usr/local/libexec/docker-ctl-daemon stop",
-      "pkexec /usr/local/libexec/docker-ctl-daemon enable",
-      "pkexec /usr/local/libexec/docker-ctl-daemon disable"
     ]
   },
   "defaults": {
@@ -45,11 +36,7 @@
   },
   "dependencies": {
     "commands": [
-      "python3",
-      "ryoku-host",
-      "pkexec",
-      "install",
-      "mktemp"
+      "python3"
     ]
   },
   "metadata": {
@@ -80,7 +67,6 @@
     ]
   },
   "commands": [
-    "bin/dockerctl",
-    "bin/docker-ctl-setup"
+    "bin/dockerctl"
   ]
 }
