@@ -1971,6 +1971,34 @@
       "lastUpdated": "2026-10-22",
       "license": "MIT",
       "upstream": "https://github.com/root-secyrity/window-stash"
+    },
+    {
+      "id": "docker-ctl",
+      "name": "Docker",
+      "version": "0.2.1",
+      "path": "plugins/docker-ctl",
+      "author": "Madhav Khosla <madhav.khoslaa@gmail.com>",
+      "summary": "Docker on the bar: see every local container, start, stop or restart it, and edit its published ports and mounts.",
+      "description": "Docker on the bar: see every local container, start, stop or restart it, and edit its published ports and mounts by recreating it.",
+      "tags": [
+        "bar-widget"
+      ],
+      "accent": "#8f8378",
+      "surface": "#101010",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "00f10784f3abace06d6bec0c5e1aa78401b2d019def5f6019c248c0f6a1ea53c",
+      "official": false,
+      "tagline": "Docker on the bar: see every local container, start, stop or restart it, and edit its published ports and mounts.",
+      "icon": "docker",
+      "hosts": [
+        "topbarGlyph"
+      ],
+      "lastUpdated": "2026-10-25",
+      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/docker-ctl"
     }
   ]
 }
