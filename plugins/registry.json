@@ -1971,6 +1971,65 @@
       "lastUpdated": "2026-10-22",
       "license": "MIT",
       "upstream": "https://github.com/root-secyrity/window-stash"
+    },
+    {
+      "id": "docker-ctl",
+      "name": "Docker",
+      "version": "0.2.1",
+      "path": "plugins/docker-ctl",
+      "author": "Madhav Khosla <madhav.khoslaa@gmail.com>",
+      "summary": "Docker on the bar: see every local container, start, stop or restart it, and edit its published ports and mounts.",
+      "description": "Docker on the bar: see every local container, start, stop or restart it, and edit its published ports and mounts by recreating it.",
+      "tags": [
+        "bar-widget"
+      ],
+      "accent": "#8f8378",
+      "surface": "#101010",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "00f10784f3abace06d6bec0c5e1aa78401b2d019def5f6019c248c0f6a1ea53c",
+      "official": false,
+      "tagline": "Docker on the bar: see every local container, start, stop or restart it, and edit its published ports and mounts.",
+      "icon": "docker",
+      "hosts": [
+        "topbarGlyph"
+      ],
+      "lastUpdated": "2026-10-25",
+      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/docker-ctl"
+    },
+    {
+      "id": "yatagarasu-roost",
+      "name": "Yatagarasu Roost",
+      "path": "plugins/yatagarasu-roost",
+      "author": "0xSrcAura",
+      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/yatagarasu-roost",
+      "summary": "The Kasugai crow on your desktop — her eye wears the last notification's colour.",
+      "description": "The other half of Yatagarasu: the crow herself, roosting on the desktop on her prism wire. Her own listener watches the session's notification bus and her eye wears the freshest word — LOW cyan, MEDIUM emerald, HIGH amber, CRITICAL rose, the calm prism when the wire is clear. Companion to the Yatagarasu notification design, whose scrolls are her voice.",
+      "tagline": "The Kasugai crow on your desktop — her eye wears the last notification's colour.",
+      "tags": [
+        "desktop-widget",
+        "crow",
+        "notifications"
+      ],
+      "accent": "#10D9A3",
+      "surface": "#050A12",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "cf3bdc83321afc6188f8d51b0aca609b1570eb6c55c68b443416c265262688f6",
+      "lastUpdated": "2026-10-25",
+      "official": false,
+      "license": "GPL-3.0-or-later",
+      "hosts": [
+        "desktopWidget"
+      ],
+      "icon": "",
+      "version": "1.0.0"
     }
   ]
 }
