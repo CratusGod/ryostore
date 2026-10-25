@@ -1997,7 +1997,8 @@
       "hosts": [
         "topbarGlyph"
       ],
-      "lastUpdated": "2026-10-25"
+      "lastUpdated": "2026-10-25",
+      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/docker-ctl"
     }
   ]
 }
