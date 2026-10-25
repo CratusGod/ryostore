@@ -19,9 +19,9 @@ Two roots were written then, and both are preserved in this repo:
 Her scene (content/gotchi/, the Insei* files and their qmldir),
 her shaders (content/shaders/, .frag sources beside the compiled
 .qsb), and her palette-and-accents singleton
-(content/tw/TransparentWorld.qml) are carried byte-for-byte from
-the Jurai shell tree (apsara/mandara/soul/). Nothing of hers was
-redrawn, renamed, or reworded for the store.
+(content/tw/TransparentWorld.qml) come from the Jurai shell tree
+(apsara/mandara/soul/), with the small standalone-port changes
+listed below.
 
 The port's own hand, kept as small as the Fūin port's:
 
@@ -55,4 +55,8 @@ The port's own hand, kept as small as the Fūin port's:
     closer over Ase's head, and the hint line above the arc —
     "read the sigils · invoke your sequence", half-eaten by the
     centre card as built — is lifted clear so it reads whole.
-    Two numbers changed; nothing else of hers moved.
+    The v1.0.2 submission changed those two numbers.
+  * The success whisper welcomes the account entered in the greeter
+    instead of naming the theme's author for every user.
+  * The sign-in column sits at the foot of the screen so the
+    invocation whisper stays clear at the supported 720p size.

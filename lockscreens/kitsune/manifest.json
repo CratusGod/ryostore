@@ -17,8 +17,8 @@
       "source": "PROVENANCE.txt",
       "destination": "PROVENANCE.txt",
       "mode": "0644",
-      "size": 3099,
-      "sha256": "e7bf1e128c0bef20346c8ea6ad3defe4c28ac2f1408ec68a8e0b01b8ee97d2fb",
+      "size": 3315,
+      "sha256": "39a224f479a10cb5023dfe8092c638c5fff03c4212162e4d46af70ccdaba3246",
       "install": true
     },
     {
@@ -33,8 +33,8 @@
       "source": "content/Main.qml",
       "destination": "Main.qml",
       "mode": "0644",
-      "size": 17023,
-      "sha256": "5b10cbd1e9c4ba9fb34418228904cd9210a4f34ea034cd529c599b4fbbd01c48",
+      "size": 17034,
+      "sha256": "924a1a0cdf3df3259588dbb186c0990e27ffed0b9de269ece37940e54aa5024a",
       "install": true
     },
     {

@@ -212,7 +212,7 @@ Rectangle {
             root._leaving = true;
             root._tapped = root._foldIds.slice(0, 7);
             scene.aseTransform();
-            root._setWhisper("the seal opens · welcome, 0xSrcAura");
+            root._setWhisper("the seal opens · welcome, " + usernameField.text);
         }
         function onLoginFailed() {
             root._checking = false;
@@ -237,7 +237,7 @@ Rectangle {
     Column {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 36
+        anchors.bottomMargin: 6
         spacing: 9
         z: 2
 
