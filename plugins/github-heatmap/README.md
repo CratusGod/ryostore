@@ -16,9 +16,7 @@ all styled to sit next to Ryoku's own desktop widgets.
   the card or the desktop's right-click menu, then fine-tune anything.
 - **Eight palettes.** Theme, Green, Blue, Purple, Pink, Orange, Ice and Mono,
   with GitHub's levels or a scale relative to your best day. Theme follows the
-  desktop's Colour section like the built-in widgets: Auto, Solid, or a
-  Gradient that runs from one colour to another across the levels (Gradient
-  needs a desktop that passes `accentColor2`; elsewhere it shows the first colour).
+  colour picked in the desktop's right-click menu, or the wallpaper accent.
 - **Shape and spacing.** Rounded, square or circle cells; cell size and gap;
   months as one continuous grid or as separate blocks.
 - **Labels your way.** Month names (`jan`, `Jan`, `J`, `1`), weekday labels

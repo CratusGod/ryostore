@@ -22,6 +22,10 @@ Item {
     function cfg(k, d) {
         if (_over[k] !== undefined) return _over[k];
         if (settings && settings[k] !== undefined && settings[k] !== null && settings[k] !== "") return settings[k];
+        // not saved yet: the current design's value, so a fresh install looks like its design
+        var dn = _over.design !== undefined ? _over.design : settings && settings.design ? settings.design : "github";
+        var preset = designs[dn];
+        if (preset && preset[k] !== undefined) return preset[k];
         return d;
     }
     function setSetting(k, v) {
@@ -185,7 +189,7 @@ Item {
     }
     Process {
         id: whoami
-        command: ["gh", "api", "user", "--jq", ".login"]
+        command: ["gh", "api", "--hostname", "github.com", "user", "--jq", ".login"]
         stdout: StdioCollector {
             onStreamFinished: {
                 var login = text.trim();

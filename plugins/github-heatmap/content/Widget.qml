@@ -24,9 +24,6 @@ Item {
     // its right-click menu, Auto (wallpaper accent) or a pinned one
     property color accentColor: Theme.accent
     property bool accentFromHost: false
-    // Gradient mode: the levels run from accentColor to accentColor2
-    property color accentColor2: accentColor
-    property bool accentGradient: false
 
     readonly property var service: pluginApi ? pluginApi.mainInstance : null
     function cfg(k, d) { return service ? service.cfg(k, d) : d; }
@@ -312,10 +309,6 @@ Item {
         var l = Math.min(level, 4);
         var p = _palettes[palette];
         if (p) return p[l - 1];
-        if (palette !== "mono" && accentFromHost && accentGradient) {
-            var f = (l - 1) / 3, a = accentColor, b = accentColor2;
-            return Qt.rgba(a.r + (b.r - a.r) * f, a.g + (b.g - a.g) * f, a.b + (b.b - a.b) * f, 1);
-        }
         var base = palette === "mono" ? Theme.bright : accentFromHost ? accentColor : Theme.accent;
         return Qt.rgba(base.r, base.g, base.b, [0, 0.42, 0.62, 0.82, 1.0][l]);
     }

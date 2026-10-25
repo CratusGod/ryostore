@@ -1326,7 +1326,7 @@
       "version": "0.8.0",
       "path": "plugins/github-heatmap",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/github-heatmap",
-      "author": "safloresmo",
+      "author": "Samuel Flores <mail@safloresmo.com>",
       "summary": "Your GitHub contribution calendar on the wallpaper: four designs, palettes that follow your theme, streaks and a glass card.",
       "description": "Your GitHub contribution calendar on the wallpaper: four designs, palettes that follow your theme, streaks and a glass card.",
       "tags": [
@@ -1346,7 +1346,7 @@
         "assets/preview-settings.png"
       ],
       "manifest": "product-manifest.json",
-      "manifestSha256": "84a85852e7be67ee67a8ebc1f59e4b7b74b24a18d1b69f6e8061b929e32e6035",
+      "manifestSha256": "55c3fb749bfbcc7f444980dc25ccd94852b488f733a4fb4665815fed545e6293",
       "official": false,
       "tagline": "Your GitHub contribution calendar on the wallpaper: four designs, palettes that follow your theme, streaks and a glass card.",
       "icon": "calendar_month",
