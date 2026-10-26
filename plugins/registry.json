@@ -2052,7 +2052,7 @@
         "assets/preview-widget.png"
       ],
       "manifest": "product-manifest.json",
-      "manifestSha256": "2974b532c047362ecdb0633bd5c001b185c1bc085ea4627c79e95bd088b36dd2",
+      "manifestSha256": "8d4d7f8e8f37383199c36949047bea806cdf414cf3fcf73926cf9f21ede099ff",
       "official": false,
       "tagline": "GPU usage, clocks, temperature and top processes on the bar, without root.",
       "icon": "developer_board",

@@ -28,7 +28,8 @@ and the top GPU processes. Works without root on Intel, AMD and NVIDIA.
 With several GPUs, `auto` prefers NVIDIA, then an AMD card with more than 2 GB of
 VRAM (a discrete card), then the integrated GPU. Set **GPU** to a card name
 (`card1`), PCI slot or driver to choose one; every reading, NVIDIA included,
-follows that choice.
+follows that choice. An unavailable choice shows no GPU rather than switching to
+another card.
 
 ## Install
 

@@ -36,6 +36,11 @@ if [[ "$want" != "auto" && -n "$want" ]]; then
       pick=$i; break
     fi
   done
+  if (( pick < 0 )); then
+    echo "gpus=$(IFS=,; echo "${drivers[*]:-}")"
+    echo "ok=0"
+    exit 0
+  fi
 fi
 if (( pick < 0 )); then
   best=0
@@ -198,6 +203,10 @@ case "$drv" in
           }
           want == "" { print; exit }
           norm($2) == norm(want) { print; exit }')
+    if [[ -z "$q" ]]; then
+      echo "ok=0"
+      exit 0
+    fi
     IFS=',' read -r idx bus name busy act max temp mu mt <<<"$q"
     trim() { local s=$1; s=${s#"${s%%[![:space:]]*}"}; echo "${s%"${s##*[![:space:]]}"}"; }
     num() { local s; s=$(trim "$1"); [[ "$s" =~ ^[0-9]+(\.[0-9]+)?$ ]] && echo "$s"; }

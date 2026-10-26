@@ -173,7 +173,7 @@ Item {
             }
             out.sort(function(a, b) { return b.pct - a.pct; });
             svc.topProcs = out.slice(0, 3);
-        } else if (!svc.panelOpen) {
+        } else {
             svc.topProcs = [];
         }
 

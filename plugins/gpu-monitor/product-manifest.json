@@ -16,9 +16,9 @@
     {
       "source": "README.md",
       "destination": "README.md",
-      "sha256": "1fea237a9c01484156c0dede1df5df8d3ed82e3b07e8f98480796db6c555d1ae",
+      "sha256": "bccb0b7e0b675e2b2e0b917f1b6f8899e398d96df3d73f2e1834f8228ec1edf3",
       "mode": "0644",
-      "size": 3947,
+      "size": 4021,
       "install": false
     },
     {
@@ -32,9 +32,9 @@
     {
       "source": "bin/gpu-stat.sh",
       "destination": "bin/gpu-stat.sh",
-      "sha256": "ed7da2fdcdb55a26b7d91caef362818f5fe924111300beb4906dd84642a34f3c",
+      "sha256": "c5a61794313e8b565543bd74507f5f51231776ff52dcc0501085d7c38afa2f94",
       "mode": "0755",
-      "size": 9161,
+      "size": 9333,
       "install": true
     },
     {
@@ -64,9 +64,9 @@
     {
       "source": "service/Main.qml",
       "destination": "service/Main.qml",
-      "sha256": "83b50b5ab3b83b2d19fd2b172b88ab8612cde8e1b51477236eca758497fbd6af",
+      "sha256": "e7ff6f1f1b9bd02a7e2a724dc8afefc6083cb0f95abdf8bff7665581cf96e1b9",
       "mode": "0644",
-      "size": 8342,
+      "size": 8322,
       "install": true
     }
   ]
