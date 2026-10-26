@@ -1,7 +1,9 @@
 import QtQuick
 import Quickshell
+import Quickshell.Io
 import shell.services
 import Ryoku.Ui.Singletons
+import "lib/config.js" as Config
 import "lib/shelf.js" as Shelf
 
 // Tatami spreads the whole app shelf at once: a full-screen grid of mats under a
@@ -20,8 +22,21 @@ Scope {
     property string section: "all"
     property int selected: 0
 
-    readonly property var shelf: Shelf.collect(DesktopEntries.applications.values)
-    readonly property var sections: Shelf.sections(root.shelf)
+    // launcher.json as Tatami uses it: every key checked, with a default for
+    // anything missing or odd (see lib/config.js).
+    readonly property var settings: Config.clean({
+        hiddenApps: launcherCfg.hiddenApps,
+        pinnedApps: launcherCfg.pinnedApps,
+        sectionOrder: launcherCfg.sectionOrder,
+        hiddenSections: launcherCfg.hiddenSections,
+        overlayOpacity: launcherCfg.overlayOpacity,
+        bgBlur: launcherCfg.bgBlur,
+        columns: launcherCfg.columns,
+        matWidth: launcherCfg.matWidth
+    })
+    readonly property var shelf: Shelf.collect(DesktopEntries.applications.values.filter(
+        entry => root.settings.hiddenApps.indexOf(entry.id) < 0), root.settings.pinnedApps)
+    readonly property var sections: Shelf.sections(root.shelf, root.settings.sectionOrder, root.settings.hiddenSections)
     readonly property var results: Shelf.filter(root.shelf, root.section, root.query)
 
     // The output the host named, else the focused one, else the first.
@@ -88,6 +103,37 @@ Scope {
     Timer {
         id: closing
         interval: Tokens.dur(200)
+    }
+
+    // The choices made in Settings -> App Launcher, read live from launcher.json.
+    // Tatami only reads the file: Settings owns it, and writing it from here
+    // would drop the keys Tatami does not declare. The adapter keeps each value
+    // as it is written (all `var`), so Config.clean sees it and decides.
+    FileView {
+        id: launcherCfg
+        property alias hiddenApps: adapter.hiddenApps
+        property alias pinnedApps: adapter.pinnedApps
+        property alias sectionOrder: adapter.sectionOrder
+        property alias hiddenSections: adapter.hiddenSections
+        property alias overlayOpacity: adapter.overlayOpacity
+        property alias bgBlur: adapter.bgBlur
+        property alias columns: adapter.columns
+        property alias matWidth: adapter.matWidth
+        path: (Quickshell.env("XDG_CONFIG_HOME") || (Quickshell.env("HOME") + "/.config")) + "/ryoku/launcher.json"
+        watchChanges: true
+        printErrors: false
+        onFileChanged: reload()
+        JsonAdapter {
+            id: adapter
+            property var hiddenApps: []
+            property var pinnedApps: []
+            property var sectionOrder: []
+            property var hiddenSections: []
+            property var overlayOpacity: 0.94
+            property var bgBlur: 0
+            property var columns: 8
+            property var matWidth: 144
+        }
     }
 
     LazyLoader {

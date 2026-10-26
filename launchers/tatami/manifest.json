@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "tatami",
   "category": "launchers",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "destination": "ryoku/launchers/tatami",
   "files": [
     {
@@ -24,9 +24,9 @@
     {
       "source": "Main.qml",
       "destination": "Main.qml",
-      "sha256": "8091f5931ec44a677f82c449d93c078692d5616680a417748151f3196945083f",
+      "sha256": "60f055569098371122a7481eaacb9803fa3119cb2e2063e425b88b85883622c4",
       "mode": "0644",
-      "size": 3130,
+      "size": 5258,
       "install": true
     },
     {
@@ -48,26 +48,34 @@
     {
       "source": "README.md",
       "destination": "README.md",
-      "sha256": "c1f7b3766f89b6748c088ef88b9989a32baaaaf0c32682c7b23ad5f44e2edb35",
+      "sha256": "d97c99a7eb06979ebfa0a7c82823e090b0392203af9dd5896118bbcd3ea48474",
       "mode": "0644",
-      "size": 869,
+      "size": 1897,
       "install": true
     },
     {
       "source": "Sheet.qml",
       "destination": "Sheet.qml",
-      "sha256": "c5d618522755b32152aefed6f65f6ce29a64c38d4cfdc2a0446d1dc06934ae10",
+      "sha256": "10341bdb6cd69b565cc0fcd153f3f4bf9d171fd5a000045a88891fdd076250e8",
       "mode": "0644",
-      "size": 14300,
+      "size": 17001,
       "install": true
     },
     {
       "source": "Tile.qml",
       "destination": "Tile.qml",
-      "sha256": "29e026124907d0d9da046ae315cfaf658706c30cc1fade6b9b97dc4b0a0cb1bb",
+      "sha256": "07d61421597520fe00063489dce35a651e90fe7637387dd98fc3d5bf67736024",
       "mode": "0644",
-      "size": 2814,
+      "size": 3097,
       "install": true
+    },
+    {
+      "source": "assets/favorites.webp",
+      "destination": "assets/favorites.webp",
+      "sha256": "fc97a328c4e27a9bedb760b9517cc4ee5ffe17e0077452d2ea4033a8e45cbcfc",
+      "mode": "0644",
+      "size": 60872,
+      "install": false
     },
     {
       "source": "assets/preview.webp",
@@ -75,6 +83,14 @@
       "sha256": "f0d801fa8ac91e6afb33c5ae9fe326f4fc15b33bbddeab5ce1e85c67267da23f",
       "mode": "0644",
       "size": 79746,
+      "install": false
+    },
+    {
+      "source": "assets/search.webp",
+      "destination": "assets/search.webp",
+      "sha256": "1ea68e443f13fbb605ab39c2423c027a3670630a721096a0a90817fa3d50b8f0",
+      "mode": "0644",
+      "size": 32852,
       "install": false
     },
     {
@@ -86,11 +102,27 @@
       "install": false
     },
     {
+      "source": "lib/config.js",
+      "destination": "lib/config.js",
+      "sha256": "c58cb6cb5dfb54837b8a02f5e8a2de644258ec2e3a502f2f3d5c2a6d9da17138",
+      "mode": "0644",
+      "size": 2320,
+      "install": true
+    },
+    {
       "source": "lib/shelf.js",
       "destination": "lib/shelf.js",
-      "sha256": "47b59e26eeee1a19322d2596c7e1d7243a055761e76ca67b832a8cd6a42f3e75",
+      "sha256": "0c945ed99547105b620cea34e1a682ef004d484be61ee0df730e6bfe0f7404e4",
       "mode": "0644",
-      "size": 4769,
+      "size": 5972,
+      "install": true
+    },
+    {
+      "source": "settings.json",
+      "destination": "settings.json",
+      "sha256": "c0c7da767e0206bad906bc93d066fbef59e1135c1cdf831493892a5a0fb89305",
+      "mode": "0644",
+      "size": 509,
       "install": true
     }
   ],
