@@ -6,30 +6,6 @@
   "destination": "ryoku/plugins/power-menu-v2",
   "files": [
     {
-      "source": ".gitignore",
-      "destination": ".gitignore",
-      "sha256": "379dfa9273952c08fa44042de676ed4addc26a7c4d4c90235d6ff2c73dffb810",
-      "mode": "0644",
-      "size": 22,
-      "install": true
-    },
-    {
-      "source": "AGENTS.md",
-      "destination": "AGENTS.md",
-      "sha256": "892da2d4fa328c5306a2242caf37a0540971fc7fc261f3162c6f619a5ab64419",
-      "mode": "0644",
-      "size": 3962,
-      "install": true
-    },
-    {
-      "source": "CLAUDE.md",
-      "destination": "CLAUDE.md",
-      "sha256": "09ffb8ebdb8adf50bf4bde26dfe2109b4af3a4a8cc3f30cc536be42bb912c033",
-      "mode": "0644",
-      "size": 152,
-      "install": true
-    },
-    {
       "source": "LICENSE",
       "destination": "LICENSE",
       "sha256": "6c10b9b653b0eb8dd2afff51e41c62cea5a9311bb88f6dbcdf1ca932a885a260",
@@ -40,9 +16,9 @@
     {
       "source": "README.md",
       "destination": "README.md",
-      "sha256": "362ca8ff685c3f12ef10e87471eeced566dd8701ee86ed61e44ffa70ec545e2d",
+      "sha256": "b9c54a3e12d8dba5c4b747fe39e530e16cd89ace3fbe5e0331e0d8e2ee8e9de0",
       "mode": "0644",
-      "size": 4705,
+      "size": 4712,
       "install": false
     },
     {
@@ -80,9 +56,9 @@
     {
       "source": "service/Main.qml",
       "destination": "service/Main.qml",
-      "sha256": "c023b65fb2575973fbdd9d3b862b079560b78e34d970c9647db7359071522014",
+      "sha256": "3597ffa235d08f59636e718f7ca588145edd081777d522cee71d5c6dee692058",
       "mode": "0644",
-      "size": 13159,
+      "size": 13215,
       "install": true
     }
   ]

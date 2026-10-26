@@ -83,11 +83,9 @@ Item {
             Quickshell.execDetached(["ryoku-host", "power", "poweroff"]);
             break;
         case "hibernate":
-            if (!svc.canHibernate)
+            if (!svc.canHibernate || hibernateLock.running || hibernateWait.running)
                 return;
-            Quickshell.execDetached(["ryoku-shell", "lock"]);
-            svc.hibernateTries = 0;
-            hibernateWait.restart();
+            hibernateLock.running = true;
             break;
         }
     }
@@ -131,9 +129,18 @@ Item {
         }
     }
 
-    // After locking, poll login1 until nothing blocks sleep (the shell drops its
-    // block once the lock is secure), then hibernate. ~12 s cap, the shell's own
-    // lock budget; past it, give up rather than override an inhibitor.
+    Process {
+        id: hibernateLock
+        command: ["ryoku-shell", "lock"]
+        onExited: function(exitCode) {
+            if (exitCode !== 0)
+                return;
+            svc.hibernateTries = 0;
+            hibernateWait.restart();
+        }
+    }
+
+    // Only hibernate after the shell confirms the screen is locked.
     property int hibernateTries: 0
     Timer {
         id: hibernateWait

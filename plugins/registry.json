@@ -2050,7 +2050,7 @@
         "assets/preview-widget.png"
       ],
       "manifest": "product-manifest.json",
-      "manifestSha256": "22da822a16aef85b242445f82f2318ea417eced7d8b8bd7bb0c5fc3b16852640",
+      "manifestSha256": "7d06c8fd7229ae143ab1946dec2fed8a6f72a8e542d0916ce79298b7f07c47ca",
       "official": false,
       "tagline": "Profile-style session menu: avatar, version, uptime and the six session actions.",
       "icon": "power_settings_new",

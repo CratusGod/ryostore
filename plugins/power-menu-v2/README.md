@@ -52,7 +52,7 @@ it under **QS Bar Settings → Community**.
 | `call session.logout {}` on `$XDG_RUNTIME_DIR/ryoku-shell.sock` | Confirmed Log out (the same call the shell's own session menu makes) |
 | `ryoku-host power reboot` | Confirmed Reboot |
 | `ryoku-host power poweroff` | Confirmed Power off |
-| `ryoku-host power hibernate` | Confirmed Hibernate, once login1 reports `CanHibernate` = `yes` after locking (polled every 300 ms, up to about 12 s). Inhibitors are respected: if another app still blocks sleep, it gives up and the session stays locked |
+| `ryoku-host power hibernate` | Confirmed Hibernate, only after `ryoku-shell lock` succeeds and login1 reports `CanHibernate` = `yes` (polled every 300 ms, up to about 12 s). If locking fails or an inhibitor still blocks sleep, it gives up without hibernating |
 | `ryoku-shell hub open` | Settings button |
 | `busctl --system call org.freedesktop.login1 /org/freedesktop/login1 org.freedesktop.login1.Manager CanHibernate` | When the service loads and when the panel opens (to show the row), and while waiting to hibernate |
 | `ryoku-host pkg version ryoku` | When the panel opens (version badge) |
