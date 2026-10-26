@@ -22,6 +22,13 @@ Item {
     readonly property bool primary: modelData !== null && Quickshell.screens.length > 0
         && modelData.name === Quickshell.screens[0].name
 
+    Binding {
+        target: CS.HostState
+        property: "flags"
+        when: typeof Flags !== "undefined"
+        value: typeof Flags === "undefined" ? null : Flags
+    }
+
     // the bar's dock follows the Ryoku dock when this shell has the Caelestia dock design
     Binding {
         target: CS.HostState
