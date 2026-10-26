@@ -25,7 +25,7 @@
         "assets/search.webp"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "f81f57a49a42febedc19f1910b7361c9948a3a9088f8393791c5446a7572b493",
+      "manifestSha256": "ddeea46105aafb0f2a3b7bc83c85f9200c56b36120898beb8415bfeb8a93c21b",
       "lastUpdated": "2026-10-25",
       "official": true,
       "license": "GPL-3.0-or-later"

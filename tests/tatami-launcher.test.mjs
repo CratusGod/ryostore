@@ -64,6 +64,11 @@ test("a QML-style list (array-like, not an Array) is read", () => {
   assert.deepEqual(clean({ pinnedApps: qml }).pinnedApps, ["zen", "mpv"]);
 });
 
+test("an array-like length cannot make config loading scan without bound", () => {
+  const values = { length: 2501, 0: "zen", 2500: "must-not-be-read" };
+  assert.deepEqual(clean({ pinnedApps: values }).pinnedApps, ["zen"]);
+});
+
 test("numbers that are not numbers fall back to the default", () => {
   for (const bad of ["8", NaN, Infinity, -Infinity, null, undefined, {}, [], true]) {
     const out = clean({ overlayOpacity: bad, bgBlur: bad, columns: bad, matWidth: bad });

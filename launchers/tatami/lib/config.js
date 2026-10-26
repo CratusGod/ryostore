@@ -32,7 +32,7 @@ function strings(value) {
     if (value === null || typeof value !== "object" || typeof value.length !== "number")
         return out;
     var seen = {};
-    for (var i = 0; i < value.length && out.length < 2000; i++) {
+    for (var i = 0, limit = Math.min(value.length, 2000); i < limit && out.length < 2000; i++) {
         var item = value[i];
         if (typeof item !== "string")
             continue;

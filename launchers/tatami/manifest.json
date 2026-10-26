@@ -104,9 +104,9 @@
     {
       "source": "lib/config.js",
       "destination": "lib/config.js",
-      "sha256": "484a5b1bea277e9560f6a41ff08e27d6d3b15f51e854015f8841bcafffce93e9",
+      "sha256": "c58cb6cb5dfb54837b8a02f5e8a2de644258ec2e3a502f2f3d5c2a6d9da17138",
       "mode": "0644",
-      "size": 2289,
+      "size": 2320,
       "install": true
     },
     {
