@@ -2030,6 +2030,36 @@
       ],
       "icon": "",
       "version": "1.0.0"
+    },
+    {
+      "id": "gpu-monitor",
+      "name": "GPU Monitor",
+      "version": "0.2.0",
+      "path": "plugins/gpu-monitor",
+      "author": "hectorbaez81 <hector.baez@gmail.com>",
+      "upstream": "https://github.com/hectorbaez81/gpu-monitor",
+      "summary": "Rootless GPU monitor for Intel (i915, xe), AMD (amdgpu) and NVIDIA: usage, clocks, VRAM, temperature, throttling and top GPU processes.",
+      "description": "Rootless GPU monitor for Intel (i915, xe), AMD (amdgpu) and NVIDIA: usage, clocks, VRAM, temperature, throttling and top GPU processes.",
+      "tags": [
+        "gpu",
+        "monitor",
+        "bar-widget"
+      ],
+      "accent": "#a8c4f5",
+      "surface": "#15171c",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "2974b532c047362ecdb0633bd5c001b185c1bc085ea4627c79e95bd088b36dd2",
+      "official": false,
+      "tagline": "GPU usage, clocks, temperature and top processes on the bar, without root.",
+      "icon": "developer_board",
+      "hosts": [
+        "topbarGlyph"
+      ],
+      "lastUpdated": "2026-10-25"
     }
   ]
 }
