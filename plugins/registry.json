@@ -2030,6 +2030,36 @@
       ],
       "icon": "",
       "version": "1.0.0"
+    },
+    {
+      "id": "power-menu-v2",
+      "name": "Power Menu V2",
+      "version": "0.2.0",
+      "path": "plugins/power-menu-v2",
+      "author": "hectorbaez81 <hector.baez@gmail.com>",
+      "upstream": "https://github.com/hectorbaez81/power-menu-v2",
+      "summary": "Profile-style session menu on the QS Bar: avatar, Ryoku version and uptime, plus lock, log out, suspend, hibernate, reboot and power off through Ryoku's session commands.",
+      "description": "Profile-style session menu on the QS Bar: avatar, Ryoku version and uptime, plus lock, log out, suspend, hibernate, reboot and power off through Ryoku's session commands.",
+      "tags": [
+        "session",
+        "power",
+        "bar-widget"
+      ],
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "7d06c8fd7229ae143ab1946dec2fed8a6f72a8e542d0916ce79298b7f07c47ca",
+      "official": false,
+      "tagline": "Profile-style session menu: avatar, version, uptime and the six session actions.",
+      "icon": "power_settings_new",
+      "hosts": [
+        "topbarGlyph"
+      ],
+      "lastUpdated": "2026-10-25",
+      "accent": "#c8c4f4",
+      "surface": "#141418"
     }
   ]
 }

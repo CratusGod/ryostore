@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "id": "power-menu-v2",
+  "category": "plugins",
+  "version": "0.2.0",
+  "destination": "ryoku/plugins/power-menu-v2",
+  "files": [
+    {
+      "source": "LICENSE",
+      "destination": "LICENSE",
+      "sha256": "6c10b9b653b0eb8dd2afff51e41c62cea5a9311bb88f6dbcdf1ca932a885a260",
+      "mode": "0644",
+      "size": 1069,
+      "install": false
+    },
+    {
+      "source": "README.md",
+      "destination": "README.md",
+      "sha256": "b9c54a3e12d8dba5c4b747fe39e530e16cd89ace3fbe5e0331e0d8e2ee8e9de0",
+      "mode": "0644",
+      "size": 4712,
+      "install": false
+    },
+    {
+      "source": "assets/preview-widget.png",
+      "destination": "assets/preview-widget.png",
+      "sha256": "41afa49ee5004b4ca0afb7ffc66e2cbddd8bb62748a16075f3fd06671ec3897e",
+      "mode": "0644",
+      "size": 70577,
+      "install": false
+    },
+    {
+      "source": "content/Panel.qml",
+      "destination": "content/Panel.qml",
+      "sha256": "471850359f32b79d17f973d5000588a9e9e1b266ba5d73da99c9885e012460c8",
+      "mode": "0644",
+      "size": 12808,
+      "install": true
+    },
+    {
+      "source": "content/Widget.qml",
+      "destination": "content/Widget.qml",
+      "sha256": "098144fadcf8fb139d34a5a8d20cc467ab3f01a258ec9900fffa315d1a07fb7e",
+      "mode": "0644",
+      "size": 787,
+      "install": true
+    },
+    {
+      "source": "manifest.json",
+      "destination": "manifest.json",
+      "sha256": "55ae8531d90693f9360b04c458b2543b0e56bb648e3d816c576dcb452331f191",
+      "mode": "0644",
+      "size": 2165,
+      "install": true
+    },
+    {
+      "source": "service/Main.qml",
+      "destination": "service/Main.qml",
+      "sha256": "3597ffa235d08f59636e718f7ca588145edd081777d522cee71d5c6dee692058",
+      "mode": "0644",
+      "size": 13215,
+      "install": true
+    }
+  ]
+}
