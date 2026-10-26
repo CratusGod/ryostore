@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "radio-atlas",
   "name": "Radio Atlas",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "author": "hshindys <hshindys@users.noreply.github.com>",
   "license": "MIT",
   "official": false,
@@ -61,8 +61,8 @@
     ],
     "network": [
       "all.api.radio-browser.info",
-      "api.radio-browser.info",
-      "127.0.0.1",
+      "*.api.radio-browser.info",
+      "*",
       "127.0.0.1:18765"
     ]
   },
@@ -83,6 +83,8 @@
       "jq",
       "mpv",
       "pactl",
+      "wl-copy",
+      "env",
       "python3",
       "setpriv",
       "shuf",
@@ -90,7 +92,9 @@
       "bwrap",
       "file",
       "stat",
-      "mktemp"
+      "mktemp",
+      "setsid",
+      "timeout"
     ]
   },
   "metadata": {

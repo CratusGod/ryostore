@@ -2,7 +2,6 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls as QQC
 import Quickshell
-import Quickshell.Hyprland
 import Quickshell.Io
 import Ryoku.PluginKit.Singletons
 import "../lib" as Atlas
@@ -19,6 +18,10 @@ Item {
   property string density: "full"
   property real s: 1
   property bool active: false
+  onActiveChanged: {
+    if (active && started && !opened) open("{}")
+    else if (!active && opened) close()
+  }
   property real widthBudget: 520
 
   // The slot that hosts this panel sizes its card from the root's implicit
@@ -26,8 +29,6 @@ Item {
   // surface them (the original host read `panel.implicitWidth` instead).
   implicitWidth: root.preferredWidth
   implicitHeight: root.preferredHeight
-
-  // Forward the host's density scale to the token shim's space() helper.
 
   property bool opened: false
   property var countries: []
@@ -110,26 +111,24 @@ Item {
   property var pendingFavoriteRequests: []
   property var pendingRecentRequest: null
 
-  // Scripts live in the plugin's own bin/. pluginApi.pluginDir is the handle the
-  // host guarantees (R2/R8), but it arrives empty on the first load, so fall
-  // back to this file's own resolved directory.
   readonly property string pluginRoot: pluginApi && pluginApi.pluginDir
     ? String(pluginApi.pluginDir) : ""
   readonly property string binDir: pluginRoot !== "" ? pluginRoot + "/bin" : ""
 
-  // pluginApi.pluginDir can arrive empty on the first load; retry until the
-  // host has handed it over rather than caching a wrong path.
   readonly property string fetchPath: binDir + "/radio-fetch"
   readonly property string playerPath: binDir + "/radio-player"
   readonly property string statePath: binDir + "/radio-state"
-  // XDG_RUNTIME_DIR is the right home for a live player session (it is
-  // tmpfs and cleared at logout); the plugin keeps its own namespace under it.
+  readonly property string stateDir: pluginApi && pluginApi.stateDir
+    ? String(pluginApi.stateDir) : ""
+  readonly property var helperEnv: ({
+    RADIO_ATLAS_STATE_DIR: root.stateDir,
+    RADIO_ATLAS_CACHE_DIR: root.stateDir + "/cache",
+    RADIO_ATLAS_RUNTIME_DIR: root.runtimePath,
+    RADIO_ATLAS_ALLOW_FAKE_IP: pluginApi && pluginApi.pluginSettings
+      && pluginApi.pluginSettings.allowFakeIp === true ? "true" : "false"
+  })
   readonly property string runtimePath: Quickshell.env("XDG_RUNTIME_DIR") + "/ryoku-radio-atlas"
-  readonly property string countryCachePath:
-    // Caches go to the plugin's own cache dir so a reinstall or a remove
-    // takes its station/logo caches with it (R8).
-    (Quickshell.env("XDG_CACHE_HOME") || Quickshell.env("HOME") + "/.cache")
-      + "/ryoku/plugins/radio-atlas/countries"
+  readonly property string countryCachePath: stateDir + "/cache/countries"
   readonly property string statusPath: runtimePath + "/status.json"
   readonly property string playSelectionPath: runtimePath + "/play-selection.json"
   readonly property string favoriteSelectionPath: runtimePath + "/favorite-selection.json"
@@ -169,31 +168,10 @@ Item {
 
   property bool windowFrameReady: false
   property string pendingOpenPayload: ""
-  // Before mapping, panel.screen can still be Quickshell's default screen.
-  readonly property var windowScreen: {
-    if (panel.screen) return panel.screen
-    var monitor = Hyprland.focusedMonitor
-    return monitor ? Quickshell.screens.find(function(screen) {
-      return screen.name === monitor.name
-    }) || null : null
-  }
-  readonly property size preferredWindowSize: {
-    var screen = windowScreen
-    if (!screen) return Qt.size(Atlas.Style.space(1180), Atlas.Style.space(760))
-    var monitor = Hyprland.monitorFor(screen)
-    var reserved = monitor && monitor.lastIpcObject.reserved || [0, 0, 0, 0]
-    var widthMargin = Math.max(Atlas.Style.space(60), reserved[0] + reserved[2] + Atlas.Style.space(40))
-    var heightMargin = Math.max(Atlas.Style.space(80), reserved[1] + reserved[3] + Atlas.Style.space(40))
-    return Qt.size(Math.max(1, Math.min(Atlas.Style.space(1180), screen.width - widthMargin)),
-      Math.max(1, Math.min(Atlas.Style.space(760), screen.height - heightMargin)))
-  }
   // The host gives the panel its width budget; the globe pane keeps the
   // original 1180x760 composition where the budget allows it.
   readonly property int preferredWidth: widthBudget > 0 ? Math.round(widthBudget) : Atlas.Style.space(1180)
   readonly property int preferredHeight: Atlas.Style.space(760)
-  // The Ryoku host owns the panel surface and its window rules, so the plugin
-  // only reports the size it wants and lets the host place it. The Omarchy
-  // original shelled out to a hyprctl-eval Lua helper for this.
   readonly property int wantedWidth: Atlas.Style.space(1180)
   readonly property int wantedHeight: Atlas.Style.space(760)
   readonly property int cardWidth: panel.width
@@ -267,7 +245,6 @@ Item {
 
   function open(payloadJson) {
     pendingOpenPayload = payloadJson || "{}"
-    Hyprland.refreshMonitors()
     registerWindowSetup()
   }
 
@@ -306,7 +283,6 @@ Item {
   }
 
   function dismiss() {
-    close()
     if (pluginApi && typeof pluginApi.closePanel === "function")
       pluginApi.closePanel()
   }
@@ -316,24 +292,6 @@ Item {
     windowRevealTimer.restart()
   }
 
-  function handleHyprlandEvent(event) {
-    var eventName = String(event && event.name || "")
-    if (eventName === "configreloaded") {
-      windowSetupReloadTimer.restart()
-      return
-    }
-    if (!opened || eventName !== "openwindow") return
-    var parts = []
-    try {
-      parts = event.parse(4)
-    } catch (error) {
-      parts = String(event && event.data || "").split(",")
-    }
-    var windowClass = String(parts[2] || "")
-    if (windowClass === "ryoku-screensaver") {
-      dismiss()
-    }
-  }
 
   function highlightStationCountry(station, focusGlobe) {
     if (!station) {
@@ -1036,6 +994,7 @@ Item {
 
   Process {
     id: copyProcess
+    environment: root.helperEnv
     onExited: function(exitCode) {
       if (exitCode !== 0) return
       root.trackCopied = true
@@ -1049,11 +1008,10 @@ Item {
     onTriggered: root.trackCopied = false
   }
 
-  // (window-rule setup removed: the Ryoku host owns the panel surface and its
-  //  Hyprland rules; a plugin may not write hyprctl eval window rules.)
 
   Process {
     id: statusInitProcess
+    environment: root.helperEnv
     command: []
     onExited: function(exitCode) {
       if (exitCode === 0) root.statusReady = true
@@ -1063,6 +1021,7 @@ Item {
   Process {
     id: fetchProcess
     command: []
+    environment: root.helperEnv
     stdout: StdioCollector {
       waitForEnd: true
       onStreamFinished: root.fetchOutput = text
@@ -1154,6 +1113,7 @@ Item {
 
   Process {
     id: worldExpandProcess
+    environment: root.helperEnv
     command: []
     stdout: StdioCollector {
       waitForEnd: true
@@ -1198,6 +1158,7 @@ Item {
   Process {
     id: volumeProcess
     property int submittedVolume: -1
+    environment: root.helperEnv
     property string output: ""
     property string errorOutput: ""
     command: []
@@ -1235,6 +1196,7 @@ Item {
   Process {
     id: outputsProcess
     property string output: ""
+    environment: root.helperEnv
     property string errorOutput: ""
     command: []
     stdout: StdioCollector {
@@ -1279,6 +1241,7 @@ Item {
   Process {
     id: outputProcess
     property string output: ""
+    environment: root.helperEnv
     property string errorOutput: ""
     command: []
     stdout: StdioCollector {
@@ -1304,6 +1267,7 @@ Item {
     id: playerActionProcess
     property string action: ""
     property string output: ""
+    environment: root.helperEnv
     property string errorOutput: ""
     command: []
     stdout: StdioCollector {
@@ -1332,6 +1296,7 @@ Item {
     id: stopProcess
     property string output: ""
     command: []
+    environment: root.helperEnv
     stdout: StdioCollector {
       waitForEnd: true
       onStreamFinished: stopProcess.output = text
@@ -1366,6 +1331,7 @@ Item {
     property string action: ""
     property string output: ""
     property string errorOutput: ""
+    environment: root.helperEnv
     command: []
     stdout: StdioCollector {
       waitForEnd: true
@@ -1404,6 +1370,7 @@ Item {
     id: historyProcess
     property string output: ""
     property string errorOutput: ""
+    environment: root.helperEnv
     command: []
     stdout: StdioCollector {
       waitForEnd: true
@@ -1449,12 +1416,6 @@ Item {
     }
   }
 
-  Timer {
-    id: windowSetupReloadTimer
-    interval: 100
-    repeat: false
-    onTriggered: root.registerWindowSetup()
-  }
 
   Timer {
     id: windowRevealTimer
@@ -1475,13 +1436,24 @@ Item {
   property bool started: false
   onPluginApiChanged: { retryStart() }
   onBinDirChanged: { retryStart() }
+  onStateDirChanged: { retryStart() }
 
   function retryStart() {
-    if (root.started || root.binDir === "") return;
+    if (root.started || root.binDir === "" || root.stateDir === "") return;
     root.started = true;
     root.registerWindowSetup();
-    statusInitProcess.command = [playerPath, "status"];
+    statusInitProcess.command = [root.binDir + "/radio-player", "status"];
     statusInitProcess.running = true;
+    if (root.active && !root.opened) root.open("{}");
+  }
+
+  Connections {
+    target: root.pluginApi
+    ignoreUnknownSignals: true
+    function onPanelOpenChanged() {
+      if (root.pluginApi.panelOpen && root.started && !root.opened) root.open("{}")
+      else if (!root.pluginApi.panelOpen && root.opened) root.close()
+    }
   }
 
   Component.onCompleted: {
@@ -1489,10 +1461,6 @@ Item {
     retryStart()
   }
 
-  Connections {
-    target: Hyprland
-    function onRawEvent(event) { root.handleHyprlandEvent(event) }
-  }
 
   // The Ryoku panel host mounts this root as the panel surface and owns the
   // window, so the root Item doubles as the panel body. `panel` stays as an id

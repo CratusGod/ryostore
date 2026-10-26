@@ -54,8 +54,84 @@ Item {
     property string fetchError: ""
     property var countries: ({})
 
-    readonly property string runtimeDir: Quickshell.env("XDG_RUNTIME_DIR")
-        + "/ryoku-radio-atlas"
+    readonly property string runtimeDir: Quickshell.env("XDG_RUNTIME_DIR") + "/ryoku-radio-atlas"
+    readonly property var helperEnv: ({
+        RADIO_ATLAS_STATE_DIR: svc.stateDir,
+        RADIO_ATLAS_CACHE_DIR: svc.stateDir + "/cache",
+        RADIO_ATLAS_RUNTIME_DIR: svc.runtimeDir,
+        RADIO_ATLAS_ALLOW_FAKE_IP: svc.allowFakeIp ? "true" : "false"
+    })
+    property bool running: false
+    property bool paused: false
+    property bool stopped: false
+    property bool muted: false
+    property string stationName: ""
+    property string title: ""
+    property string streamError: ""
+
+    function playerAction(action) {
+        if (!svc.binDir || !svc.stateDir || playerProc.running) return;
+        playerProc.command = [svc.bin("radio-player"), action];
+        playerProc.running = true;
+    }
+
+    function stop() { svc.playerAction("stop"); }
+    function resume() { svc.playerAction("resume"); }
+    function random() {
+        if (!svc.binDir || !svc.stateDir || randomProc.running) return;
+        randomProc.command = [svc.bin("radio-fetch"), "random"];
+        randomProc.running = true;
+    }
+    function volumeUp() {
+        if (svc.binDir && svc.stateDir)
+            Quickshell.execDetached(["env", "RADIO_ATLAS_STATE_DIR=" + svc.stateDir,
+                "RADIO_ATLAS_RUNTIME_DIR=" + svc.runtimeDir, svc.bin("radio-player"), "volume-up"]);
+    }
+
+    FileView {
+        path: svc.runtimeDir + "/status.json"
+        watchChanges: true
+        atomicWrites: true
+        printErrors: false
+        onFileChanged: reload()
+        onLoaded: {
+            try {
+                var value = JSON.parse(text());
+                svc.running = value.running === true;
+                svc.paused = value.paused === true;
+                svc.stopped = value.stopped === true;
+                svc.muted = value.muted === true;
+                svc.stationName = String(value.station && value.station.name || "");
+                svc.title = String(value.title || "");
+                svc.streamError = String(value.error || "");
+                svc.volume = Number(value.volume) || 0;
+            } catch (error) {
+                svc.streamError = "Player status unavailable";
+            }
+        }
+    }
+
+    Process {
+        id: playerProc
+        environment: svc.helperEnv
+    }
+    Process {
+        id: randomProc
+        environment: svc.helperEnv
+        stdout: StdioCollector {
+            waitForEnd: true
+            onStreamFinished: {
+                try {
+                    var rows = JSON.parse(text);
+                    if (Array.isArray(rows) && rows.length > 0 && rows[0].uuid
+                        && !playerProc.running) {
+                        playerProc.command = [svc.bin("radio-player"), "play", String(rows[0].uuid), "results"];
+                        playerProc.running = true;
+                    }
+                } catch (error) { svc.fetchError = "Could not tune a station"; }
+            }
+        }
+    }
 
     function bin(name) { return svc.binDir + "/" + name; }
 
@@ -132,6 +208,7 @@ Item {
     // --- processes -------------------------------------------------------
     Process {
         id: stateProc
+        environment: svc.helperEnv
         stdout: StdioCollector {
             waitForEnd: true
             onStreamFinished: {
@@ -155,6 +232,7 @@ Item {
 
     Process {
         id: outputsProc
+        environment: svc.helperEnv
         stdout: StdioCollector {
             waitForEnd: true
             onStreamFinished: {
@@ -175,6 +253,7 @@ Item {
 
     Process {
         id: fetchProc
+        environment: svc.helperEnv
         stdout: StdioCollector {
             waitForEnd: true
             onStreamFinished: {
@@ -212,13 +291,20 @@ Item {
     property bool started: false
     onPluginApiChanged: svc.retryStart()
     onBinDirChanged: svc.retryStart()
+    onStateDirChanged: svc.retryStart()
 
     function retryStart() {
-        if (svc.started || svc.binDir === "") return;
+        if (svc.started || svc.binDir === "" || svc.stateDir === "") return;
         svc.started = true;
         svc.readState();
         svc.fetchWorld();
     }
 
     Component.onCompleted: svc.retryStart()
+
+    Component.onDestruction: {
+        if (svc.binDir !== "" && svc.stateDir !== "")
+            Quickshell.execDetached(["env", "RADIO_ATLAS_STATE_DIR=" + svc.stateDir,
+                "RADIO_ATLAS_RUNTIME_DIR=" + svc.runtimeDir, svc.bin("radio-player"), "stop"]);
+    }
 }

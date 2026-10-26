@@ -4,8 +4,8 @@ umask 077
 
 : "${XDG_RUNTIME_DIR:?Radio Atlas requires XDG_RUNTIME_DIR}"
 runtime_dir="${RADIO_ATLAS_RUNTIME_DIR:-$XDG_RUNTIME_DIR/ryoku-radio-atlas}"
-data_root=${XDG_DATA_HOME:-$HOME/.local/share}
-state_dir="${RADIO_ATLAS_STATE_DIR:-$data_root/radio-atlas}"
+state_root=${XDG_STATE_HOME:-$HOME/.local/state}
+state_dir="${RADIO_ATLAS_STATE_DIR:-$state_root/ryoku/plugins/radio-atlas}"
 state_file="$state_dir/state.json"
 state_lock="$state_dir/state.lock"
 max_json_bytes=4194304

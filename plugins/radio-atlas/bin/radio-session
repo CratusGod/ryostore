@@ -9,7 +9,8 @@ proxy_socket="$runtime_dir/proxy.sock"
 proxy_pid=""
 sandbox_pid=""
 proxy_arguments=("$proxy_socket")
-allow_fake_ip=$("$script_dir/radio-state" get | jq -r '.allowFakeIp // false')
+allow_fake_ip=${RADIO_ATLAS_ALLOW_FAKE_IP:-false}
+[[ $allow_fake_ip == true || $allow_fake_ip == false ]] || allow_fake_ip=false
 if [[ $allow_fake_ip == true ]]; then
   proxy_arguments+=(--allow-fake-ip)
 fi

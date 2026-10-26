@@ -1,5 +1,6 @@
 pragma Singleton
 import QtQuick
+import Ryoku.PluginKit.Singletons
 
 // Design-token shim for the Radio Atlas port.
 //

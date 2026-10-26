@@ -29,31 +29,30 @@ the plugin/host API surface.
   (the player's network sandbox and media bridge), `bin/radio-status.lua` (mpv's
   own status script), and `bin/radio-favicon` (station logos). Every command is
   declared in `dependencies.commands`.
-- Reads: nothing outside its own tree except the station directory over HTTPS.
-- Writes: its own runtime dir (`$RADIO_ATLAS_RUNTIME_DIR`, default
-  `$XDG_RUNTIME_DIR/ryoku-radio-atlas`) and its state dir
-  (`$RADIO_ATLAS_STATE_DIR`, default `$XDG_DATA_HOME/radio-atlas`), plus the
-  country caches under `$XDG_CACHE_HOME/ryoku/plugins/radio-atlas`.
+- Reads: the Radio Browser station directory and public station stream and
+  artwork URLs. Stream playlists are data, not executable code.
+- Writes: transient playback files under `$XDG_RUNTIME_DIR/ryoku-radio-atlas`
+  and saved state and caches under `pluginApi.stateDir`
+  (`$XDG_STATE_HOME/ryoku/plugins/radio-atlas`).
 - No sudo, doas or su. No pkexec. No downloaded code is executed.
 
 ## Capabilities
 
-- **Network**: `all.api.radio-browser.info` and the Radio Browser mirrors, for
-  the station directory and the station streams. Station favicons are fetched
-  through `bin/radio-proxy`, which refuses non-public destinations, and pinned
-  to validated addresses so DNS cannot change between check and use.
+- **Network**: `all.api.radio-browser.info` and its mirrors for the station
+  directory, plus public station stream and artwork hosts returned by that
+  directory. These hosts vary per station, so the manifest declares `*`.
+  The playback proxy refuses non-public destinations, and artwork downloads
+  pin validated addresses through redirects.
 - **Audio**: playback through the PipeWire sink you choose, including RAOP
   (AirPlay) sinks.
 
 ## Removing it
 
-Stop the player first, then remove the plugin:
+Disabling or unloading the plugin stops its player. To remove it manually:
 
 ```
-radio-atlas stop          # or: ~/.local/share/ryoku/plugins/radio-atlas/bin/radio-player stop
 ryoku plugin remove radio-atlas
 ```
 
-Favourites, history and volume live in `~/.local/share/radio-atlas/state.json`
-and come back on a reinstall; delete that file to clear them. The country and
-logo caches are under `~/.cache/ryoku/plugins/radio-atlas/`.
+Favourites, history, volume and caches live under
+`$XDG_STATE_HOME/ryoku/plugins/radio-atlas/` and can be removed there.

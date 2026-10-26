@@ -353,7 +353,9 @@ class Artwork:
         self.controls = controls
         self.changed = changed
         self.queue_path = Path(os.environ.get("RADIO_ATLAS_RUNTIME_DIR") or (os.environ["XDG_RUNTIME_DIR"] + "/ryoku-radio-atlas")) / "playlist.json"
-        self.cache_dir = Path(os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache") / "radio-atlas/favicons"
+        state_root = Path(os.environ.get("XDG_STATE_HOME") or Path.home() / ".local/state")
+        state_dir = Path(os.environ.get("RADIO_ATLAS_STATE_DIR") or state_root / "ryoku/plugins/radio-atlas")
+        self.cache_dir = Path(os.environ.get("RADIO_ATLAS_CACHE_DIR") or state_dir / "cache") / "favicons"
         self.allow_fake_ip = os.environ.get("RADIO_ATLAS_ALLOW_FAKE_IP") == "true"
         self.queue_stamp = None
         self.urls = []

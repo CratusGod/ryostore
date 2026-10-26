@@ -7,10 +7,10 @@
     "description": "Open the world radio globe",
     "displayName": "Radio Atlas"
   },
-  "description": "Explore live radio on a rotatable globe and play stations through Omarchy's media controls.",
+  "description": "Explore live radio on a rotatable globe and play stations through Ryoku media controls.",
   "entryPoints": {
-    "barWidget": "BarWidget.qml",
-    "panel": "RadioAtlas.qml"
+    "barWidget": "content/Widget.qml",
+    "panel": "content/Panel.qml"
   },
   "homepage": "https://github.com/AksharP5/omarchy-radio-atlas",
   "id": "radio-atlas",
@@ -30,5 +30,5 @@
   "name": "Radio Atlas",
   "repository": "https://github.com/AksharP5/omarchy-radio-atlas",
   "schemaVersion": 1,
-  "version": "0.1.9"
+  "version": "0.1.16"
 }

@@ -4,8 +4,9 @@ umask 077
 
 : "${XDG_RUNTIME_DIR:?Radio Atlas requires XDG_RUNTIME_DIR}"
 runtime_dir="${RADIO_ATLAS_RUNTIME_DIR:-$XDG_RUNTIME_DIR/ryoku-radio-atlas}"
-cache_root=${XDG_CACHE_HOME:-$HOME/.cache}
-cache_dir="$cache_root/ryoku/plugins/radio-atlas"
+state_root=${XDG_STATE_HOME:-$HOME/.local/state}
+state_dir="${RADIO_ATLAS_STATE_DIR:-$state_root/ryoku/plugins/radio-atlas}"
+cache_dir="${RADIO_ATLAS_CACHE_DIR:-$state_dir/cache}"
 country_cache_dir="$cache_dir/countries"
 install -d -m 700 "$runtime_dir" "$cache_dir" "$country_cache_dir"
 
@@ -323,7 +324,7 @@ fetch_world() {
 fetch_search() {
   local query=$1
   local country_code country_filter
-  country_code=$(python3 - "$script_dir/assets/country-search.json" "$query" <<'PY'
+  country_code=$(python3 - "$script_dir/../assets/country-search.json" "$query" <<'PY'
 import json
 import sys
 
