@@ -21,6 +21,8 @@ The file only holds what you changed; delete a key to get its default back.
   weather tab asks geocoding-api.open-meteo.com over HTTPS.
 - Apps open through Ryoku's launcher; deleting a screenshot or recording runs `rm`.
 - The dashboard follows the Hub's Controls page when the installed Ryoku shell has it.
+- Keep Awake in the dashboard and Utilities uses Ryoku's shared state when hosted.
+  Standalone Caelestia keeps its own idle inhibitor.
 
 ## Not included
 

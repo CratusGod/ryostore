@@ -18,7 +18,7 @@ cmake	cmake	developer-essentials
 cmatrix	cmatrix	rice-showcase	
 corectrl	corectrl	gaming	
 cowsay	cowsay	rice-showcase	
-curl	curl	developer-essentials,spiceflow	
+curl	curl	developer-essentials	
 darktable	darktable	the-influencer	
 distroav	-	the-influencer	DistroAV is not packaged for Void.
 docker	docker	developer-essentials	
