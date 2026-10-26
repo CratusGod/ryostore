@@ -8,6 +8,7 @@ import QtQuick
 QtObject {
     // the bar's dock entry: the host turns it on from its own dock settings
     property bool dock: true
+    property var flags: null
     // the Controls layout of the host: section id -> shown. A section it does not list
     // (or standing alone) shows.
     property var controlsSections: ({})

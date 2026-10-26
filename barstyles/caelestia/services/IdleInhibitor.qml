@@ -7,11 +7,23 @@ import Quickshell.Wayland
 Singleton {
     id: root
 
-    property alias enabled: props.enabled
-    readonly property alias enabledSince: props.enabledSince
+    readonly property bool enabled: HostState.flags !== null ? HostState.flags.keepAwake : props.enabled
+    readonly property date enabledSince: HostState.flags !== null
+        ? new Date(HostState.flags.keepAwakeSince) : props.enabledSince
+
+    function setEnabled(value: bool): void {
+        if (HostState.flags !== null)
+            HostState.flags.keepAwake = value;
+        else
+            props.enabled = value;
+    }
+
+    function toggle(): void {
+        setEnabled(!enabled);
+    }
 
     onEnabledChanged: {
-        if (enabled)
+        if (enabled && HostState.flags === null)
             props.enabledSince = new Date();
     }
 
@@ -25,7 +37,7 @@ Singleton {
     }
 
     IdleInhibitor {
-        enabled: props.enabled
+        enabled: HostState.flags === null && props.enabled
         window: PanelWindow {
             implicitWidth: 1
             implicitHeight: 1
@@ -36,19 +48,19 @@ Singleton {
 
     IpcHandler {
         function isEnabled(): bool {
-            return props.enabled;
+            return root.enabled;
         }
 
         function toggle(): void {
-            props.enabled = !props.enabled;
+            root.toggle();
         }
 
         function enable(): void {
-            props.enabled = true;
+            root.setEnabled(true);
         }
 
         function disable(): void {
-            props.enabled = false;
+            root.setEnabled(false);
         }
 
         target: "idleInhibitor"

@@ -100,7 +100,7 @@ Item {
                 visible: HostState.element("keepAwake")
                 icon: "coffee"
                 checked: IdleInhibitor.enabled
-                onClicked: IdleInhibitor.enabled = !IdleInhibitor.enabled
+                onClicked: IdleInhibitor.toggle()
             }
 
             Toggle {

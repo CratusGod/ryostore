@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "caelestia",
   "category": "barstyles",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "destination": "ryoku/barstyles/caelestia",
   "files": [
     {
@@ -25,16 +25,16 @@
       "source": "README.md",
       "destination": "README.md",
       "mode": "0644",
-      "size": 1149,
-      "sha256": "38ed1833395133dec71868b2e96de9b6a2792cf4e77fd52132039c83d828c2e6",
+      "size": 1285,
+      "sha256": "dafa00cb272e6833f3792c8e6a133c5dad0042883f06ea78d4db92adacaf23ce",
       "install": true
     },
     {
       "source": "Scene.qml",
       "destination": "Scene.qml",
       "mode": "0644",
-      "size": 2447,
-      "sha256": "8a315ee522cdc501f057e4ebf552ddb078a28a299fc96682e3f7b701d01130e0",
+      "size": 2625,
+      "sha256": "75a1f0902a46ca51064743e6de3d4a0dc2201ccd7fbd7a3c8421940d64b0a20c",
       "install": true
     },
     {
@@ -1329,8 +1329,8 @@
       "source": "modules/dashboard/dash/ControlsToggles.qml",
       "destination": "modules/dashboard/dash/ControlsToggles.qml",
       "mode": "0644",
-      "size": 5314,
-      "sha256": "9d7d7bb7a8f1ba6d914001d3042b98062de7b1b508b9f180d1c4af4a4bcec8b9",
+      "size": 5290,
+      "sha256": "1e407c74269a8d0fa2cc41dcf567a1b1ecad2cd95ba8e4354d598dfad6165a46",
       "install": true
     },
     {
@@ -1841,8 +1841,8 @@
       "source": "modules/utilities/cards/IdleInhibit.qml",
       "destination": "modules/utilities/cards/IdleInhibit.qml",
       "mode": "0644",
-      "size": 3647,
-      "sha256": "60964dd8348859540dd4c11769400e591ac295b09889c7e744361d1bb927d67f",
+      "size": 3649,
+      "sha256": "ae61f93f4ba0b032f1be9c8c388044be57534dd93e4ec987f1742c84cf3d9e13",
       "install": true
     },
     {
@@ -2409,8 +2409,8 @@
       "source": "services/HostState.qml",
       "destination": "services/HostState.qml",
       "mode": "0644",
-      "size": 1405,
-      "sha256": "107960a27b5d93c7cbbecc1c1736715e79947f82b5129280a01e103409c68068",
+      "size": 1434,
+      "sha256": "57dca82d8c0a3ac45c590f7c96f0633bb70cb667d2ddb8b152213bf3a5f92663",
       "install": true
     },
     {
@@ -2441,8 +2441,8 @@
       "source": "services/IdleInhibitor.qml",
       "destination": "services/IdleInhibitor.qml",
       "mode": "0644",
-      "size": 1074,
-      "sha256": "dc58ae543b7efe3d351fd975b1a264690a96480a1e358b2df95d7430742a6049",
+      "size": 1506,
+      "sha256": "4bb5e0d228f18dcfbd943ffbaa3344de2aca8ad7503a63383a8196d5c04484e4",
       "install": true
     },
     {
