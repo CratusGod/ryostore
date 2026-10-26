@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "id": "gpu-monitor",
+  "category": "plugins",
+  "version": "0.2.0",
+  "destination": "ryoku/plugins/gpu-monitor",
+  "files": [
+    {
+      "source": "LICENSE",
+      "destination": "LICENSE",
+      "sha256": "6c10b9b653b0eb8dd2afff51e41c62cea5a9311bb88f6dbcdf1ca932a885a260",
+      "mode": "0644",
+      "size": 1069,
+      "install": false
+    },
+    {
+      "source": "README.md",
+      "destination": "README.md",
+      "sha256": "bccb0b7e0b675e2b2e0b917f1b6f8899e398d96df3d73f2e1834f8228ec1edf3",
+      "mode": "0644",
+      "size": 4021,
+      "install": false
+    },
+    {
+      "source": "assets/preview-widget.png",
+      "destination": "assets/preview-widget.png",
+      "sha256": "c481f00d01c7c4703bf6177e3abf225c5eb1e4267b7309ddaf289925687d720b",
+      "mode": "0644",
+      "size": 170353,
+      "install": false
+    },
+    {
+      "source": "bin/gpu-stat.sh",
+      "destination": "bin/gpu-stat.sh",
+      "sha256": "c5a61794313e8b565543bd74507f5f51231776ff52dcc0501085d7c38afa2f94",
+      "mode": "0755",
+      "size": 9333,
+      "install": true
+    },
+    {
+      "source": "content/Panel.qml",
+      "destination": "content/Panel.qml",
+      "sha256": "dd573b2b5580b1c6adb380d0606a8cfb737ef32aa953ac4e58b2884b59899b21",
+      "mode": "0644",
+      "size": 13521,
+      "install": true
+    },
+    {
+      "source": "content/Widget.qml",
+      "destination": "content/Widget.qml",
+      "sha256": "fd034d3f1799abb82e3cc540a651ebbbccd44f4d15a061e9f95f056ad50f639b",
+      "mode": "0644",
+      "size": 1503,
+      "install": true
+    },
+    {
+      "source": "manifest.json",
+      "destination": "manifest.json",
+      "sha256": "91a6e371d72da4e3e4fa56cf7ba031ad17d2f8eccf500b6c0b5b4fa5fbee9c39",
+      "mode": "0644",
+      "size": 1507,
+      "install": true
+    },
+    {
+      "source": "service/Main.qml",
+      "destination": "service/Main.qml",
+      "sha256": "e7ff6f1f1b9bd02a7e2a724dc8afefc6083cb0f95abdf8bff7665581cf96e1b9",
+      "mode": "0644",
+      "size": 8322,
+      "install": true
+    }
+  ]
+}
