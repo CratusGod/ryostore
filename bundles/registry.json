@@ -735,56 +735,6 @@
       "icon": "code"
     },
     {
-      "id": "spiceflow",
-      "name": "Ryoku Palette Bridge",
-      "version": "3.0.1",
-      "path": "bundles/spiceflow",
-      "author": "Rayyan",
-      "upstream": "https://github.com/Sipper1236/ryoku-palette-bridge",
-      "summary": "wallpaper · Zen · Spotify · Discord",
-      "description": "Wallpaper colours for Spotify and Vesktop, with optional Zen live theming through a separately installed signed extension. Turns on the palette bridge Ryoku ships and connects it to your apps.",
-      "tags": [
-        "zen browser",
-        "spotify",
-        "spicetify",
-        "discord",
-        "vesktop",
-        "wallpaper colors",
-        "matugen"
-      ],
-      "accent": "#65d3ff",
-      "surface": "#101820",
-      "preview": "assets/preview.png",
-      "screenshots": [
-        "assets/preview.png"
-      ],
-      "manifest": "bundle.json",
-      "manifestSha256": "373810fcbba49fcd44f7470d1ad6b81fcd5f33e6c78f620bfc5340b91d6b07aa",
-      "components": [
-        {
-          "type": "package",
-          "name": "curl",
-          "detect": "curl",
-          "tier": "core",
-          "interactive": false,
-          "summary": "Verify the local bridge health endpoint."
-        },
-        {
-          "type": "script",
-          "name": "ryoku-palette-bridge",
-          "detect": "ryoku-palette-bridge-store-3-0-0",
-          "tier": "core",
-          "interactive": false,
-          "summary": "Apply your wallpaper colours to Zen, Spotify, and Discord."
-        }
-      ],
-      "tagline": "wallpaper colours · optional app integrations",
-      "sources": "Ryoku / MIT",
-      "icon": "palette",
-      "official": false,
-      "lastUpdated": "2026-10-20"
-    },
-    {
       "id": "cachyos-layer",
       "name": "CachyOS Gaming",
       "version": "1.1.0",
