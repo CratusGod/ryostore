@@ -423,6 +423,33 @@
       "manifestSha256": "58e08d256426ff0722cf5f3a565c3e6ab5544accf46c11635b1e50b599312807"
     },
     {
+      "id": "pdp11-panel",
+      "name": "PDP-11 Panel",
+      "version": "1.0.1",
+      "path": "lockscreens/pdp11-panel",
+      "author": "root-sec",
+      "upstream": "https://github.com/root-secyrity/lockscreen-design",
+      "summary": "A PDP-11 front panel lamp console lock for Ryoku.",
+      "description": "A full-screen lock shaped like a PDP-11/70 front panel: two rows of sixteen address and data lamps, a 22 paddle switch register, the five console keys (LOAD ADRS, EXAM, DEP, CONT, START), an ENABLE/HALT lever and a LOCK knob. Keystrokes shift the DATA register one bit at a time. A refused password makes the machine fault instead of flashing red: one red lamp sweeps the DATA row in 560 ms, the row blinks twice, then the panel returns to normal while the status line reports the attempt count. Power keys arm on a first press and execute on a second press within three seconds. Password entry happens in the hidden field the qylock engine owns.",
+      "tags": [
+        "pdp11",
+        "retro",
+        "hardware",
+        "panel",
+        "dark"
+      ],
+      "accent": "#C62828",
+      "surface": "#121110",
+      "preview": "assets/preview.gif",
+      "screenshots": [
+        "assets/shot-1.png"
+      ],
+      "manifest": "manifest.json",
+      "manifestSha256": "8b29bf1f7d34efc55120cbf2e2cd2029332c0139b2ada002bf9995358d713b42",
+      "official": false,
+      "lastUpdated": "2026-10-26"
+    },
+    {
       "id": "pixel-coffee",
       "name": "Pixel Coffee",
       "version": "1.0.1",
