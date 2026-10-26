@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "caelestia",
   "category": "barstyles",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "ryoku/barstyles/caelestia",
   "files": [
     {
@@ -25,8 +25,8 @@
       "source": "README.md",
       "destination": "README.md",
       "mode": "0644",
-      "size": 1096,
-      "sha256": "daca9a66f13413183ec54a665272cba58a596b96424624bcb097b39f417e7232",
+      "size": 1149,
+      "sha256": "38ed1833395133dec71868b2e96de9b6a2792cf4e77fd52132039c83d828c2e6",
       "install": true
     },
     {
@@ -129,8 +129,8 @@
       "source": "components/DrawerVisibilities.qml",
       "destination": "components/DrawerVisibilities.qml",
       "mode": "0644",
-      "size": 327,
-      "sha256": "0a8a5405f3ab548447993421f869841a96e142b0782de22903fe86250c6604a7",
+      "size": 300,
+      "sha256": "0da110c44fd88dfad8ec7b3aa5556a14eb8bf37ab32ff3f2affb0e089a301144",
       "install": true
     },
     {
@@ -161,8 +161,8 @@
       "source": "components/StateLayer.qml",
       "destination": "components/StateLayer.qml",
       "mode": "0644",
-      "size": 6083,
-      "sha256": "b391ade80dadb38054399c641726a1988464db15032c6f9004964104d55e6b1d",
+      "size": 6312,
+      "sha256": "6df44855379120c9eca5fb296e836f22625126e28b51034a5395b397097d5563",
       "install": true
     },
     {
@@ -761,8 +761,8 @@
       "source": "modules/Shortcuts.qml",
       "destination": "modules/Shortcuts.qml",
       "mode": "0644",
-      "size": 20766,
-      "sha256": "3f88fe90a58f16380857d257e4e677d8f39ebe35ef8e19f508974612e4787efd",
+      "size": 20801,
+      "sha256": "aef5d4c6fd9a1a695e681a7ee9d2bcc72b2989fc4c0551d9643829918ab37d16",
       "install": true
     },
     {
@@ -777,8 +777,8 @@
       "source": "modules/bar/BarWrapper.qml",
       "destination": "modules/bar/BarWrapper.qml",
       "mode": "0644",
-      "size": 7626,
-      "sha256": "fb5f72447bbf5907c29034a99541264528c9dfce7639adfc6886956ba8bd9bf6",
+      "size": 7600,
+      "sha256": "7045400b03d5c201c939f9c11eaf6f7b732926ab23a05e6cec0cab5fa440d345",
       "install": true
     },
     {
@@ -1241,8 +1241,8 @@
       "source": "modules/dashboard/Content.qml",
       "destination": "modules/dashboard/Content.qml",
       "mode": "0644",
-      "size": 8471,
-      "sha256": "fe9cf914f6470ea9e59578b165a1c91068165d4e117ec5a2f5ca3d338351348b",
+      "size": 8852,
+      "sha256": "5d840614a434c28597298258703e60b31bec66ebe8dc70eb0209e8fd8ef42fea",
       "install": true
     },
     {
@@ -1305,8 +1305,8 @@
       "source": "modules/dashboard/Wrapper.qml",
       "destination": "modules/dashboard/Wrapper.qml",
       "mode": "0644",
-      "size": 2608,
-      "sha256": "6f70bf15eb76d30d0216d73d996d0fe37183e325fc4db76a39fc3abafba3bfcb",
+      "size": 2582,
+      "sha256": "caad85e34d5e0361c2d6c0d04b9128ca104003c0b9d947c651c84e5a8b844268",
       "install": true
     },
     {
@@ -1457,8 +1457,8 @@
       "source": "modules/drawers/ContentWindow.qml",
       "destination": "modules/drawers/ContentWindow.qml",
       "mode": "0644",
-      "size": 33419,
-      "sha256": "12e9bfee9837a450f88aee0ca64a847d0f2934d819d04f988ea676ba718b5cdb",
+      "size": 33299,
+      "sha256": "17506c655e5738932700981160708f68bca3fa22b16294f20b59fd04fe26c965",
       "install": true
     },
     {
@@ -1481,8 +1481,8 @@
       "source": "modules/drawers/Interactions.qml",
       "destination": "modules/drawers/Interactions.qml",
       "mode": "0644",
-      "size": 21411,
-      "sha256": "14f766f1d4fda4bd49f54ac1688a6f809b5b8adbb45a340960e749dea0784677",
+      "size": 21772,
+      "sha256": "2ee0ed9c9268cd9301402d23519384546b927f50aeb2d4bbd1e68be7991deb07",
       "install": true
     },
     {
@@ -1577,8 +1577,8 @@
       "source": "modules/notifications/Wrapper.qml",
       "destination": "modules/notifications/Wrapper.qml",
       "mode": "0644",
-      "size": 1449,
-      "sha256": "fb67003cc8d87660a4e05d0a8068ab096d4fa172195273c437cb53f1783def6d",
+      "size": 1423,
+      "sha256": "d28ecf123d92e194b2668885226f342ab9a847eb99031cebe0ea8d22733fd713",
       "install": true
     },
     {
@@ -1601,8 +1601,8 @@
       "source": "modules/osd/Wrapper.qml",
       "destination": "modules/osd/Wrapper.qml",
       "mode": "0644",
-      "size": 3730,
-      "sha256": "8aab34bb57e8fe562e5b51eb4658127ffc98b7a523f1e6690fef7dff4de2af0a",
+      "size": 3704,
+      "sha256": "102f991d194049ab099d21686a2edfa2429cda0eaf095a1d1a744c3081a2e1cf",
       "install": true
     },
     {
@@ -1633,8 +1633,8 @@
       "source": "modules/session/Wrapper.qml",
       "destination": "modules/session/Wrapper.qml",
       "mode": "0644",
-      "size": 1204,
-      "sha256": "99cf1a6968f89bd9dd1003083197d31160a1fa7fd30e1cc27f94f9324e47aa92",
+      "size": 1178,
+      "sha256": "2efb7eb5208c708b73eb4e0cfeb43c4bc60a43863e387d8ed01d36116b188fde",
       "install": true
     },
     {
@@ -1769,8 +1769,8 @@
       "source": "modules/sidebar/Wrapper.qml",
       "destination": "modules/sidebar/Wrapper.qml",
       "mode": "0644",
-      "size": 5412,
-      "sha256": "3a3b70706dc130bfba7dc1215fc0ca9c8dadb79ff20e7163adb28689c34f1c7e",
+      "size": 5386,
+      "sha256": "d626e097192e0fdca0918eca915a599927e1580ccc79d4bb3793edf8c0d3b130",
       "install": true
     },
     {
@@ -1825,8 +1825,8 @@
       "source": "modules/utilities/Wrapper.qml",
       "destination": "modules/utilities/Wrapper.qml",
       "mode": "0644",
-      "size": 3654,
-      "sha256": "28922f457fe14e4ab9a4bffbfa4fac21716a0546fff194788cec602a0abfde40",
+      "size": 3628,
+      "sha256": "9757c85c3b45773e888bcccd4a73a44d987d9d263190bd3d1eed3696a2c217af",
       "install": true
     },
     {
@@ -1897,8 +1897,8 @@
       "source": "modules/utilities/toasts/Toasts.qml",
       "destination": "modules/utilities/toasts/Toasts.qml",
       "mode": "0644",
-      "size": 4256,
-      "sha256": "a9b35157abdf63fd1996e6b333f06eeaf35e159047e55626af838a0c44746422",
+      "size": 4220,
+      "sha256": "7ede242a7781906ec4d3fb52a0b74de9871e72cfde400a3cc5bc29f2c40d07f0",
       "install": true
     },
     {
@@ -1913,8 +1913,8 @@
       "source": "modules/windowinfo/Buttons.qml",
       "destination": "modules/windowinfo/Buttons.qml",
       "mode": "0644",
-      "size": 3428,
-      "sha256": "ee829ffb6ead41d6662508a64c26f94fce03d5a377f0ad84d988e3a61f371285",
+      "size": 3214,
+      "sha256": "a79f9757b687cee9855e744c0a4f81f6e94151869540481786b35af4b31865b8",
       "install": true
     },
     {
@@ -2561,8 +2561,8 @@
       "source": "services/Visibilities.qml",
       "destination": "services/Visibilities.qml",
       "mode": "0644",
-      "size": 3973,
-      "sha256": "eff8681a09f89840532c1a8cbd6ff988f06f78a8c1dd3a2501a4c2c7e177abd3",
+      "size": 3719,
+      "sha256": "e4ad3f9dc0786fc5b94aaeac567989fe6f197fb2ea7b04ddd9ac01927f37347c",
       "install": true
     },
     {

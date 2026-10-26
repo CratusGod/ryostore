@@ -43,6 +43,7 @@ Singleton {
         "bar.perMonitor": false,
         "bar.style": "transparent",
         "bar.roundness": 100,
+        "bar.reserve": 100,
         "bar.scale": 1,
         "bar.position": "top",
         "bar.layout": ({

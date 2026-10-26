@@ -155,7 +155,7 @@
     {
       "id": "sukunabikona",
       "name": "Sukunabikona",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "path": "barstyles/sukunabikona",
       "author": "aethctl",
       "upstream": "https://github.com/Ryoku-dev/ryostore/tree/main/barstyles/sukunabikona",
@@ -175,21 +175,22 @@
       "preview": "assets/preview.webp",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "f8be00c89fb3934724e2c321a940e08c6b3478680763d9d63a4a265a1d5712bd",
-      "lastUpdated": "2026-10-21",
+      "manifestSha256": "6a6b76aae4b713f096b7983c0e94fd57a05dfa8ced985f3ef4964d1128a8cc91",
+      "lastUpdated": "2026-10-25",
       "official": false,
       "license": "GPL-3.0-only"
     },
     {
       "id": "tansu",
       "name": "Tansu",
-      "version": "1.4.64",
+      "version": "1.4.66",
       "path": "barstyles/tansu",
       "author": "dodo986",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/barstyles/tansu",
       "summary": "Bar and phone",
       "description": "A colorful shell with a cool phone, along with its own design and settings, and much more.",
       "tags": [
+        "subshell",
         "top",
         "phone",
         "quickpanel",
@@ -203,8 +204,8 @@
       "preview": "assets/preview.png",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "88a6e41bcb8a0238d3fcdde241f64a679ef04f2ec7785194b56a9a8b8eb4b923",
-      "lastUpdated": "2026-10-23",
+      "manifestSha256": "bac0d65aa4eab18a04cca30e1f08276de66c6dd585c669da3cbe7d13869829d8",
+      "lastUpdated": "2026-10-24",
       "official": false,
       "license": "GPL-3.0-only"
     },
@@ -218,6 +219,7 @@
       "summary": "macOS-inspired Liquid Glass subshell",
       "description": "macOS-inspired Ryoku barstyle with Spotlight, Control Center, Dock and widgets. Requires the separate Ryoku core Gokko integration for the complete experience.",
       "tags": [
+        "subshell",
         "top",
         "macos",
         "liquid-glass",
@@ -238,13 +240,14 @@
     {
       "id": "caelestia",
       "name": "Caelestia",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "barstyles/caelestia",
       "author": "lhen",
       "upstream": "https://github.com/caelestia-dots/shell",
       "summary": "Framed Material 3 shell",
       "description": "The Caelestia shell's framed bar, dock, dashboard, session menu, sidebar and OSD, in plain QML, with its own settings panel.",
       "tags": [
+        "subshell",
         "left",
         "framed",
         "material3",
@@ -262,8 +265,8 @@
         "assets/screenshot-settings.webp"
       ],
       "manifest": "manifest.json",
-      "manifestSha256": "590b0acc49576366669d1de35325e494a3b4a1a2aca242c0827c4d06c31728ea",
-      "lastUpdated": "2026-10-23",
+      "manifestSha256": "489e952b814b8d9a7751acdea9753a500d177bdf427ebe4fa52c14ee726669fa",
+      "lastUpdated": "2026-10-24",
       "official": false,
       "license": "GPL-3.0-only"
     }

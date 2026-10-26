@@ -1,6 +1,6 @@
 # Ryoku for Zed
 
-This bundle writes a custom theme to `~/.config/zed/themes/ryoku-dynamic.json` and selects it in Zed. Matugen already renders Ryoku's `matugen.json` for Zed on every palette change; the bundle adds a `post_hook` to that template so the custom theme is rebuilt right after, on every Ryoku edition. The generator source is included in this bundle for review; installation does not fetch or execute remote source code.
+This bundle writes a custom theme to `~/.config/zed/themes/ryoku-dynamic.json` and selects it in Zed. Matugen already renders Ryoku's `matugen.json` for Zed on every palette change; the bundle adds a `post_hook` to that template so the custom theme is rebuilt right after, on every Ryoku edition. The generator source is included in this bundle for review; installation does not fetch or execute remote source code. The installer never reloads the window manager, so it cannot blank monitors or disrupt a running session. The initial sync writes the theme immediately, and the Matugen hook takes over on the next palette change. It supports both the plain `"theme": "..."` string form and the modern `"theme": { "mode": ..., "light": ..., "dark": ... }` object form in Zed's settings, preserving all comments and formatting. If the settings file cannot be edited safely, the installer prints a warning and continues without aborting.
 
 ## Install
 

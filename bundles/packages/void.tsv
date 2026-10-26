@@ -107,6 +107,8 @@ steam	steam libgcc-32bit libstdc++-32bit libdrm-32bit libglvnd-32bit	cachyos-lay
 subtitleedit	-	the-influencer	Subtitle Edit is not packaged for Void; Subtitle Editor (subtitleeditor) is a native alternative.
 tmux	tmux	developer-essentials	
 toilet	toilet	rice-showcase	
+ttf-ms-fonts	-	ms-fonts	Void keeps this restricted package as a source template and cannot distribute it through its repositories.
+ttf-vista-fonts	-	ms-fonts	Microsoft's ClearType fonts are not packaged for Void and require a qualifying Windows or Office licence.
 tty-clock	tty-clock	rice-showcase	
 umu-launcher	-	gaming	umu-launcher is not packaged for Void.
 upscayl-bin	-	the-influencer	Upscayl is not packaged for Void; get it from Flathub (org.upscayl.Upscayl).

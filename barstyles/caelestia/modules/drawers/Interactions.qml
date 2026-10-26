@@ -22,6 +22,8 @@ CustomMouseArea {
     property bool dashboardShortcutActive
     property bool osdShortcutActive
     property bool utilitiesShortcutActive
+    property string overviewHoverCorner
+    property bool overviewDragTriggered
     readonly property bool isBarHorizontal: bar.isHorizontal
     // Uses clampedThickness rather than the raw implicit size so the bar stays
     // reachable when the border thickness is set to 0 (the collapsed bar is 0px wide).
@@ -117,6 +119,7 @@ CustomMouseArea {
     hoverEnabled: true
     onPressed: event => {
         dragStart = Qt.point(event.x, event.y);
+        overviewDragTriggered = false;
 
         if (root.focusGrab && (root.focusGrab.active || popouts.isDetached)) {
             let inside = false;
@@ -324,18 +327,23 @@ CustomMouseArea {
             }
         }
 
-        if (Config.overview.enabled && !visibilities.overview) {
+        if (Config.overview.enabled) {
             if (Config.overview.showOnHover) {
-                if (inOverviewCorner(x, y) !== "") {
-                    Visibilities.setOverview(true);
+                const corner = inOverviewCorner(x, y);
+                if (corner !== overviewHoverCorner) {
+                    overviewHoverCorner = corner;
+                    if (corner !== "")
+                        Visibilities.toggleOverview();
                 }
-            } else if (pressed) {
-                if (inOverviewCorner(dragStart.x, dragStart.y) !== "") {
-                    if (Math.hypot(dragX, dragY) > Config.overview.dragThreshold) {
-                        Visibilities.setOverview(true);
-                    }
+            } else {
+                overviewHoverCorner = "";
+                if (pressed && !overviewDragTriggered && inOverviewCorner(dragStart.x, dragStart.y) !== "" && Math.hypot(dragX, dragY) > Config.overview.dragThreshold) {
+                    overviewDragTriggered = true;
+                    Visibilities.toggleOverview();
                 }
             }
+        } else {
+            overviewHoverCorner = "";
         }
     }
     Timer {

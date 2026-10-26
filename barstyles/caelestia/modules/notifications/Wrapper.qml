@@ -28,7 +28,7 @@ Item {
         return !Kwin.hasFullscreenOn(root.screen?.name ?? "");
     }
 
-    visible: height > 0 && !visibilities.overview && isTargetScreen && isAllowedByFullscreen
+    visible: height > 0 && isTargetScreen && isAllowedByFullscreen
     anchors.topMargin: baseTopMargin
     implicitWidth: (isTargetScreen && isAllowedByFullscreen) ? Math.max(sidebarPanel.width, content.implicitWidth) : 0
     implicitHeight: (isTargetScreen && isAllowedByFullscreen) ? content.implicitHeight : 0

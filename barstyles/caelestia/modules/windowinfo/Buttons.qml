@@ -44,8 +44,6 @@ ColumnLayout {
                 onClicked: {
                     Kwin.setWindowDesktop(root.client?.address, wsId);
                     Kwin.switchToWorkspace(wsId);
-
-                    Visibilities.setOverview(false);
                 }
                 color: isCurrent ? Colours.tPalette.m3surfaceContainerHighest : Colours.palette.m3tertiaryContainer
                 onColor: isCurrent ? Colours.palette.m3onSurface : Colours.palette.m3onTertiaryContainer
@@ -67,8 +65,6 @@ ColumnLayout {
             text: qsTr("Kill")
             onClicked: {
                 Kwin.closeWindow(root.client?.address);
-
-                Visibilities.setOverview(false);
             }
         }
         Layout.fillWidth: true
@@ -102,8 +98,6 @@ ColumnLayout {
             onClicked: {
                 parent.clicked()
                 root.closeRequested()
-                if (typeof Visibilities !== "undefined")
-                    Visibilities.setOverview(false);
             }
         }
 

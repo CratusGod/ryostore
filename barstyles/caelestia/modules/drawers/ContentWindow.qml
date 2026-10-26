@@ -32,14 +32,14 @@ StyledWindow {
     // active workspace changes — hasFullscreenOn() filters by workspace, but
     // a plain function call only re-runs when its direct property deps change.
     readonly property bool actualFullscreen: (Kwin.activeWsId, Kwin.hasFullscreenOn(screen?.name ?? ""))
-    readonly property bool hasOpenOverlay: focusGrabState.active || panels.popouts.isDetached || visibilities.overview || (visibilities.launcher && Config.launcher.enabled) || (visibilities.dashboard && Config.dashboard.enabled) || (visibilities.sidebar && Config.sidebar.enabled) || (visibilities.session && Config.session.enabled) || (visibilities.utilities && Config.utilities.enabled)
+    readonly property bool hasOpenOverlay: focusGrabState.active || panels.popouts.isDetached || (visibilities.launcher && Config.launcher.enabled) || (visibilities.dashboard && Config.dashboard.enabled) || (visibilities.sidebar && Config.sidebar.enabled) || (visibilities.session && Config.session.enabled) || (visibilities.utilities && Config.utilities.enabled)
     readonly property bool hasFullscreen: actualFullscreen && !hasOpenOverlay
 
     // The sidebar is the only thing open and it is pinned (or one of the shell's
     // file dialogs is up): take input only over the panels, not the whole screen,
     // so clicks outside reach other windows instead of closing the sidebar.
     readonly property bool sidebarPassthrough: visibilities.sidebar && (Visibilities.sidebarPinned || Visibilities.openDialogs > 0)
-        && !(panels.popouts.isDetached || visibilities.overview || visibilities.launcher || visibilities.dashboard || visibilities.session || visibilities.utilities
+        && !(panels.popouts.isDetached || visibilities.launcher || visibilities.dashboard || visibilities.session || visibilities.utilities
             || (panels.popouts.currentName.startsWith("traymenu") && (panels.popouts.current as StackView)?.depth > 1))
     property real fsTransitionProg: hasFullscreen ? 1 : 0
     readonly property real sdfBorderOffset: 2 * fsTransitionProg
@@ -61,7 +61,7 @@ StyledWindow {
         return Math.max(...thresholds);
     }
 
-    readonly property bool wantsKeyboard: visibilities.launcher || visibilities.session || visibilities.dashboard || visibilities.sidebar || visibilities.overview || (panels.popouts.hasCurrent && !panels.popouts.isDockPopout)
+    readonly property bool wantsKeyboard: visibilities.launcher || visibilities.session || visibilities.dashboard || visibilities.sidebar || (panels.popouts.hasCurrent && !panels.popouts.isDockPopout)
 
     property string focusReturn: ""
     property int workspaceReturn: -1
@@ -182,7 +182,6 @@ StyledWindow {
                 visibilities.sidebar = false;
             visibilities.dashboard = false;
             visibilities.utilities = false;
-            Visibilities.setOverview(false);
             panels.popouts.hasCurrent = false;
             panels.popouts.detachedMode = "";
             bar.closeTray();

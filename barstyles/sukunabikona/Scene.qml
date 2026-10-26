@@ -353,7 +353,8 @@ Scope {
         WlrLayershell.layer: WlrLayer.Top
         WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
         WlrLayershell.namespace: "sukunabikona-rail"
-        anchors { top: true; bottom: true; left: true; right: true }
+        anchors { top: true; bottom: true; left: true }
+        implicitWidth: rail.x * 2 + rail.width * rail.scale
         visible: !shell.hasFullscreen
         mask: Region { item: railWindow.compact ? null : rail }
 
@@ -371,21 +372,22 @@ Scope {
         color: "transparent"
         implicitHeight: 78
         exclusionMode: ExclusionMode.Normal
-        exclusiveZone: 72
+        exclusiveZone: shell.compact ? 72 : 0
         WlrLayershell.layer: WlrLayer.Top
         WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
         WlrLayershell.namespace: "sukunabikona-bar"
         anchors { top: true; left: true; right: true }
-        visible: shell.compact && !shell.hasFullscreen
+        visible: !shell.hasFullscreen
         mask: Region {
-            Region { item: leftPill }
-            Region { item: middlePill }
-            Region { item: rightPill }
+            Region { item: shell.compact ? leftPill : null }
+            Region { item: shell.compact ? middlePill : null }
+            Region { item: shell.compact ? rightPill : null }
         }
 
         Item {
             id: barPills
             anchors.fill: parent
+            visible: shell.compact
 
             Rectangle {
                 id: leftPill

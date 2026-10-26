@@ -107,6 +107,8 @@ steam	-	cachyos-layer,gaming	Steam needs RPM Fusion on Fedora, which Ryoku does 
 subtitleedit	-	the-influencer	Subtitle Edit is not packaged for Fedora; Subtitle Editor (subtitleeditor) is a native alternative.
 tmux	tmux	developer-essentials	
 toilet	toilet	rice-showcase	
+ttf-ms-fonts	-	ms-fonts	Microsoft's Core Fonts are not packaged in Fedora's repositories, and Ryoku does not add third-party font RPMs.
+ttf-vista-fonts	-	ms-fonts	Microsoft's ClearType fonts are not packaged in Fedora and require a qualifying Windows or Office licence.
 tty-clock	-	rice-showcase	tty-clock is not packaged for Fedora.
 umu-launcher	-	gaming	umu-launcher is not packaged for Fedora.
 upscayl-bin	-	the-influencer	Upscayl is not packaged for Fedora; get it from Flathub (org.upscayl.Upscayl).

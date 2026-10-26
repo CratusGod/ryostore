@@ -1,0 +1,72 @@
+{
+  "id": "docker-ctl",
+  "name": "Docker",
+  "version": "0.2.1",
+  "author": "Madhav Khosla <madhav.khoslaa@gmail.com>",
+  "description": "Docker on the bar: see every local container, start, stop or restart it, and edit its published ports and mounts by recreating it.",
+  "license": "MIT",
+  "official": false,
+  "hosts": [
+    "topbarGlyph"
+  ],
+  "entryPoints": {
+    "main": "service/Main.qml",
+    "content": "content/Widget.qml",
+    "panel": "content/Panel.qml"
+  },
+  "panel": {
+    "width": 440
+  },
+  "files": [
+    "bin/dockerctl",
+    "assets/preview-widget.png"
+  ],
+  "capabilities": {
+    "densities": [
+      "glyph"
+    ]
+  },
+  "defaults": {
+    "host": "topbarGlyph",
+    "bar": {
+      "section": "right"
+    },
+    "icon": "docker",
+    "label": "Docker"
+  },
+  "dependencies": {
+    "commands": [
+      "python3"
+    ]
+  },
+  "metadata": {
+    "settings": [
+      {
+        "key": "showCount",
+        "type": "toggle",
+        "label": "Show the running count on the bar",
+        "group": "Docker",
+        "default": true
+      },
+      {
+        "key": "showStopped",
+        "type": "toggle",
+        "label": "List stopped containers",
+        "group": "Docker",
+        "default": true
+      },
+      {
+        "key": "poll",
+        "type": "int",
+        "label": "Refresh every (seconds)",
+        "group": "Docker",
+        "default": 5,
+        "min": 2,
+        "max": 120
+      }
+    ]
+  },
+  "commands": [
+    "bin/dockerctl"
+  ]
+}
