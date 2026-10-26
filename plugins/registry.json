@@ -2090,6 +2090,37 @@
         "topbarGlyph"
       ],
       "lastUpdated": "2026-10-25"
+    },
+    {
+      "id": "radio-atlas",
+      "name": "Radio Atlas",
+      "version": "0.1.16",
+      "path": "plugins/radio-atlas",
+      "author": "hshindys <hshindys@users.noreply.github.com>",
+      "summary": "Explore live radio on a rotatable globe from the bar, and play stations through mpv with an MPRIS bridge.",
+      "description": "Explore live radio on a rotatable globe from the bar, and play stations through mpv with an MPRIS bridge. Ported from akshar.radio-atlas (Omarchy bar widget, MIT, by Akshar Patel) to the Ryoku plugin contract.",
+      "tags": [
+        "radio",
+        "music",
+        "globe",
+        "bar-widget"
+      ],
+      "accent": "#8f8378",
+      "surface": "#101010",
+      "preview": "assets/preview-widget.png",
+      "screenshots": [
+        "assets/preview-widget.png"
+      ],
+      "manifest": "product-manifest.json",
+      "manifestSha256": "e887648953e7bf1a00af10700db2cc5714cc5cbe8445d6744836b4d1907a58b1",
+      "official": false,
+      "tagline": "Explore live radio on a rotatable globe from the bar, and play stations through mpv with an MPRIS bridge.",
+      "icon": "radio",
+      "hosts": [
+        "topbarGlyph"
+      ],
+      "lastUpdated": "2026-10-26",
+      "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/radio-atlas"
     }
   ]
 }
