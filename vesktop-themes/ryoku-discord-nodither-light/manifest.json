@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "ryoku-discord-nodither-light",
+  "category": "vesktop-themes",
+  "version": "3.0.0",
+  "destination": "ryoku/vesktop-themes/ryoku-discord-nodither-light",
+  "files": [
+    {
+      "source": "LICENSE.txt",
+      "destination": "LICENSE.txt",
+      "mode": "0644",
+      "size": 1065,
+      "sha256": "b4fe34e7e9d7d6099faac4b0ac744b38ca38e3c857115a23b53200a960d704d4",
+      "install": false
+    },
+    {
+      "source": "README.md",
+      "destination": "README.md",
+      "mode": "0644",
+      "size": 1368,
+      "sha256": "a7f79ec4d90fcfd71802de1bf646d430709b1ed4b40529046527b6856018dd19",
+      "install": false
+    },
+    {
+      "source": "assets/add-friend.png",
+      "destination": "assets/add-friend.png",
+      "mode": "0644",
+      "size": 202788,
+      "sha256": "6c090a8a58a530d72a07d1fddf30e252a24d2fc0085bd27b09dd782bab1c5772",
+      "install": false
+    },
+    {
+      "source": "assets/chat.png",
+      "destination": "assets/chat.png",
+      "mode": "0644",
+      "size": 258615,
+      "sha256": "beb9468eea0eda057705b3a768126d142b8a8b98753190552bf4db510b8d9bf3",
+      "install": false
+    },
+    {
+      "source": "assets/settings.png",
+      "destination": "assets/settings.png",
+      "mode": "0644",
+      "size": 261481,
+      "sha256": "71fd70929cd046d318107ed5cf82b1159a7832455c6585813016c42859fa5d5a",
+      "install": false
+    },
+    {
+      "source": "ryoku-nodither-light.theme.css",
+      "destination": "ryoku-nodither-light.theme.css",
+      "mode": "0644",
+      "size": 15753,
+      "sha256": "624c6098cf7dc1658a148788c42da6b3ee110960f2a2c74397fe23349a4195e5",
+      "install": true
+    }
+  ],
+  "license": "MIT"
+}

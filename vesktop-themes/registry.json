@@ -26,6 +26,165 @@
       "official": false,
       "license": "MIT",
       "lastUpdated": "2026-10-25"
+    },
+    {
+      "id": "ryoku-discord-light",
+      "name": "Ryoku Discord Light",
+      "version": "3.0.0",
+      "path": "vesktop-themes/ryoku-discord-light",
+      "author": "Ron",
+      "upstream": "https://github.com/niqqudim/ryoku-discord",
+      "discord": "https://discord.gg/Sf7sGwy4kG",
+      "summary": "Ryoku's paper and ink theme, in light mode",
+      "description": "The light version of the Ryoku discord theme: the same layout, art and animations as the main theme. Enable Ryoku light in vesktop settings → themes → and check the Ryoku Light theme",
+      "tags": [
+        "vesktop",
+        "discord",
+        "theme",
+        "paper",
+        "light"
+      ],
+      "accent": "#c8281f",
+      "surface": "#ebe4d9",
+      "preview": "assets/chat.png",
+      "screenshots": [
+        "assets/chat.png",
+        "assets/settings.png",
+        "assets/add-friend.png"
+      ],
+      "manifest": "manifest.json",
+      "manifestSha256": "386b0934b2ad0ccfce494f00e50e406d6de3ca33307255a7c927bc7bab0dff34",
+      "official": false,
+      "license": "MIT",
+      "lastUpdated": "2026-10-27"
+    },
+    {
+      "id": "ryoku-discord-calm",
+      "name": "Ryoku Discord Calm",
+      "version": "3.0.0",
+      "path": "vesktop-themes/ryoku-discord-calm",
+      "author": "Ron",
+      "upstream": "https://github.com/niqqudim/ryoku-discord",
+      "discord": "https://discord.gg/Sf7sGwy4kG",
+      "summary": "Same structure and coloring but with less things: fewer animations and art",
+      "description": "The calm version of the Ryoku discord theme: fewer animations, no corner ticks, plain panel titles, discord's own pictures in place of some art, and other small changes, Enable Ryoku Calm in vesktop settings → themes → and check the Ryoku Calm theme",
+      "tags": [
+        "vesktop",
+        "discord",
+        "theme",
+        "paper",
+        "dark",
+        "calm"
+      ],
+      "accent": "#e2342a",
+      "surface": "#0a0a0a",
+      "preview": "assets/chat.png",
+      "screenshots": [
+        "assets/chat.png",
+        "assets/settings.png",
+        "assets/add-friend.png"
+      ],
+      "manifest": "manifest.json",
+      "manifestSha256": "9dad309091bc9d77fa04a0dbe3372952c98d9256ab6d8b4f70cbc67774de6399",
+      "official": false,
+      "license": "MIT",
+      "lastUpdated": "2026-10-27"
+    },
+    {
+      "id": "ryoku-discord-calm-light",
+      "name": "Ryoku Discord Calm Light",
+      "version": "3.0.0",
+      "path": "vesktop-themes/ryoku-discord-calm-light",
+      "author": "Ron",
+      "upstream": "https://github.com/niqqudim/ryoku-discord",
+      "discord": "https://discord.gg/Sf7sGwy4kG",
+      "summary": "The calm Ryoku theme, in light mode",
+      "description": "The calm version of the Ryoku discord theme in light mode: fewer animations, no corner ticks, plain panel titles, discord's own pictures in place of some art, and other small changes, Enable Ryoku Calm  light in vesktop settings → themes → and check the Ryoku Calm Light theme",
+      "tags": [
+        "vesktop",
+        "discord",
+        "theme",
+        "paper",
+        "light",
+        "calm"
+      ],
+      "accent": "#c8281f",
+      "surface": "#ebe4d9",
+      "preview": "assets/chat.png",
+      "screenshots": [
+        "assets/chat.png",
+        "assets/settings.png",
+        "assets/add-friend.png"
+      ],
+      "manifest": "manifest.json",
+      "manifestSha256": "ed91c1f2255391734dd33f6657f9a58e1454234b85f8e564db21e2df7665f865",
+      "official": false,
+      "license": "MIT",
+      "lastUpdated": "2026-10-27"
+    },
+    {
+      "id": "ryoku-discord-nodither",
+      "name": "Ryoku Discord No Dither",
+      "version": "3.0.0",
+      "path": "vesktop-themes/ryoku-discord-nodither",
+      "author": "Ron",
+      "upstream": "https://github.com/niqqudim/ryoku-discord",
+      "discord": "https://discord.gg/Sf7sGwy4kG",
+      "summary": "Ryoku with smooth artwork instead of dithered",
+      "description": "The Ryoku discord theme with smooth art instead of the dithered art. Enable Ryoku No Dither in vesktop settings → themes → and check the Ryoku No Dither theme",
+      "tags": [
+        "vesktop",
+        "discord",
+        "theme",
+        "paper",
+        "dark",
+        "smooth"
+      ],
+      "accent": "#e2342a",
+      "surface": "#0a0a0a",
+      "preview": "assets/chat.png",
+      "screenshots": [
+        "assets/chat.png",
+        "assets/settings.png",
+        "assets/add-friend.png"
+      ],
+      "manifest": "manifest.json",
+      "manifestSha256": "de3f19112fda4233d34269250b67da704b0e1e75b038f1a01f5b35dd23c9f70c",
+      "official": false,
+      "license": "MIT",
+      "lastUpdated": "2026-10-27"
+    },
+    {
+      "id": "ryoku-discord-nodither-light",
+      "name": "Ryoku Discord No Dither Light",
+      "version": "3.0.0",
+      "path": "vesktop-themes/ryoku-discord-nodither-light",
+      "author": "Ron",
+      "upstream": "https://github.com/niqqudim/ryoku-discord",
+      "discord": "https://discord.gg/Sf7sGwy4kG",
+      "summary": "Ryoku with smooth artwork, in light mode",
+      "description": "The no dither Ryoku discord theme in light mode, smooth art instead of the dithered art. Enable Ryoku No Dither Light in vesktop settings → themes → and check the Ryoku No Dither Light theme",
+      "tags": [
+        "vesktop",
+        "discord",
+        "theme",
+        "paper",
+        "light",
+        "smooth"
+      ],
+      "accent": "#c8281f",
+      "surface": "#ebe4d9",
+      "preview": "assets/chat.png",
+      "screenshots": [
+        "assets/chat.png",
+        "assets/settings.png",
+        "assets/add-friend.png"
+      ],
+      "manifest": "manifest.json",
+      "manifestSha256": "e34c04236e715ce6934f622a6501a14160ba4691eb8641c906ca7a57479836df",
+      "official": false,
+      "license": "MIT",
+      "lastUpdated": "2026-10-27"
     }
   ]
 }
