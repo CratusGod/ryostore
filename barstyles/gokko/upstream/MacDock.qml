@@ -1414,7 +1414,7 @@ Scope {
                     SRow {
                         t: pal
                         title: I18n.tr("Menu Bar")
-                        subtitle: I18n.tr("Show the panel at the top of the screen. Spotlight, Control Center and the calendar belong to it.")
+                        subtitle: I18n.tr("Show the panel at the top of the screen. Control Center and the calendar belong to it; the app launcher is separate.")
                         SSwitch {
                             t: pal
                             checked: root.bar ? root.bar.barEnabled : true
@@ -1661,7 +1661,7 @@ Scope {
                         SSwitch { t: pal; checked: root.bar ? root.bar.barWidgetEnabled("wifi") : true; onToggled: v => { if (root.bar) root.bar.setBarWidget("wifi", v); } }
                     }
                     SRow {
-                        t: pal; title: I18n.tr("Spotlight search")
+                        t: pal; title: I18n.tr("App launcher")
                         SSwitch { t: pal; checked: root.bar ? root.bar.showSearch : true; onToggled: v => { if (root.bar) root.bar.showSearch = v; } }
                     }
                     SRow {

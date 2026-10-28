@@ -9,7 +9,7 @@
 //
 // Settings stay where they were: ~/.config/macbar/settings.json and ~/.config/macdock/settings.json (+ pinned.json).
 // Layer namespaces are unchanged ("macbar" / "macdock"), so your existing layerrule / windowrule lines keep working.
-// The Spotlight IPC bind is unchanged:  qs -c macbar ipc call spotlight toggle
+// The bar magnifier delegates to Ryoku's active launcher:  ryoku-shell launcher
 //
 // What is shared now (this is where the memory saving comes from):
 //   * one Quickshell / Qt process instead of two,
