@@ -268,6 +268,34 @@
       "lastUpdated": "2026-10-26",
       "official": false,
       "license": "GPL-3.0-only"
+    },
+    {
+      "id": "karuma",
+      "name": "Karuma",
+      "version": "1.0.0",
+      "path": "barstyles/karuma",
+      "author": "feelyourwarmth",
+      "upstream": "https://github.com/Ryoku-dev/ryostore/tree/main/barstyles/karuma",
+      "summary": "Paper-and-ink adaptive bar",
+      "description": "A configurable Ryoku bar with a paper-and-ink surface, movable modules, kanji workspaces, media and tray integration, quick settings, profiles, and an adaptive side rail.",
+      "tags": [
+        "bar",
+        "barstyle",
+        "paper-and-ink",
+        "configurable",
+        "rail",
+        "workspaces",
+        "media"
+      ],
+      "accent": "#c74637",
+      "surface": "#1c1713",
+      "preview": "assets/preview.png",
+      "screenshots": [],
+      "manifest": "manifest.json",
+      "manifestSha256": "5af3f5b98e1b57c9dea9720c8df23db7acbed57d0660e49bfd6c40498d8e1fb6",
+      "lastUpdated": "2026-10-28",
+      "official": false,
+      "license": "MIT"
     }
   ]
 }
