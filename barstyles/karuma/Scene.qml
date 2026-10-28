@@ -814,8 +814,14 @@ Item {
                 }
                 Process {
                     running: true
-                    command: ["systemd-inhibit", "--what=idle:sleep", "--who=Karuma",
-                              "--why=stay awake", "--mode=block", "sleep", "infinity"]
+                    command: [
+                        "ryoku-host", "inhibit",
+                        "--what=idle:sleep",
+                        "--who=Karuma",
+                        "--why=stay awake",
+                        "--mode=block",
+                        "sleep", "infinity"
+                    ]
                 }
             }
         }
