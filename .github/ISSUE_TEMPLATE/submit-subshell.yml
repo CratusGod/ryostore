@@ -1,0 +1,108 @@
+name: Submit a subshell
+description: Propose a coordinated Ryoku shell experience with its own bar and companion surfaces.
+title: "[Subshell]: "
+labels:
+  - submission
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A subshell is a coordinated interface, not just a barstyle. If you're submitting only a bar, use the [regular item form](https://github.com/Ryoku-dev/ryostore/issues/new?template=submit-item.yml).
+
+        Subshells currently share Ryoku's `barStyle` activation machinery. This form does not mean a separate subshell package format has shipped. Please test on a live Ryoku session and provide links to the code.
+  - type: input
+    id: name
+    attributes:
+      label: Subshell name
+      placeholder: My shell
+    validations:
+      required: true
+  - type: input
+    id: author
+    attributes:
+      label: Author or maintainer
+      description: Name or handle for credit and future maintenance.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Public source repository
+      placeholder: https://github.com/example/my-shell
+    validations:
+      required: true
+  - type: input
+    id: license
+    attributes:
+      label: Redistribution license
+      placeholder: GPL-3.0-or-later
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Experience and design
+      description: Explain the coordinated interface, what makes it more than a bar, and link screenshots or a short demo.
+    validations:
+      required: true
+  - type: textarea
+    id: entrypoints
+    attributes:
+      label: Entry points and owned surfaces
+      description: List the main QML entry point, settings panels, windows, popouts, and IPC surfaces this subshell starts.
+      placeholder: |
+        Entry: shell.qml
+        Surfaces: bar, launcher, controls, overview
+        IPC: ...
+    validations:
+      required: true
+  - type: textarea
+    id: integration
+    attributes:
+      label: Ryoku service integration
+      description: Which existing Ryoku services, singletons and window-manager APIs does it use? Does it run extra background processes?
+    validations:
+      required: true
+  - type: textarea
+    id: lifecycle
+    attributes:
+      label: Install, activation, disable and removal
+      description: Explain what files are installed, how they are activated, how they stop, and whether any user data is preserved.
+    validations:
+      required: true
+  - type: textarea
+    id: permissions
+    attributes:
+      label: Permissions, processes and network access
+      description: List commands, external downloads, shell execution, filesystem writes, elevated privileges and network endpoints. Write 'none' when applicable.
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Runtime dependencies and compositor support
+      description: List Qt/Quickshell modules, binaries, services and which Ryoku-supported window managers were tested.
+    validations:
+      required: true
+  - type: input
+    id: preview
+    attributes:
+      label: Screenshot or video preview
+      placeholder: https://...
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checklist
+      options:
+        - label: I tested activation, disable, reactivation and rollback in a live Ryoku session.
+          required: true
+        - label: I checked that my subshell does not start conflicting global desktop services.
+          required: true
+        - label: I have the right to redistribute all code and artwork included.
+          required: true
+        - label: I documented external commands, permissions and network access.
+          required: true
+        - label: I will maintain compatibility and security updates for this submission.
+          required: true

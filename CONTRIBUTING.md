@@ -60,6 +60,15 @@ and `registry-entry.json`, and `ryoku plugin share <id>` opens the pull request 
 you (with `gh` logged in) or prefills the submission form. Doing it by hand instead,
 regenerate the plugin's manifest and hash with `tools/pack-product.py plugins/<id>`.
 
+## Subshells versus barstyles
+
+A barstyle changes the bar and attached popouts. A subshell is a coordinated
+experience with companion panels, windows or controls. Both currently use
+Ryoku's `barStyle` activation setting, so a separate subshell registry is
+**not** implied. Subshell submissions require an integration and lifecycle
+review. Use the [dedicated subshell form](.github/ISSUE_TEMPLATE/submit-subshell.yml)
+instead of the ordinary item form.
+
 ## Two ways to submit
 
 ### 1. Open a pull request (preferred)

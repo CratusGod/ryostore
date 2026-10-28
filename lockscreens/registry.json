@@ -990,30 +990,6 @@
       "official": false,
       "license": "MIT",
       "lastUpdated": "2026-10-25"
-    },
-    {
-      "id": "kitsune",
-      "name": "Kitsune",
-      "version": "1.0.2",
-      "path": "lockscreens/kitsune",
-      "author": "0xSrcAura",
-      "upstream": "https://github.com/SourceAura/kitsune",
-      "summary": "Ase, the seven-tailed kitsune, and her seven tarot folds at the door.",
-      "description": "The Jurai lock, carried to the store whole: Ase, the seven-tailed kitsune, drawn in shaders and light, and her seven tarot folds. Typing binds the folds one by one, each whispered as it lands — THE EYE · TRUTH, THE PHANTOM · POWER, THE BLADE · WISDOM, THE SAGE · JUDGMENT, THE SHROUD · LIFE, THE FORGE · LOVE, THE MIRROR · DISCIPLINE. At seven the Cast rises: INVOKE THE SEAL. A wrong key hurts her and scatters the cards; the true key transforms her and opens the seal. Built in 2026 for Jurai shell; the store port preserves her scene and shaders while welcoming the selected account.",
-      "tags": [
-        "kitsune",
-        "jurai",
-        "tarot",
-        "dark"
-      ],
-      "accent": "#818CF8",
-      "surface": "#12131C",
-      "preview": "assets/preview.webp",
-      "screenshots": [
-        "assets/preview.webp"
-      ],
-      "manifest": "manifest.json",
-      "manifestSha256": "528a5cdd31744b258a309c52427e11498833ec5239cce1f17d7955f01693e67e"
     }
   ]
 }
