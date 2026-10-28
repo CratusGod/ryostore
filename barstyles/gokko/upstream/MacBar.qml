@@ -33,25 +33,15 @@
 // Liquid Glass; the bell in the bar opens the "Notification system" panel (history, delete, Clear All, Do Not Disturb).
 // Test with: notify-send "Fitness" "Move goal achieved"
 //
-// Spotlight (the search icon) is built in and drawn in Liquid Glass. Bind it to a key with:
-//   bind = ALT, space, exec, qs -c macbar ipc call spotlight toggle
-// Hyprland (Lua):
-//   hl.bind("ALT + Space", hl.dsp.exec_cmd("qs -c macbar ipc call spotlight toggle"))
+// The search icon opens Ryoku's currently selected app launcher (`ryoku-shell launcher`).
+// Gokko's former embedded Spotlight is shipped separately as the Gokko Spotlight launcher in RyoStore.
 // Wallpapers: Ctrl+Alt+W opens the wallpaper picker (Liquid Glass). Bind it with:
 //   hl.bind("CTRL + ALT + W", hl.dsp.exec_cmd("qs -c macbar ipc call wallpapers toggle"))
 //   (hyprlang:  bind = CTRL ALT, W, exec, qs -c macbar ipc call wallpapers toggle)
 // Folder: ~/Pictures/Wallpapers by default (change it inside the picker, or "wallpaperDir" in settings.json).
 // Star a wallpaper to pin it to the top. Applied through Noctalia / awww / swww / hyprpaper, or your own "wallpaperCmd" ({} = image path).
-// Clipboard history + Emoji live inside Spotlight (the clipboard and smiley buttons next to the search field):
-//   needs wl-clipboard + cliphist (this shell starts the `wl-paste --watch cliphist store` watchers itself, unless you already run them).
-//   bind = SUPER, V, exec, qs -c macbar ipc call spotlight clipboard       # Clipboard history (replace any default SUPER+V bind)
-//   bind = SUPER, period, exec, qs -c macbar ipc call spotlight emoji      # Emoji picker
-// Hyprland (Lua):
-//   hl.bind("SUPER + V", hl.dsp.exec_cmd("qs -c macbar ipc call spotlight clipboard"))
-//   hl.bind("SUPER + period", hl.dsp.exec_cmd("qs -c macbar ipc call spotlight emoji"))
-//   (use the same `qs -c <name>` prefix you use for the Spotlight bind; `ipc call spotlight apps` opens the Applications panel)
-// Return pastes the entry into the focused app, Shift+Return only copies it, Delete removes it from the history.
-// Files runs filesCmd.
+// Clipboard history and Emoji remain available inside the separate Gokko Spotlight launcher.
+// That launcher reads the same ~/.config/macbar/settings.json; no second settings screen or launcher-specific config is used.
 //
 // Screenshots (Print key): the screen freezes and dims, drag to select an area (a size badge follows the pointer), release to capture.
 // Return/Space = whole screen, Esc or right-click = cancel. Where it is saved (and clipboard / notification) is in System Settings → Menu Bar.
@@ -68,12 +58,13 @@ import QtQuick.Effects
 import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
-import Quickshell.Services.SystemTray
 import Quickshell.Services.UPower
 import Quickshell.Services.Pipewire
 import Quickshell.Services.Mpris
 import Quickshell.Services.Notifications
 import shell.services
+import shell.services as Shell
+import shell.barkit as BarKit
 import "EmojiData.js" as EmojiData
 import "I18n.js" as I18n
 import "Fonts.js" as Fonts
@@ -86,20 +77,30 @@ Scope {
 
     // shared helpers from shell.qml (window geometry poller, wallpaper lookup)
     property var hub: null
+    // The bar normally gets the native-backdrop capability through MacRoot's shared hub. The launcher runs independently,
+    // so fall back to its own WM provider when no hub is supplied (notably for Niri's output screencopy).
+    readonly property bool nativeBackdrop: root.hub ? !!root.hub.nativeBackdrop : macWm.provider === "niri"
     // true while a screen recording / screen share runs: the glass's live window captures sit out (see shell.qml: hub.captureQuiet)
     readonly property bool captureQuiet: hub ? hub.captureQuiet : recording
     // windows opening / closing: the glass's live captures pause (it keeps its last frame; the source stays attached) - see shell.qml: hub.glassHold
     readonly property bool captureHeld: hub ? hub.glassHold : false
 
     // ───────────── CONFIG (all persisted to settings.json) ─────────────
-    property bool barEnabled: true           // the menu bar strip itself
+    // launcherOnly is true only when this component is hosted by the separate RyoStore app launcher.
+    // That instance reuses the Spotlight UI/shaders and Gokko's settings, without displaying a second bar.
+    property bool launcherOnly: false
+    property string launcherMonitor: ""
+    property bool launcherOpenRequested: false
+    property string launcherQuery: ""
+    signal launcherDismissed()
     // every part of the shell can be switched off on its own (the installer's feature picker writes these too)
-    property bool spotlightEnabled: true     // Spotlight (the magnifier / its keybind)
+    property bool barEnabled: true           // the menu bar strip itself
+    property bool spotlightEnabled: true     // persisted for compatibility; the embedded panel is no longer shown in Gokko's bar
     property bool ccEnabled: true            // Control Center
     property string ccStyle: "tiles"         // tiles = every control its own glass | macos = one frosted panel behind them
     property bool notificationsEnabled: true // banners + Notification Center (off = no D-Bus daemon at all, so mako/dunst can take over)
     property bool clockAppEnabled: true      // the Clock app (alarms and timers still ring while it is on)
-    readonly property bool barLayerNeeded: barEnabled || spotlightEnabled || ccEnabled || notificationsEnabled
+    readonly property bool barLayerNeeded: launcherOnly || barEnabled || ccEnabled || notificationsEnabled
     property bool darkMode: true             // the resolved look (true = dark); follows appearanceMode
     property string appearanceMode: "dark"   // light | dark | auto (auto = light by day, dark by night)
     readonly property bool panelDarkMode: darkMode   // Spotlight and the top bar menus follow the one Light / Dark / Auto setting
@@ -2701,17 +2702,20 @@ Scope {
         var e = lookup(activeAppId);
         if (e) e.execute();
     }
-    function search() {
-        if (!spotlightEnabled && launcher === "") return;
-        spotWant = "home";
-        if (launcher !== "") sh(launcher);
-        else spotRequest++;                       // every bar window listens and the focused screen opens Spotlight
+    // The menu-bar magnifier always opens Ryoku's currently selected app launcher.
+    // The standalone Gokko Spotlight launcher opens its own UI through launcherOpenRequested.
+    function search() { Quickshell.execDetached(["ryoku-shell", "launcher"]); }
+    function spotOpen(mode) {
+        if (!launcherOnly) { search(); return; }
+        spotWant = mode;
+        spotRequest++;
     }
-    function spotOpen(mode) { if (!spotlightEnabled) return; spotWant = mode; spotRequest++; }
+    function requestLauncherOpen() { launcherOpenRequested = true; }
+    function requestLauncherClose() { launcherOpenRequested = false; }
     // qs -c MacShell ipc call controlcenter toggle | open | close   (works with the menu bar switched off too)
     signal ccRequest(bool open)
     IpcHandler {
-        target: "macshell-controlcenter"
+        target: root.launcherOnly ? "gokko-spotlight-controlcenter-internal" : "macshell-controlcenter"
         function toggle(): void { root.ccRequest(true); }
         function open(): void { root.ccRequest(true); }
         function close(): void { root.ccRequest(false); }
@@ -2720,7 +2724,7 @@ Scope {
     // macshell.lua does); the shell then does the work itself, so the numbers, the on-screen display and the UI sounds
     // all stay in step.   qs -c MacShell ipc call hardware volumeUp | volumeDown | mute | micMute | brightnessUp | brightnessDown
     IpcHandler {
-        target: "macshell-hardware"
+        target: root.launcherOnly ? "gokko-spotlight-hardware-internal" : "macshell-hardware"
         function volumeUp(): void { root.hwVolume(0.05); }
         function volumeDown(): void { root.hwVolume(-0.05); }
         function mute(): void { root.hwMute(); }
@@ -2729,8 +2733,8 @@ Scope {
         function brightnessDown(): void { root.hwBrightness(-0.05); }
     }
     IpcHandler {
-        target: "macshell-spotlight"
-        function toggle(): void { root.search(); }
+        target: root.launcherOnly ? "gokko-spotlight-spotlight-internal" : "macshell-spotlight"
+        function toggle(): void { if (root.launcherOnly) root.spotOpen("home"); else root.search(); }
         function clipboard(): void { root.spotOpen("clip"); }
         function emoji(): void { root.spotOpen("emoji"); }
         function apps(): void { root.spotOpen("apps"); }
@@ -3256,8 +3260,6 @@ Scope {
                     m.push(mi("Find\u2026", "Ctrl+F", keys(["ctrl"], "f")));
                 }
                 if (has) m.push(msep());
-                m.push(mi("Clipboard History\u2026", "", function () { root.spotOpen("clip"); }));
-                m.push(mi("Emoji & Symbols", "", function () { root.spotOpen("emoji"); }));
             } else if (name === "view") {
                 if (has) {
                     m.push(mi(fsMode === 2 ? "Exit Full Screen" : "Enter Full Screen", "", disp('hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" })')));
@@ -3375,13 +3377,13 @@ Scope {
         }
     }
     IpcHandler {
-        target: "macshell-screenshot"
+        target: root.launcherOnly ? "gokko-spotlight-screenshot-internal" : "macshell-screenshot"
         function region(): void { root.shotStart(); }
         function screen(): void { root.shotFinish("", ""); }
         function window(): void { root.shotWindow(root.activeWin); }
     }
     Variants {
-        model: root.shotOpen ? Quickshell.screens : []
+        model: (!root.launcherOnly && root.shotOpen) ? Quickshell.screens : []
         PanelWindow {
             id: shw
             required property var modelData
@@ -3699,10 +3701,11 @@ Scope {
     // ═════════════ SETTINGS PERSISTENCE ═════════════
     readonly property string settingsSig: settingKeys.map(function (k) { return String(root[k]); }).join("|")
     property bool settingsReady: false
-    onSettingsSigChanged: if (settingsReady) saveTimer.restart()
-    Timer { id: saveTimer; interval: 400; onTriggered: root.saveSettings() }
+    onSettingsSigChanged: if (settingsReady && !launcherOnly) saveTimer.restart()
+    Timer { id: saveTimer; interval: 400; onTriggered: if (!root.launcherOnly) root.saveSettings() }
 
     function saveSettings() {
+        if (root.launcherOnly) return; // the launcher is a read-only consumer of Gokko's settings
         var o = {};
         for (var i = 0; i < settingKeys.length; i++) {
             var k = settingKeys[i];
@@ -3749,6 +3752,9 @@ Scope {
         id: store
         path: ""
         printErrors: false
+        // The standalone launcher consumes the same settings as Gokko and reloads them after Gokko saves.
+        watchChanges: root.launcherOnly
+        onFileChanged: if (root.launcherOnly) reload()
         onLoaded: {
             try {
                 const saved = JSON.parse(text());
@@ -3779,7 +3785,7 @@ Scope {
     // Gokko's Niri output-snapshot path feeds the same shader as Hyprland.
     readonly property bool liquidActive: barStyle === "liquid" && glassState === "ready" && !gaming
     readonly property string glassShaderSrc: decodeURIComponent(Qt.resolvedUrl("liquidglass.frag").toString().replace("file://", ""))
-    readonly property string glassShaderOut: configDir + "/liquidglass.frag.qsb"
+    readonly property string glassShaderOut: configDir + (root.launcherOnly ? "/gokko-spotlight-liquidglass.frag.qsb" : "/liquidglass.frag.qsb")
     readonly property url glassShaderUrl: "file://" + glassShaderOut
 
     onBarStyleChanged: if (barStyle === "liquid") startGlass()
@@ -3807,14 +3813,14 @@ Scope {
 
     // wallpaper the glass refracts (override → Noctalia settings.toml → awww/swww/hyprpaper)
     readonly property var wallpaperMap: hub ? hub.wallpaperMap : ({})
-    Binding { target: root.hub; property: "barWantsWallpaper"; value: root.liquidActive }
+    Binding { target: root.hub; property: "barWantsWallpaper"; when: !!root.hub; value: root.liquidActive }
     function wallpaperFor(screenName) {
         var current = wallpaperMap["wallpaper.monitors." + screenName]
                    || wallpaperMap["wallpaper.last"] || wallpaperMap["wallpaper.default"] || "";
         // Ryogami is authoritative on Niri: don't keep showing a former MacShell override.
         // On Niri, never fall back to a stale MacShell wallpaper override.
         // The shared Ryogami poster bridge is the only wallpaper authority.
-        var p = (hub && hub.nativeBackdrop) ? current
+        var p = root.nativeBackdrop ? current
             : (wallpaperPath !== "" ? wallpaperPath : current);
         if (p.indexOf("~/") === 0) p = Quickshell.env("HOME") + p.substring(1);
         return p;
@@ -3840,7 +3846,7 @@ Scope {
     property string awwwWallpaperPath: ""
     readonly property string dominantWallpaperPath: {
         // Only non-Niri legacy sessions use awww as their wallpaper source.
-        if (!(root.hub && root.hub.nativeBackdrop) && root.awwwWallpaperPath !== "") return root.awwwWallpaperPath;
+        if (!(root.nativeBackdrop) && root.awwwWallpaperPath !== "") return root.awwwWallpaperPath;
         var screens = Quickshell.screens;
         return root.wallpaperFor(screens && screens.length ? screens[0].name : "");
     }
@@ -3879,7 +3885,7 @@ Scope {
                 if (path.indexOf("~/") === 0) path = Quickshell.env("HOME") + path.substring(1);
                 if (root.awwwWallpaperPath !== path) root.awwwWallpaperPath = path;
                 var fallback = root.wallpaperFor(Quickshell.screens && Quickshell.screens.length ? Quickshell.screens[0].name : "");
-                var p = root.hub && root.hub.nativeBackdrop ? fallback : (path || fallback);
+                var p = root.nativeBackdrop ? fallback : (path || fallback);
                 if (p.indexOf("file://") === 0) p = decodeURIComponent(p.substring(7));
                 if (p === "") return;
                 if (p === root.wallpaperAccentFor && !root.wallpaperSampleForce) return;   // same picture, nothing to do
@@ -3914,8 +3920,8 @@ Scope {
     readonly property var glassClients: hub ? hub.glassClients : []
     property int popCount: 0
     onBarEnabledChanged: { if (!barEnabled) popCount = 0; clipStart(); }
-    Binding { target: root.hub; property: "barWantsGeo";
-        value: root.liquidActive && !(root.hub && root.hub.nativeBackdrop) }
+    Binding { target: root.hub; property: "barWantsGeo"; when: !!root.hub;
+        value: root.liquidActive && !(root.nativeBackdrop) }
     // window captures are admitted by the shared gate in shell.qml (hub.tlFor): 0.2 s after a window appears, one every 110 ms
 
     Component.onCompleted: {
@@ -4411,7 +4417,7 @@ Scope {
     }
     onWallpaperFavsChanged: if (wpOpen) wpRebuild()
     IpcHandler {
-        target: "macshell-wallpapers"
+        target: root.launcherOnly ? "gokko-spotlight-wallpapers-internal" : "macshell-wallpapers"
         function toggle(): void { root.wpToggle(); }
         // qs -c MacShell ipc call wallpapers appearance auto|light|dark|dynamic
         function set(path: string): void { root.wpApply(path); }
@@ -4566,7 +4572,7 @@ Scope {
     }
     function swCancel() { root.swOpen = false; }
     IpcHandler {
-        target: "macshell-switcher"
+        target: root.launcherOnly ? "gokko-spotlight-switcher-internal" : "macshell-switcher"
         function next(): void { root.swNext(1); }
         function prev(): void { root.swNext(-1); }
         function commit(): void { root.swCommit(); }
@@ -4587,7 +4593,7 @@ Scope {
         PanelWindow {
             id: barBgWin
             screen: perScreen.modelData
-            visible: !(root.hub && root.hub.nativeBackdrop) && root.barBgOpacity > 0.001
+            visible: !root.launcherOnly && !(root.nativeBackdrop) && root.barBgOpacity > 0.001
             anchors { left: true; right: true; top: true }
             implicitHeight: root.barHeight
             color: "transparent"
@@ -4597,7 +4603,7 @@ Scope {
             WlrLayershell.namespace: "macbarbg"
             // Native Niri blur stays clipped to the menu-bar strip.
             BackgroundEffect.blurRegion: Region {
-                width: root.hub && root.hub.nativeBackdrop ? barBgWin.width : 0
+                width: root.nativeBackdrop ? barBgWin.width : 0
                 height: root.barHeight
             }
             // Top, not Bottom: on Bottom it sat under the windows, so it only ever blurred the wallpaper — over a
@@ -4607,7 +4613,7 @@ Scope {
 
             Rectangle {
                 anchors.fill: parent
-                readonly property real barTint: root.hub && root.hub.nativeBackdrop
+                readonly property real barTint: root.nativeBackdrop
                     ? Math.max(0.16, root.barBgOpacity) : root.barBgOpacity
                 color: root.darkMode ? Qt.rgba(0.10, 0.10, 0.11, barTint) : Qt.rgba(1, 1, 1, barTint)
             }
@@ -4617,13 +4623,15 @@ Scope {
             id: win
             property var modelData: perScreen.modelData
             screen: perScreen.modelData
+            // Keep this transparent host mapped so the screen snapshot/Liquid Glass backdrop stays live.
+            // In launcher-only mode its input mask and visible bar elements are disabled below.
 
             anchors { left: true; right: true; top: true }
             implicitHeight: root.barHeight + root.popRoom
             color: "transparent"
 
             exclusionMode: ExclusionMode.Normal
-            exclusiveZone: root.barEnabled ? root.barHeight : 0
+            exclusiveZone: root.launcherOnly ? 0 : (root.barEnabled ? root.barHeight : 0)
 
             WlrLayershell.namespace: "macbar"
             // Blur only painted chrome, not the transparent 900px popup host.
@@ -4632,12 +4640,12 @@ Scope {
                 height: root.barHeight
                 Region {
                     x: menuPop.x; y: menuPop.y
-                    width: root.hub && root.hub.nativeBackdrop && menuPop.visible ? menuPop.width : 0
+                    width: root.nativeBackdrop && menuPop.visible ? menuPop.width : 0
                     height: menuPop.height; radius: 14
                 }
                 Region {
                     x: cal.x; y: cal.y
-                    width: root.hub && root.hub.nativeBackdrop && cal.visible ? cal.width : 0
+                    width: root.nativeBackdrop && cal.visible ? cal.width : 0
                     height: cal.height; radius: 18
                 }
             }
@@ -4671,10 +4679,10 @@ Scope {
                 property bool ccEdit: false         // Control Center is in "Edit Controls" mode
                 property string ccPage: ""          // "" = the control grid, "wifi" = the Wi-Fi list shown inside the Control Center
                 onCcPageChanged: wifiPrompt = ""
-                property var trayItem: null         // SystemTrayItem whose menu is open in the tray popover
-                property var trayStack: []          // submenu path (QsMenuEntry objects) inside that menu
                 Timer { interval: 400; repeat: true; running: ui.pop === "vol"; onTriggered: root.audioTick++ }
-                readonly property bool toastScreen: Quickshell.screens.length === 1 || (macWm.focusedMonitor !== null && macWm.focusedMonitor.name === win.modelData.name)
+                readonly property bool toastScreen: root.launcherOnly && root.launcherMonitor !== ""
+                    ? win.modelData.name === root.launcherMonitor
+                    : (Quickshell.screens.length === 1 || (macWm.focusedMonitor !== null && macWm.focusedMonitor.name === win.modelData.name))
                 // the Control Center IPC: the focused screen opens it
                 Connections {
                     target: root
@@ -4686,15 +4694,6 @@ Scope {
                 readonly property bool toastsShown: toastScreen && notifToasts.count > 0
                 // notifications arriving with no panel open: measure what's behind the banners
                 onToastsShownChanged: if (toastsShown && pop === "") root.measureTone(win.modelData.x + ui.width - 374, win.modelData.y + root.barHeight + 8, 364, 90)
-
-                function openTray(item, x) {
-                    if (!item || !item.hasMenu) return;
-                    if (pop === "tray" && trayItem === item) { pop = ""; return; }
-                    trayStack = [];
-                    trayItem = item;
-                    menuX = x;
-                    pop = "tray";
-                }
 
                 function wifiPick(n) {
                     if (n.inUse) { root.disconnectWifi(); return; }
@@ -4743,6 +4742,7 @@ Scope {
                 property var spExpanded: ({})
                 property bool clipMenu: false           // the round "..." menu of the Clipboard panel
                 property bool spCalm: false             // Spotlight was opened by the clipboard / emoji shortcut: plain fade, no springy pop
+                property bool launcherSpotWasOpen: false
                 property bool spReqCalm: false
                 property int emCat: 0                   // emoji category tab (0 = recents)
                 property bool spHover: false            // spSel was just changed by the pointer, so lists must not scroll to it
@@ -4830,7 +4830,7 @@ Scope {
                 }
                 // bounding box of all glass that is on screen right now (popovers, notification popups) + a refraction margin
                 readonly property rect glassRect: {
-                    var items = [menuPop, cc, cal, wifiPop, btPop, trayPop, notifPop, toastArea, volPop, kbPop, levelOsd], x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9, any = false;
+                    var items = [menuPop, cc, cal, wifiPop, btPop, notifPop, toastArea, volPop, kbPop, levelOsd], x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9, any = false;
                     for (var i = 0; i < items.length; i++) {
                         var it = items[i];
                         if (!it.visible) continue;
@@ -4840,9 +4840,14 @@ Scope {
                     return any ? Qt.rect(x0 - 64, y0 - 64, x1 - x0 + 128, y1 - y0 + 128) : Qt.rect(0, 0, 0, 0);
                 }
                 readonly property bool isMenu: ["apple", "app", "file", "edit", "view", "window", "help"].indexOf(pop) >= 0
-                readonly property bool anyVisible: menuPop.visible || cc.visible || cal.visible || wifiPop.visible || btPop.visible || trayPop.visible || notifPop.visible || toastArea.visible || volPop.visible || kbPop.visible
+                readonly property bool anyVisible: menuPop.visible || cc.visible || cal.visible || wifiPop.visible || btPop.visible || notifPop.visible || toastArea.visible || volPop.visible || kbPop.visible
                 onAnyVisibleChanged: root.popCount += (anyVisible ? 1 : -1)
                 onPopChanged: {
+                    if (root.launcherOnly && launcherSpotWasOpen && pop !== "spot") {
+                        if (root.launcherOpenRequested && ui.toastScreen) root.launcherDismissed();
+                        root.launcherQuery = "";
+                    }
+                    launcherSpotWasOpen = (pop === "spot");
                     if (pop !== "" && pop !== "spot") toneT.restart();
                     if (pop === "spot" && ui.toastScreen) root.measureTone(win.modelData.x + ui.width / 2 - 320, win.modelData.y + ui.height * 0.4 - 30, 640, 60);
                     armed = "";
@@ -4860,11 +4865,29 @@ Scope {
                         spFocusTimer.restart();
                     }
                 }
+                function syncLauncherVisibility() {
+                    if (!root.launcherOnly) return;
+                    if (!ui.toastScreen) {
+                        if (ui.pop === "spot") ui.pop = "";
+                        return;
+                    }
+                    if (root.launcherOpenRequested) {
+                        if (ui.pop !== "spot") {
+                            root.spotWant = "home";
+                            ui.spReqCalm = false;
+                            ui.openPop("spot", 0);
+                        }
+                    } else if (ui.pop === "spot") {
+                        ui.pop = "";
+                    }
+                }
+                Component.onCompleted: Qt.callLater(ui.syncLauncherVisibility)
                 Connections {
                     target: root
+                    function onLauncherOpenRequestedChanged() { ui.syncLauncherVisibility(); }
+                    function onLauncherMonitorChanged() { Qt.callLater(ui.syncLauncherVisibility); }
                     function onSpotRequestChanged() {
-                        var fm = macWm.focusedMonitor;
-                        if (!(!fm || fm.name === win.modelData.name || Quickshell.screens.length === 1)) return;
+                        if (!root.launcherOnly || !ui.toastScreen) return;
                         var want = root.spotWant;
                         if (ui.pop === "spot") {
                             if (want === "home" || want === ui.spMode) ui.pop = "";    // same key again closes it
@@ -4875,6 +4898,10 @@ Scope {
                             if (want !== "home") ui.spSetMode(want);
                         }
                     }
+                }
+                Connections {
+                    target: ui
+                    function onSpQueryChanged() { if (ui.toastScreen) root.launcherQuery = ui.spQuery; }
                 }
 
                 Connections {
@@ -4938,7 +4965,7 @@ Scope {
                     width: win.modelData.width; height: win.modelData.height
                     opacity: 0                      // only ever captured by the glass, never drawn itself
                     captureSource: root.liquidActive && !root.captureQuiet
-                        && ((root.hub && root.hub.nativeBackdrop) || !glassBackdrop.item)
+                        && ((root.nativeBackdrop) || !glassBackdrop.item)
                         ? win.modelData : null
                     live: false
                     paintCursor: false
@@ -4956,7 +4983,7 @@ Scope {
                     interval: root.barGlass ? 180 : 280
                     repeat: true
                     triggeredOnStart: true
-                    running: !!(root.hub && root.hub.nativeBackdrop)
+                    running: !!(root.nativeBackdrop)
                         && root.liquidActive && !root.captureQuiet && ui.pop === ""
                     onTriggered: screenSnap.grab()
                 }
@@ -4965,7 +4992,7 @@ Scope {
                 Timer {
                     interval: 2600
                     repeat: false
-                    running: !!(root.hub && root.hub.nativeBackdrop)
+                    running: !!(root.nativeBackdrop)
                         && root.liquidActive && root.barEnabled
                     onTriggered: console.log("[gokko-niri] bar backend:",
                         "glassReady=" + root.liquidActive,
@@ -5047,14 +5074,14 @@ Scope {
                             sourceItem: screenSnap
                             sourceRect: Qt.rect(0, 0, bd.width, bd.height)
                             live: true
-                            visible: !!(root.hub && root.hub.nativeBackdrop)
+                            visible: !!(root.nativeBackdrop)
                                 && screenSnap.hasContent
                         }
                         Image {
                             z: -2
                             anchors.fill: parent
                             visible: status === Image.Ready
-                                && (!(root.hub && root.hub.nativeBackdrop)
+                                && (!(root.nativeBackdrop)
                                     || !screenSnap.hasContent)
                             source: root.fileUrl(root.wallpaperFor(win.modelData.name))
                             fillMode: Image.PreserveAspectCrop
@@ -5065,7 +5092,7 @@ Scope {
                         // Never refract a prior image of our own menu bar.
                         Item {
                             z: -1
-                            visible: !!(root.hub && root.hub.nativeBackdrop)
+                            visible: !!(root.nativeBackdrop)
                                 && screenSnap.hasContent
                             x: 0; y: 0; width: bd.width; height: root.barHeight
                             clip: true
@@ -5235,14 +5262,14 @@ Scope {
                     id: maskItem
                     x: 0; y: 0
                     width: ui.width
-                    height: (ui.pop !== "" && ui.pop !== "spot") ? ui.height : root.barHeight
+                    height: root.launcherOnly ? 0 : ((ui.pop !== "" && ui.pop !== "spot") ? ui.height : root.barHeight)
                 }
 
                 // Liquid Glass menu bar strip: the bar itself refracts the live backdrop (wallpaper + windows), like the popovers.
                 // Settings → Menu Bar → "Liquid Glass bar". Sits under every bar item.
                 LGlass {
                     id: barGlassStrip
-                    visible: root.barGlass && root.liquidActive && !(root.hub && root.hub.nativeBackdrop)
+                    visible: !root.launcherOnly && root.barGlass && root.liquidActive && !(root.nativeBackdrop)
                     x: 0; y: 0
                     width: ui.width
                     height: root.barHeight
@@ -5279,7 +5306,7 @@ Scope {
                     width: 256; height: 67
                     x: ui.width - width - 22
                     y: root.barHeight + 14
-                    visible: ui.toastScreen && opacity > 0
+                    visible: !root.launcherOnly && ui.toastScreen && opacity > 0
                     opacity: root.osdVisible ? 1 : 0
                     scale: root.osdVisible ? 1 : 0.94
                     transformOrigin: Item.TopRight
@@ -5341,7 +5368,7 @@ Scope {
                 // ═════════ the bar itself ═════════
                 Rectangle {
                     id: barBg
-                    visible: root.barEnabled
+                    visible: !root.launcherOnly && root.barEnabled
                     z: 20
                     x: 0; y: 0
                     width: ui.width
@@ -5535,40 +5562,56 @@ Scope {
                         scale: root.barWidgetScale
                         spacing: 0
 
-                        // tray
+                        // tray: rendered from the daemon-owned frame (shell.services Tray) instead
+                        // of Quickshell's own SystemTray. Closed apps disappear from the frame, so
+                        // icons no longer pile up in the bar, and a restarted app can reappear.
                         Repeater {
-                            model: root.showTray ? SystemTray.items : null
+                            model: root.showTray ? Shell.Tray.items : null
                             delegate: Item {
                                 id: tray
                                 required property var modelData
                                 width: 26; height: 28
+
+                                function iconSource(item) {
+                                    if (item.iconPath)
+                                        return item.iconPath.indexOf("/") === 0 ? "file://" + item.iconPath : item.iconPath;
+                                    return Quickshell.iconPath(item.iconName || "application-x-executable-symbolic", true);
+                                }
+
                                 Rectangle {
                                     anchors.centerIn: parent
                                     width: parent.width - 2
                                     height: parent.height - 6
                                     radius: 6
-                                    color: (ui.pop === "tray" && ui.trayItem === tray.modelData) ? bpal.hover : "transparent"
+                                    color: trayArea.containsMouse ? bpal.hover : "transparent"
                                 }
                                 Image {
                                     anchors.centerIn: parent
                                     width: 16; height: 16
-                                    source: tray.modelData.icon
+                                    source: tray.iconSource(tray.modelData)
                                     sourceSize: Qt.size(32, 32)
                                     fillMode: Image.PreserveAspectFit
                                     smooth: true
+                                    asynchronous: true
                                 }
                                 MouseArea {
+                                    id: trayArea
                                     anchors.fill: parent
-                                    acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
+                                    hoverEnabled: true
+                                    acceptedButtons: Qt.LeftButton | Qt.RightButton
                                     onClicked: mouse => {
-                                        var p = tray.mapToItem(ui, 0, 0);
-                                        if (mouse.button === Qt.RightButton || (mouse.button === Qt.LeftButton && tray.modelData.onlyMenu))
-                                            ui.openTray(tray.modelData, p.x);
-                                        else if (mouse.button === Qt.MiddleButton)
-                                            tray.modelData.secondaryActivate();
-                                        else
-                                            tray.modelData.activate();
+                                        var item = tray.modelData;
+                                        var pt = tray.mapToGlobal(0, tray.height);
+                                        if (mouse.button === Qt.RightButton || item.itemIsMenu) {
+                                            if (item.menu)
+                                                trayMenu.openFor(item, tray);
+                                            else
+                                                Shell.Tray.contextMenu(item.service, Math.round(pt.x), Math.round(pt.y));
+                                        } else {
+                                            Shell.Tray.activate(item.service, Math.round(pt.x), Math.round(pt.y));
+                                        }
                                     }
+                                    onWheel: wheel => Shell.Tray.scroll(tray.modelData.service, wheel.angleDelta.y, "vertical")
                                 }
                             }
                         }
@@ -5712,7 +5755,7 @@ Scope {
                             visible: root.showSearch
                             width: root.showSearch ? 28 : 0; height: 28
                             Glyph { anchors.centerIn: parent; width: 15; height: 15; kind: "search"; color: bpal.fg }
-                            MouseArea { anchors.fill: parent; onClicked: { if (root.launcher !== "") { ui.pop = ""; root.search(); } else ui.openPop("spot", 0); } }
+                            MouseArea { anchors.fill: parent; onClicked: { ui.pop = ""; root.search(); } }
                         }
                         // control center
                         Item {
@@ -6053,8 +6096,8 @@ Scope {
                 Item {
                     id: toastMask
                     x: toastArea.x; y: toastArea.y
-                    width: ui.toastsShown ? toastArea.width : 0
-                    height: ui.toastsShown ? toastArea.height : 0
+                    width: (!root.launcherOnly && ui.toastsShown) ? toastArea.width : 0
+                    height: (!root.launcherOnly && ui.toastsShown) ? toastArea.height : 0
                 }
                 Item {
                     id: toastArea
@@ -6064,7 +6107,7 @@ Scope {
                     // a menu / popover open where the notifications are: they slide down below it, and back up after
                     readonly property real popBottom: {
                         if (ui.pop === "" || ui.pop === "spot") return 0;
-                        var items = [menuPop, cc, cal, wifiPop, trayPop, volPop, kbPop], b = 0;
+                        var items = [menuPop, cc, cal, wifiPop, volPop, kbPop], b = 0;
                         for (var i = 0; i < items.length; i++) {
                             var it = items[i];
                             if (!it || !it.visible) continue;
@@ -6075,7 +6118,7 @@ Scope {
                     y: popBottom > 0 ? popBottom + 12 : root.barHeight + 8
                     Behavior on y { NumberAnimation { duration: 770; easing.type: Easing.OutQuint } }
                     height: toastCol.height
-                    visible: ui.toastsShown && root.notificationsEnabled
+                    visible: !root.launcherOnly && ui.toastsShown && root.notificationsEnabled
                     Column {
                         id: toastCol
                         width: parent.width
@@ -6608,196 +6651,11 @@ Scope {
                 }
 
                 // ═════════ system tray menu (right-click a tray icon) ═════════
-                Item {
-                    id: trayPop
-                    z: 10
-                    readonly property bool shown: ui.pop === "tray"
-                    readonly property var cur: ui.trayStack.length > 0 ? ui.trayStack[ui.trayStack.length - 1]
-                                               : (ui.trayItem ? ui.trayItem.menu : null)
-                    readonly property bool hasLead: {
-                        var v = trayOpener.children ? trayOpener.children.values : [];
-                        for (var i = 0; i < v.length; i++)
-                            if (v[i].buttonType !== QsMenuButtonType.None || (v[i].icon && v[i].icon !== "")) return true;
-                        return false;
-                    }
-                    function clean(t) {     // dbusmenu mnemonics: "_File" -> "File", "__" -> "_"
-                        return (t || "").replace(/__/g, "\u0001").replace(/_/g, "").replace(/\u0001/g, "_");
-                    }
-                    width: 260
-                    height: Math.min(trayCol.height + 14, root.popRoom - 20)
-                    x: Math.max(6, Math.min(ui.width - width * root.barPopupScale - 6, ui.menuX - 4))
-                    y: root.barHeight + 3
-                    opacity: shown ? 1 : 0
-                    visible: opacity > 0
-                    scale: root.barPopupScale * (shown ? 1 : 0.97)
-                    transformOrigin: Item.TopLeft
-                    Behavior on opacity { NumberAnimation { duration: 90 } }
-                    Behavior on scale { NumberAnimation { duration: 110; easing.type: Easing.OutCubic } }
-
-                    QsMenuOpener { id: trayOpener; menu: trayPop.cur }
-
-                    LGlass {
-                        anchors.fill: parent
-                        backdrop: ui.glassSrc
-                        shaderUrl: root.glassShaderUrl
-                        liquid: root.liquidActive
-                        dark: root.panelDarkMode
-                        bx: trayPop.x; by: trayPop.y
-                        shadowAmt: 0
-                        flatInner: 1
-                        rimTint: 1
-                        ringW: 0
-                        cornerR: 14
-                        tint: root.glassOpacity
-                        thickness: 22
-                        strength: 0.55 * root.glassLiquid
-                        rim: root.glassRim
-                        grain: root.glassGrain
-                        blur: 42
-                        debug: root.glassDebug
-                        onShaderError: root.glassState = "failed"
-                    }
-                    // same border as the top-bar menus (File, Edit, ...)
-                    MacParts.MenuBorder {
-                        id: trayBorder
-                        z: 2
-                        anchors.fill: parent
-                        cornerR: 14
-                        dark: root.panelDarkMode
-                        tint: root.menuBorderColor
-                        amount: 1
-                    }
-
-                    Flickable {
-                        id: trayFlick
-                        x: 6; y: 7
-                        width: parent.width - 12
-                        height: parent.height - 14
-                        contentWidth: width
-                        contentHeight: trayCol.height
-                        clip: true
-                        boundsBehavior: Flickable.StopAtBounds
-                        interactive: contentHeight > height
-                        Connections { target: trayPop; function onCurChanged() { trayFlick.contentY = 0; } }
-
-                        Column {
-                            id: trayCol
-                            width: trayFlick.width
-
-                            // submenu header: click to go back one level
-                            Item {
-                                id: trayBack
-                                visible: ui.trayStack.length > 0
-                                width: trayCol.width
-                                height: visible ? 26 : 0
-                                Rectangle {
-                                    anchors.fill: parent
-                                    radius: 6
-                                    color: backMa.containsMouse ? root.accent : "transparent"
-                                }
-                                Text {
-                                    x: 12
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    width: parent.width - 24
-                                    elide: Text.ElideRight
-                                    text: "\u2039  " + (ui.trayStack.length > 0 ? trayPop.clean(ui.trayStack[ui.trayStack.length - 1].text) : "")
-                                    color: backMa.containsMouse ? "white" : panelPal.fg
-                                    font.family: root.fontForWeight(font.weight, panelPal.fam); font.pixelSize: 13; font.weight: Font.DemiBold
-                                }
-                                MouseArea {
-                                    id: backMa
-                                    anchors.fill: parent
-                                    hoverEnabled: true
-                                    onClicked: ui.trayStack = ui.trayStack.slice(0, ui.trayStack.length - 1)
-                                }
-                            }
-                            Item {
-                                visible: trayBack.visible
-                                width: trayCol.width; height: visible ? 11 : 0
-                                Rectangle { anchors.verticalCenter: parent.verticalCenter; x: 8; width: parent.width - 16; height: 1; color: panelPal.sep }
-                            }
-
-                            Repeater {
-                                model: trayOpener.children
-                                delegate: Item {
-                                    id: te
-                                    required property var modelData
-                                    readonly property bool isSep: modelData.isSeparator
-                                    readonly property bool live: !isSep && modelData.enabled
-                                    readonly property bool hot: live && tma.containsMouse
-                                    width: trayCol.width
-                                    height: isSep ? 11 : 26
-
-                                    Rectangle {
-                                        visible: te.isSep
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        x: 8; width: parent.width - 16; height: 1
-                                        color: panelPal.sep
-                                    }
-                                    Rectangle {
-                                        visible: te.hot
-                                        anchors.fill: parent
-                                        radius: 6
-                                        color: root.accent
-                                    }
-                                    // check mark / radio dot / app-provided icon
-                                    Text {
-                                        visible: !te.isSep && te.modelData.buttonType !== QsMenuButtonType.None && te.modelData.checkState === Qt.Checked
-                                        x: 10
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        text: te.modelData.buttonType === QsMenuButtonType.RadioButton ? I18n.tr("\u25CF") : "\u2713"
-                                        color: te.hot ? "white" : (te.live ? panelPal.fg : panelPal.fg2)
-                                        font.family: root.fontForWeight(font.weight, panelPal.fam)
-                                        font.pixelSize: te.modelData.buttonType === QsMenuButtonType.RadioButton ? 8 : 13
-                                    }
-                                    Image {
-                                        visible: !te.isSep && te.modelData.buttonType === QsMenuButtonType.None && te.modelData.icon !== ""
-                                        x: 10
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        width: 16; height: 16
-                                        source: te.modelData.icon
-                                        sourceSize: Qt.size(32, 32)
-                                        fillMode: Image.PreserveAspectFit
-                                        opacity: te.live ? 1 : 0.4
-                                    }
-                                    Text {
-                                        visible: !te.isSep
-                                        x: trayPop.hasLead ? 32 : 12
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        width: parent.width - x - 12 - (te.modelData.hasChildren ? 14 : 0)
-                                        elide: Text.ElideRight
-                                        text: te.isSep ? "" : trayPop.clean(te.modelData.text)
-                                        color: te.hot ? "white" : (te.live ? panelPal.fg : panelPal.fg2)
-                                        font.family: root.fontForWeight(font.weight, panelPal.fam)
-                                        font.pixelSize: 13
-                                    }
-                                    Text {
-                                        visible: !te.isSep && te.modelData.hasChildren
-                                        anchors.right: parent.right
-                                        anchors.rightMargin: 10
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        text: "\u203A"
-                                        color: te.hot ? "white" : panelPal.fg2
-                                        font.family: root.fontForWeight(font.weight, panelPal.fam); font.pixelSize: 15
-                                    }
-                                    MouseArea {
-                                        id: tma
-                                        anchors.fill: parent
-                                        enabled: te.live
-                                        hoverEnabled: true
-                                        onClicked: {
-                                            if (te.modelData.hasChildren) {
-                                                ui.trayStack = ui.trayStack.concat([te.modelData]);
-                                            } else {
-                                                te.modelData.triggered();
-                                                ui.pop = "";
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                // Native BarKit menu, same as Ricelin/Obi/Nacre: the daemon owns the SNI
+                // items and their dbusmenu, so the menu always matches the live tray frame.
+                BarKit.TrayMenu {
+                    id: trayMenu
+                    edge: "top"
                 }
 
                 // ═════════ Wi-Fi list (shared by the top-bar popover and the Control Center page) ═════════
@@ -7649,16 +7507,16 @@ Scope {
                         shaderUrl: root.glassShaderUrl
                         dark: root.ccDark
                         // macOS style: the panel is the glass, so each control only keeps a faint shape on top of it
-                        property bool niriTiles: root.hub && root.hub.nativeBackdrop
+                        property bool niriTiles: root.nativeBackdrop
                         tint: root.ccStyle === "macos" ? root.glassOpacity * 0.30
-                            : (root.hub && root.hub.nativeBackdrop ? root.glassOpacity * 0.76 : root.glassOpacity)
+                            : (root.nativeBackdrop ? root.glassOpacity * 0.76 : root.glassOpacity)
                         strength: root.ccStyle === "macos" ? root.glassLiquid * 0.30
-                            : (root.hub && root.hub.nativeBackdrop ? root.glassLiquid * 1.08 : root.glassLiquid)
+                            : (root.nativeBackdrop ? root.glassLiquid * 1.08 : root.glassLiquid)
                         rim: root.ccStyle === "macos" ? root.glassRim * 0.10
-                            : (root.hub && root.hub.nativeBackdrop ? root.glassRim * 0.62 : root.glassRim * 0.25)
+                            : (root.nativeBackdrop ? root.glassRim * 0.62 : root.glassRim * 0.25)
                         // A single blur pass on Niri preserves visible image detail
                         // and costs less than the former 80px two-pass treatment.
-                        blurMul: root.hub && root.hub.nativeBackdrop && root.ccStyle !== "macos" ? 0.50 : 1.0
+                        blurMul: root.nativeBackdrop && root.ccStyle !== "macos" ? 0.50 : 1.0
                         rimTint: 1
                         ringW: 0                            // the border is the QML CornerBorder now (see component CornerBorder)
                         borderTint: root.menuBorderColor
@@ -8387,7 +8245,7 @@ Scope {
         PanelWindow {
             id: swWin
             screen: perScreen.modelData
-            visible: (root.swOpen && ui.toastScreen) || swPanel.opacity > 0
+            visible: !root.launcherOnly && ((root.swOpen && ui.toastScreen) || swPanel.opacity > 0)
             onVisibleChanged: root.popCount += (visible ? 1 : -1)     // keeps the window-geometry poller running while it is open
             anchors { left: true; right: true; top: true; bottom: true }
             color: "transparent"
@@ -8561,7 +8419,7 @@ Scope {
         PanelWindow {
             id: wpWin
             screen: perScreen.modelData
-            visible: (root.wpOpen && ui.toastScreen) || wpPanel.opacity > 0
+            visible: !root.launcherOnly && ((root.wpOpen && ui.toastScreen) || wpPanel.opacity > 0)
             onVisibleChanged: root.popCount += (visible ? 1 : -1)     // keeps the window-geometry poller running while it is open
             anchors { left: true; right: true; top: true; bottom: true }
             color: "transparent"
@@ -8952,13 +8810,12 @@ Scope {
         PanelWindow {
             id: spotWin
             screen: perScreen.modelData
-            // The layer stays mapped: creating / destroying it on every open restarted the glass's window captures and
-            // Hyprland's layer animation, which is what made Spotlight flicker or vanish. Closed = invisible + click-through.
-            visible: root.spotlightEnabled
-            readonly property bool openish: ui.pop === "spot" || spot.vis > 0
+            // The Gokko bar no longer owns a Spotlight surface; the independent launcher is the only instance that maps it.
+            visible: root.launcherOnly
+            readonly property bool openish: root.launcherOnly && (ui.pop === "spot" || spot.vis > 0)
             onOpenishChanged: {
                 root.popCount += (openish ? 1 : -1);
-                if (openish && root.hub && root.hub.nativeBackdrop)
+                if (openish && root.nativeBackdrop)
                     Qt.callLater(function () {
                         spSrc.scheduleUpdate();
                         spBlur.scheduleUpdate();
@@ -8993,22 +8850,22 @@ Scope {
                     anchors.fill: parent
                     opacity: 0
                     paintCursor: false
-                    captureSource: root.liquidActive && root.hub && root.hub.nativeBackdrop
+                    captureSource: root.liquidActive && root.nativeBackdrop
                         ? spotWin.screen : null
                     live: false
                     function grab() {
                         if (captureSource !== null && typeof captureFrame === "function")
                             captureFrame();
                     }
-                    onHasContentChanged: if (root.hub && root.hub.nativeBackdrop)
+                    onHasContentChanged: if (root.nativeBackdrop)
                         console.log("[gokko-niri] Spotlight capture:", hasContent)
                 }
                 Timer {
                     interval: 320
                     repeat: true
                     triggeredOnStart: true
-                    running: root.liquidActive && root.spotlightEnabled
-                        && !!(root.hub && root.hub.nativeBackdrop)
+                    running: root.launcherOnly && root.liquidActive
+                        && !!(root.nativeBackdrop)
                         && !spotWin.openish
                     onTriggered: niriSpotSnap.grab()
                 }
@@ -9017,7 +8874,7 @@ Scope {
                     id: spotBackdrop
                     // Keep the Hyprland backdrop; Niri now has an independent
                     // output capture in this same Spotlight window.
-                    active: root.liquidActive && !(root.hub && root.hub.nativeBackdrop)          // stays loaded (warm) so the window opens on ready-made frames
+                    active: root.liquidActive && !(root.nativeBackdrop)          // stays loaded (warm) so the window opens on ready-made frames
                     sourceComponent: backdropComp
                     onLoaded: { item.hostShown = Qt.binding(function () { return !root.gaming; });
                                 item.region = Qt.binding(function () { return Qt.rect(spot.x - 128, spot.y - 128, spot.width + 256, spot.height + 256); }); }
@@ -9103,13 +8960,13 @@ Scope {
                     id: spSrc
                     // Cross-window ShaderEffectSource from the menu bar is unreliable.
                     // This source now stays inside the same spotlight PanelWindow.
-                    sourceItem: (root.hub && root.hub.nativeBackdrop)
+                    sourceItem: (root.nativeBackdrop)
                         ? (niriSpotSnap.hasContent ? niriSpotSnap : null)
                         : spotBackdrop.item
                     hideSource: true
                     // Niri screen capture is already frozen while the picker is
                     // open. Prevent render-thread work on every text edit.
-                    live: !(root.hub && root.hub.nativeBackdrop) && spotWin.openish
+                    live: !(root.nativeBackdrop) && spotWin.openish
                     visible: false
                     sourceRect: Qt.rect(spot.x - 128, spot.y - 128, spot.width + 256, 684)
                 }
@@ -9128,7 +8985,7 @@ Scope {
                 ShaderEffectSource {
                     id: spBlur
                     sourceItem: spBlurFx
-                    live: !(root.hub && root.hub.nativeBackdrop) && spotWin.openish
+                    live: !(root.nativeBackdrop) && spotWin.openish
                     visible: false
                 }
                 MultiEffect {
@@ -9155,12 +9012,12 @@ Scope {
                     frame: spotRoot
                     // If Niri has no frame yet, use GGlass's honest fallback
                     // rather than feeding an empty shader pipeline.
-                    liquid: root.liquidActive && (!(root.hub && root.hub.nativeBackdrop)
+                    liquid: root.liquidActive && (!(root.nativeBackdrop)
                         || niriSpotSnap.hasContent)
                     shaderUrl: root.glassShaderUrl
                     dark: root.panelDarkMode
                     // Niri previously forced 0.86+ opaque tint, hiding the image entirely.
-                    tint: root.hub && root.hub.nativeBackdrop ? Math.min(0.42, root.glassOpacity * 0.70) : root.glassOpacity
+                    tint: root.nativeBackdrop ? Math.min(0.42, root.glassOpacity * 0.70) : root.glassOpacity
                     strength: root.glassLiquid               // full refraction, like the Dock / Control Center
                     rim: root.glassRim                       // same wallpaper-coloured rim + border line as the top-bar menus
                     rimTint: 1
@@ -9168,7 +9025,7 @@ Scope {
                     whiteEdge: false
                     grain: root.glassGrain
                     blur: 15                                // Spotlight has its own blur: it ignores the global blur slider
-                    blurMul: root.hub && root.hub.nativeBackdrop ? 2.25 : 10.0
+                    blurMul: root.nativeBackdrop ? 2.25 : 10.0
                     // Niri: preserve actual wallpaper detail in the search pill.
                     debug: root.glassDebug
                     onFailed: root.glassState = "failed"

@@ -1,0 +1,12 @@
+Ryoku Gokko Spotlight app launcher
+Based on the Spotlight UI, Liquid Glass shader pipeline, settings and search backends in Gokko 0.3.3.
+
+Upstream project: https://github.com/0-ss/MacShell
+Pinned starting revision: d4f8500c41577ab7d056470a7931392786ed0300
+Gokko's existing Ryoku adaptation is maintained in the separate `gokko` barstyle item.
+
+Launcher integration:
+- Implements Ryoku's show(monitor), hide(), toggle(monitor), shown and stateDump() contract.
+- Uses the existing ~/.config/macbar/settings.json as a read-only live configuration source.
+- Does not display another menu bar or write settings back to disk.
+- Uses a separate shader cache path when loaded beside the Gokko barstyle.
