@@ -243,7 +243,7 @@
       "mode": "0644",
       "size": 988017,
       "sha256": "b7ed2139b9cb029a29c0c89ce60fb340859efc6d1d0ce28bf6e9f0bdb70c7c42",
-      "install": true
+      "install": false
     },
     {
       "source": "assets/fonts/Fraunces-Italic.ttf",
