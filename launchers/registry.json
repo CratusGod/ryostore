@@ -54,6 +54,29 @@
       "lastUpdated": "2026-10-20",
       "official": false,
       "license": "GPL-3.0-only"
+    },
+    {
+      "id": "gokko",
+      "name": "Gokko",
+      "version": "1.0.0",
+      "path": "launchers/gokko",
+      "author": "feelyourwarmth",
+      "upstream": "https://github.com/0-ss/MacShell",
+      "summary": "macOS-inspired Liquid Glass launcher",
+      "description": "macOS-inspired Ryoku launcher",
+      "tags": [
+        "macos",
+        "liquid-glass"
+      ],
+      "accent": "#9db4fd",
+      "surface": "#19171f",
+      "preview": "assets/preview.png",
+      "screenshots": [],
+      "manifest": "manifest.json",
+      "manifestSha256": "4ca2c768fc484d0f1b73c9603917109af715f02a33fa27eb46d99f534b335cf5",
+      "lastUpdated": "2026-10-28",
+      "official": false,
+      "license": "MIT"
     }
   ]
 }

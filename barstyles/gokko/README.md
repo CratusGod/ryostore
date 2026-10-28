@@ -1,7 +1,9 @@
 # Gokko (ごっこ)
 
 A macOS-inspired Liquid Glass **barstyle/subshell** for Ryoku, with an app
-menu, Spotlight search, Control Center, Dock and desktop widgets.
+menu, Control Center, Dock and desktop widgets. The former built-in Spotlight is
+available as the separate **Gokko Spotlight** app launcher; the bar's magnifier
+opens whichever launcher is active in Ryoku.
 
 ## Origin and licensing
 
@@ -207,3 +209,13 @@ MacShell coexistence and all glass components remain unchanged.
 - Keep existing Home search debounce and Niri glass unchanged.
 - Log QML main-thread stalls over 450ms as `[gokko-spotlight] UI event-loop stall`.
 - No changes to Control Center, Dock, wallpapers, widgets, icons, or Game Mode.
+
+
+## Gokko 0.3.3: launcher split
+
+The magnifier in the menu bar now calls `ryoku-shell launcher`, so it opens the
+launcher selected in Ryoku Settings. The former embedded Spotlight surface is
+no longer shown by the barstyle and is packaged separately as the **Gokko
+Spotlight** launcher for RyoStore. The launcher uses the same
+`~/.config/macbar/settings.json` and liquid-glass settings as Gokko; it does not
+create a second settings file or write over the bar's configuration.
