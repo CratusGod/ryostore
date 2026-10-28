@@ -56,32 +56,27 @@
       "license": "GPL-3.0-only"
     },
     {
-      "id": "mandara",
-      "name": "Mandara",
-      "version": "2.4.0",
-      "path": "launchers/mandara",
-      "author": "0xSrcAura",
-      "upstream": "https://github.com/SourceAura/mandara",
-      "summary": "The Obelisk as Ryoku's launcher — three breaths (Sun · Moon · Celestial), daily segments, and Rashin, her compass window",
-      "description": "Mandara as she stands: a centred smoked-glass plate wearing her author's name and the Jurai emblem, one lens that resolves applications, files and commands locally and now drives in three breaths. Sun for doing, Moon for the daily round, Celestial for play: each breath tints her water, biases what she surfaces first, and is spoken or locked as a word. Her segments speak the daily tongue: open, find, note, ask, timer, play, lock, composable as crystallized chips and ranked by his own usage. Natural language rides to Ryoku's real Rashin Ask service through her compass window.",
+      "id": "gokko",
+      "name": "Gokko",
+      "version": "1.0.0",
+      "path": "launchers/gokko",
+      "author": "feelyourwarmth",
+      "upstream": "https://github.com/0-ss/MacShell",
+      "summary": "macOS-inspired Liquid Glass launcher",
+      "description": "macOS-inspired Ryoku launcher",
       "tags": [
-        "jurai",
-        "launcher",
-        "omnibar",
-        "keyboard",
-        "dark"
+        "macos",
+        "liquid-glass"
       ],
-      "accent": "#A78BFA",
-      "surface": "#050A12",
-      "preview": "assets/preview.webp",
-      "screenshots": [
-        "assets/preview.webp"
-      ],
+      "accent": "#9db4fd",
+      "surface": "#19171f",
+      "preview": "assets/preview.png",
+      "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "62035aff3c339a6d324da675a851547cbc522f649446f4a985acbf60e5a30402",
-      "lastUpdated": "2026-10-25",
+      "manifestSha256": "688e133cc61f537e7dc2edb8288148c6593a4293693272da2f000254dd15d985",
+      "lastUpdated": "2026-10-28",
       "official": false,
-      "license": "GPL-3.0-or-later"
+      "license": "MIT"
     }
   ]
 }
