@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "id": "gokko-spotlight",
+  "id": "gokko",
   "category": "launchers",
   "version": "1.0.0",
-  "destination": "ryoku/launchers/gokko-spotlight",
+  "destination": "ryoku/launchers/gokko",
   "files": [
     {
       "source": "LICENSE",
