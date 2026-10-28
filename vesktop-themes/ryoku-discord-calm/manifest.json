@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "ryoku-discord-calm",
+  "category": "vesktop-themes",
+  "version": "3.0.0",
+  "destination": "ryoku/vesktop-themes/ryoku-discord-calm",
+  "files": [
+    {
+      "source": "LICENSE.txt",
+      "destination": "LICENSE.txt",
+      "mode": "0644",
+      "size": 1065,
+      "sha256": "b4fe34e7e9d7d6099faac4b0ac744b38ca38e3c857115a23b53200a960d704d4",
+      "install": false
+    },
+    {
+      "source": "README.md",
+      "destination": "README.md",
+      "mode": "0644",
+      "size": 1413,
+      "sha256": "8959fa710e23b9df70b8de26baeaaedcf2a4ab2d9dd6147a16f1969a7cc6094f",
+      "install": false
+    },
+    {
+      "source": "assets/add-friend.png",
+      "destination": "assets/add-friend.png",
+      "mode": "0644",
+      "size": 150706,
+      "sha256": "fab47cd06b64c78dca1610bcff14f21ac6bb4bf9b763caa5c84badc8a3e4458b",
+      "install": false
+    },
+    {
+      "source": "assets/chat.png",
+      "destination": "assets/chat.png",
+      "mode": "0644",
+      "size": 189848,
+      "sha256": "6e251cca5d42d6a3e0357a3b0e8e28c4364fecd609ef004994c43556ba891c03",
+      "install": false
+    },
+    {
+      "source": "assets/settings.png",
+      "destination": "assets/settings.png",
+      "mode": "0644",
+      "size": 323717,
+      "sha256": "673a1a37ba3a62de17c47fcd6781ede4d938dc82b2b938782ff0104ea886f2e3",
+      "install": false
+    },
+    {
+      "source": "ryoku-calm.theme.css",
+      "destination": "ryoku-calm.theme.css",
+      "mode": "0644",
+      "size": 13797,
+      "sha256": "e3f43b77cc66bedb33cd9f50eaa653e4f1d2b641e2553a76c0f4f4956317bb1b",
+      "install": true
+    }
+  ],
+  "license": "MIT"
+}
