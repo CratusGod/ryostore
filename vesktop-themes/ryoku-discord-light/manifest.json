@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "ryoku-discord-light",
+  "category": "vesktop-themes",
+  "version": "3.0.0",
+  "destination": "ryoku/vesktop-themes/ryoku-discord-light",
+  "files": [
+    {
+      "source": "LICENSE.txt",
+      "destination": "LICENSE.txt",
+      "mode": "0644",
+      "size": 1065,
+      "sha256": "b4fe34e7e9d7d6099faac4b0ac744b38ca38e3c857115a23b53200a960d704d4",
+      "install": false
+    },
+    {
+      "source": "README.md",
+      "destination": "README.md",
+      "mode": "0644",
+      "size": 1351,
+      "sha256": "d516d39c6f53406028e02bac1e79ffcf20842dbfdbc8a46794327401032e8681",
+      "install": false
+    },
+    {
+      "source": "assets/add-friend.png",
+      "destination": "assets/add-friend.png",
+      "mode": "0644",
+      "size": 223849,
+      "sha256": "5bc31c4dcc4a8dd28df6c48fe5d34b9a0d6d4e85d00adc294ec1999ae0b879fa",
+      "install": false
+    },
+    {
+      "source": "assets/chat.png",
+      "destination": "assets/chat.png",
+      "mode": "0644",
+      "size": 263530,
+      "sha256": "7431789a96441bc750cbe0e8e2687ca5e95df80b07739aac93d0f1a7d293d352",
+      "install": false
+    },
+    {
+      "source": "assets/settings.png",
+      "destination": "assets/settings.png",
+      "mode": "0644",
+      "size": 315672,
+      "sha256": "0f7852b3fd772b34f3b177464af9d733d6dee317e3645121d80de9aa73455540",
+      "install": false
+    },
+    {
+      "source": "ryoku-light.theme.css",
+      "destination": "ryoku-light.theme.css",
+      "mode": "0644",
+      "size": 15318,
+      "sha256": "793cc69442f00e95642aa978f23bdd992a1475472a55ec47bbf0482fa6f8e94a",
+      "install": true
+    }
+  ],
+  "license": "MIT"
+}
