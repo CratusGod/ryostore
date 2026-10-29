@@ -71,7 +71,10 @@ Item {
                 continue;
             if (!Tokens.barEnabledFor(screen.name))
                 continue;
-            if (Shell.Config.barStyleFor(screen.name) !== "karuma")
+            const style = typeof Shell.Config.barStyleFor === "function"
+                        ? Shell.Config.barStyleFor(screen.name)
+                        : Shell.Config.barStyle;
+            if (style !== "karuma")
                 continue;
             out.push(screen);
         }

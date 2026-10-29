@@ -212,7 +212,7 @@
     {
       "id": "gokko",
       "name": "Gokko",
-      "version": "0.3.3",
+      "version": "0.3.4",
       "path": "barstyles/gokko",
       "author": "aethctl",
       "upstream": "https://github.com/0-ss/MacShell",
@@ -231,8 +231,8 @@
       "preview": "assets/preview.png",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "85a18be4d6f279baf2c35f81e3c3a3a1f78f6f55cc954a8da7a8534e196e141a",
-      "lastUpdated": "2026-10-28",
+      "manifestSha256": "c2c4866c82217f662e81e4864d4de82abfbb98705389852f542e95fd2be9dfea",
+      "lastUpdated": "2026-10-29",
       "official": false,
       "license": "MIT"
     },
@@ -272,7 +272,7 @@
     {
       "id": "karuma",
       "name": "Karuma",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "barstyles/karuma",
       "author": "feelyourwarmth",
       "upstream": "https://github.com/Ryoku-dev/ryostore/tree/main/barstyles/karuma",
@@ -292,8 +292,8 @@
       "preview": "assets/preview.png",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "5af3f5b98e1b57c9dea9720c8df23db7acbed57d0660e49bfd6c40498d8e1fb6",
-      "lastUpdated": "2026-10-28",
+      "manifestSha256": "17ceb85edd5198f60b2c81b92b68d707953acdfa5065d01db84eb083ea41b891",
+      "lastUpdated": "2026-10-29",
       "official": false,
       "license": "MIT"
     }
