@@ -1,7 +1,7 @@
 {
   "id": "dragshift",
   "name": "DragShift",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "author": "CratusGod <nghiabigg652@gmail.com>",
   "description": "DragShift on Wayland: start dragging files or folders, press Shift, and drop them on a liquid-glass radial menu to convert, compress, zip, unpack, OCR or edit them, with a PDF24-style PDF toolkit (organize, merge, cut, watermark, unlock, searchable). Results land next to the originals, which are never changed.",
   "license": "MIT",

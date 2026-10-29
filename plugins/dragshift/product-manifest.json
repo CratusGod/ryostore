@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "dragshift",
   "category": "plugins",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "destination": "ryoku/plugins/dragshift",
   "files": [
     {
@@ -48,9 +48,9 @@
     {
       "source": "README.md",
       "destination": "README.md",
-      "sha256": "c49086b740176e8bfc4c5adaf4d40d6176a9c8f7f36cc3ad9f380c1e04ae9681",
+      "sha256": "e1d3094f5698bacaae98c6f84ec64633258c9c188512970677c94db5c6fba9cc",
       "mode": "0644",
-      "size": 10486,
+      "size": 10918,
       "install": false
     },
     {
@@ -200,7 +200,7 @@
     {
       "source": "manifest.json",
       "destination": "manifest.json",
-      "sha256": "9ea5f87c9b2935e207e75c6a5604d350093ff85cdd23c2aa9415ac8a784d476f",
+      "sha256": "fa246f7c3d2128eb578e0566d264f02882fc2d8f67c10d1c90bc8942bf4a5b7a",
       "mode": "0644",
       "size": 3492,
       "install": true
@@ -224,9 +224,9 @@
     {
       "source": "service/Main.qml",
       "destination": "service/Main.qml",
-      "sha256": "1822d537fbb3549e066064580e1702a47d6664807ecd79a8a893db726e8ffabc",
+      "sha256": "33e71dab764e957939dc76d99835e9a1a20bcc32653a196d350fc4cdebdd2577",
       "mode": "0644",
-      "size": 18689,
+      "size": 20466,
       "install": true
     },
     {
@@ -240,9 +240,9 @@
     {
       "source": "service/RadialMenu.qml",
       "destination": "service/RadialMenu.qml",
-      "sha256": "e08c9f5dbda2bbcc7db134ab161e9ea811ad2c01a8e897317d853617659f8c7c",
+      "sha256": "215fa1ab4b36a6914987be19edc55002a9ca837283aa1d898b76838e3df852aa",
       "mode": "0644",
-      "size": 12722,
+      "size": 13645,
       "install": true
     },
     {
@@ -256,9 +256,9 @@
     {
       "source": "service/menu.js",
       "destination": "service/menu.js",
-      "sha256": "51696f5f1012cdb096f7049634728a5b425c7b60970298d5900a627a5d51e9ce",
+      "sha256": "a0cea8fa8333f4a21e87741d6039e692e46c6a611e9d1f6dde110dd451188430",
       "mode": "0644",
-      "size": 9080,
+      "size": 9745,
       "install": true
     },
     {
@@ -368,9 +368,9 @@
     {
       "source": "tests/test_menu.py",
       "destination": "tests/test_menu.py",
-      "sha256": "ad9041d08890a4d60478495ea7eca13cf2f991ff89cf0be527e76da1691655e5",
+      "sha256": "bacb5cf6e03238ccc6b1b392a885c4b242297ed2031b8782bb4c565cbe6defa5",
       "mode": "0644",
-      "size": 6468,
+      "size": 7306,
       "install": true
     },
     {

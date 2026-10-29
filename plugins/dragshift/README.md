@@ -37,6 +37,7 @@ game, so fire + Shift in a game is safe.
 | Audio `.mp3 .m4a .wav .flac .ogg .opus` | MP3, OPUS, WAV, FLAC | | |
 | Folders | | Archive: ZIP, TAR.GZ, TAR.XZ. Images: → WEBP, → JPG, Shrink all (every image inside, into a new `<folder> WEBP` folder with the same layout) | |
 | Archives `.zip .tar .tar.gz .tgz .tar.xz` | | Unpack (into a new folder) | |
+| Text you highlighted in any app and dragged | | Text ring: **Translate** (in the [Oumu](https://github.com/CratusGod/oumu) app; without it, a card says how to get it), **Copy** | |
 
 Every drop also gets an **Archive** ring (ZIP, TAR.GZ, TAR.XZ, Copy path) that
 takes *everything* you dragged, whatever its kind. Several items become
@@ -126,7 +127,11 @@ Reload with `ryoku wm act config.reload`, check with `hyprctl configerrors`.
   package that provides it; everything else keeps working
   and `qs ... ipc call dragshift` (editors report results; the Hyprland trigger
   opens the menu).
-- **Reads** the files and folders you drop, the engine checkout, and `engine/PIN`.
+- **Talks to Oumu** (optional) over its socket `$XDG_RUNTIME_DIR/oumu.sock`,
+  a local file only your user can open: Translate sends it `translate` plus
+  the text. No program is started; without Oumu a card says how to get it.
+- **Reads** the files and folders you drop, the text you drag, the engine
+  checkout, and `engine/PIN`.
 - **Writes** new files next to the files you dropped (or in a `DragShift`
   subfolder beside them, see Settings), and nothing else. This is the one
   departure from rule R8 (stateDir only), and it is the plugin's purpose. It
