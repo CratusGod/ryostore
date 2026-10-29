@@ -58,7 +58,7 @@
     {
       "id": "gokko",
       "name": "Gokko",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "launchers/gokko",
       "author": "feelyourwarmth",
       "upstream": "https://github.com/0-ss/MacShell",
@@ -73,8 +73,8 @@
       "preview": "assets/preview.png",
       "screenshots": [],
       "manifest": "manifest.json",
-      "manifestSha256": "688e133cc61f537e7dc2edb8288148c6593a4293693272da2f000254dd15d985",
-      "lastUpdated": "2026-10-28",
+      "manifestSha256": "65d0837e6165f94ab98bef5edf5448afbad39b076df06273c0de2488de19a092",
+      "lastUpdated": "2026-10-29",
       "official": false,
       "license": "MIT"
     }

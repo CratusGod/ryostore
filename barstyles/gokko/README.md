@@ -219,3 +219,16 @@ no longer shown by the barstyle and is packaged separately as the **Gokko
 Spotlight** launcher for RyoStore. The launcher uses the same
 `~/.config/macbar/settings.json` and liquid-glass settings as Gokko; it does not
 create a second settings file or write over the bar's configuration.
+
+## Gokko 0.3.4: capture retry and label binding
+
+Two long-running defects in the bar:
+
+- Window captures behind the glass back off after four consecutive misses. On
+  compositors that never hand a toplevel capture a recording context, the retry
+  timer re-requested a frame four times a second for every open window, forever,
+  and logged a failure each time. A delivered frame resets the counter, so a
+  working capture keeps its normal rate.
+- The app-menu label read its own `font.weight` while also writing it, which
+  made a binding loop that re-evaluated every frame and kept the bar committing.
+  The weight is now computed once and used by both properties.
