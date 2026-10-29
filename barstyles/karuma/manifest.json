@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "karuma",
   "category": "barstyles",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "destination": "ryoku/barstyles/karuma",
   "files": [
     {
@@ -209,8 +209,8 @@
       "source": "Scene.qml",
       "destination": "Scene.qml",
       "mode": "0644",
-      "size": 89711,
-      "sha256": "0d883971baee125746311143c4a0cded58030086e4b31f3df3c2af3998bb69ae",
+      "size": 89865,
+      "sha256": "a424533d1b632bad73a46b73be244734abaa0814ebfe1288ceac450a4d08de02",
       "install": true
     },
     {
@@ -236,14 +236,6 @@
       "size": 680,
       "sha256": "4981eb20e7d81f4154f59a96e656adc099f7f49b235f31b1c5223441ba8fd6d6",
       "install": true
-    },
-    {
-      "source": "assets/preview.png",
-      "destination": "assets/preview.png",
-      "mode": "0644",
-      "size": 988017,
-      "sha256": "b7ed2139b9cb029a29c0c89ce60fb340859efc6d1d0ce28bf6e9f0bdb70c7c42",
-      "install": false
     },
     {
       "source": "assets/fonts/Fraunces-Italic.ttf",
@@ -334,6 +326,14 @@
       "install": true
     },
     {
+      "source": "assets/preview.png",
+      "destination": "assets/preview.png",
+      "mode": "0644",
+      "size": 988017,
+      "sha256": "b7ed2139b9cb029a29c0c89ce60fb340859efc6d1d0ce28bf6e9f0bdb70c7c42",
+      "install": false
+    },
+    {
       "source": "qmldir",
       "destination": "qmldir",
       "mode": "0644",
@@ -341,5 +341,6 @@
       "sha256": "888a02c7d8ebdabbff342b813d242605d5be9e4888fa6cdce18b0279bfcdf552",
       "install": true
     }
-  ]
+  ],
+  "license": "MIT"
 }
