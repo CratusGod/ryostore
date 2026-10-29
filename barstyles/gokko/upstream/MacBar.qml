@@ -5173,6 +5173,7 @@ Scope {
                                     // with a random 0.6 s spread, so dozens of captures never start or stop in the same instant (that burst, with a
                                     // recorder pulling frames at the same time, is what the compositor choked on).
                                     property bool hush: root.captureQuiet
+                                    property int misses: 0
                                     Connections {
                                         target: root
                                         function onCaptureQuietChanged() { hushT.interval = 20 + Math.random() * 600; hushT.restart(); }
@@ -5188,6 +5189,7 @@ Scope {
                                     onCaptureSourceChanged: {
                                         // a brand-new capture grabs its first frame immediately instead of waiting for the timer
                                         // (a short delay: asking before the capture context exists only logged "no recording context is ready")
+                                        sv.misses = 0;
                                         if (captureSource !== null && !live && !sv.hush && !root.captureHeld) firstShot.restart();
                                     }
                                     Timer {
@@ -5198,10 +5200,16 @@ Scope {
                                     // single captures: hidden backdrops stay warm once a second (their window goes live the moment it opens);
                                     // while recording only a backdrop that is actually on screen refreshes, slowly
                                     Timer {
-                                        interval: sv.hush ? 1500 : (bd.hostShown ? 250 : 1000); repeat: true
+                                        interval: sv.misses >= 4 ? 8000
+                                                  : sv.hush ? 1500
+                                                  : bd.hostShown ? 250 : 1000
+                                        repeat: true
                                         running: !root.captureHeld && !sv.live && sv.captureSource !== null
                                                  && (!sv.hush || (bd.hostShown && (ui.anyVisible || spotWin.openish || swWin.visible || wpWin.visible)))
-                                        onTriggered: { if (typeof sv.captureFrame === "function") sv.captureFrame(); }
+                                        onTriggered: {
+                                            sv.misses = sv.hasContent ? 0 : sv.misses + 1;
+                                            if (typeof sv.captureFrame === "function") sv.captureFrame();
+                                        }
                                     }
                                 }
                             }
@@ -5480,14 +5488,14 @@ Scope {
                                 }
                                 Text {
                                     id: tl
+                                    readonly property int labelWeight: mt.activeApp ? Font.DemiBold : Font.Normal
                                     visible: mt.modelData.id !== "apple"
                                     anchors.centerIn: parent
                                     text: I18n.tr(mt.modelData.label)
                                     color: bpal.fg
-                                    font.family: mt.activeApp ? Fonts.forWeight(font.weight, root.boldFontFamily)
-                                                              : Fonts.forWeight(font.weight, "Open Runde")
+                                    font.family: Fonts.forWeight(tl.labelWeight, mt.activeApp ? root.boldFontFamily : "Open Runde")
                                     font.pixelSize: 14
-                                    font.weight: mt.activeApp ? Font.DemiBold : Font.Normal
+                                    font.weight: tl.labelWeight
                                 }
                                 MouseArea {
                                     anchors.fill: parent
