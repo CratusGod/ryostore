@@ -32,3 +32,8 @@ The launcher never writes to that shared settings file, avoiding a stale copy ov
 ## License and attribution
 
 MIT. Gokko adapts the MIT-licensed MacShell project by Rickky (0-ss) and contributors. See `LICENSE`, `NOTICE.md` and `PROVENANCE.txt`. Bundled fonts and assets may have their own terms.
+
+## 1.0.1
+
+Carries the capture retry backoff and the app-menu label binding fix from Gokko
+0.3.4. See `barstyles/gokko/README.md`.
