@@ -1870,12 +1870,12 @@
     {
       "id": "dragshift",
       "name": "DragShift",
-      "version": "0.4.0",
+      "version": "0.5.0",
       "path": "plugins/dragshift",
       "upstream": "https://github.com/ryoku-dev/ryostore/tree/main/plugins/dragshift",
       "author": "CratusGod <nghiabigg652@gmail.com>",
-      "summary": "DragShift on Wayland: start dragging files or folders, press Shift, and drop them on a liquid-glass radial menu to convert, compress, zip...",
-      "description": "DragShift on Wayland: start dragging files or folders, press Shift, and drop them on a liquid-glass radial menu to convert, compress, zip, unpack, OCR or edit them, with a PDF24-style PDF toolkit (organize, merge, cut, watermark, unlock, searchable). Results land next to the originals, which are never changed.",
+      "summary": "DragShift on Wayland: start dragging files, folders or highlighted text, press Shift, and drop them on a liquid-glass radial menu to convert, compress, zip...",
+      "description": "DragShift on Wayland: start dragging files, folders or highlighted text, press Shift, and drop them on a liquid-glass radial menu to convert, compress, zip, unpack, OCR or edit them, with a PDF24-style PDF toolkit (organize, merge, cut, watermark, unlock, searchable). Dragged text gets Copy, and Translate through the Oumu app. Results land next to the originals, which are never changed.",
       "tags": [
         "files",
         "convert",
@@ -1888,7 +1888,9 @@
         "video",
         "ocr",
         "pdf-tools",
-        "bar-widget"
+        "bar-widget",
+        "text",
+        "translate"
       ],
       "accent": "#8f8378",
       "surface": "#101010",
@@ -1897,14 +1899,14 @@
         "assets/preview-widget.png"
       ],
       "manifest": "product-manifest.json",
-      "manifestSha256": "d8f46ef6e1be18fd6ba7b2d58c5091143e48423bc8e0b19b84dc721cb176bb97",
+      "manifestSha256": "56145f8d776266cf550157bd7dba30c4ac6c57c9d294b3f83f6d40d1aa21992c",
       "official": false,
       "tagline": "DragShift on Wayland: start dragging files or folders, press Shift, and drop them on a liquid-glass radial menu to convert, compress, zip...",
       "icon": "swap_horiz",
       "hosts": [
         "topbarGlyph"
       ],
-      "lastUpdated": "2026-10-22"
+      "lastUpdated": "2026-10-29"
     },
     {
       "id": "kbd-layouts",

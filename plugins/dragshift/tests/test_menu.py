@@ -134,3 +134,24 @@ def test_every_one_click_tool_has_a_working_label():
     ids = {i["id"] for paths in drops for r in js(f"build({json.dumps(paths)}, true)")["rings"]
            for i in r["items"] if i.get("kind") == "tool"}
     assert ids and not ids - verbs, sorted(ids - verbs)
+
+
+def test_dragged_text_gets_a_text_ring():
+    b = js('buildText("Hôm nay trời đẹp quá")')
+    assert b["category"] == "text-selection" and b["files"] == []
+    (ring,) = b["rings"]
+    assert [i["label"] for i in ring["items"]] == ["Translate", "Copy"]
+    assert [i["kind"] for i in ring["items"]] == ["oumu", "text"]
+    assert all(i["glyph"] and i["hint"] for i in ring["items"])
+
+
+def test_translate_is_always_offered_and_blank_text_gets_no_ring():
+    # Without Oumu the slice stays; picking it explains how to get Oumu (Main.qml).
+    b = js('buildText("hello world")')
+    assert [i["label"] for i in b["rings"][0]["items"]] == ["Translate", "Copy"]
+    assert js('buildText("   ")')["rings"] == []
+
+
+def test_word_count_for_the_hub():
+    assert js('wordCount("one two  three")') == 3
+    assert js('wordCount("")') == 0

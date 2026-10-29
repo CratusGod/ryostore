@@ -28,6 +28,7 @@ Scope {
     property int wy: 0
     property var paths: []
     property var files: []
+    property string text: ""               // dragged text (a highlight), when no files
     property var rings: []
     property int ringIdx: 0
     property int hover: -1
@@ -61,6 +62,7 @@ Scope {
         menu.wy = Math.round(Math.min(Math.max(y - s.y - size / 2, 0), s.height - size));
         menu.paths = [];
         menu.files = [];
+        menu.text = "";
         menu.rings = [];
         menu.ringIdx = 0;
         menu.hover = -1;
@@ -139,6 +141,20 @@ Scope {
                 sizeProc.running = true;
             }
         }
+    }
+
+    function _loadText(text) {
+        const b = M.buildText(text);
+        menu.text = text;
+        menu.paths = [];
+        menu.files = [];
+        menu.rings = b.rings;
+        menu.ringIdx = 0;
+        menu.hover = -1;
+        menu.springs = menu.items.map(() => 0);
+        menu.unsupported = "";
+        const n = M.wordCount(text);
+        menu.hubText = n === 1 ? "1 word" : n + " words";
     }
 
     // radial.py hit(): -2 hub, -1 nothing, else the slice index
@@ -300,16 +316,21 @@ Scope {
 
         DropArea {
             anchors.fill: parent
-            keys: ["text/uri-list"]
+            // Files, or text highlighted in any app and dragged.
+            keys: ["text/uri-list", "text/plain", "text/plain;charset=utf-8"]
             // Always Copy: Shift during a drag means Move, and accepting a move
             // would make the file manager delete the original after our drop.
             onEntered: (drag) => {
                 menu.gotDrag = true;
                 noDrag.stop();
                 closeSoon.stop();
-                const p = Urls.toPaths(drag.urls);
-                if (p.length > 0 && JSON.stringify(p) !== JSON.stringify(menu.paths))
-                    menu._load(p);
+                const p = drag.hasUrls ? Urls.toPaths(drag.urls) : [];
+                if (p.length > 0) {
+                    if (JSON.stringify(p) !== JSON.stringify(menu.paths))
+                        menu._load(p);
+                } else if (drag.hasText && drag.text !== menu.text) {
+                    menu._loadText(drag.text);
+                }
                 drag.accept(Qt.CopyAction);
             }
             // Off the slices the drop is refused, so letting go there is a clean
@@ -328,7 +349,8 @@ Scope {
                 if (idx >= 0 && idx < menu.items.length) {
                     drop.accept(Qt.CopyAction);
                     const item = menu.items[idx];
-                    const files = (item.all ? menu.paths : menu.files).slice();
+                    // Text items carry the dragged text in place of file paths.
+                    const files = menu.text !== "" ? [menu.text] : (item.all ? menu.paths : menu.files).slice();
                     // hand the drag back to the file manager first, work after
                     Qt.callLater(() => menu.activated(item, files));
                 }

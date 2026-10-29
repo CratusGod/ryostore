@@ -33,7 +33,7 @@ const MEDIA_HINTS = {
 const GLYPHS = {
     Compress: "⇲", Metadata: "ⓘ", Redact: "▮", Crop: "⌗", Edit: "☼", Annotate: "✎",
     "Add BG": "▣", Resize: "⤢", Split: "✂", Rotate: "⟳", Merge: "⧉", Protect: "⚿", Extract: "⧈",
-    Copy: "❐", Text: "¶", "Copy path": "⎘", Numbers: "#", Gray: "◐", Flatten: "▭", Halves: "½",
+    Copy: "❐", Text: "¶", Translate: "⇄", "Copy path": "⎘", Numbers: "#", Gray: "◐", Flatten: "▭", Halves: "½",
     Chapters: "§", Searchable: "⌕", Organize: "▦", Watermark: "≋", Unlock: "⚷", Unpack: "⤓", "→ WEBP": "▦", "→ JPG": "▦", "Shrink all": "⇲"
 };
 
@@ -42,7 +42,7 @@ const HINTS = {
     Crop: "Trim to a ratio", Edit: "Light · colour · rotate", Annotate: "Arrows · text · steps",
     "Add BG": "Gradient backdrop", Resize: "Change dimensions", Split: "One PDF per page",
     Rotate: "Turn pages 90°", Merge: "Join into one PDF", Protect: "Add a password",
-    Extract: "Save embedded images", Copy: "Paste it anywhere", Text: "Read text · copy it",
+    Extract: "Save embedded images", Copy: "Paste it anywhere", Translate: "Opens in Oumu", Text: "Read text · copy it",
     "Copy path": "Full path to clipboard", Numbers: "Add page numbers", Gray: "Black & white copy",
     Flatten: "Bake in forms · notes", Halves: "Split into two", Chapters: "One PDF per bookmark",
     Searchable: "OCR scanned pages", Organize: "Reorder · delete · cut · merge", Watermark: "Text or image stamp",
@@ -167,6 +167,21 @@ function build(paths, heif, kinds) {
         rings.push({ name: "Pages", items: PDF_PAGES.map(tool) });
     rings.push(archiveRing());
     return { category: cat, files: files, rings: rings };
+}
+
+// Dragged text (a highlight from any app). "oumu" items go to the Oumu app over
+// its socket (without Oumu, picking one says how to get it); "text" items run here.
+const TEXT_ITEMS = [["Translate", "oumu", "translate"], ["Copy", "text", "copy"]];
+
+function buildText(text) {
+    if (String(text || "").trim() === "")
+        return { category: "", files: [], rings: [] };
+    const items = TEXT_ITEMS.map(tool);
+    return { category: "text-selection", files: [], rings: [{ name: "Text", items: items }] };
+}
+
+function wordCount(text) {
+    return String(text || "").split(/\s+/).filter(w => w.length > 0).length;
 }
 
 // app.describe: "2.4 MB" for one file, "3 files" for several

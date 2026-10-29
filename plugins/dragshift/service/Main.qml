@@ -376,6 +376,40 @@ Item {
         onActivated: (item, files) => svc.runFromMenu(item, files)
     }
 
+    // ---- Oumu (optional) -------------------------------------------------------
+    // Oumu, a writing assistant, listens on a socket in the runtime directory for
+    // "translate\n<text>" and opens its Translate panel. No program is run: when
+    // Oumu is not running the socket refuses, and the card says how to get Oumu.
+    readonly property string _oumuSock: (Quickshell.env("XDG_RUNTIME_DIR") || "/nonexistent") + "/oumu.sock"
+    readonly property string _oumuMissing: "Translate needs the Oumu app. Install it from github.com/CratusGod/oumu, or start it if you have it, then try again."
+    property string _oumuQueued: ""
+
+    Socket {
+        id: oumu
+        path: svc._oumuSock
+        onConnectionStateChanged: {
+            if (!connected)
+                return;
+            if (svc._oumuQueued !== "") {
+                write(svc._oumuQueued);
+                flush();
+                svc._oumuQueued = "";
+            }
+            connected = false;
+        }
+        onError: (socketError) => {
+            if (svc._oumuQueued !== "") {
+                svc._oumuQueued = "";
+                toastStack.done(-1, { ok: false, error: svc._oumuMissing });
+            }
+        }
+    }
+
+    function _sendToOumu(text) {
+        svc._oumuQueued = "translate\n" + text;
+        oumu.connected = true;
+    }
+
     Toasts {
         id: toastStack
         screen: radial.screen
@@ -407,7 +441,21 @@ Item {
                                          searchable: "Recognising text…" })
 
     function runFromMenu(item, files) {
-        if (!_ready() || !files || files.length === 0)
+        if (!files || files.length === 0)
+            return;
+        // Dragged text: needs neither the engine nor a file.
+        if (item.kind === "oumu") {
+            _sendToOumu(files[0]);
+            return;
+        }
+        if (item.kind === "text") {
+            if (item.id === "copy") {
+                Quickshell.execDetached(["wl-copy", "--", files[0]]);
+                toastStack.done(-1, { ok: true, title: "Copied" });
+            }
+            return;
+        }
+        if (!_ready())
             return;
         if (item.kind === "editor") {
             Quickshell.execDetached(baseArgs().concat(["editor", item.id]).concat(files));
