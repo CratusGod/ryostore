@@ -96,12 +96,15 @@ when you save.
    command with your plugin path filled in:
 
    ```bash
-   grep -q DRAGSHIFT-TRIGGER-BEGIN ~/.config/hypr/user.lua || { echo; cat ~/.local/share/ryoku/plugins/dragshift/hypr/trigger.lua; } >> ~/.config/hypr/user.lua; ryoku wm act config.reload
+   sed -i '/^-- DRAGSHIFT-TRIGGER-BEGIN$/,/^-- DRAGSHIFT-TRIGGER-END$/d' ~/.config/hypr/user.lua; { echo; cat ~/.local/share/ryoku/plugins/dragshift/hypr/trigger.lua; } >> ~/.config/hypr/user.lua; ryoku wm act config.reload
    ```
 
 4. Drag a file and tap Shift. After the first menu the ⇄ icon hides itself
    (Settings > Bar icon changes that). On niri or another compositor, keep
    using ⇄ as the drop target.
+
+   Run the same command again after updating DragShift: it replaces the old
+   trigger block instead of adding a second one.
 
 ### Hyprland (`~/.config/hypr/user.lua`)
 

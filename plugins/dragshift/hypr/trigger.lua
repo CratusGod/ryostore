@@ -4,6 +4,9 @@
 -- Shift while the left button is held asks the plugin to open its radial menu
 -- at the cursor. Every bind is non-consuming, so clicks and Shift still reach
 -- your apps unchanged. Remove this block to turn the trigger off.
+-- The binds are transparent: since Hyprland 0.57 any other input while the
+-- button is down (letting go of Shift, a key release) shadows a plain release
+-- bind, the release is never seen, and every later Shift opened the menu.
 local dragshift = { held = false, shifted = false }
 
 local function dragshift_ipc(args)
@@ -28,16 +31,16 @@ local function dragshift_shift()
 end
 
 hl.bind("mouse:272", function() dragshift.held = true; dragshift.shifted = false end,
-    { non_consuming = true, ignore_mods = true })
+    { non_consuming = true, ignore_mods = true, transparent = true })
 hl.bind("mouse:272", function()
     dragshift.held = false
     if dragshift.shifted then dragshift.shifted = false; dragshift_ipc("release") end
-end, { non_consuming = true, ignore_mods = true, release = true })
-hl.bind("SHIFT + Shift_L", dragshift_shift, { non_consuming = true })
-hl.bind("SHIFT + Shift_R", dragshift_shift, { non_consuming = true })
+end, { non_consuming = true, ignore_mods = true, release = true, transparent = true })
+hl.bind("SHIFT + Shift_L", dragshift_shift, { non_consuming = true, transparent = true })
+hl.bind("SHIFT + Shift_R", dragshift_shift, { non_consuming = true, transparent = true })
 hl.bind("Escape", function()
     if dragshift.shifted then dragshift.shifted = false; dragshift_ipc("close") end
-end, { non_consuming = true, ignore_mods = true })
+end, { non_consuming = true, ignore_mods = true, transparent = true })
 
 -- The menu animates itself; the result cards get Hyprland's live blur behind them.
 hl.layer_rule({ name = "dragshift-menu", match = { namespace = "^dragshift-menu$" }, no_anim = true })
