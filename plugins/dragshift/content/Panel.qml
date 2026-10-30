@@ -176,7 +176,7 @@ Item {
                     readOnly: true
                     selectByMouse: true
                     wrapMode: TextEdit.Wrap
-                    text: root.svc ? "grep -q DRAGSHIFT-TRIGGER-BEGIN ~/.config/hypr/user.lua || { echo; cat '" + root.svc.triggerSnippet + "'; } >> ~/.config/hypr/user.lua; ryoku wm act config.reload" : ""
+                    text: root.svc ? "sed -i '/^-- DRAGSHIFT-TRIGGER-BEGIN$/,/^-- DRAGSHIFT-TRIGGER-END$/d' ~/.config/hypr/user.lua; { echo; cat '" + root.svc.triggerSnippet + "'; } >> ~/.config/hypr/user.lua; ryoku wm act config.reload" : ""
                     color: Theme.dim
                     font.family: Theme.mono
                     font.pixelSize: 11 * root.s

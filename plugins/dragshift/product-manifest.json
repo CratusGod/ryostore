@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "dragshift",
   "category": "plugins",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "destination": "ryoku/plugins/dragshift",
   "files": [
     {
@@ -48,9 +48,9 @@
     {
       "source": "README.md",
       "destination": "README.md",
-      "sha256": "e1d3094f5698bacaae98c6f84ec64633258c9c188512970677c94db5c6fba9cc",
+      "sha256": "a2453851241ef1c5c2cf1a920344d4d65f6e6e87ef11613560135a0df638512e",
       "mode": "0644",
-      "size": 10918,
+      "size": 11080,
       "install": false
     },
     {
@@ -128,9 +128,9 @@
     {
       "source": "content/Panel.qml",
       "destination": "content/Panel.qml",
-      "sha256": "0b00bf293df1337b3d3778667b0867a1284fc198c848c43d2f2df2772160648b",
+      "sha256": "836f2bd02e72c68cb477606facb588f6ac36c10a22bac2520a1e86433a602104",
       "mode": "0644",
-      "size": 11956,
+      "size": 11992,
       "install": true
     },
     {
@@ -192,15 +192,15 @@
     {
       "source": "hypr/trigger.lua",
       "destination": "hypr/trigger.lua",
-      "sha256": "4998ca1b0436d1bfafc295adbf879cd8a10a85d7c3d2eeaae680f24b51da9c56",
+      "sha256": "cac844d3a28a04d48aae752d8ccb791e2782ee052ead518914dbc3e158e1ddad",
       "mode": "0644",
-      "size": 2485,
+      "size": 2815,
       "install": true
     },
     {
       "source": "manifest.json",
       "destination": "manifest.json",
-      "sha256": "fa246f7c3d2128eb578e0566d264f02882fc2d8f67c10d1c90bc8942bf4a5b7a",
+      "sha256": "eedf60f9d8bf95db12617b647184e5a7cf6cbd47bc886d7769e56ca86a1f048f",
       "mode": "0644",
       "size": 3492,
       "install": true
